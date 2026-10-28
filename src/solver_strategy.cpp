@@ -39,7 +39,7 @@ void PortfolioStats::record_failure(int algorithm,const RunState&checkpoint,Time
  if(failures.size()<64)failures.push_back({{"algorithm",algorithm},{"checkpoint_seconds",checkpoint.at.seconds()},{"checkpoint_version",checkpoint.version},{"candidate_seconds",target.seconds()},{"diagnostic",diagnostic(error)}});
 }
 Json PortfolioStats::description()const{
- Json rows=Json::array();for(int i=0;i<3;i++)rows.push_back({{"algorithm",i},{"name",names[i]},{"attempts",attempts[i]},{"committed",accepted[i]},{"failed",failed[i]}});
+ Json rows=Json::array();for(int i=0;i<3;i++)rows.push_back({{"algorithm",i},{"name",names[i]},{"attempts",attempts[i]},{"committed",accepted[i]},{"failed",failed[i]},{"executed_paths",executed_paths[i]}});
  return{{"methods",rows},{"checkpoint_restores",restores},{"failures",failures},{"journal_records",journal_records},{"checkpoint_policy","Same immutable post-event RunState for every attempt; canonical difference state retained. MCU writes, invocation counters and queued events are staged in each candidate and only committed once; failed event closure also restores the checkpoint."},{"validation","Inherited entry/endpoint checks plus original unstatically-eliminated algebraic equations and physical q/phi derivatives at start, midpoint, endpoint; engineering sampled checks, not a continuous-time certificate."},{"exhaustion_policy","Stop at last committed event; no SPICE fallback, no 1 ns rounding, no tolerance relaxation."},{"scope","Three registered candidates only; raw equation elimination operators evaluated in canonical checkpoint coordinates, not an exact replay of the historical raw-state solver."}};
 }
 }

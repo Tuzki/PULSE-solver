@@ -116,6 +116,7 @@ struct Mode {
   };
   std::vector<Guard> guards;
   std::string id;
+  std::string elimination_path; // actual factorization branch, not requested strategy
   uint64_t version = 0;
   double residual = 0;
 };

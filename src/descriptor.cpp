@@ -384,11 +384,13 @@ struct Assembler {
             lu.setThreshold(64 * std::numeric_limits<double>::epsilon() * std::max(1, na));
             if (lu.isInvertible()) {
                 if(portfolio_variant()==1){
+                    mode.elimination_path="ALGEBRAIC_QR";
                     Eigen::ColPivHouseholderQR<Matrix> qr(scaled);
                     qr.setThreshold(64*std::numeric_limits<double>::epsilon()*std::max(1,na));
                     require(qr.rank()==na,7,"PORTFOLIO_QR_RANK","QR cannot certify full rank under the existing rank threshold",true);
                     N=ac.asDiagonal()*qr.solve(ar.asDiagonal()*B);
                 }else if (lu.rcond() < 1e-7) {
+                    mode.elimination_path="ALGEBRAIC_WIDE_LU";
                     // Finite off-state conductances can leave nearly floating
                     // algebraic coordinates. Factor in extended precision so
                     // cancellation does not create spurious cross-coupling in
@@ -400,8 +402,10 @@ struct Assembler {
                     Wide answer = ac.cast<long double>().asDiagonal() *
                         wide_lu.solve(ar.cast<long double>().asDiagonal() * B.cast<long double>());
                     N = answer.cast<double>();
-                } else
+                } else {
+                    mode.elimination_path="ALGEBRAIC_LU";
                     N = ac.asDiagonal() * lu.solve(ar.asDiagonal() * B);
+                }
             } else {
                 // A rank-revealing transpose factorization selects independent
                 // original equations. Its nullspace preserves structural zeros;
@@ -522,7 +526,20 @@ struct Assembler {
                         "INCONSISTENT_MODE_TRANSITION",
                         "physical state cannot be reconstructed in new descriptor coordinates");
                 Matrix allowed = R * lift;
-                Matrix local = cs.asDiagonal() * reduction.solve(rs.asDiagonal() * allowed);
+                // QR must cover the constrained descriptor branch too. Rank
+                // policy, physical constraints and acceptance budgets are shared.
+                Eigen::ColPivHouseholderQR<Matrix> descriptor_qr;
+                if(portfolio_variant()==1){
+                    descriptor_qr.compute(balanced);
+                    descriptor_qr.setThreshold(128*std::numeric_limits<double>::epsilon()*std::max(1,int(K.rows())));
+                    require(descriptor_qr.rank()==K.rows(),7,"PORTFOLIO_QR_RANK","QR cannot certify constrained descriptor rank",true);
+                }
+                auto solve_descriptor=[&](const Matrix&rhs)->Matrix{
+                    if(portfolio_variant()==1)return cs.asDiagonal()*descriptor_qr.solve(rs.asDiagonal()*rhs);
+                    return cs.asDiagonal()*reduction.solve(rs.asDiagonal()*rhs);
+                };
+                mode.elimination_path=portfolio_variant()==1?"CONSTRAINED_QR":"CONSTRAINED_LU";
+                Matrix local = solve_descriptor(allowed);
                 // Retain exact scalar assignments present in the original
                 // equations, including structural zero currents. Dense pivoting
                 // and refinement can otherwise leave meaningless tiny values in
@@ -561,7 +578,7 @@ struct Assembler {
                 };
                 scalar_assignments();
                 for (int refinement = 0; refinement < 2; ++refinement) {
-                    local += cs.asDiagonal() * reduction.solve(rs.asDiagonal() * (allowed - K * local));
+                    local += solve_descriptor(allowed - K * local);
                     scalar_assignments();
                 }
                 Matrix error = (K * local - allowed).cwiseAbs(),

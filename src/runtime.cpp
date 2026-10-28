@@ -402,6 +402,7 @@ Result simulate(const Model &original, const Options &o) {
        found=false;crossings.clear();seeds.clear();root_log=Json::object();logs.clear();attempt_phase="compile_or_propagate";
        try {
         Mode algorithm_mode=portfolio_mode(m,checkpoint,algorithm,out.stats);
+        ++portfolio.executed_paths[algorithm][algorithm_mode.elimination_path];
         engineering::Flow flow(algorithm_mode, checkpoint.internal);
       engineering::SearchResult roots;
       if (target > old.at && !algorithm_mode.guards.empty()) {
