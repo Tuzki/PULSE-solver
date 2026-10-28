@@ -1,0 +1,27 @@
+# PULSE Netlist v1.1
+
+## Parameters
+```pulse
+
+```
+## Network
+```pulse
+EVENT_S START MODE=AT AT=0
+EVENT_T STOP MODE=AT AT=2
+REG_EN EN MODE=SR SET=START RESET=STOP PRIORITY=RESET IC=0
+CMP_Q QB Q OP=GE THRESHOLD=.5
+CMP_I INV Q OP=LT THRESHOLD=.5
+SEL_G G EN QB INV
+SEL_D DATA INV 0 1
+EVENT_C CLK MODE=EDGE SOURCE=G EDGE=BOTH
+REG_Q Q DATA CLK IC=0
+```
+## Simulation
+```pulse
+.TRAN T_END=1 SAVE_DT=.1
+
+```
+## Layout
+```json
+{}
+```

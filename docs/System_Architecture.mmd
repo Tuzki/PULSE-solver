@@ -1,0 +1,21 @@
+flowchart TD
+  INPUT["Five-zone netlist or legacy netlist"] --> PARSE["Front end and compatibility lowering"]
+  PARSE --> MODEL["Electrical model and software bindings"]
+  CODE["Inline C or same-folder C files"] --> BUILD["Independent C module build and hashes"]
+  BUILD --> LOAD["Software module ABI loader"]
+  MODEL --> INIT["Initial physical state, regions and software instances"]
+  LOAD --> INIT
+  INIT --> STATE["Committed RunState"]
+  STATE --> FLOW["Local affine flow and compiled-system cache"]
+  FLOW --> ROOT["Constitutive knot and control event prediction"]
+  STATE --> AGENDA["Timers and software wakeups"]
+  ROOT --> WINDOW["Anchored atomic candidate window"]
+  AGENDA --> WINDOW
+  WINDOW --> ADVANCE["Advance to actual event"]
+  ADVANCE --> SOFT["Snapshot-based C task evaluation"]
+  SOFT --> JOINT["Control closure and joint constitutive consistency"]
+  JOINT --> COMMIT["Transactional state, outputs and agenda commit"]
+  COMMIT --> STATE
+  JOINT -->|"failure"| STOP["Rollback and committed-prefix diagnostic"]
+  COMMIT --> OUTPUT["Waveforms, task traces and provenance"]
+  STOP --> OUTPUT

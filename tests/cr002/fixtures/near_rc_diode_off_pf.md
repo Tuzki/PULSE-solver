@@ -1,0 +1,55 @@
+# PULSE Netlist v1.1
+
+CR-002 two-branch ON->OFF near-threshold fixture. Both diodes start ON with
+charged 2 V capacitors, then turn OFF near 0.5 V. Explicit 1 pF Cj per device.
+
+## Parameters
+```pulse
+.PARAM NR_D1_VON=.5
+.PARAM NR_D1_RON=.1
+.PARAM NR_D1_ROFF=1Meg
+.PARAM NR_D2_VON=.500000001
+.PARAM NR_D2_RON=.1
+.PARAM NR_D2_ROFF=1Meg
+.PARAM CR002_CJ=1p
+```
+
+## Network
+```pulse
+.SUBCKT NR_D1 A K
+SENSOR_V VD V A K
+CMP_ON ON VD OP=GE THRESHOLD={NR_D1_VON}
+SW_PATH A K ON RON={NR_D1_RON} ROFF={NR_D1_ROFF}
+MATH_ZERO ZERO = 0
+MATH_BIAS BIAS = {-NR_D1_VON/NR_D1_RON}
+SEL_OFFSET OFFSET ON ZERO BIAS
+I_OFFSET A K OFFSET
+.ENDS NR_D1
+.SUBCKT NR_D2 A K
+SENSOR_V VD V A K
+CMP_ON ON VD OP=GE THRESHOLD={NR_D2_VON}
+SW_PATH A K ON RON={NR_D2_RON} ROFF={NR_D2_ROFF}
+MATH_ZERO ZERO = 0
+MATH_BIAS BIAS = {-NR_D2_VON/NR_D2_RON}
+SEL_OFFSET OFFSET ON ZERO BIAS
+I_OFFSET A K OFFSET
+.ENDS NR_D2
+R1 a 0 R=1k
+C1 a 0 C=1n IC_V=2
+C_NEAR_D1 a 0 C={CR002_CJ} IC_V=2
+X_D1 a 0 NR_D1
+R2 b 0 R=1k
+C2 b 0 C=1n IC_V=2
+C_NEAR_D2 b 0 C={CR002_CJ} IC_V=2
+X_D2 b 0 NR_D2
+```
+
+## Simulation
+```pulse
+.TRAN T_END=2.0000000000000002e-03 SAVE_DT=1.0000000000000000e-05
+```
+
+## Layout
+```json
+{"version":"1.1","components":{},"wires":[]}
+```

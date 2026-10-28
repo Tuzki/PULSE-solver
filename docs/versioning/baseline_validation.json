@@ -1,0 +1,122 @@
+{
+  "source_binary_sha256": "6674c9b1c436357f41f0938150fe0cddbaa7ab895cc3bd9fa718639957c496b8",
+  "source_validation_ledger": "D:\\codex\\using plecs\\a021_rollback_20261028\\validation\\all_ledger.json",
+  "source_native_test_count": 15,
+  "source_ctest_checks": [
+    {
+      "name": "ctest",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "D:\\codex\\pulse-solver-v1.2pre\\build",
+        "--output-on-failure"
+      ],
+      "returncode": 0,
+      "wall_seconds": 16.000979799995548
+    }
+  ],
+  "source_historical_pf_cases": [
+    {
+      "case": "boost_ccm",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "boost_dcm",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "buck_ccm",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "buck_dcm",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "BuckLong",
+      "status": "COMPLETED",
+      "simulated_seconds": 0.001
+    },
+    {
+      "case": "CE01",
+      "status": "COMPLETED",
+      "simulated_seconds": 3e-06
+    },
+    {
+      "case": "CE02",
+      "status": "COMPLETED",
+      "simulated_seconds": 7e-06
+    },
+    {
+      "case": "linear_rc",
+      "status": "COMPLETED",
+      "simulated_seconds": 0.001
+    },
+    {
+      "case": "linear_rlc",
+      "status": "COMPLETED",
+      "simulated_seconds": 5.0
+    },
+    {
+      "case": "llc",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "llc_100cycles",
+      "status": "COMPLETED",
+      "simulated_seconds": 0.001
+    },
+    {
+      "case": "rectifier",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "buck_ccm_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "buck_dcm_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "boost_ccm_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "boost_dcm_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "BuckLong_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 0.001
+    },
+    {
+      "case": "rectifier_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "llc_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 5e-05
+    },
+    {
+      "case": "llc_100cycles_pf",
+      "status": "COMPLETED",
+      "simulated_seconds": 0.001
+    }
+  ],
+  "new_repository_build_performed": false,
+  "note": "Results were obtained in the source directory before import. They are not a claim that this new path was rebuilt or benchmarked."
+}

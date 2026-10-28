@@ -1,0 +1,249 @@
+{
+  "schema": "pulse-cr002-gec-cap-1",
+  "date": "2026-10-20",
+  "baseline": {
+    "acceptance": "124: 118 PASS / 6 INCONCLUSIVE / 0 FAIL",
+    "ctest": "8/8",
+    "five_circuits": "COMPLETED",
+    "llc": "STOPPED_UNRESOLVED / ROOT_ORDER / prefix 0"
+  },
+  "cap": [
+    {
+      "id": "CAP-01",
+      "status": "PASS_AUDIT",
+      "evidence": "53 diode instances missing Cj identified; 10 research copies add explicit 1 pF Cj"
+    },
+    {
+      "id": "CAP-02",
+      "status": "PASS_AUDIT",
+      "evidence": "32 MOS/switch instances missing Cds/Coss identified; research copies add explicit 1 pF C"
+    },
+    {
+      "id": "CAP-03",
+      "status": "PASS_STATIC",
+      "evidence": "no existing pF Cj/Cds found across audited power netlists; no double addition"
+    },
+    {
+      "id": "CAP-04",
+      "status": "PASS_FIXTURE_GENERATION",
+      "evidence": "one explicit capacitor per top-level instance in generated copies"
+    },
+    {
+      "id": "CAP-05",
+      "status": "NOT_TESTED",
+      "evidence": "no q continuity validation on pF model"
+    },
+    {
+      "id": "CAP-06",
+      "status": "NOT_TESTED",
+      "evidence": "no independent 1 pF vs 10 pF oracle"
+    },
+    {
+      "id": "CAP-07",
+      "status": "PARTIAL",
+      "evidence": "atomic-only fixture classification not exhaustively completed"
+    },
+    {
+      "id": "CAP-08",
+      "status": "PASS_STATIC",
+      "evidence": "no Solver implicit capacitance; no production source change"
+    }
+  ],
+  "gec": [
+    {
+      "id": "GEC-01",
+      "status": "PASS",
+      "evidence": "historical 124/8/five baseline; no new FAIL"
+    },
+    {
+      "id": "GEC-02",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "ExactEventClass compiler-bound proof absent"
+    },
+    {
+      "id": "GEC-03",
+      "status": "PASS",
+      "evidence": "near_rc and near_coupled COMPLETED at a; two actual changes; final states match corrected oracles."
+    },
+    {
+      "id": "GEC-04",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "fixed-window prototype not accepted"
+    },
+    {
+      "id": "GEC-05",
+      "status": "PARTIAL_CANDIDATE_SUBSET",
+      "evidence": "candidate subset legality; joint delayed acceptance implemented; full GEC-04..18 pending"
+    },
+    {
+      "id": "GEC-06",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "outside-prefix exclusion not proved"
+    },
+    {
+      "id": "GEC-07",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "no second-order/interval candidate fallback."
+    },
+    {
+      "id": "GEC-08",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "no cluster transaction/rollback"
+    },
+    {
+      "id": "GEC-09",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "no multiple-successor adjudication."
+    },
+    {
+      "id": "GEC-10",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "PWM/deadline window conflict not tested"
+    },
+    {
+      "id": "GEC-11",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "state/energy budget absent"
+    },
+    {
+      "id": "GEC-12",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "two consecutive clusters not implemented"
+    },
+    {
+      "id": "GEC-13",
+      "status": "BASELINE_AND_MODEL_ONLY",
+      "evidence": "existing origin tests pass; no accepted cluster at nonzero start."
+    },
+    {
+      "id": "GEC-14",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "multi-segment PWA R/C/L cluster not tested"
+    },
+    {
+      "id": "GEC-15",
+      "status": "BASELINE_ONLY",
+      "evidence": "existing SAVE_DT/ATOM tests pass; no cluster budget test"
+    },
+    {
+      "id": "GEC-16",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "post-acceptance re-root not implemented"
+    },
+    {
+      "id": "GEC-17",
+      "status": "BASELINE_ONLY",
+      "evidence": "normal path remains non-enumerative; no new path"
+    },
+    {
+      "id": "GEC-18",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "no interval root-state certificate"
+    },
+    {
+      "id": "GEC-19",
+      "status": "BASELINE_ONLY",
+      "evidence": "existing parser/order tests pass"
+    },
+    {
+      "id": "GEC-20",
+      "status": "BASELINE_ONLY",
+      "evidence": "existing fault/transaction tests pass; no cluster injection"
+    }
+  ],
+  "counts_note": "Status counts are maintained by inspecting cap/gec entries; no aggregate claim is used as evidence.",
+  "bugfix_2026_10_20": {
+    "candidate_forcing_bug": "FOUND_AND_FIXED",
+    "first_root_scalar_guard_enclosure": "FOUND_AND_FIXED",
+    "near_rc_diode_pf": "COMPLETED; 2 roots; final V(a)=0.50005",
+    "near_diode_pf": "COMPLETED",
+    "near_rc_switch_pf": "UNRESOLVED (no legal successor)",
+    "CR002_CURRENT_BUG_FIXED": "YES",
+    "CR002_IMPLEMENTATION_COMPLETED": "NO"
+  },
+  "joint_2026_10_20": {
+    "GATE_A": "PARTIAL_RUNTIME_SIDE",
+    "GATE_B": "PASS",
+    "GATE_C": "PASS",
+    "GATE_D": "PASS",
+    "GATE_E": "PARTIAL",
+    "positive_fixture": "near_rc_diode_pf",
+    "positive_policy": "ENGINEERING_CLUSTER_ACCEPTED",
+    "positive_actual_changes": 2,
+    "positive_roots": 1,
+    "positive_transactions": 2,
+    "final_Va": 0.50005,
+    "oracle_vss": 0.5000499950005,
+    "CR002_CURRENT_BUG_FIXED": "YES",
+    "CR002_IMPLEMENTATION_COMPLETED": "NO",
+    "accepted_time": "a (first root), not a+T_atom",
+    "coupled_fixture": "near_coupled_diode_pf",
+    "coupled_actual_changes": 2,
+    "coupled_final_Va": 0.500025,
+    "coupled_oracle_vss": 0.5000249992500374,
+    "coupled_completed": true
+  },
+  "derivative_2026_10_20": {
+    "compile_specified": "IMPLEMENTED",
+    "normal_joint_path": "DERIVATIVE_SELF_CONSISTENT",
+    "all_candidate_preference": "REMOVED",
+    "global_candidate_enumeration": "NOT_IN_NORMAL_JOINT_PATH",
+    "accepted_time": "a",
+    "positive_near": "near_rc_diode_pf COMPLETED",
+    "positive_coupled": "near_coupled_diode_pf COMPLETED",
+    "joint_iterations": 2,
+    "three_candidate_partial_switch": "NOT_COMPLETED",
+    "scaling_20_100": "NOT_COMPLETED",
+    "pwa_multi_segment_candidate": "NOT_IMPLEMENTED",
+    "DERIVATIVE_JOINT_MODE_COMPLETED": "NO",
+    "CR002_IMPLEMENTATION_COMPLETED": "NO"
+  },
+  "bidirectional_2026_10_20": {
+    "audit": "ON->OFF legal-side early branch was missing",
+    "code_fix": "ADDED_SYMMETRIC_ON_TO_OFF",
+    "test_A_off_to_on": "PASS near_rc_diode_pf COMPLETED joint",
+    "test_B_on_to_off_joint": "BLOCKED_FIRST_ROOT_ORDER_UNRESOLVED",
+    "test_C_mixed_joint": "BLOCKED_FIRST_ROOT_ORDER_UNRESOLVED",
+    "single_on_to_off": "PASS runtime vs analytic 4.85e-20 s",
+    "BIDIRECTIONAL_DERIVATIVE_COMPLETED": "NO"
+  },
+  "first_root_interface_2026_10_20": {
+    "FOUND_ENGINEERING": "IMPLEMENTED",
+    "strict_path": "UNCHANGED",
+    "test_A_strict": "PASS",
+    "test_B_on_to_off_joint": "PASS",
+    "test_C_mixed": "JOINT_REACHED_BUT_PHYSICAL_CONSTRAINT_VIOLATION",
+    "test_D_two_events_beyond_window": "NOT_COMPLETED",
+    "test_E_earlier_independent_protection": "NOT_COMPLETED",
+    "test_F_unresolved": "NOT_COMPLETED",
+    "FIRST_ROOT_INTERFACE_COMPLETED": "NO",
+    "test_D_outside_window": "PASS near_rc_far_pf",
+    "test_E_earlier_independent": "PASS near_rc_triple_pf"
+  },
+  "mixed_propagation_2026_10_20": {
+    "root_cause": "residual_map algebraic constraint drift; parallel capacitor equality row 4",
+    "fix": "conditional SVD residual-map projection, guard 1e-4*scale",
+    "TEST_C_MIXED_JOINT": "PASS",
+    "TEST_F_FORCED_UNRESOLVED": "PASS",
+    "FIRST_ROOT_INTERFACE_COMPLETED": "YES",
+    "CR002_IMPLEMENTATION_COMPLETED": "NO"
+  },
+  "numerical_safety_2026_10_20": {
+    "SVD_PROJECTION_SAFETY": "PASS",
+    "TEST_F1_EARLIER_UNRESOLVED": "PASS",
+    "TEST_F2_CERTIFIED_OVERLAP": "PASS",
+    "ENGINEERING_ROOT_RESULT_FIELDS": "PASS",
+    "FIRST_ROOT_INTERFACE_COMPLETED": "YES",
+    "CR002_NUMERICAL_SAFETY_COMPLETED": "YES",
+    "CR002_IMPLEMENTATION_COMPLETED": "NO"
+  },
+  "direct_guard_taylor_2026_10_20": {
+    "port": "point(t) endpoint fallback from initial state",
+    "D4_local": "FOUND_CERTIFIED, 11 nodes",
+    "LLC": "COMPLETED, 94 transactions, 5e-5 s",
+    "LLC100": "COMPLETED, 1994 transactions, 1e-3 s, 100 cycles",
+    "projection_count": 0,
+    "FIRST_ROOT_CORRECTNESS_REGRESSION": "PASS",
+    "LLC100_COMPLETED": "YES"
+  }
+}

@@ -1,0 +1,443 @@
+[
+  {
+    "case": "rohm-c006-d-buck-v001",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c006-d-buck-v001",
+    "source": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\buck_boost_live\\rohm-c006-d-buck-v001",
+    "controller": "fixed_pwm.c",
+    "removed_control_statements": 3,
+    "channels": [
+      {
+        "scope": "Input_Output",
+        "pulse": "VINBUS",
+        "unit": "V",
+        "atol": 0.0001,
+        "plecs_component": "V_dc",
+        "plecs_signal": "Source voltage"
+      },
+      {
+        "scope": "Input_Output",
+        "pulse": "IIN",
+        "unit": "A",
+        "atol": 0.0001,
+        "plecs_component": "V_dc",
+        "plecs_signal": "Source current"
+      },
+      {
+        "scope": "Input_Output",
+        "pulse": "VOUT",
+        "unit": "V",
+        "atol": 0.0001,
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor voltage"
+      },
+      {
+        "scope": "Input_Output",
+        "pulse": "IOUT",
+        "unit": "A",
+        "atol": 0.0001,
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor current"
+      },
+      {
+        "scope": "Electrical",
+        "pulse": "VDS",
+        "unit": "V",
+        "atol": 0.0001,
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device voltage"
+      },
+      {
+        "scope": "Electrical",
+        "pulse": "ID",
+        "unit": "A",
+        "atol": 0.0001,
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device current"
+      },
+      {
+        "scope": "Electrical",
+        "pulse": "IDIODE",
+        "unit": "A",
+        "atol": 0.0001,
+        "plecs_component": "SiC_SBD",
+        "plecs_signal": "Diode current (A)"
+      }
+    ],
+    "output_names": [
+      "VINBUS",
+      "IIN",
+      "VOUT",
+      "IOUT",
+      "VDS",
+      "ID",
+      "IDIODE"
+    ],
+    "output_times": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c006-d-buck-v001\\output_times.npy",
+    "duration": 0.3,
+    "plecs_model": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\plecs_models\\rohm-c006-d-buck-v001\\(C-006-D) DC-DC Buck Converter (Discrete)_20260525.plecs",
+    "reference_reltol": 1e-09,
+    "statistics_template": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\buck_boost_live\\rohm-c006-d-buck-v001\\statistics.json"
+  },
+  {
+    "case": "rohm-c002-d-boost-v002",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c002-d-boost-v002",
+    "source": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\buck_boost_live\\rohm-c002-d-boost-v002",
+    "controller": "fixed_pwm.c",
+    "removed_control_statements": 3,
+    "channels": [
+      {
+        "pulse": "CH001",
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH002",
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH003",
+        "plecs_component": "SiC_SBD",
+        "plecs_signal": "Diode current (A)",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH004",
+        "plecs_component": "V_dc",
+        "plecs_signal": "Source voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH005",
+        "plecs_component": "V_dc",
+        "plecs_signal": "Source current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH006",
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH007",
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor current",
+        "unit": "A",
+        "atol": 0.0001
+      }
+    ],
+    "output_names": [
+      "CH001",
+      "CH002",
+      "CH003",
+      "CH004",
+      "CH005",
+      "CH006",
+      "CH007"
+    ],
+    "output_times": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c002-d-boost-v002\\output_times.npy",
+    "duration": 0.3,
+    "plecs_model": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\plecs_models\\rohm-c002-d-boost-v002\\(C-002-D) DC-DC Boost Converter (Discrete)_20260525.plecs",
+    "reference_reltol": 1e-09,
+    "statistics_template": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\buck_boost_live\\rohm-c002-d-boost-v002\\statistics.json"
+  },
+  {
+    "case": "rohm-c010-d-flyback-v002",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c010-d-flyback-v002",
+    "source": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\flyback_live\\rohm-c010-d-flyback-v002",
+    "controller": "fixed_pwm.c",
+    "removed_control_statements": 3,
+    "channels": [
+      {
+        "pulse": "CH001",
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH002",
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH003",
+        "plecs_component": "SiC_SBD",
+        "plecs_signal": "Diode current (A)",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH004",
+        "plecs_component": "V_dc",
+        "plecs_signal": "Source voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH005",
+        "plecs_component": "V_dc",
+        "plecs_signal": "Source current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH006",
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH007",
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor current",
+        "unit": "A",
+        "atol": 0.0001
+      }
+    ],
+    "output_names": [
+      "CH001",
+      "CH002",
+      "CH003",
+      "CH004",
+      "CH005",
+      "CH006",
+      "CH007"
+    ],
+    "output_times": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c010-d-flyback-v002\\output_times.npy",
+    "duration": 0.3,
+    "plecs_model": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\plecs_models\\rohm-c010-d-flyback-v002\\(C-010-D) DC-DC Flyback Converter (Discrete)_20260525.plecs",
+    "reference_reltol": 1e-09,
+    "statistics_template": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\flyback_live\\rohm-c010-d-flyback-v002\\statistics.json"
+  },
+  {
+    "case": "rohm-b004-d-single-phase-inverter-v001",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-b004-d-single-phase-inverter-v001",
+    "source": "D:\\codex\\using plecs\\unlock_sweep_20261027\\rohm-b004-d-single-phase-inverter-v001\\full_body_pwa",
+    "controller": "inverter_pwm.c",
+    "removed_control_statements": 45,
+    "channels": [
+      {
+        "pulse": "CH001",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH002",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH003",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH004",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH005",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH006",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH007",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH008",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH009",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH010",
+        "atol": 0.0001
+      }
+    ],
+    "output_names": [
+      "CH001",
+      "CH002",
+      "CH003",
+      "CH004",
+      "CH005",
+      "CH006",
+      "CH007",
+      "CH008",
+      "CH009",
+      "CH010"
+    ],
+    "output_times": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-b004-d-single-phase-inverter-v001\\output_times.npy",
+    "duration": 0.5,
+    "plecs_model": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\plecs_models\\rohm-b004-d-single-phase-inverter-v001\\(B-004-D) DC-AC Single-phase 2-Level Full-Bridge Inverter (Discrete)_20260525.plecs",
+    "reference_reltol": 1e-09,
+    "statistics_template": "D:\\codex\\using plecs\\unlock_sweep_20261027\\rohm-b004-d-single-phase-inverter-v001\\full_body_pwa\\statistics.json"
+  },
+  {
+    "case": "rohm-b004-dot-single-phase-inverter-v001",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-b004-dot-single-phase-inverter-v001",
+    "source": "D:\\codex\\using plecs\\unlock_sweep_20261027\\rohm-b004-dot-single-phase-inverter-v001\\full_body_pwa",
+    "controller": "inverter_pwm.c",
+    "removed_control_statements": 45,
+    "channels": [
+      {
+        "pulse": "CH001",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH002",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH003",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH004",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH005",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH006",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH007",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH008",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH009",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH010",
+        "atol": 0.0001
+      }
+    ],
+    "output_names": [
+      "CH001",
+      "CH002",
+      "CH003",
+      "CH004",
+      "CH005",
+      "CH006",
+      "CH007",
+      "CH008",
+      "CH009",
+      "CH010"
+    ],
+    "output_times": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-b004-dot-single-phase-inverter-v001\\output_times.npy",
+    "duration": 0.5,
+    "plecs_model": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\plecs_models\\rohm-b004-dot-single-phase-inverter-v001\\(B-004-DOT) DC-AC Single-phase 2-Level Full-Bridge Inverter (DOT247)_20260525.plecs",
+    "reference_reltol": 1e-09,
+    "statistics_template": "D:\\codex\\using plecs\\unlock_sweep_20261027\\rohm-b004-dot-single-phase-inverter-v001\\full_body_pwa\\tight_statistics.json"
+  },
+  {
+    "case": "rohm-a002-d-boost-pfc-v001-zoh20us",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-a002-d-boost-pfc-v001-zoh20us",
+    "source": "D:\\codex\\using plecs\\frozen_zoh_sweep_20261027\\ts_20us",
+    "controller": "pfc_controller.c",
+    "removed_control_statements": 92,
+    "channels": [
+      {
+        "pulse": "CH001",
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device current",
+        "resolved_component": "SiC_MOSFET/FET",
+        "resolved_signal": "Device current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH002",
+        "plecs_component": "SiC_MOSFET",
+        "plecs_signal": "Device voltage",
+        "resolved_component": "SiC_MOSFET/FET",
+        "resolved_signal": "Device voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH003",
+        "plecs_component": "SiC_SBD",
+        "plecs_signal": "Diode current (A)",
+        "resolved_component": "SiC_SBD/D1",
+        "resolved_signal": "Diode current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH004",
+        "plecs_component": "V_ac",
+        "plecs_signal": "Source current",
+        "resolved_component": "V_ac",
+        "resolved_signal": "Source current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH005",
+        "plecs_component": "V_ac",
+        "plecs_signal": "Source voltage",
+        "resolved_component": "V_ac",
+        "resolved_signal": "Source voltage",
+        "unit": "V",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH006",
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor current",
+        "resolved_component": "Rload",
+        "resolved_signal": "Resistor current",
+        "unit": "A",
+        "atol": 0.0001
+      },
+      {
+        "pulse": "CH007",
+        "plecs_component": "Rload",
+        "plecs_signal": "Resistor voltage",
+        "resolved_component": "Rload",
+        "resolved_signal": "Resistor voltage",
+        "unit": "V",
+        "atol": 0.0001
+      }
+    ],
+    "output_names": [
+      "CH001",
+      "CH002",
+      "CH003",
+      "CH004",
+      "CH005",
+      "CH006",
+      "CH007"
+    ],
+    "output_times": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-a002-d-boost-pfc-v001-zoh20us\\output_times.npy",
+    "duration": 0.08,
+    "plecs_model": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\plecs_models\\rohm-a002-d-boost-pfc-v001-zoh20us\\(A-002-D) AC-DC Boost PFC Diode Rectification (Discrete)_20260525.plecs",
+    "reference_reltol": 1e-09,
+    "statistics_template": null
+  }
+]

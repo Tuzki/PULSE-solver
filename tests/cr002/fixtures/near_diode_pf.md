@@ -1,0 +1,55 @@
+# PULSE Netlist v1.1
+
+CR-002 synthetic near-root diode PWA fixture. Two real, different diode
+thresholds with explicit 1 pF junction capacitors. This is a new physical
+model, not a legacy fixture.
+
+## Parameters
+```pulse
+.PARAM NEAR_D1_VON=.5
+.PARAM NEAR_D1_RON=.1
+.PARAM NEAR_D1_ROFF=1Meg
+.PARAM NEAR_D2_VON=.500000001
+.PARAM NEAR_D2_RON=.1
+.PARAM NEAR_D2_ROFF=1Meg
+.PARAM CR002_CJ=1p
+```
+
+## Network
+```pulse
+.SUBCKT NEAR_D1 A K
+SENSOR_V VD V A K
+CMP_ON ON VD OP=GE THRESHOLD={NEAR_D1_VON}
+SW_PATH A K ON RON={NEAR_D1_RON} ROFF={NEAR_D1_ROFF}
+MATH_ZERO ZERO = 0
+MATH_BIAS BIAS = {-NEAR_D1_VON/NEAR_D1_RON}
+SEL_OFFSET OFFSET ON ZERO BIAS
+I_OFFSET A K OFFSET
+.ENDS NEAR_D1
+.SUBCKT NEAR_D2 A K
+SENSOR_V VD V A K
+CMP_ON ON VD OP=GE THRESHOLD={NEAR_D2_VON}
+SW_PATH A K ON RON={NEAR_D2_RON} ROFF={NEAR_D2_ROFF}
+MATH_ZERO ZERO = 0
+MATH_BIAS BIAS = {-NEAR_D2_VON/NEAR_D2_RON}
+SEL_OFFSET OFFSET ON ZERO BIAS
+I_OFFSET A K OFFSET
+.ENDS NEAR_D2
+VDC1 in 0 DC=1
+R1 in a R=1k
+C1 a 0 C=1n IC_V=0
+C_NEAR_D1 a 0 C={CR002_CJ}
+C_NEAR_D2 a 0 C={CR002_CJ}
+X_D1 a 0 NEAR_D1
+X_D2 a 0 NEAR_D2
+```
+
+## Simulation
+```pulse
+.TRAN T_END=2.0000000000000002e-03 SAVE_DT=1.0000000000000000e-05
+```
+
+## Layout
+```json
+{"version":"1.1","components":{},"wires":[]}
+```

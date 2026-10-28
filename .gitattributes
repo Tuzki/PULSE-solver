@@ -1,0 +1,6 @@
+# Preserve the baseline's exact bytes, including mixed line endings.
+# Line-ending-only changes must be explicit, not implicit on checkout.
+* -text
+*.png binary
+*.jpg binary
+*.pdf binary

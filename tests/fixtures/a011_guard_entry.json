@@ -1,0 +1,313 @@
+{
+  "at": 9.601685015556484e-06,
+  "entry_residual": 6.88570788888687e-19,
+  "guards": [
+    {
+      "boundary": 0.0,
+      "coordinate": 499.89786476238856,
+      "direct": -499.89786476238856,
+      "direct_slope": 10636.126926106232,
+      "flow_slope_zero": 10636.126913342074,
+      "flow_value_zero": -499.89786476238856,
+      "kind": "PWA",
+      "knot": 1,
+      "part": "R_D117_BODY_PROXY",
+      "roots": 0,
+      "roundoff_budget": 1.027368347172311e-11,
+      "row": [
+        -2127.6595743297876,
+        -0.0,
+        -0.0,
+        138.2978723314362,
+        0.0
+      ],
+      "scale": 722.9462039839784,
+      "stationary": false,
+      "step": -1,
+      "values": [
+        {
+          "direct_from_propagated_state": -499.89786476238856,
+          "dt": 0.0,
+          "flow": -499.89786476238856
+        },
+        {
+          "direct_from_propagated_state": -499.89786476228227,
+          "dt": 1e-14,
+          "flow": -499.8978647622822
+        },
+        {
+          "direct_from_propagated_state": -499.8978647517524,
+          "dt": 1e-12,
+          "flow": -499.8978647517524
+        },
+        {
+          "direct_from_propagated_state": -499.8978636987758,
+          "dt": 1e-10,
+          "flow": -499.8978636987758
+        },
+        {
+          "direct_from_propagated_state": -499.897854126255,
+          "dt": 1e-09,
+          "flow": -499.897854126255
+        },
+        {
+          "direct_from_propagated_state": -499.8977584004548,
+          "dt": 1e-08,
+          "flow": -499.89775840045485
+        },
+        {
+          "direct_from_propagated_state": -499.8968010832409,
+          "dt": 1e-07,
+          "flow": -499.896801083241
+        }
+      ]
+    },
+    {
+      "boundary": 0.9385,
+      "coordinate": -500.83636482749733,
+      "direct": -501.7748648274973,
+      "direct_slope": 10636.12691111259,
+      "flow_slope_zero": 10636.126914798975,
+      "flow_value_zero": -501.7748648274973,
+      "kind": "PWA",
+      "knot": 1,
+      "part": "R_D123",
+      "roots": 0,
+      "roundoff_budget": 8.040178829221078e-12,
+      "row": [
+        -2127.659574428144,
+        0.0,
+        0.0,
+        -39.94148936095233,
+        -1.876999999964764
+      ],
+      "scale": 565.7772871761281,
+      "stationary": false,
+      "step": 1,
+      "values": [
+        {
+          "direct_from_propagated_state": -501.7748648274973,
+          "dt": 0.0,
+          "flow": -501.7748648274973
+        },
+        {
+          "direct_from_propagated_state": -501.77486482739096,
+          "dt": 1e-14,
+          "flow": -501.77486482739096
+        },
+        {
+          "direct_from_propagated_state": -501.77486481686117,
+          "dt": 1e-12,
+          "flow": -501.77486481686117
+        },
+        {
+          "direct_from_propagated_state": -501.7748637638846,
+          "dt": 1e-10,
+          "flow": -501.7748637638846
+        },
+        {
+          "direct_from_propagated_state": -501.77485419137247,
+          "dt": 1e-09,
+          "flow": -501.7748541913724
+        },
+        {
+          "direct_from_propagated_state": -501.7747584664346,
+          "dt": 1e-08,
+          "flow": -501.77475846643466
+        },
+        {
+          "direct_from_propagated_state": -501.7738012354572,
+          "dt": 1e-07,
+          "flow": -501.7738012354572
+        }
+      ]
+    },
+    {
+      "boundary": 0.0,
+      "coordinate": 6.510872742334259e-08,
+      "direct": -6.510872742334259e-08,
+      "direct_slope": -1.1323883744726341e-05,
+      "flow_slope_zero": 1.4402754366926729e-06,
+      "flow_value_zero": -6.510872742334259e-08,
+      "kind": "PWA",
+      "knot": 1,
+      "part": "R_D127_BODY_PROXY",
+      "roots": 0,
+      "roundoff_budget": 3.169707510602631e-12,
+      "row": [
+        -1.382978723314362e-07,
+        -0.0,
+        -0.0,
+        -138.2978723314362,
+        0.0
+      ],
+      "scale": 223.04833693161675,
+      "stationary": false,
+      "step": -1,
+      "values": [
+        {
+          "direct_from_propagated_state": -6.510872742334259e-08,
+          "dt": 0.0,
+          "flow": -6.510872742334259e-08
+        },
+        {
+          "direct_from_propagated_state": -6.510870425998573e-08,
+          "dt": 1e-14,
+          "flow": -6.510873135079365e-08
+        },
+        {
+          "direct_from_propagated_state": -6.51087349675977e-08,
+          "dt": 1e-12,
+          "flow": -6.510873135079365e-08
+        },
+        {
+          "direct_from_propagated_state": -6.510879631574709e-08,
+          "dt": 1e-10,
+          "flow": -6.510878816645693e-08
+        },
+        {
+          "direct_from_propagated_state": -6.511549010215407e-08,
+          "dt": 1e-09,
+          "flow": -6.511549545396011e-08
+        },
+        {
+          "direct_from_propagated_state": -6.578460230494706e-08,
+          "dt": 1e-08,
+          "flow": -6.578461116818479e-08
+        },
+        {
+          "direct_from_propagated_state": -1.3269641328462629e-07,
+          "dt": 1e-07,
+          "flow": -1.326964110537343e-07
+        }
+      ]
+    },
+    {
+      "boundary": 0.9385,
+      "coordinate": 0.9385,
+      "diagnostic": {
+        "code": 8,
+        "message": "a threshold jumped beyond the supported event window; model needs explicit transition dynamics",
+        "source": {
+          "column": 1,
+          "file": "",
+          "line": 0,
+          "path": ""
+        },
+        "subcode": "UNPREDICTED_GUARD_JUMP",
+        "top_level_error": "EVENT_ROOT_FAILURE",
+        "unresolved": true
+      },
+      "direct": 5.38116077467329e-17,
+      "direct_slope": -3.669758117434194e-06,
+      "flow_slope_zero": 1.6629075894059042e-08,
+      "flow_value_zero": 5.38116077467329e-17,
+      "kind": "PWA",
+      "knot": 1,
+      "part": "R_D133",
+      "roundoff_budget": 9.154359116352219e-13,
+      "row": [
+        3.9941489360952324e-08,
+        -0.0,
+        -0.0,
+        -39.94148936095233,
+        3.5236036310948293e-11
+      ],
+      "scale": 64.41807547690556,
+      "stationary": false,
+      "step": -1,
+      "values": [
+        {
+          "direct_from_propagated_state": 5.38116077467329e-17,
+          "dt": 0.0,
+          "flow": 5.38116077467329e-17
+        },
+        {
+          "direct_from_propagated_state": 6.743563257337636e-15,
+          "dt": 1e-14,
+          "flow": 8.500145032286355e-17
+        },
+        {
+          "direct_from_propagated_state": -2.125426639344238e-15,
+          "dt": 1e-12,
+          "flow": 8.500145032286355e-17
+        },
+        {
+          "direct_from_propagated_state": -1.9882778092755305e-14,
+          "dt": 1e-10,
+          "flow": -2.12642403685237e-14
+        },
+        {
+          "direct_from_propagated_state": -1.9534591832216853e-12,
+          "dt": 1e-09,
+          "flow": -1.950677466777684e-12
+        },
+        {
+          "direct_from_propagated_state": -1.9520180437576813e-10,
+          "dt": 1e-08,
+          "flow": -1.9520344715640014e-10
+        },
+        {
+          "direct_from_propagated_state": -1.951988346240136e-08,
+          "dt": 1e-07,
+          "flow": -1.9519881074361867e-08
+        }
+      ]
+    }
+  ],
+  "invariant_generator_rows": 0,
+  "matrix": [
+    [
+      -21.276600000000002,
+      0.0,
+      0.0,
+      9.835638297048388e-08,
+      -1.8770000001178307e-09
+    ],
+    [
+      0.0,
+      0.0,
+      -314.1592653589793,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      314.1592653589793,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -9.835638297048386e-08,
+      0.0,
+      311.1269837220809,
+      -180.3670212668566,
+      -0.938499999964764
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "modal": true,
+  "mode": "R_D117_BODY_PROXY=1;R_D123=0;R_D127_BODY_PROXY=1;R_D133=1;GATE1=0;GATE2=1;UNUSED3=0;UNUSED4=1;",
+  "physical_state_ids": [
+    "C_D003/q",
+    "INT_D001_C/eta",
+    "INT_D001_S/eta",
+    "L_D002/phi"
+  ],
+  "state": [
+    0.2349519964689237,
+    0.9999954504930797,
+    0.00301645373622817,
+    2.358341864689237e-10,
+    1.0
+  ],
+  "state0_error": 0.0,
+  "status": "STOPPED_UNRESOLVED"
+}

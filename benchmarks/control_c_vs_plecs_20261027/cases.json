@@ -1,0 +1,44 @@
+[
+  {
+    "case": "rohm-c006-d-buck-v001",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c006-d-buck-v001",
+    "source": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\buck_boost_live\\rohm-c006-d-buck-v001",
+    "controller": "fixed_pwm.c",
+    "removed_control_statements": 3
+  },
+  {
+    "case": "rohm-c002-d-boost-v002",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c002-d-boost-v002",
+    "source": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\buck_boost_live\\rohm-c002-d-boost-v002",
+    "controller": "fixed_pwm.c",
+    "removed_control_statements": 3
+  },
+  {
+    "case": "rohm-c010-d-flyback-v002",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-c010-d-flyback-v002",
+    "source": "D:\\codex\\pulse-solver-v1.15win\\reports\\island_reference_fix_20261027\\flyback_live\\rohm-c010-d-flyback-v002",
+    "controller": "fixed_pwm.c",
+    "removed_control_statements": 3
+  },
+  {
+    "case": "rohm-b004-d-single-phase-inverter-v001",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-b004-d-single-phase-inverter-v001",
+    "source": "D:\\codex\\using plecs\\unlock_sweep_20261027\\rohm-b004-d-single-phase-inverter-v001\\full_body_pwa",
+    "controller": "inverter_pwm.c",
+    "removed_control_statements": 45
+  },
+  {
+    "case": "rohm-b004-dot-single-phase-inverter-v001",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-b004-dot-single-phase-inverter-v001",
+    "source": "D:\\codex\\using plecs\\unlock_sweep_20261027\\rohm-b004-dot-single-phase-inverter-v001\\full_body_pwa",
+    "controller": "inverter_pwm.c",
+    "removed_control_statements": 45
+  },
+  {
+    "case": "rohm-a002-d-boost-pfc-v001-zoh20us",
+    "folder": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\control_c_vs_plecs_20261027\\cases\\rohm-a002-d-boost-pfc-v001-zoh20us",
+    "source": "D:\\codex\\using plecs\\frozen_zoh_sweep_20261027\\ts_20us",
+    "controller": "pfc_controller.c",
+    "removed_control_statements": 92
+  }
+]

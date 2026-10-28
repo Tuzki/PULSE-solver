@@ -1,0 +1,140 @@
+{
+  "case": "rohm-c011-d-forward-v001",
+  "kind": "FORWARD",
+  "source": "D:\\codex\\pulses-compare-base\\pulses-compare-base\\cases\\rohm-c011-d-forward\\v001\\source\\model\\(C-011-D) DC-DC Forward Converter (Discrete)_20260525.plecs",
+  "source_sha256": "7336c34c53d600c2de4e2dca02cd5392c60293a1441821c792a9c29cef00b637",
+  "destination": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\c_case_expansion_20261028\\cases\\rohm-c011-d-forward-v001",
+  "duration": 0.4,
+  "channels": [
+    {
+      "pulse": "CH001",
+      "plecs_component": "SiC-SBD(rec)",
+      "plecs_signal": "Diode current (A)",
+      "resolved_component": "SiC-SBD(rec)/D1",
+      "resolved_signal": "Diode current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH002",
+      "plecs_component": "SiC-SBD(fw)",
+      "plecs_signal": "Diode current (A)",
+      "resolved_component": "SiC-SBD(fw)/D1",
+      "resolved_signal": "Diode current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH003",
+      "plecs_component": "SiC_MOSFET",
+      "plecs_signal": "Device voltage",
+      "resolved_component": "SiC_MOSFET/FET",
+      "resolved_signal": "Device voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH004",
+      "plecs_component": "SiC_MOSFET",
+      "plecs_signal": "Device current",
+      "resolved_component": "SiC_MOSFET/FET",
+      "resolved_signal": "Device current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH005",
+      "plecs_component": "SiC-SBD(rst)",
+      "plecs_signal": "Diode current (A)",
+      "resolved_component": "SiC-SBD(rst)/D1",
+      "resolved_signal": "Diode current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH006",
+      "plecs_component": "Vin",
+      "plecs_signal": "Source current",
+      "resolved_component": "Vin",
+      "resolved_signal": "Source current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH007",
+      "plecs_component": "Vin",
+      "plecs_signal": "Source voltage",
+      "resolved_component": "Vin",
+      "resolved_signal": "Source voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH008",
+      "plecs_component": "Rload",
+      "plecs_signal": "Resistor current",
+      "resolved_component": "Rload",
+      "resolved_signal": "Resistor current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH009",
+      "plecs_component": "Rload",
+      "plecs_signal": "Resistor voltage",
+      "resolved_component": "Rload",
+      "resolved_signal": "Resistor voltage",
+      "unit": "V",
+      "atol": 0.0001
+    }
+  ],
+  "environment": {
+    "Test_time": 0.4,
+    "Vin": 300.0,
+    "Vout": 48.0,
+    "Pout": 500.0,
+    "F": 10000.0,
+    "Cout": 0.0005,
+    "ESR": 0.003,
+    "Lload": 0.0003,
+    "Rl": 0.1,
+    "Lm": 0.002,
+    "Rp": 0.1,
+    "Np": 3.0,
+    "Ns": 1.0,
+    "fs": 100.0,
+    "Vc_init": 48.0,
+    "T_init": 25.0,
+    "Thcap_mos": 0.1,
+    "Rth_mos": 0.5,
+    "Thcap_rst": 0.1,
+    "Rth_rst": 0.5,
+    "Thcap_rec": 0.1,
+    "Rth_rec": 0.5,
+    "Thcap_fw": 0.1,
+    "Rth_fw": 0.5,
+    "TGND": 25.0,
+    "Rg_on": 6.8,
+    "Rg_off": 6.8,
+    "Ron_init": 0.065,
+    "Vf_init_rst": 0.9385,
+    "Rdiff_init_rst": 0.0187725,
+    "Vf_init_rec": 0.9385,
+    "Rdiff_init_rec": 0.0187725,
+    "Vf_init_fw": 0.9385,
+    "Rdiff_init_fw": 0.0187725
+  },
+  "gates": {
+    "SiC_MOSFET/FET": {
+      "output": "GATE",
+      "original_producer": "Pulse\nGenerator"
+    }
+  },
+  "approximations": [
+    "无限关断电阻用 1 GΩ；热域、热 XML 损耗与效率核算不进入电气网表。"
+  ],
+  "software_notes": [
+    "Original fixed PWM period, phase and duty preserved exactly."
+  ],
+  "prepared": true
+}

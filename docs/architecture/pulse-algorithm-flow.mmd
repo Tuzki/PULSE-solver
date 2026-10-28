@@ -1,0 +1,19 @@
+%% PULSE 事件驱动主循环 — 与 pulse-algorithm-flow.png 同构的可编辑版本
+%% 橙色（added）= 原图没有、补齐的节点；其余为原图节点
+flowchart TD
+  S([初始模态 · 初始状态]) --> A["列出状态方程<br/>dx/dt = M_σ·x + c_σ"]
+  A --> B["计算模态器件的下一次事件时间<br/>守卫首次根 · 定时项 deadline"]
+  B --> C["取最近事件时间 t1<br/>t1 = min(守卫根, 定时项, T_END)"]
+  C --> D["候选状态推进到 t1<br/>x(t1) = exp(M_σ·Δt)·x(t0) + 特解"]
+  D --> E["收集 t1 时刻的事件<br/>守卫穿越 + 到期定时项"]
+  E --> F{"有元件改变模态？"}
+  F -- 是 --> G["联合求解新模态<br/>唯一稳定 + 代数相容 + 向前有效"]
+  F -- 否 --> H["保持当前模态"]
+  G --> I["提交候选状态<br/>version++ · 追加 segment / event_log"]
+  H --> I
+  I --> J{"t1 ≥ T_END？"}
+  J -- 否 --> A
+  J -- 是 --> K([结束 · 输出 NPZ / 日志])
+
+  classDef added fill:#fff7ed,stroke:#c2410c,color:#0f172a
+  class D,E,G,I added

@@ -1,0 +1,32 @@
+# PULSE Netlist v1.2pre
+
+## 参数域
+```pulse
+.PARAM CTRL_PERIOD=0.125
+.PARAM REFERENCE=1
+```
+
+## 仿真参数配置
+```pulse
+.TRAN T_END=1 SAVE_DT=0.03125 ATOMIC_TIME=10f
+```
+
+## 电气域连接网表
+```pulse
+V_COMMAND IN 0 COMMAND
+R_PLANT IN OUT R=1
+C_PLANT OUT 0 C=1 IC_V=0
+SENSOR_V MEASURED V OUT 0
+```
+
+## 虚拟MCU配置域
+```pulse
+MCU MCU0 PROGRAM=CTRL INIT=controller_init
+TIMER CTRL_CLK MCU=MCU0 PERIOD={CTRL_PERIOD} START=0
+TASK CONTROL MCU=MCU0 TRIGGER=CTRL_CLK ENTRY=controller_step INPUTS=[MEASURED] OUTPUTS=[COMMAND,CALLS] INIT_OUTPUTS=[0,0] PARAMS=[{REFERENCE}]
+```
+
+## 代码域
+```pulse
+PROGRAM CTRL SOURCES=["controller.c","feedback.c"]
+```

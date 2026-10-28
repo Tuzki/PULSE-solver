@@ -1,0 +1,32 @@
+# Generated builds and native modules
+/build/
+/.build*/
+**/.pulse_modules/
+**/__pycache__/
+*.py[cod]
+*.exe
+*.dll
+*.a
+*.lib
+*.o
+*.obj
+*.pdb
+*.ilk
+*.d
+# Simulation output, caches and archives
+/reports/
+/out*/
+*.npz
+*.npy
+*.mat
+*.jsonl
+*.log
+*.zip
+**/mplconfig/
+/benchmarks/**/runs/
+/benchmarks/**/plecs/
+/benchmarks/**/python/
+/benchmarks/**/before*/
+# Machine-local editor files
+/.vs/
+/.idea/

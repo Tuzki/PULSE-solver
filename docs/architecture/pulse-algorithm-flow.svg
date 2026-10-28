@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1420" viewBox="0 0 1280 1420">
+<style>text{font-family:"Hiragino Sans GB","PingFang SC",sans-serif}.m{font-family:Menlo,monospace}</style>
+<rect width="1280" height="1420" fill="#ffffff"/>
+<text x="40" y="54" font-size="28" fill="#0f172a" text-anchor="start" font-weight="700">PULSE 事件驱动主循环 · 系统图</text>
+<text x="40" y="80" font-size="12.0" fill="#475569" text-anchor="start" font-weight="400">按「pulse算法.mindbridge.mmd」重绘：保留原节点，补齐时间推进、联合求解、提交与终止</text>
+<rect x="40" y="96" width="28" height="3.4" rx="1.7" fill="#2563eb"/>
+<rect x="72" y="96" width="28" height="3.4" rx="1.7" fill="#6d28d9"/>
+<rect x="104" y="96" width="28" height="3.4" rx="1.7" fill="#c2410c"/>
+<rect x="136" y="96" width="28" height="3.4" rx="1.7" fill="#0f766e"/>
+<rect x="168" y="96" width="28" height="3.4" rx="1.7" fill="#334155"/>
+<rect x="420" y="128" width="380" height="46" rx="23.0" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.0"/>
+<text x="610.0" y="155.68" font-size="13.0" fill="#0f766e" text-anchor="middle" font-weight="700">初始模态 · 初始状态</text>
+<line x1="610" y1="174" x2="610.0" y2="197.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,206 606.3301559224639,197.78219953718923 613.6698440775361,197.78219953718923" fill="#94a3b8"/>
+<rect x="330.0" y="206" width="560" height="82" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
+<text x="350.0" y="236" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">列出状态方程</text>
+<text x="350.0" y="258" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">dx/dt = M_σ · x + c_σ     模态 σ 固定，矩阵 M_σ 来自当前模式</text>
+<line x1="610" y1="288" x2="610.0" y2="309.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,318 606.3301559224639,309.78219953718923 613.6698440775361,309.78219953718923" fill="#94a3b8"/>
+<rect x="330.0" y="318" width="560" height="82" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
+<text x="350.0" y="348" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">计算模态器件的下一次事件时间</text>
+<text x="350.0" y="370" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">连续守卫 g(x)=0 的首次根 · 定时项 deadline（PWM / AT / DELAY）</text>
+<line x1="610" y1="400" x2="610.0" y2="421.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,430 606.3301559224639,421.78219953718923 613.6698440775361,421.78219953718923" fill="#94a3b8"/>
+<rect x="330.0" y="430" width="560" height="82" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
+<text x="350.0" y="460" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">取最近事件时间 t1</text>
+<text x="350.0" y="482" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">t1 = min(守卫根, 定时项, T_END)</text>
+<line x1="610" y1="512" x2="610.0" y2="533.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,542 606.3301559224639,533.7821995371892 613.6698440775361,533.7821995371892" fill="#94a3b8"/>
+<rect x="330.0" y="542" width="560" height="96" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.2"/>
+<text x="350.0" y="572" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">候选状态推进到 t1</text>
+<text x="350.0" y="594" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">x(t1) = exp(M_σ·Δt)·x(t0) + 特解；不修改已提交状态</text>
+<rect x="828.0" y="554" width="48" height="19" rx="9.5" fill="#fff7ed" stroke="#fdba74" stroke-width="1.0"/>
+<text x="852.0" y="566.74" font-size="9.0" fill="#c2410c" text-anchor="middle" font-weight="400">补充</text>
+<line x1="610" y1="638" x2="610.0" y2="659.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,668 606.3301559224639,659.7821995371892 613.6698440775361,659.7821995371892" fill="#94a3b8"/>
+<rect x="330.0" y="668" width="560" height="96" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.2"/>
+<text x="350.0" y="698" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">收集 t1 时刻的事件</text>
+<text x="350.0" y="720" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">守卫穿越 + 到期定时项；T_atom 窗口内的事件只是候选</text>
+<rect x="828.0" y="680" width="48" height="19" rx="9.5" fill="#fff7ed" stroke="#fdba74" stroke-width="1.0"/>
+<text x="852.0" y="692.74" font-size="9.0" fill="#c2410c" text-anchor="middle" font-weight="400">修正</text>
+<text x="350.0" y="750" font-size="9.4" fill="#c2410c" text-anchor="start" font-weight="400">T_atom 是工程接受窗口，不等于“精确同时”</text>
+<line x1="610" y1="764" x2="610.0" y2="787.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,796 606.3301559224639,787.7821995371892 613.6698440775361,787.7821995371892" fill="#94a3b8"/>
+<polygon points="610,796.0 760.0,851 610,906.0 460.0,851" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="610" y="849" font-size="13.5" fill="#0f172a" text-anchor="middle" font-weight="700">有元件改变模态？</text>
+<text x="610" y="868" font-size="9.6" fill="#64748b" text-anchor="middle" font-weight="400">按整体模式判定，不是逐元件</text>
+<text x="622" y="920" font-size="10.5" fill="#64748b" text-anchor="start" font-weight="700">是</text>
+<text x="768" y="842" font-size="10.5" fill="#64748b" text-anchor="start" font-weight="700">否</text>
+<line x1="610" y1="906" x2="610.0" y2="921.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,930 606.3301559224639,921.7821995371892 613.6698440775361,921.7821995371892" fill="#94a3b8"/>
+<rect x="928" y="811" width="300" height="80" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2"/>
+<text x="946" y="840" font-size="13.0" fill="#0f172a" text-anchor="start" font-weight="700">未改变：保持当前模态</text>
+<text x="946" y="861" font-size="10.2" fill="#64748b" text-anchor="start" font-weight="400">模式不变，仍需推进时间并提交</text>
+<line x1="760" y1="851" x2="913.9" y2="851.0" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="922,851 913.7821995371892,854.6698440775361 913.7821995371892,847.3301559224639" fill="#94a3b8"/>
+<rect x="330.0" y="930" width="560" height="100" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.2"/>
+<text x="350.0" y="960" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">联合求解新模态</text>
+<text x="350.0" y="982" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">唯一稳定 + 代数相容 + 向前有效；多解/无解即 STOPPED_UNRESOLVED</text>
+<rect x="828.0" y="942" width="48" height="19" rx="9.5" fill="#fff7ed" stroke="#fdba74" stroke-width="1.0"/>
+<text x="852.0" y="954.74" font-size="9.0" fill="#c2410c" text-anchor="middle" font-weight="400">修正</text>
+<line x1="610" y1="1030" x2="610.0" y2="1051.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,1060 606.3301559224639,1051.7821995371892 613.6698440775361,1051.7821995371892" fill="#94a3b8"/>
+<rect x="330.0" y="1060" width="560" height="80" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.2"/>
+<text x="350.0" y="1090" font-size="15.0" fill="#0f172a" text-anchor="start" font-weight="700">提交候选状态</text>
+<text x="350.0" y="1112" font-size="10.8" fill="#475569" text-anchor="start" font-weight="400">RunState.version++ · 追加 segment 与 event_log</text>
+<rect x="828.0" y="1072" width="48" height="19" rx="9.5" fill="#fff7ed" stroke="#fdba74" stroke-width="1.0"/>
+<text x="852.0" y="1084.74" font-size="9.0" fill="#c2410c" text-anchor="middle" font-weight="400">补充</text>
+<line x1="1078" y1="891" x2="1078" y2="1100" stroke="#94a3b8" stroke-width="1.8"/>
+<line x1="1078" y1="1100" x2="894.0" y2="1100" stroke="#94a3b8" stroke-width="1.8"/>
+<line x1="912.0" y1="1100" x2="901.2" y2="1100.0" stroke="#94a3b8" stroke-width="1.8"/>
+<polygon points="894.0,1100 901.3047115224985,1096.7379163755234 901.3047115224985,1103.2620836244766" fill="#94a3b8"/>
+<line x1="610" y1="1140" x2="610.0" y2="1161.9" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="610,1170 606.3301559224639,1161.7821995371892 613.6698440775361,1161.7821995371892" fill="#94a3b8"/>
+<polygon points="610,1170.0 750.0,1225 610,1280.0 470.0,1225" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="610" y="1223" font-size="13.5" fill="#0f172a" text-anchor="middle" font-weight="700">t1 ≥ T_END？</text>
+<text x="768" y="1216" font-size="10.5" fill="#64748b" text-anchor="start" font-weight="700">是</text>
+<text x="430" y="1216" font-size="10.5" fill="#64748b" text-anchor="start" font-weight="700">否</text>
+<rect x="938" y="1199" width="280" height="52" rx="26.0" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.0"/>
+<text x="1078.0" y="1229.5" font-size="12.5" fill="#0f766e" text-anchor="middle" font-weight="700">结束 · 输出 NPZ / 日志</text>
+<line x1="750" y1="1225" x2="923.9" y2="1225.0" stroke="#94a3b8" stroke-width="1.6"/>
+<polygon points="932,1225 923.7821995371892,1228.669844077536 923.7821995371892,1221.330155922464" fill="#94a3b8"/>
+<line x1="470" y1="1225" x2="210" y2="1225" stroke="#94a3b8" stroke-width="1.8"/>
+<line x1="210" y1="1225" x2="210" y2="247" stroke="#94a3b8" stroke-width="1.8"/>
+<line x1="210" y1="247" x2="318.8" y2="247.0" stroke="#94a3b8" stroke-width="1.8"/>
+<polygon points="326.0,247 318.69528847750155,250.26208362447656 318.69528847750155,243.73791637552344" fill="#94a3b8"/>
+<rect x="150" y="640" width="120" height="26" rx="13.0" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.0"/>
+<text x="210.0" y="656.78" font-size="10.5" fill="#64748b" text-anchor="middle" font-weight="400">t ← t1</text>
+<text x="150" y="690" font-size="9.4" fill="#64748b" text-anchor="start" font-weight="400">进入</text>
+<text x="150" y="704" font-size="9.4" fill="#64748b" text-anchor="start" font-weight="400">下一轮</text>
+<text x="975" y="1000" font-size="10.5" fill="#c2410c" text-anchor="start" font-weight="700">注意</text>
+<text x="975" y="1018" font-size="9.6" fill="#64748b" text-anchor="start" font-weight="400">“不变”不是终点：</text>
+<text x="975" y="1034" font-size="9.6" fill="#64748b" text-anchor="start" font-weight="400">时间仍前进，</text>
+<text x="975" y="1050" font-size="9.6" fill="#64748b" text-anchor="start" font-weight="400">只是模态保持不变。</text>
+<rect x="40" y="1290" width="1200" height="72" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+<rect x="58" y="1308" width="26" height="18" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.0"/>
+<text x="94" y="1322" font-size="10.2" fill="#475569" text-anchor="start" font-weight="400">原图节点</text>
+<rect x="190" y="1308" width="26" height="18" rx="4" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.0"/>
+<text x="226" y="1322" font-size="10.2" fill="#475569" text-anchor="start" font-weight="400">补充 / 修正节点</text>
+<rect x="360" y="1308" width="26" height="18" rx="4" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.0"/>
+<text x="396" y="1322" font-size="10.2" fill="#475569" text-anchor="start" font-weight="400">判定</text>
+<rect x="470" y="1308" width="26" height="18" rx="4" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.0"/>
+<text x="506" y="1322" font-size="10.2" fill="#475569" text-anchor="start" font-weight="400">起点 / 终点</text>
+<text x="58" y="1346" font-size="9.8" fill="#64748b" text-anchor="start" font-weight="400">关键约束：先取证后传播；候选整体提交或整体回滚；输出只观察已提交状态。</text>
+</svg>

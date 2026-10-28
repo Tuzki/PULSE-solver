@@ -1,0 +1,19 @@
+# PULSE Netlist v1.1
+
+## Parameters
+```pulse
+
+```
+## Network
+```pulse
+C1 N 0 C=1 IC_V=0 IC_Q=0
+```
+## Simulation
+```pulse
+.TRAN T_END=1 SAVE_DT=.1
+
+```
+## Layout
+```json
+{}
+```

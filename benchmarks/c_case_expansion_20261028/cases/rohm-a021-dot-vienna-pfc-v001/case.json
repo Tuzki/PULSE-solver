@@ -1,0 +1,199 @@
+{
+  "case": "rohm-a021-dot-vienna-pfc-v001",
+  "kind": "VIENNA",
+  "source": "D:\\codex\\pulses-compare-base\\pulses-compare-base\\cases\\rohm-a021-dot-vienna-pfc\\v001\\source\\model\\(A-021-DOT) AC-DC 3-Phase Vienna PFC (DOT247)_20260525.plecs",
+  "source_sha256": "5b41f705acd10170be056174aa1b9db0e5aa4b097dbbc55b61a391e812c19440",
+  "destination": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\c_case_expansion_20261028\\cases\\rohm-a021-dot-vienna-pfc-v001",
+  "duration": 0.5,
+  "channels": [
+    {
+      "pulse": "CH001",
+      "plecs_component": "Rload",
+      "plecs_signal": "Resistor voltage",
+      "resolved_component": "Rload",
+      "resolved_signal": "Resistor voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH002",
+      "plecs_component": "L1",
+      "plecs_signal": "Inductor current",
+      "resolved_component": "L1",
+      "resolved_signal": "Inductor current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH003",
+      "plecs_component": "V_ac1",
+      "plecs_signal": "Source voltage",
+      "resolved_component": "V_ac1",
+      "resolved_signal": "Source voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH004",
+      "plecs_component": "V_ac2",
+      "plecs_signal": "Source voltage",
+      "resolved_component": "V_ac2",
+      "resolved_signal": "Source voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH005",
+      "plecs_component": "V_ac3",
+      "plecs_signal": "Source voltage",
+      "resolved_component": "V_ac3",
+      "resolved_signal": "Source voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH006",
+      "plecs_component": "L2",
+      "plecs_signal": "Inductor current",
+      "resolved_component": "L2",
+      "resolved_signal": "Inductor current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH007",
+      "plecs_component": "L3",
+      "plecs_signal": "Inductor current",
+      "resolved_component": "L3",
+      "resolved_signal": "Inductor current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH008",
+      "plecs_component": "V_ac1",
+      "plecs_signal": "Source current",
+      "resolved_component": "V_ac1",
+      "resolved_signal": "Source current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH009",
+      "plecs_component": "V_ac2",
+      "plecs_signal": "Source current",
+      "resolved_component": "V_ac2",
+      "resolved_signal": "Source current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH010",
+      "plecs_component": "V_ac3",
+      "plecs_signal": "Source current",
+      "resolved_component": "V_ac3",
+      "resolved_signal": "Source current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH011",
+      "plecs_component": "Rload",
+      "plecs_signal": "Resistor current",
+      "resolved_component": "Rload",
+      "resolved_signal": "Resistor current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH012",
+      "plecs_component": "DOT247(CS)_A1",
+      "plecs_signal": "Voltage_FET_1",
+      "resolved_component": "DOT247(CS)_A1/FET_1/FET_1",
+      "resolved_signal": "Device voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH013",
+      "plecs_component": "DOT247(CS)_A1",
+      "plecs_signal": "Current_FET_1",
+      "resolved_component": "DOT247(CS)_A1/Id_1",
+      "resolved_signal": "Measured current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH014",
+      "plecs_component": "SiC-SBD_A1",
+      "plecs_signal": "Diode current (A)",
+      "resolved_component": "SiC-SBD_A1/D1",
+      "resolved_signal": "Diode current",
+      "unit": "A",
+      "atol": 0.0001
+    }
+  ],
+  "environment": {
+    "Vin": 220.0,
+    "F": 50.0,
+    "Test_time": 0.5,
+    "Rg_on_CS_A": 15.0,
+    "Rg_off_CS_A": 15.0,
+    "Ron_init_CS_A": 0.004,
+    "Vf_init_A": 0.9385,
+    "Rdiff_init_A": 0.0187725,
+    "fs": 12000.0,
+    "Vout": 800.0,
+    "Vc_init": 400.0,
+    "Pout": 25000.0,
+    "Cout": 0.001,
+    "L": 0.00047,
+    "Rl": 0.005,
+    "T_init": 25.0,
+    "Thcap_MOSFET": 0.1,
+    "Rth_MOSFET": 1.0,
+    "TGND_MOSFET": 25.0,
+    "Thcap_Diode": 0.1,
+    "Rth_Diode": 1.0,
+    "TGND_Diode": 25.0,
+    "Rv_F": 1200.0,
+    "Rv_Kp": 0.003,
+    "Rv_Ki": 0.72,
+    "Ri_F": 1200.0,
+    "Ri_Kp": 0.05,
+    "Ri_Ki": 180.0
+  },
+  "gates": {
+    "DOT247(CS)_A1/FET_1/FET_1": {
+      "output": "GATE2",
+      "original_producer": "Sub/Logical\nOperator9"
+    },
+    "DOT247(CS)_A1/FET_2/FET_2": {
+      "output": "GATE1",
+      "original_producer": "Sub/Logical\nOperator8"
+    },
+    "DOT247(CS)_A2/FET_1/FET_1": {
+      "output": "GATE4",
+      "original_producer": "Sub/Logical\nOperator17"
+    },
+    "DOT247(CS)_A2/FET_2/FET_2": {
+      "output": "GATE3",
+      "original_producer": "Sub/Logical\nOperator16"
+    },
+    "DOT247(CS)_A3/FET_1/FET_1": {
+      "output": "GATE6",
+      "original_producer": "Sub/Logical\nOperator23"
+    },
+    "DOT247(CS)_A3/FET_2/FET_2": {
+      "output": "GATE5",
+      "original_producer": "Sub/Logical\nOperator22"
+    }
+  },
+  "approximations": [
+    "无限关断电阻用 1 GΩ；热域、热 XML 损耗与效率核算不进入电气网表。"
+  ],
+  "software_notes": [
+    "Software PI and algebra use 1 us held acquisition; original current acquisition period is preserved. PWM events are scheduled at exact held-modulation carrier crossings."
+  ],
+  "prepared": true
+}

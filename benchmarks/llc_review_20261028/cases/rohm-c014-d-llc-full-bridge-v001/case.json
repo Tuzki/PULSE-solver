@@ -1,0 +1,187 @@
+{
+  "case": "rohm-c014-d-llc-full-bridge-v001",
+  "kind": "LLC",
+  "source": "D:\\codex\\pulses-compare-base\\pulses-compare-base\\cases\\rohm-c014-d-llc-full-bridge\\v001\\source\\model\\(C-014-D) DC-DC LLC Full-Bridge Converter (Discrete)_20260525.plecs",
+  "source_sha256": "98055210643f8585b9bef9ef668b93b1c745cf1b651b99873b97988a628e8399",
+  "destination": "D:\\codex\\pulse-solver-v1.2pre\\benchmarks\\c_case_expansion_20261028\\cases\\rohm-c014-d-llc-full-bridge-v001",
+  "duration": 0.2,
+  "channels": [
+    {
+      "pulse": "CH001",
+      "plecs_component": "R1",
+      "plecs_signal": "Resistor voltage",
+      "resolved_component": "R1",
+      "resolved_signal": "Resistor voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH002",
+      "plecs_component": "SiC-MOSFET_A1",
+      "plecs_signal": "Device voltage",
+      "resolved_component": "SiC-MOSFET_A1/FET",
+      "resolved_signal": "Device voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH003",
+      "plecs_component": "SiC-MOSFET_A1",
+      "plecs_signal": "Device current",
+      "resolved_component": "SiC-MOSFET_A1/FET",
+      "resolved_signal": "Device current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH004",
+      "plecs_component": "V_dc",
+      "plecs_signal": "Source current",
+      "resolved_component": "V_dc",
+      "resolved_signal": "Source current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH005",
+      "plecs_component": "V_dc",
+      "plecs_signal": "Source voltage",
+      "resolved_component": "V_dc",
+      "resolved_signal": "Source voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH006",
+      "plecs_component": "R1",
+      "plecs_signal": "Resistor current",
+      "resolved_component": "R1",
+      "resolved_signal": "Resistor current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH007",
+      "plecs_component": "Si(LV)-MOSFET_A",
+      "plecs_signal": "Device voltage",
+      "resolved_component": "Si(LV)-MOSFET_A/FET",
+      "resolved_signal": "Device voltage",
+      "unit": "V",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH008",
+      "plecs_component": "Si(LV)-MOSFET_A",
+      "plecs_signal": "Device current",
+      "resolved_component": "Si(LV)-MOSFET_A/FET",
+      "resolved_signal": "Device current",
+      "unit": "A",
+      "atol": 0.0001
+    },
+    {
+      "pulse": "CH009",
+      "plecs_component": "Am14",
+      "plecs_signal": "Measured current",
+      "resolved_component": "Am14",
+      "resolved_signal": "Measured current",
+      "unit": "A",
+      "atol": 0.0001
+    }
+  ],
+  "environment": {
+    "Vin": 800.0,
+    "Vout": 50.0,
+    "Pout": 10000.0,
+    "Np": 18.0,
+    "Ns": 1.0,
+    "Test_time": 0.2,
+    "T_init": 25.0,
+    "Thcap_primary": 0.1,
+    "Rth_primary": 0.1,
+    "TGND_primary": 25.0,
+    "Thcap_secondary": 0.1,
+    "Rth_secondary": 0.1,
+    "TGND_secondary": 25.0,
+    "Rg_on_A": 15.0,
+    "Rg_off_A": 2.2,
+    "DT1": 1e-07,
+    "Ron_init_A": 0.018,
+    "Rg_on_LV_A": 10.0,
+    "Rg_off_LV_A": 10.0,
+    "DT2": 1e-07,
+    "Ron_init_LV_A": 0.0017,
+    "Lr": 1.2e-05,
+    "Lm": 6e-05,
+    "Cr": 1e-07,
+    "Rp": 0.005,
+    "Cout": 0.0047,
+    "Vc_init": 50.0,
+    "ESR": 0.015,
+    "Rs": 0.001,
+    "R1": 19700.0,
+    "R2": 6566.666666666667,
+    "Vref": 12.500000000000002,
+    "fs_ref": 100000.0,
+    "Type2.wz1": 26389.37829015426,
+    "Type2.wp0": 3200.0,
+    "Type2.wp1": 51522.119518872605
+  },
+  "gates": {
+    "SiC-MOSFET_A1/FET": {
+      "output": "GATE_P",
+      "original_producer": "LLC Controller/Turn-on Delay"
+    },
+    "Si(LV)-MOSFET_A/FET": {
+      "output": "SR_POS",
+      "original_producer": "LLC Controller/Turn-on Delay3"
+    },
+    "SiC-MOSFET_A2/FET": {
+      "output": "GATE_N",
+      "original_producer": "LLC Controller/Turn-on Delay1"
+    },
+    "SiC-MOSFET_A3/FET": {
+      "output": "GATE_N",
+      "original_producer": "LLC Controller/Turn-on Delay1"
+    },
+    "SiC-MOSFET_A4/FET": {
+      "output": "GATE_P",
+      "original_producer": "LLC Controller/Turn-on Delay"
+    },
+    "Si(LV)-MOSFET_A1/FET": {
+      "output": "SR_POS",
+      "original_producer": "LLC Controller/Turn-on Delay3"
+    },
+    "Si(LV)-MOSFET_A2/FET": {
+      "output": "SR_NEG",
+      "original_producer": "LLC Controller/Turn-on Delay2"
+    },
+    "Si(LV)-MOSFET_A3/FET": {
+      "output": "SR_NEG",
+      "original_producer": "LLC Controller/Turn-on Delay2"
+    },
+    "Si(LV)-MOSFET_A4/FET": {
+      "output": "SR_NEG",
+      "original_producer": "LLC Controller/Turn-on Delay2"
+    },
+    "Si(LV)-MOSFET_A5/FET": {
+      "output": "SR_NEG",
+      "original_producer": "LLC Controller/Turn-on Delay2"
+    },
+    "Si(LV)-MOSFET_A6/FET": {
+      "output": "SR_POS",
+      "original_producer": "LLC Controller/Turn-on Delay3"
+    },
+    "Si(LV)-MOSFET_A7/FET": {
+      "output": "SR_POS",
+      "original_producer": "LLC Controller/Turn-on Delay3"
+    }
+  },
+  "approximations": [
+    "无限关断电阻用 1 GΩ；热域、热 XML 损耗与效率核算不进入电气网表。"
+  ],
+  "software_notes": [
+    "Voltage feedback is explicitly sampled at 1 us; original Type-2 held-input propagation is exact.",
+    "Primary PWM frequency latches at carrier minima. SR current zero-crossings use native comparators as MCU interrupt inputs; turn-on delay executes C."
+  ],
+  "prepared": true
+}

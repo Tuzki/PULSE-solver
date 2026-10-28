@@ -1,0 +1,23 @@
+# PULSE Netlist v1.1
+
+## Parameters
+```pulse
+
+```
+## Network
+```pulse
+MATH_DX DX = -Y
+MATH_DY DY = X
+INT_X X DX IC=1
+INT_Y Y DY IC=0
+CMP1 G X OP=GE THRESHOLD=0
+```
+## Simulation
+```pulse
+.TRAN T_END=4 SAVE_DT=.1
+
+```
+## Layout
+```json
+{}
+```
