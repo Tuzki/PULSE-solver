@@ -212,9 +212,12 @@ Range trig(double a, double b, bool cosine) {
 }
 struct Term {
   Complex pole, coefficient;
+  Complex forcing = Complex(0);
+  bool affine_increment = false;
 };
 struct Functional {
   double constant = 0, linear = 0;
+  bool increment_form = false;
   std::vector<Term> terms;
 };
 } // namespace
@@ -331,27 +334,44 @@ Flow::Flow(const Mode &mode, const Vector &initial)
       if(b.centered){
         Vector center_state=initial;
         center_state.head(initial.size()-1)+=b.lift*(b.center.cwiseProduct(b.scaling.head(n))-d.reduced);
-        // Retain the residual forcing of the approximate particular state.
-        // Its modal phi contribution is represented explicitly, rather than
-        // silently treating a computed equilibrium as an exact equilibrium.
-        g.constant=guard.row.dot(center_state) - (row*d.center_shift).value().real();
-        const CVector amplitude=(b.inverse*(d.scaled.head(n)-b.center).cast<Complex>() +
-                                 d.center_shift).eval();
-        for(int j=0;j<n;j++)g.terms.push_back({b.poles[j],row[j]*amplitude[j]});
-        d.guards.push_back(std::move(g));
-        continue;
-      }
-      g.constant -= (row * d.y).value().real();
-      for (int j = 0; j < n; ++j) {
-        if (b.poles[j] == Complex(0)) {
-          g.constant += (row[j] * d.y[j]).real();
-          g.linear += (row[j] * d.forcing[j]).real();
-        } else {
-          Complex shift = d.forcing[j] / b.poles[j];
-          g.constant -= (row[j] * shift).real();
-          g.terms.push_back({b.poles[j], row[j] * (d.y[j] + shift)});
+        Functional centered;
+        centered.constant=guard.row.dot(center_state)-(row*d.center_shift).value().real();
+        const CVector amplitude=(b.inverse*(d.scaled.head(n)-b.center).cast<Complex>()+d.center_shift).eval();
+        double centered_cost=guard.row.cwiseAbs().dot(center_state.cwiseAbs())+std::abs((row*d.center_shift).value());
+        double increment_cost=std::abs(g.constant);
+        for(int j=0;j<n;j++){
+          const Complex c=row[j]*amplitude[j];centered.terms.push_back({b.poles[j],c});centered_cost+=std::abs(c);
+          increment_cost+=std::abs(row[j]*d.y[j])+std::abs(row[j]*d.forcing[j])/d.local_rate;
+        }
+        // Keep the established low-cancellation centered path when well scaled.
+        // A remote equilibrium of a genuine near-zero pole must not manufacture
+        // huge coefficients: select the equivalent affine increment instead.
+        if(std::isfinite(centered_cost)&&centered_cost<=8*std::max(1e-300,increment_cost)){
+          d.guards.push_back(std::move(centered));continue;
         }
       }
+      // Keep well-scaled exponential residues to retain their accurate small
+      // decaying tails. Only unsafe affine quotients use the phi increment.
+      // Both forms retain the complete pole and forcing contribution.
+      g.increment_form = true;
+      double reference_cost=std::abs(g.constant);
+      for(int j=0;j<n;j++)reference_cost+=std::abs(row[j]*d.y[j])+std::abs(row[j]*d.forcing[j])/d.local_rate;
+      g.constant-=(row*d.y).value().real();
+      for(int j=0;j<n;j++){
+        const Complex a=row[j]*d.y[j],forcing=row[j]*d.forcing[j];
+        const long double pole=std::abs(b.poles[j]);
+        const long double projected_shift=pole>0?std::abs(forcing)/pole:INFINITY;
+        const long double raw_shift=pole>0?std::abs(d.forcing[j])/pole:INFINITY;
+        if(pole==0 || projected_shift>8*std::max(1e-300,reference_cost) || raw_shift>std::numeric_limits<double>::max()/4){
+          g.constant+=a.real();
+          g.terms.push_back({b.poles[j],a,forcing,true});
+        }else{
+          Complex shift=d.forcing[j]/b.poles[j];
+          g.constant-=(row[j]*shift).real();
+          g.terms.push_back({b.poles[j],row[j]*(d.y[j]+shift)});
+        }
+      }
+
     }
     d.guards.push_back(std::move(g));
   }
@@ -442,6 +462,21 @@ double Flow::value(size_t k, double t, int order) const {
     return row.dot(state(t - offset_.seconds()));
   }
   const auto &g = d.guards.at(k);
+  if(g.increment_form){
+    using W=std::complex<long double>;
+    long double value=order==0?g.constant:0;
+    for(const auto &term:g.terms){
+      if(!term.affine_increment){
+        Complex c=term.coefficient;for(int j=0;j<order;j++)c*=term.pole;
+        value+=(c*std::exp(term.pole*t)).real();continue;
+      }
+      W pole(term.pole.real(),term.pole.imag()),a(term.coefficient.real(),term.coefficient.imag()),forcing(term.forcing.real(),term.forcing.imag());
+      W rate=pole*a+forcing;
+      if(order==0){auto ph=phi(term.pole,t);value+=(rate*W(ph.real(),ph.imag())).real();}
+      else {for(int j=1;j<order;j++)rate*=pole;value+=(rate*std::exp(pole*static_cast<long double>(t))).real();}
+    }
+    return double(value);
+  }
   long double value = order == 0   ? g.constant + g.linear * t
                       : order == 1 ? g.linear
                                    : 0;
@@ -540,6 +575,63 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
     return result;
   }
   const auto &g = d.guards.at(k);
+  if(g.increment_form){
+    using W=std::complex<long double>;
+    std::array<long double,25> coefficients{};
+    coefficients[0]=order==0?g.constant:0;
+    const double mid=a+(b-a)*.5,h=(b-a)*.5;
+    Range result{};long double magnitude=std::abs(coefficients[0]),tail=0;
+    for(const auto &term:g.terms){
+      W pole(term.pole.real(),term.pole.imag()),amp(term.coefficient.real(),term.coefficient.imag()),forcing(term.forcing.real(),term.forcing.imag());
+      const bool integral=term.affine_increment;
+      W rate=integral?pole*amp+forcing:amp;
+      if(integral){if(order>0)for(int j=1;j<order;j++)rate*=pole;}
+      else for(int j=0;j<order;j++)rate*=pole;
+      double q=std::abs(term.pole)*h;
+      const long double expmax=std::exp(std::max(pole.real()*a,pole.real()*b));
+      if(q<=2){
+        W coefficient=rate*std::exp(pole*static_cast<long double>(mid));
+        if(order==0 && integral){
+          auto ph=phi(term.pole,mid);coefficients[0]+=(rate*W(ph.real(),ph.imag())).real();
+          const double absolute_integral=phi(Complex(term.pole.real(),0),mid).real();
+          magnitude+=(std::abs(pole*amp)+std::abs(forcing))*absolute_integral;
+          coefficient*=static_cast<long double>(h);
+          for(size_t j=1;j<coefficients.size();j++){
+            coefficients[j]+=coefficient.real();coefficient*=pole*static_cast<long double>(h)/static_cast<long double>(j+1);
+          }
+          long double rem=std::abs(rate)*expmax*h;
+          for(int j=2;j<=25;j++)rem*=q/j;
+          tail+=rem;
+        }else{
+          magnitude+=std::abs(rate)*expmax;
+          for(size_t j=0;j<coefficients.size();j++){
+            coefficients[j]+=coefficient.real();coefficient*=pole*static_cast<long double>(h)/static_cast<long double>(j+1);
+          }
+          long double rem=std::abs(rate)*expmax;
+          for(int j=1;j<=25;j++)rem*=q/j;
+          tail+=rem;
+        }
+        continue;
+      }
+      // A nonzero pole is used as an exponential quotient only when its
+      // variation across this interval is large; never in the near-zero branch.
+      W c=(order==0&&integral)?rate/pole:rate;
+      auto cosine=trig(term.pole.imag()*a,term.pole.imag()*b,true);
+      auto sine=trig(term.pole.imag()*a,term.pole.imag()*b,false);
+      Range wave=add(multiply({double(c.real()),double(c.real())},cosine),multiply({double(-c.imag()),double(-c.imag())},sine));
+      double e1=std::exp(term.pole.real()*a),e2=std::exp(term.pole.real()*b);
+      Range component=multiply({std::min(e1,e2),std::max(e1,e2)},wave);
+      if(order==0&&integral)component=add(component,{double(-c.real()),double(-c.real())});
+      result=add(result,component);magnitude+=std::abs(c)*(expmax+(order==0&&integral?1:0));
+    }
+    result=add(result,{double(coefficients[0]),double(coefficients[0])});
+    for(size_t j=1;j<coefficients.size();j++){
+      double c=double(coefficients[j]);magnitude+=std::abs(coefficients[j]);
+      result=add(result,j%2?Range{-std::abs(c),std::abs(c)}:Range{std::min(0.,c),std::max(0.,c)});
+    }
+    const long double pad=64*std::numeric_limits<double>::epsilon()*magnitude+tail;
+    return {double(result.lo-pad),double(result.hi+pad)};
+  }
   Range result = order == 0   ? Range{g.constant, g.constant}
                  : order == 1 ? Range{g.linear, g.linear}
                               : Range{};
@@ -644,8 +736,15 @@ double Flow::observe(const Vector &row,double t,int derivative) const {
 double Flow::scale(size_t k) const {
   const auto &g = data_->guards.at(k);
   double sum = std::abs(g.constant);
-  for (auto &term : g.terms)
+  for (auto &term : g.terms){
     sum += std::abs(term.coefficient);
+    if(g.increment_form && term.affine_increment){
+      // Engineering anchor/elapsed scale, not a strict all-history certificate.
+      // Preserve time units without a forcing/near-zero-pole coefficient.
+      const double horizon=std::max(offset_.seconds(),1/data_->local_rate);
+      sum += std::abs(term.forcing)*phi(Complex(term.pole.real(),0),horizon).real();
+    }
+  }
   return std::max(1e-300, sum);
 }
 bool Flow::stationary(size_t k) const {

@@ -138,7 +138,11 @@ if(BUILD_TESTING)
  add_test(NAME strategy_transaction COMMAND strategy_transaction_tests)
 endif()
 
+
 if(BUILD_TESTING)
+ add_executable(phi_affine_tests tests/phi_affine.cpp)
+ target_link_libraries(phi_affine_tests PRIVATE pulse_core)
+ add_test(NAME phi_affine COMMAND phi_affine_tests "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/c012_phi_observation.json")
  add_executable(group_latest_tests tests/group_latest.cpp)
  target_link_libraries(group_latest_tests PRIVATE pulse_core)
  add_test(NAME group_latest COMMAND group_latest_tests)
