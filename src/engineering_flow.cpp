@@ -524,6 +524,19 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
       result.lo -= error;
       result.hi += error;
     }
+    // The reconstructed midpoint is itself rounded. Enclose its arithmetic
+    // scale as well as interval variation; a zero-width interval must not
+    // pretend that a cancelling nilpotent polynomial was evaluated exactly.
+    Vector absolute=d.initial.cwiseAbs(), absolute_term=absolute;
+    const Matrix absolute_generator=d.mode.M.cwiseAbs();
+    for(int j=1;j<=64;j++){
+      absolute_term=absolute_generator*absolute_term*(mid/j);
+      absolute+=absolute_term;
+      if(absolute_term.isZero(0))break;
+    }
+    const double evaluation_pad=64*(d.mode.M.rows()+1)*std::numeric_limits<double>::epsilon()*
+                                row.cwiseAbs().dot(absolute);
+    result.lo-=evaluation_pad;result.hi+=evaluation_pad;
     return result;
   }
   const auto &g = d.guards.at(k);
@@ -641,6 +654,35 @@ bool Flow::stationary(size_t k) const {
   return row.isZero(0);
 }
 bool Flow::modal() const { return data_->basis->modal; }
+// Resolve incoming direction on the same trajectory, without a root-time veto.
+void validate_event_timing(const Flow &flow, const Crossing &root, double atom) {
+ require(std::isfinite(root.slope)&&root.slope>0&&std::isfinite(atom)&&atom>0,
+         8,"ROOT_DIRECTION_UNRESOLVED","located root needs a finite directed slope",true);
+ const auto direction=flow.bounds(root.guard,root.time,root.time,1);
+ require(std::isfinite(direction.lo)&&direction.lo>0,8,"ROOT_DIRECTION_UNRESOLVED",
+         "incoming derivative is not resolved above its evaluation roundoff",true);
+ // The nonmodal path evaluates guards through a rounded reconstructed state,
+ // while the modal path evaluates value and slope directly on one scalar
+ // expression. This additional reconstruction-risk check applies to the
+ // former path; a broad modal coefficient envelope is not a timing certificate
+ // and must not become an implicit veto of the user's point-event policy.
+ if(flow.modal())return;
+ // A rounded value can create a false transverse root near a flat crossing.
+ // Resolve direction over the local value-roundoff neighborhood, not just at
+ // the rounded point. This neither changes atomic membership nor compares the
+ // neighborhood's width to T_atom; it is not an absolute timing-accuracy veto.
+ const double value=flow.value(root.guard,root.time);
+ const auto evaluated=flow.bounds(root.guard,root.time,root.time);
+ const double radius=std::max(std::abs(value-evaluated.lo),std::abs(evaluated.hi-value));
+ const double neighborhood=radius/direction.lo;
+ require(std::isfinite(neighborhood),8,"ROOT_DIRECTION_UNRESOLVED",
+         "root value roundoff has no finite direction neighborhood",true);
+ const auto incoming=flow.bounds(root.guard,std::max(0.,root.lower-neighborhood),
+                                 root.upper+neighborhood,1);
+ require(std::isfinite(incoming.lo)&&incoming.lo>0,8,"ROOT_DIRECTION_UNRESOLVED",
+         "incoming direction is unresolved across local value roundoff",true);
+
+}
 SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
                          double atom, size_t budget) {
   SearchResult result;
@@ -732,13 +774,7 @@ SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
     };
     visit(0, horizon, 0);
     if (found) {
-      double evaluation_noise =
-          8 * std::numeric_limits<double>::epsilon() * flow.scale(k);
-      require(std::abs(root.slope) * atom > evaluation_noise, 8,
-              "ZERO_EVENT_DERIVATIVE",
-              "crossing derivative is zero or too small to resolve against "
-              "numerical evaluation error within atomic time",
-              true);
+      validate_event_timing(flow, root, atom);
       result.candidates.push_back(root);
     }
   }

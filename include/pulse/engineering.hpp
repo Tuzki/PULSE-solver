@@ -36,6 +36,8 @@ struct SearchResult {
   std::vector<Crossing> candidates;
   size_t nodes = 0;
 };
+// Shared finite, resolved incoming-direction check; no absolute timing-error veto.
+void validate_event_timing(const Flow &, const Crossing &, double atom);
 SearchResult next_events(const Mode &, const Flow &, double horizon,
                          double atom, size_t budget = 32768);
 Mode initial_mode(const Model &, const Vector &,

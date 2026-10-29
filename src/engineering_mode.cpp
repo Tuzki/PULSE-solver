@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "pulse/engineering.hpp"
 #include "pulse/constitutive.hpp"
 #include "pulse/solver_strategy.hpp"
@@ -120,7 +121,9 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
         const double left=old.electrical_flow?old.electrical_flow->observe(left_row,0,1):Flow::tangent(old.mode,x,left_row);
         require(std::isfinite(left) && step * left > 0, 9, "BREAKPOINT_LEFT_DIRECTION",
                 "breakpoint does not have a resolved incoming direction", true, m.parts[g.part].raw.source);
-        require(constitutive::arrived(g, x, g.arrival_error), 9, "BREAKPOINT_NOT_REACHED",
+        // Runtime verifies each member at its own root before advancing the group.
+        const bool reached=constitutive::arrived(g,x,g.arrival_error) || g.row.dot(x)>=0;
+        require(reached, 9, "BREAKPOINT_NOT_REACHED",
                 "a nonlinear segment cannot change before its knot is reached: " +
                 Json({{"residual", g.row.dot(x)}, {"evaluation_bound", g.arrival_error},
                       {"coordinate_scale", g.row.cwiseAbs().dot(x.cwiseAbs())}}).dump(),
