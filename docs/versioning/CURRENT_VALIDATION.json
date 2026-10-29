@@ -1,0 +1,144 @@
+{
+  "native_tests": {
+    "passed": 23,
+    "total": 23,
+    "disabled": 0,
+    "repository_build_binary_sha256": "4141ba6c058b4608e1d3a59dec93af65c9924c5f97b0bff935df9ebd38276a03"
+  },
+  "benchmark_binary_sha256": "6e82ef428ed7ac7981a5a24fc985dab0e3d4773575dbae379f2a0903bd9745f0",
+  "source_text_matches_repository": true,
+  "c012_continuous_compensation": {
+    "status": "COMPLETED",
+    "seconds": 0.002,
+    "pointwise_passed_channels": 9,
+    "pointwise_total_channels": 9,
+    "samples": 100001,
+    "normalized_max_error_limit": 0.001,
+    "worst_normalized_max_error": 7.653117433023853e-07,
+    "kernel_seconds": 36.017471,
+    "process_seconds": 36.4108428999898,
+    "audited_root_events": 5132,
+    "input_sha256": "906b3b5b011285e76bc3ffe41ff1bb2e379ecfab0e661ca7f980b0ddff1f25f8",
+    "reference_reused": true
+  },
+  "rohm_baseline": [
+    {
+      "case": "rohm-c014-d-llc-full-bridge",
+      "passed": 52,
+      "total": 54,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-a002-d-boost-pfc",
+      "passed": 42,
+      "total": 42,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-a011-d-totem-pole-pfc-diode",
+      "passed": 63,
+      "total": 63,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-a021-d-vienna-pfc",
+      "passed": 42,
+      "total": 42,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-a021-dot-vienna-pfc",
+      "passed": 42,
+      "total": 42,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-b004-d-single-phase-inverter",
+      "passed": 60,
+      "total": 60,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-b004-dot-single-phase-inverter",
+      "passed": 60,
+      "total": 60,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-c002-d-boost",
+      "passed": 21,
+      "total": 21,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-c006-d-buck",
+      "passed": 21,
+      "total": 21,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-c010-d-flyback",
+      "passed": 21,
+      "total": 21,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    },
+    {
+      "case": "rohm-c011-d-forward",
+      "passed": 81,
+      "total": 81,
+      "new_failures": 0,
+      "historical_methods_reproduced": true
+    }
+  ],
+  "spice_fallback": false,
+  "event_time_1ns_approximation": false,
+  "tolerance_relaxation": false,
+  "independent_case_library_included_in_repository": false,
+  "previous_a021_checkpoint": {
+    "native_tests": {
+      "passed": 19,
+      "total": 19
+    },
+    "rohm_baseline_scope": true,
+    "a021": [
+      {
+        "case": "A021-D",
+        "status": "COMPLETED",
+        "seconds": 0.002,
+        "statistics_passed": 42,
+        "statistics_total": 42,
+        "netlist_sha256": "a59a0f1eddb70d60964e7941856625a169568ebc677cffbe898eb21e6e92d96b",
+        "controller_sha256": "7e7f905bf7e00acc2d9f6f5d7264fc694ab949e4bdb2cf3cc8ee0c9a8a47f4fc",
+        "binary_sha256": "40d7d62acf7d4dc8d709e828901b503cbaf7df99e932144bc2cff25b4b705736",
+        "source_sha256": "b1e3d1db29e6c78ac353486770634888f77007c0bf25194414ae82a30733ee67",
+        "matches_independent_validated_input": true
+      },
+      {
+        "case": "A021-DOT",
+        "status": "COMPLETED",
+        "seconds": 0.002,
+        "statistics_passed": 42,
+        "statistics_total": 42,
+        "netlist_sha256": "5edfc8cb407a5720e32a305e2b2bb977f3f8ce7a6b39a421dacd6af11d275656",
+        "controller_sha256": "0e5c247e6b5fc50a4c21cbf2577d25fdb2371550a2a5422aa7884e580cd6150c",
+        "binary_sha256": "40d7d62acf7d4dc8d709e828901b503cbaf7df99e932144bc2cff25b4b705736",
+        "source_sha256": "b1e3d1db29e6c78ac353486770634888f77007c0bf25194414ae82a30733ee67",
+        "matches_independent_validated_input": true
+      }
+    ],
+    "spice_fallback": false,
+    "event_time_1ns_approximation": false,
+    "tolerance_relaxation": false,
+    "independent_case_library_included_in_repository": false
+  }
+}

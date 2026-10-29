@@ -13,22 +13,22 @@ source files, releases, models and earlier acceptance evidence remain read-only.
 3. Predict each current-region boundary's first directed root. A boundary
    records device, knot, current segment, target direction and physical
    coordinate (R voltage, C charge, L flux).
-4. Keep one candidate window anchored at the earliest event; do not chain
-   expand it. A nearby constitutive root is not permission to switch early.
-5. Treat reached knots jointly. Coincidence uses overlapping root-location
-   intervals expanded only by the existing guard evaluation roundoff scale.
-   Resolvably later knots are deferred and re-predicted after every change.
+4. Predict all candidate roots with the same numerical strategy and old electrical
+   equations. Anchor the atomic group at the earliest root; include roots no later
+   than first+T_atom, without chained expansion. Advance to the latest member.
+5. Check each nonlinear boundary at its own predicted time, then update the
+   selected group jointly. Earlier members may already have crossed at the group
+   execution point. A physical arrival mismatch retries the complete attempt.
 6. Left temporal derivative proposes the successor region; the full successor
    circuit must satisfy direction, constitutive region and physical residual
    checks. Located zero/unresolved derivatives remain unsupported diagnostics.
 7. Gate/REG changes and constitutive events can invalidate algebraic R regions.
    Close these dependencies in the same bounded joint solve. Do not reset,
    project, or invent storage state to obtain an admissible successor.
-8. Legacy numerical comparators retain their control-threshold semantics.
-   Their continuous threshold roots use the same arrival/coincidence test as
-   constitutive knots: later roots in the atomic window are deferred and
-   re-predicted after the earlier event. This preview does not claim every
-   inherited mode-selection path is replaced.
+8. Numerical comparators retain control-threshold semantics and use the same
+   first-root atomic grouping policy. Finite, resolved incoming direction and
+   physical residual checks remain mandatory. The policy does not use a global
+   root-time error veto or claim exact physical simultaneity.
 9. Exact scheduled deadlines retain order. T_atom and SAVE_DT are separate;
    ADC capture, code execution and output changes must have explicit causality.
 10. Every C task is an instance with explicit copyable state. Inputs are frozen
@@ -68,3 +68,8 @@ source files, releases, models and earlier acceptance evidence remain read-only.
     immutable committed checkpoint. Internal numerical coordinates preserve
     small current differences; public q/phi/INT views retain their semantics.
     See Event_Checkpoint_Retry_20261028.md for implementation scope and limits.
+
+19. Scalar affine observations retain ill-scaled forced terms using phi, with no
+    near-zero-pole clamping. Value, derivative and local evaluation estimates use
+    the same representation. See Phi_Affine_Repair_20261029.md and
+    C012_Event_Integration_20261029.md for evidence and limits.

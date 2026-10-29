@@ -184,7 +184,7 @@ void closure(const Model &m, RunState &candidate,
              const std::vector<Mode::Guard> &crossings,
              const std::set<int> &seeds, Result &out, const Options &o,
              std::vector<Json> &logs, uint64_t tx, Json &mode_details,
-             software::Session *software_session) {
+             software::Session *software_session, int algorithm) {
   std::set<std::string> seen;
   bool first = true;
   for (size_t delta = 0; !triggers.empty() || (first && !crossings.empty());
@@ -269,12 +269,17 @@ void closure(const Model &m, RunState &candidate,
     candidate.mode = engineering::update_mode(
         m, snap, candidate.internal, candidate.regs,
         first ? crossings : std::vector<Mode::Guard>{},
-        first ? seeds : std::set<int>{}, out.stats, &delta_details);
+        first ? seeds : std::set<int>{}, out.stats, &delta_details, algorithm);
+    require(candidate.mode.numerical_strategy==algorithm,12,"STRATEGY_MISMATCH",
+            "event closure changed numerical strategy inside an attempt");
     if (first)
       mode_details = delta_details;
     else
       mode_details["subsequent_delta_updates"].push_back(
           {{"delta", delta}, {"update", delta_details}});
+    if(snap.electrical_flow && snap.electrical_flow->compatible(candidate.mode))
+      candidate.electrical_flow=std::make_shared<engineering::Flow>(snap.electrical_flow->continued(candidate.mode,0));
+    else { candidate.electrical_flow.reset(); candidate.electrical_strategy=-1; }
     candidate.mode.version = ++candidate.version;
     fault(o, "after_mode");
     auto newedges = edges(m, snap.mode, candidate.mode);
@@ -299,12 +304,16 @@ void stream_emit(const Model&,Result&out,const RunState&old,const RunState&next,
   Vector x;const Mode*mode=nullptr;
   if(at==next.at){x=next.internal;mode=&next.mode;}
   else if(at==old.at){x=old.internal;mode=&old.mode;}
-  else {engineering::Flow flow(old.mode,old.internal);x=flow.state((at-old.at).seconds());mode=&old.mode;}
+  else {engineering::Flow flow=old.electrical_flow?*old.electrical_flow:engineering::Flow(old.mode,old.internal);x=flow.state((at-old.at).seconds());mode=&old.mode;}
   if(replace){out.times.pop_back();out.analog.resize(out.analog.size()-out.analog_names.size());out.digital.resize(out.digital.size()-out.digital_names.size());}
   size_t width=out.analog_names.size()*sizeof(float)+out.digital_names.size()+sizeof(double);
   require(out.times.size()<10000000&&(out.times.size()+1)*width<512.*1024*1024,11,"OUTPUT_LIMIT","output exceeds 512 MiB or 10 million samples");
   out.times.push_back(at.seconds());
-  for(const auto&name:out.analog_names){double v=0;v=mode->maps.at(name).dot(x);require(std::isfinite(v)&&std::abs(v)<=std::numeric_limits<float>::max(),11,"OUTPUT_NONFINITE","streamed output cannot be represented");out.analog.push_back(float(v));}
+  for(const auto&name:out.analog_names){double v=0;v=mode->maps.at(name).dot(x);
+    const RunState &anchor=at==next.at?next:old;
+    if(anchor.electrical_flow && anchor.electrical_flow->compatible(*mode))
+      v=anchor.electrical_flow->observe(mode->maps.at(name),(at-anchor.at).seconds());
+    require(std::isfinite(v)&&std::abs(v)<=std::numeric_limits<float>::max(),11,"OUTPUT_NONFINITE","streamed output cannot be represented");out.analog.push_back(float(v));}
   for(const auto&name:out.digital_names)out.digital.push_back(mode->bools.at(name));
 }
 void stream_commit(const Model&m,Result&out,const RunState&old,const RunState&next,bool backward,uint64_t&index){
@@ -317,7 +326,6 @@ Result simulate(const Model &original, const Options &o) {
   Model owned_model=original;owned_model.numerical_coordinates=true;const Model&m=owned_model;
   portfolio_reset_equations();
   Result out;PortfolioStats portfolio;uint64_t output_index=1,total_event_records=0;
-
   auto begin = std::chrono::steady_clock::now();
   ScopedModeCache mode_cache(m, o.mode_cache_capacity);
   std::unique_ptr<software::Session> software_session;
@@ -402,7 +410,10 @@ Result simulate(const Model &original, const Options &o) {
        found=false;crossings.clear();seeds.clear();root_log=Json::object();logs.clear();attempt_phase="compile_or_propagate";
        try {
         Mode algorithm_mode=portfolio_mode(m,checkpoint,algorithm,out.stats);
-        engineering::Flow flow(algorithm_mode, checkpoint.internal);
+        ++portfolio.executed_paths[algorithm][algorithm_mode.elimination_path];
+        engineering::Flow flow = checkpoint.electrical_flow && checkpoint.electrical_strategy==algorithm && checkpoint.electrical_flow->compatible(algorithm_mode)
+          ? checkpoint.electrical_flow->continued(algorithm_mode,0)
+          : engineering::Flow(algorithm_mode, checkpoint.internal);
       engineering::SearchResult roots;
       if (target > old.at && !algorithm_mode.guards.empty()) {
         ++out.stats.root_queries;
@@ -418,13 +429,16 @@ Result simulate(const Model &original, const Options &o) {
 
       if (found) {
         auto root = roots.candidates.front();
-        Time root_at = old.at + Time::from(root.time);
+        // Recheck every candidate before grouping, propagation or mode closure.
+        // Any failure unwinds the entire strategy attempt to its checkpoint.
+        for (const auto &r : roots.candidates)
+          engineering::validate_event_timing(flow, r, out.t_atom);
+        const auto execution_root=roots.candidates.back();
+        Time root_at = old.at + Time::from(execution_root.time);
         require(root_at <= target, 8, "TIME_ORDER_UNRESOLVED",
                 "computed root overtakes an independent deadline", true);
         due = due && root_at == target;
         target = root_at;
-        const Vector at_first = flow.state(root.time);
-        Json deferred = Json::array();
         for (const auto &r : roots.candidates) {
           auto g = algorithm_mode.guards.at(r.guard);
           if (g.kind == "PWA" || g.kind == "RANGE" || g.kind == "CMP") {
@@ -433,21 +447,17 @@ Result simulate(const Model &original, const Options &o) {
             // in addition to root-location error; never a fixed voltage epsilon.
             g.arrival_error = std::abs(r.slope) * ((r.upper - r.lower) + (root.upper - root.lower)) +
                               64 * std::numeric_limits<double>::epsilon() * flow.scale(r.guard);
-            const double candidate_uncertainty =
-                64 * std::numeric_limits<double>::epsilon() * flow.scale(r.guard) / std::abs(r.slope);
-            const double anchor_uncertainty =
-                64 * std::numeric_limits<double>::epsilon() * flow.scale(root.guard) / std::abs(root.slope);
-            const bool overlaps = r.lower - candidate_uncertainty <= root.upper + anchor_uncertainty &&
-                                  root.lower - anchor_uncertainty <= r.upper + candidate_uncertainty;
-            if (r.guard != root.guard && (!overlaps || !constitutive::arrived(g, at_first, g.arrival_error))) {
-              deferred.push_back({{"part", m.parts[g.part].raw.id}, {"knot", g.knot},
-                {"predicted_time", r.time}, {"reason", "BREAKPOINT_NOT_REACHED_AT_ANCHOR"}});
-              continue;
-            }
+
           }
           require(g.kind != "RANGE", 5, "PWA_OUT_OF_RANGE",
                   "PWA table range exhausted", false,
                   m.parts[g.part].raw.source);
+          if(g.kind=="PWA"){
+            const Vector at_own_root=flow.state(r.time);
+            require(constitutive::arrived(g,at_own_root,g.arrival_error),9,
+              "BREAKPOINT_PREDICTION_MISMATCH","predicted breakpoint is not reached at its own predicted time: "+
+              Json({{"part",m.parts[g.part].raw.id},{"local_time",r.time},{"residual",g.row.dot(at_own_root)},{"evaluation_bound",g.arrival_error}}).dump(),true,m.parts[g.part].raw.source);
+          }
           crossings.push_back(g);
         }
         seeds.insert(algorithm_mode.guards.at(root.guard).part);
@@ -458,14 +468,18 @@ Result simulate(const Model &original, const Options &o) {
             {"delta", 0},
             {"transaction_id", out.stats.transactions + 1},
             {"before_mode", old.mode.id},
-            {"policy", "BREAKPOINT_ARRIVAL_ATOMIC_CONTROL"},
-            {"deferred_breakpoints", deferred},
+            {"policy", "FIRST_PLUS_ATOM_EXECUTE_AT_LAST_OWN_ROOTS_CHECKED"},
             {"certificate_scope", "ENGINEERING_POINT_TRAJECTORY"},
             {"root_interval",
-             {{"lower", (old.at + Time::from(root.lower)).canonical()},
-              {"upper", (old.at + Time::from(root.upper)).canonical()}}},
+             {{"lower", (old.at + Time::from(execution_root.lower)).canonical()},
+              {"upper", (old.at + Time::from(execution_root.upper)).canonical()}}},
             {"T_atom", out.t_atom},
-            {"search_nodes", roots.nodes},
+            {"first_predicted_local_time",root.time},{"execution_local_time",execution_root.time},
+            {"execution_delay_from_first",execution_root.time-root.time},
+            {"search_nodes", roots.nodes},{"prediction_strategy",algorithm},
+            {"root_time_precision_checked",false},
+            {"root_old_noise",8*std::numeric_limits<double>::epsilon()*flow.scale(root.guard)},
+            {"root_slope_times_atom",std::abs(root.slope)*out.t_atom},
             {"candidate_members", Json::array()},
             {"predicted_events", Json::array()}};
         for (const auto &r : roots.candidates) {
@@ -474,6 +488,7 @@ Result simulate(const Model &original, const Options &o) {
           root_log["predicted_events"].push_back(
               {{"part", id},
                {"old_mode_local_time", r.time},
+               {"offset_from_first_seconds",r.time-root.time},
                {"left_slope", r.slope}});
         }
       }
@@ -488,6 +503,10 @@ Result simulate(const Model &original, const Options &o) {
       propagation_old.mode=std::move(algorithm_mode);
       attempt_phase="event_closure";
       candidate.mode=propagation_old.mode;
+      propagation_old.electrical_flow=std::make_shared<engineering::Flow>(flow);
+      propagation_old.electrical_strategy=algorithm;
+      candidate.electrical_flow=std::make_shared<engineering::Flow>(flow.continued(candidate.mode,(target-checkpoint.at).seconds()));
+      candidate.electrical_strategy=algorithm;
       candidate.physical=physical_view(m,candidate.internal);
       candidate.at = target;
       candidate.time_origin = exact_time_origin(target);
@@ -525,7 +544,7 @@ Result simulate(const Model &original, const Options &o) {
       }
       Json mode_details;
       closure(m, candidate, std::move(triggers), crossings, seeds, out, o, logs,
-              out.stats.transactions + 1, mode_details, software_session.get());
+              out.stats.transactions + 1, mode_details, software_session.get(), algorithm);
       if (found) {
         root_log["after_mode"] = candidate.mode.id;
         root_log["mode_update"] = mode_details;
@@ -544,7 +563,10 @@ Result simulate(const Model &original, const Options &o) {
         {Vector physical=physical_view(m,candidate.internal);root_log["state_before_switch"]=std::vector<double>(physical.data(),physical.data()+m.ns);}
         logs.insert(logs.begin(), root_log);
       }
+      require(candidate.mode.numerical_strategy==algorithm,12,"STRATEGY_MISMATCH",
+              "committed strategy must equal the strategy that predicted the event");
       validate_physical(candidate.mode,candidate.internal);
+      for(auto &log:logs){log["numerical_strategy"]=algorithm;log["committed_elimination_path"]=candidate.mode.elimination_path;}
       if(o.fault=="retry_after_closure"){
         candidate.internal[0]+=1.;throw Error(7,"INJECTED_EVENT_CLOSURE_REJECTION","test rejects staged MCU/electrical/queue updates before commit",true);
       }
@@ -553,7 +575,15 @@ Result simulate(const Model &original, const Options &o) {
       break;
        }catch(const Error&e){
         if(!portfolio_retryable(e))throw;
+        const auto recorded_failures=portfolio.failures.size();
         portfolio.record_failure(algorithm,checkpoint,target,e);
+        if(portfolio.failures.size()>recorded_failures){
+          auto &record=portfolio.failures.back();
+          record["attempt_phase"]=attempt_phase;
+          record["uncommitted_root_prediction"]=root_log;
+          record["selected_crossings"]=Json::array();
+          for(const auto&g:crossings)record["selected_crossings"].push_back({{"part",m.parts[g.part].raw.id},{"kind",g.kind},{"arrival_error",g.arrival_error}});
+        }
         failures.push_back({{"algorithm",algorithm},{"stage",attempt_phase},{"diagnostic",diagnostic(e)}});
         candidate=checkpoint;
        }
@@ -571,7 +601,7 @@ Result simulate(const Model &original, const Options &o) {
         break;
     }
     out.status = "COMPLETED";
-    out.evidence = "ENGINEERING_APPROXIMATION";
+    out.evidence = "ENGINEERING_POINT_TRAJECTORY";
   } catch (const std::exception &e) {
     out.diagnostic = diagnostic(e);
     auto p = dynamic_cast<const Error *>(&e);
@@ -602,7 +632,8 @@ Result simulate(const Model &original, const Options &o) {
       {"source_sha256", PULSE_SOURCE_SHA256},
       {"model_version", model_identity(m)},
       {"algorithm", "EVENT_CHECKPOINT_STRATEGY_RETRY"},
-      {"event_timing_policy","Original directed first-root intervals and T_atom grouping; arrived knots only; no 1 ns quantization or endpoint region acceptance"},
+      {"strategy_consistency",{{"policy","One explicit numerical strategy for prediction, propagation, all closure microsteps and commit; failed attempts roll back and recompute all candidates from the immutable checkpoint."},{"enforced",true},{"committed_strategy",out.committed.mode.numerical_strategy}}},
+      {"event_timing_policy","First+T_atom fixed window, execute at latest member, validate every PWA at own prediction; no absolute time-error veto; exact software deadlines unchanged"},
       {"spice_policy","NOT_IMPLEMENTED: event propagation only"},
       {"algorithm_portfolio",portfolio.description()},
       {"persistent_chart",persistent_description(m)},
@@ -613,7 +644,7 @@ Result simulate(const Model &original, const Options &o) {
       {"history_retained",o.retain_history},
       {"netlist_format", m.netlist.format},
       {"software_modules", software_session ? software_session->identity() : Json::array()},
-      {"breakpoint_policy", "ARRIVED_KNOTS_ONLY; fixed anchored candidate window; re-predict deferred knots"},
+      {"breakpoint_policy", "FIRST_PLUS_ATOM; execute at latest member; verify each knot at its own prediction"},
       {"status", out.status},
       {"evidence", out.evidence},
       {"diagnostic", out.diagnostic},

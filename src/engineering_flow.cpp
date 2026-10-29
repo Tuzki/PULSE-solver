@@ -4,6 +4,7 @@
 #include <array>
 #include <bit>
 #include <complex>
+#include <cstdlib>
 #include <functional>
 #include <numbers>
 #include <sstream>
@@ -19,6 +20,8 @@ struct Basis {
   CMatrix vectors, inverse;
   CVector poles;
   bool modal = false;
+  bool centered = false;
+  Vector center, center_defect, center_residual;
 };
 std::string key(const Mode &m) {
   std::string s;
@@ -125,9 +128,34 @@ std::shared_ptr<Basis> basis(const Mode &mode) {
   }
   if (n > 0) {
     Matrix a = b->balanced.topLeftCorner(n, n);
+    // A particular affine state is computed independently of modal residues.
+    // Equilibrating equations/unknowns avoids a rank decision based on the
+    // ratio of the fastest and slowest poles. Singular systems retain the
+    // existing phi/integrator path; no inverse or steady state is presumed.
+    Vector rs=Vector::Ones(n),cs=Vector::Ones(n);
+    for(int i=0;i<n;i++){double q=a.row(i).cwiseAbs().maxCoeff();if(q)rs[i]=1/q;}
+    Matrix equilibrated=rs.asDiagonal()*a;
+    for(int j=0;j<n;j++){double q=equilibrated.col(j).cwiseAbs().maxCoeff();if(q)cs[j]=1/q;}
+    equilibrated=equilibrated*cs.asDiagonal();
+    Eigen::FullPivLU<Matrix> affine_lu(equilibrated);
+    affine_lu.setThreshold(64*std::numeric_limits<double>::epsilon()*std::max(1,n));
+    if(affine_lu.isInvertible()){
+      const Vector forcing=b->balanced.topRightCorner(n,1);
+      b->center=cs.asDiagonal()*affine_lu.solve(rs.asDiagonal()*(-forcing));
+      Vector defect(n);
+      for(int i=0;i<n;i++){
+        long double v=forcing[i];for(int j=0;j<n;j++)v+=static_cast<long double>(a(i,j))*b->center[j];defect[i]=double(v);
+      }
+      b->center_residual=defect;
+      b->center_defect=cs.asDiagonal()*affine_lu.solve(rs.asDiagonal()*defect);
+      Vector scale=a.cwiseAbs()*b->center.cwiseAbs()+forcing.cwiseAbs();
+      double backward=0;for(int i=0;i<n;i++)backward=std::max(backward,std::abs(defect[i])/std::max(1e-300,scale[i]));
+      b->centered=b->center.allFinite()&&b->center_defect.allFinite()&&backward<=64*std::numeric_limits<double>::epsilon()*std::max(1,n);
+    }
     Eigen::ComplexEigenSolver<Matrix> eig(a);
     if (eig.info() == Eigen::Success) {
       b->poles = eig.eigenvalues();
+      if((b->poles.array()==Complex(0)).any())b->centered=false;
       b->vectors = eig.eigenvectors();
       refine_eigenpairs(a,b->poles,b->vectors);
       Eigen::FullPivLU<CMatrix> lu(b->vectors);
@@ -184,9 +212,12 @@ Range trig(double a, double b, bool cosine) {
 }
 struct Term {
   Complex pole, coefficient;
+  Complex forcing = Complex(0);
+  bool affine_increment = false;
 };
 struct Functional {
   double constant = 0, linear = 0;
+  bool increment_form = false;
   std::vector<Term> terms;
 };
 } // namespace
@@ -194,8 +225,9 @@ struct FlowData {
   Mode mode;
   Vector initial, reduced, scaled;
   std::shared_ptr<Basis> basis;
-  CVector y, forcing;
+  CVector y, forcing, center_shift;
   std::vector<Functional> guards;
+  mutable std::map<std::string,std::shared_ptr<FlowData>> observable_cache;
   // Local scalar Taylor evaluation is anchored at the committed physical
   // point. It avoids subtracting nearly cancelling spectral residues when
   // deciding the direction immediately after a constitutive knot.
@@ -283,6 +315,13 @@ Flow::Flow(const Mode &mode, const Vector &initial)
   if (b.modal && n) {
     d.y = b.inverse * d.scaled.head(n).cast<Complex>();
     d.forcing = b.inverse * b.balanced.topRightCorner(n, 1).cast<Complex>();
+    if(b.centered){
+      d.center_shift=b.inverse*b.center_residual.cast<Complex>();
+      for(int j=0;j<n;j++){
+        require(b.poles[j]!=Complex(0),7,"AFFINE_PARTICULAR_UNRESOLVED","nonsingular particular decomposition produced an unresolved zero pole",true);
+        d.center_shift[j]/=b.poles[j];
+      }
+    }
   }
   for (auto &guard : mode.guards) {
     Functional g;
@@ -292,23 +331,54 @@ Flow::Flow(const Mode &mode, const Vector &initial)
                         b.lift * b.scaling.head(n).asDiagonal())
                            .eval();
       Eigen::RowVectorXcd row = projected.cast<Complex>() * b.vectors;
-      g.constant -= (row * d.y).value().real();
-      for (int j = 0; j < n; ++j) {
-        if (b.poles[j] == Complex(0)) {
-          g.constant += (row[j] * d.y[j]).real();
-          g.linear += (row[j] * d.forcing[j]).real();
-        } else {
-          Complex shift = d.forcing[j] / b.poles[j];
-          g.constant -= (row[j] * shift).real();
-          g.terms.push_back({b.poles[j], row[j] * (d.y[j] + shift)});
+      if(b.centered){
+        Vector center_state=initial;
+        center_state.head(initial.size()-1)+=b.lift*(b.center.cwiseProduct(b.scaling.head(n))-d.reduced);
+        Functional centered;
+        centered.constant=guard.row.dot(center_state)-(row*d.center_shift).value().real();
+        const CVector amplitude=(b.inverse*(d.scaled.head(n)-b.center).cast<Complex>()+d.center_shift).eval();
+        double centered_cost=guard.row.cwiseAbs().dot(center_state.cwiseAbs())+std::abs((row*d.center_shift).value());
+        double increment_cost=std::abs(g.constant);
+        for(int j=0;j<n;j++){
+          const Complex c=row[j]*amplitude[j];centered.terms.push_back({b.poles[j],c});centered_cost+=std::abs(c);
+          increment_cost+=std::abs(row[j]*d.y[j])+std::abs(row[j]*d.forcing[j])/d.local_rate;
+        }
+        // Keep the established low-cancellation centered path when well scaled.
+        // A remote equilibrium of a genuine near-zero pole must not manufacture
+        // huge coefficients: select the equivalent affine increment instead.
+        if(std::isfinite(centered_cost)&&centered_cost<=8*std::max(1e-300,increment_cost)){
+          d.guards.push_back(std::move(centered));continue;
         }
       }
+      // Keep well-scaled exponential residues to retain their accurate small
+      // decaying tails. Only unsafe affine quotients use the phi increment.
+      // Both forms retain the complete pole and forcing contribution.
+      g.increment_form = true;
+      double reference_cost=std::abs(g.constant);
+      for(int j=0;j<n;j++)reference_cost+=std::abs(row[j]*d.y[j])+std::abs(row[j]*d.forcing[j])/d.local_rate;
+      g.constant-=(row*d.y).value().real();
+      for(int j=0;j<n;j++){
+        const Complex a=row[j]*d.y[j],forcing=row[j]*d.forcing[j];
+        const long double pole=std::abs(b.poles[j]);
+        const long double projected_shift=pole>0?std::abs(forcing)/pole:INFINITY;
+        const long double raw_shift=pole>0?std::abs(d.forcing[j])/pole:INFINITY;
+        if(pole==0 || projected_shift>8*std::max(1e-300,reference_cost) || raw_shift>std::numeric_limits<double>::max()/4){
+          g.constant+=a.real();
+          g.terms.push_back({b.poles[j],a,forcing,true});
+        }else{
+          Complex shift=d.forcing[j]/b.poles[j];
+          g.constant-=(row[j]*shift).real();
+          g.terms.push_back({b.poles[j],row[j]*(d.y[j]+shift)});
+        }
+      }
+
     }
     d.guards.push_back(std::move(g));
   }
   d.points.emplace(0, initial);
 }
 Vector Flow::state(double t) const {
+  t += offset_.seconds();
   require(t >= 0 && std::isfinite(t), 7, "TIME_ORDER",
           "invalid engineering propagation time", true);
   auto &d = *data_;
@@ -333,23 +403,38 @@ Vector Flow::state(double t) const {
     if (d.points.size() < 4096) d.points.emplace(t, out);
     return out;
   }
-  Vector z(n);
-  if (b.modal) {
-    CVector y(n);
-    for (int j = 0; j < n; ++j)
-      y[j] =
-          std::exp(b.poles[j] * t) * d.y[j] + phi(b.poles[j], t) * d.forcing[j];
-    CVector answer = b.vectors * y;
-    z = answer.real().cwiseProduct(b.scaling.head(n));
-    require(answer.imag().norm() <= 1e-7 * std::max(1., answer.real().norm()),
-            7, "MODAL_COMPLEX_RESIDUAL",
-            "engineering flow has excessive imaginary residual", true);
-  } else {
-    Vector a = (b.balanced * t).exp() * d.scaled;
-    z = a.head(n).cwiseProduct(b.scaling.head(n));
-  }
   Vector out = d.initial;
-  out.head(out.size() - 1) += b.lift * (z - d.reduced);
+  if (b.modal && b.centered) {
+    // Compute each physical storage coordinate from the original anchor.
+    // Use the lower-operation-scale form (absolute or expm1 increment).
+    const CVector amp=(b.inverse*(d.scaled.head(n)-b.center).cast<Complex>() +
+                       d.center_shift).eval();
+    for(int i=0;i<out.size()-1;i++){
+      const Eigen::RowVectorXd projected=b.lift.row(i)*b.scaling.head(n).asDiagonal();
+      const Eigen::RowVectorXcd row=projected.cast<Complex>()*b.vectors;
+      long double absolute=static_cast<long double>(d.initial[i]);
+      long double increment=absolute, abs_scale=std::abs(absolute), inc_scale=abs_scale;
+      for(int j=0;j<n;j++) absolute+=static_cast<long double>(b.lift(i,j))*(
+        static_cast<long double>(b.scaling[j])*b.center[j]-d.reduced[j]);
+      absolute-=(row*d.center_shift).value().real();abs_scale=std::abs(absolute);
+      for(int j=0;j<n;j++){
+        Complex c=row[j]*amp[j], e=std::exp(b.poles[j]*t);
+        Complex delta=b.poles[j]*phi(b.poles[j],t);
+        absolute+=(c*e).real(); increment+=(c*delta).real();
+        abs_scale+=std::abs(c*e);inc_scale+=std::abs(c*delta);
+      }
+      out[i]=double(inc_scale<abs_scale?increment:absolute);
+    }
+  } else {
+    Vector z(n);
+    if(b.modal){
+      CVector y(n);for(int j=0;j<n;j++)y[j]=std::exp(b.poles[j]*t)*d.y[j]+phi(b.poles[j],t)*d.forcing[j];
+      CVector answer=b.vectors*y;z=answer.real().cwiseProduct(b.scaling.head(n));
+      require(answer.imag().norm()<=1e-7*std::max(1.,answer.real().norm()),7,
+        "MODAL_COMPLEX_RESIDUAL","engineering flow has excessive imaginary residual",true);
+    } else {Vector a=(b.balanced*t).exp()*d.scaled;z=a.head(n).cwiseProduct(b.scaling.head(n));}
+    out.head(out.size()-1)+=b.lift*(z-d.reduced);
+  }
   out[out.size() - 1] = 1;
   require(out.allFinite(), 7, "NONFINITE_PROPAGATION",
           "engineering matrix exponential is nonfinite", true);
@@ -358,6 +443,7 @@ Vector Flow::state(double t) const {
   return out;
 }
 double Flow::value(size_t k, double t, int order) const {
+  t += offset_.seconds();
   auto &d = *data_;
   if (t == 0 && order == 0)
     return d.mode.guards.at(k).row.dot(d.initial);
@@ -373,9 +459,24 @@ double Flow::value(size_t k, double t, int order) const {
     Vector row = d.mode.guards.at(k).row;
     for (int j = 0; j < order; ++j)
       row = (row.transpose() * d.mode.M).transpose();
-    return row.dot(state(t));
+    return row.dot(state(t - offset_.seconds()));
   }
   const auto &g = d.guards.at(k);
+  if(g.increment_form){
+    using W=std::complex<long double>;
+    long double value=order==0?g.constant:0;
+    for(const auto &term:g.terms){
+      if(!term.affine_increment){
+        Complex c=term.coefficient;for(int j=0;j<order;j++)c*=term.pole;
+        value+=(c*std::exp(term.pole*t)).real();continue;
+      }
+      W pole(term.pole.real(),term.pole.imag()),a(term.coefficient.real(),term.coefficient.imag()),forcing(term.forcing.real(),term.forcing.imag());
+      W rate=pole*a+forcing;
+      if(order==0){auto ph=phi(term.pole,t);value+=(rate*W(ph.real(),ph.imag())).real();}
+      else {for(int j=1;j<order;j++)rate*=pole;value+=(rate*std::exp(pole*static_cast<long double>(t))).real();}
+    }
+    return double(value);
+  }
   long double value = order == 0   ? g.constant + g.linear * t
                       : order == 1 ? g.linear
                                    : 0;
@@ -388,6 +489,7 @@ double Flow::value(size_t k, double t, int order) const {
   return double(value);
 }
 Range Flow::bounds(size_t k, double a, double b, int order) const {
+  a += offset_.seconds(); b += offset_.seconds();
   auto &d = *data_;
   if (order <= 1 && b * d.local_rate <= .5) {
     const auto coefficients = local_coefficients(d, k, order);
@@ -433,7 +535,7 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
     Vector row = d.mode.guards.at(k).row;
     for (int j = 0; j < order; ++j)
       row = (row.transpose() * d.mode.M).transpose();
-    Vector x = state(mid), term = x;
+    Vector x = state(mid - offset_.seconds()), term = x;
     Range result{row.dot(x), row.dot(x)};
     double q = d.basis->balanced.cwiseAbs().rowwise().sum().maxCoeff() * h;
     if (q > 16)
@@ -457,9 +559,79 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
       result.lo -= error;
       result.hi += error;
     }
+    // The reconstructed midpoint is itself rounded. Enclose its arithmetic
+    // scale as well as interval variation; a zero-width interval must not
+    // pretend that a cancelling nilpotent polynomial was evaluated exactly.
+    Vector absolute=d.initial.cwiseAbs(), absolute_term=absolute;
+    const Matrix absolute_generator=d.mode.M.cwiseAbs();
+    for(int j=1;j<=64;j++){
+      absolute_term=absolute_generator*absolute_term*(mid/j);
+      absolute+=absolute_term;
+      if(absolute_term.isZero(0))break;
+    }
+    const double evaluation_pad=64*(d.mode.M.rows()+1)*std::numeric_limits<double>::epsilon()*
+                                row.cwiseAbs().dot(absolute);
+    result.lo-=evaluation_pad;result.hi+=evaluation_pad;
     return result;
   }
   const auto &g = d.guards.at(k);
+  if(g.increment_form){
+    using W=std::complex<long double>;
+    std::array<long double,25> coefficients{};
+    coefficients[0]=order==0?g.constant:0;
+    const double mid=a+(b-a)*.5,h=(b-a)*.5;
+    Range result{};long double magnitude=std::abs(coefficients[0]),tail=0;
+    for(const auto &term:g.terms){
+      W pole(term.pole.real(),term.pole.imag()),amp(term.coefficient.real(),term.coefficient.imag()),forcing(term.forcing.real(),term.forcing.imag());
+      const bool integral=term.affine_increment;
+      W rate=integral?pole*amp+forcing:amp;
+      if(integral){if(order>0)for(int j=1;j<order;j++)rate*=pole;}
+      else for(int j=0;j<order;j++)rate*=pole;
+      double q=std::abs(term.pole)*h;
+      const long double expmax=std::exp(std::max(pole.real()*a,pole.real()*b));
+      if(q<=2){
+        W coefficient=rate*std::exp(pole*static_cast<long double>(mid));
+        if(order==0 && integral){
+          auto ph=phi(term.pole,mid);coefficients[0]+=(rate*W(ph.real(),ph.imag())).real();
+          const double absolute_integral=phi(Complex(term.pole.real(),0),mid).real();
+          magnitude+=(std::abs(pole*amp)+std::abs(forcing))*absolute_integral;
+          coefficient*=static_cast<long double>(h);
+          for(size_t j=1;j<coefficients.size();j++){
+            coefficients[j]+=coefficient.real();coefficient*=pole*static_cast<long double>(h)/static_cast<long double>(j+1);
+          }
+          long double rem=std::abs(rate)*expmax*h;
+          for(int j=2;j<=25;j++)rem*=q/j;
+          tail+=rem;
+        }else{
+          magnitude+=std::abs(rate)*expmax;
+          for(size_t j=0;j<coefficients.size();j++){
+            coefficients[j]+=coefficient.real();coefficient*=pole*static_cast<long double>(h)/static_cast<long double>(j+1);
+          }
+          long double rem=std::abs(rate)*expmax;
+          for(int j=1;j<=25;j++)rem*=q/j;
+          tail+=rem;
+        }
+        continue;
+      }
+      // A nonzero pole is used as an exponential quotient only when its
+      // variation across this interval is large; never in the near-zero branch.
+      W c=(order==0&&integral)?rate/pole:rate;
+      auto cosine=trig(term.pole.imag()*a,term.pole.imag()*b,true);
+      auto sine=trig(term.pole.imag()*a,term.pole.imag()*b,false);
+      Range wave=add(multiply({double(c.real()),double(c.real())},cosine),multiply({double(-c.imag()),double(-c.imag())},sine));
+      double e1=std::exp(term.pole.real()*a),e2=std::exp(term.pole.real()*b);
+      Range component=multiply({std::min(e1,e2),std::max(e1,e2)},wave);
+      if(order==0&&integral)component=add(component,{double(-c.real()),double(-c.real())});
+      result=add(result,component);magnitude+=std::abs(c)*(expmax+(order==0&&integral?1:0));
+    }
+    result=add(result,{double(coefficients[0]),double(coefficients[0])});
+    for(size_t j=1;j<coefficients.size();j++){
+      double c=double(coefficients[j]);magnitude+=std::abs(coefficients[j]);
+      result=add(result,j%2?Range{-std::abs(c),std::abs(c)}:Range{std::min(0.,c),std::max(0.,c)});
+    }
+    const long double pad=64*std::numeric_limits<double>::epsilon()*magnitude+tail;
+    return {double(result.lo-pad),double(result.hi+pad)};
+  }
   Range result = order == 0   ? Range{g.constant, g.constant}
                  : order == 1 ? Range{g.linear, g.linear}
                               : Range{};
@@ -513,11 +685,66 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
   double pad = 64 * std::numeric_limits<double>::epsilon() * magnitude;
   return {result.lo - pad - tail, result.hi + pad + tail};
 }
+double Flow::tangent(const Mode &mode,const Vector &initial,const Vector &row){
+  auto b=basis(mode);const int n=int(b->generator.rows())-1;
+  using WVector=Eigen::Matrix<long double,Eigen::Dynamic,1>;
+  WVector z=WVector::Ones(n+1);
+  if(n)z.head(n)=(b->reduce.cast<long double>()*initial.cast<long double>()).cwiseQuotient(b->scaling.head(n).cast<long double>());
+  WVector dz=b->balanced.cast<long double>()*z;
+  WVector projected=(b->lift.cast<long double>().transpose()*row.head(initial.size()-1).cast<long double>()).cwiseProduct(b->scaling.head(n).cast<long double>());
+  return double(projected.dot(dz.head(n)));
+}
+bool Flow::compatible(const Mode &m) const {
+  const auto &old=data_->mode;
+  auto same=[](const Matrix&a,const Matrix&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
+  if(m.numerical_strategy!=old.numerical_strategy||key(m)!=key(old)||m.segments!=old.segments||
+     !same(m.constraints,old.constraints)||!same(m.residual_map,old.residual_map)||
+     !same(m.residual_reference,old.residual_reference)||m.maps.size()!=old.maps.size())return false;
+  for(const auto &[name,row]:old.maps){
+    auto it=m.maps.find(name);
+    if(it==m.maps.end())return false;
+    // BOOL projections are control snapshots, not electrical observations.
+    // All real-valued maps (including source values) still require equality.
+    if(old.bools.count(name)&&m.bools.count(name))continue;
+    if(!same(row,it->second))return false;
+  }
+  return true;
+}
+Flow Flow::continued(const Mode &m,double elapsed) const {
+  require(compatible(m)&&elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
+  // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
+  Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);return next;
+}
+double Flow::observe(const Vector &row,double t,int derivative) const {
+  // Project an arbitrary observable on this same continuous trajectory.
+  for(size_t k=0;k<data_->mode.guards.size();k++){
+    const auto &g=data_->mode.guards[k].row;
+    if(g.size()==row.size()&&(g.array()==row.array()).all())return value(k,t,derivative);
+    if(g.size()==row.size()&&(g.array()==-row.array()).all())return -value(k,t,derivative);
+  }
+  std::string id(reinterpret_cast<const char*>(row.data()),size_t(row.size())*sizeof(double));
+  auto found=data_->observable_cache.find(id);
+  if(found==data_->observable_cache.end()){
+    Mode view=data_->mode;view.maps.clear();view.bools.clear();
+    view.guards.clear();view.guards.push_back({row,0,1,"OBSERVE"});
+    Flow projection(view,data_->initial);
+    found=data_->observable_cache.emplace(std::move(id),projection.data_).first;
+  }
+  Flow projection=*this;projection.data_=found->second;
+  return projection.value(0,t,derivative);
+}
 double Flow::scale(size_t k) const {
   const auto &g = data_->guards.at(k);
   double sum = std::abs(g.constant);
-  for (auto &term : g.terms)
+  for (auto &term : g.terms){
     sum += std::abs(term.coefficient);
+    if(g.increment_form && term.affine_increment){
+      // Engineering anchor/elapsed scale, not a strict all-history certificate.
+      // Preserve time units without a forcing/near-zero-pole coefficient.
+      const double horizon=std::max(offset_.seconds(),1/data_->local_rate);
+      sum += std::abs(term.forcing)*phi(Complex(term.pole.real(),0),horizon).real();
+    }
+  }
   return std::max(1e-300, sum);
 }
 bool Flow::stationary(size_t k) const {
@@ -526,6 +753,35 @@ bool Flow::stationary(size_t k) const {
   return row.isZero(0);
 }
 bool Flow::modal() const { return data_->basis->modal; }
+// Resolve incoming direction on the same trajectory, without a root-time veto.
+void validate_event_timing(const Flow &flow, const Crossing &root, double atom) {
+ require(std::isfinite(root.slope)&&root.slope>0&&std::isfinite(atom)&&atom>0,
+         8,"ROOT_DIRECTION_UNRESOLVED","located root needs a finite directed slope",true);
+ const auto direction=flow.bounds(root.guard,root.time,root.time,1);
+ require(std::isfinite(direction.lo)&&direction.lo>0,8,"ROOT_DIRECTION_UNRESOLVED",
+         "incoming derivative is not resolved above its evaluation roundoff",true);
+ // The nonmodal path evaluates guards through a rounded reconstructed state,
+ // while the modal path evaluates value and slope directly on one scalar
+ // expression. This additional reconstruction-risk check applies to the
+ // former path; a broad modal coefficient envelope is not a timing certificate
+ // and must not become an implicit veto of the user's point-event policy.
+ if(flow.modal())return;
+ // A rounded value can create a false transverse root near a flat crossing.
+ // Resolve direction over the local value-roundoff neighborhood, not just at
+ // the rounded point. This neither changes atomic membership nor compares the
+ // neighborhood's width to T_atom; it is not an absolute timing-accuracy veto.
+ const double value=flow.value(root.guard,root.time);
+ const auto evaluated=flow.bounds(root.guard,root.time,root.time);
+ const double radius=std::max(std::abs(value-evaluated.lo),std::abs(evaluated.hi-value));
+ const double neighborhood=radius/direction.lo;
+ require(std::isfinite(neighborhood),8,"ROOT_DIRECTION_UNRESOLVED",
+         "root value roundoff has no finite direction neighborhood",true);
+ const auto incoming=flow.bounds(root.guard,std::max(0.,root.lower-neighborhood),
+                                 root.upper+neighborhood,1);
+ require(std::isfinite(incoming.lo)&&incoming.lo>0,8,"ROOT_DIRECTION_UNRESOLVED",
+         "incoming direction is unresolved across local value roundoff",true);
+
+}
 SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
                          double atom, size_t budget) {
   SearchResult result;
@@ -617,13 +873,7 @@ SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
     };
     visit(0, horizon, 0);
     if (found) {
-      double evaluation_noise =
-          8 * std::numeric_limits<double>::epsilon() * flow.scale(k);
-      require(std::abs(root.slope) * atom > evaluation_noise, 8,
-              "ZERO_EVENT_DERIVATIVE",
-              "crossing derivative is zero or too small to resolve against "
-              "numerical evaluation error within atomic time",
-              true);
+      validate_event_timing(flow, root, atom);
       result.candidates.push_back(root);
     }
   }

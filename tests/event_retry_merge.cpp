@@ -9,17 +9,17 @@ void check(bool condition,const std::string&message){require(condition,12,"MERGE
 std::string document(const std::string&network){return "# PULSE Netlist v1.1\n\n## Parameters\n```pulse\n```\n\n## Network\n```pulse\n"+network+"\n```\n\n## Simulation\n```pulse\n.TRAN T_END=1 SAVE_DT=.1\n```\n\n## Layout\n```json\n{}\n```\n";}
 void future_comparator_is_deferred(){
  auto m=compile(parse_markdown(document("MATH_ONE ONE = 1\nINT_X X ONE IC=-.5\nI1 0 N X\nR1 N 0 IV_TABLE=[(-1,-1),(0,0),(1,2)] RANGE=EXTEND\nCMP_C G X OP=GE THRESHOLD=.000000001\nEVENT_E E MODE=EDGE SOURCE=G EDGE=RISE"),"future_cmp.md"));
- Options o;o.atomic_time=2e-8;auto r=simulate(m,o);check(r.status=="COMPLETED",r.diagnostic.dump());
- std::optional<double>resistor,comparator;bool deferred=false;
+ Options o;o.atomic_time=2e-10;auto r=simulate(m,o);check(r.status=="COMPLETED",r.diagnostic.dump());
+ std::optional<double>resistor,comparator;bool outside_window=false;
  for(auto&e:r.events){
   if(e.value("kind","")=="ROOT"){
-   for(auto&d:e.value("deferred_breakpoints",Json::array()))if(d["part"]=="CMP_C")deferred=true;
+   if(!resistor)outside_window=e["candidate_members"].size()==1&&e["candidate_members"][0]=="R1";
    for(auto&part:e.value("actual_changed_members",Json::array()))if(part=="R1"&&!resistor)resistor=e["time_seconds_display"];
   }
   if(e.value("kind","")=="TRIG"&&e.value("source","")=="E")comparator=e["time_seconds_display"];
  }
  check(resistor&&comparator&&*comparator>*resistor,"future CMP fired at the earlier constitutive knot");
- check(deferred,"future CMP was not explicitly deferred from its old prediction");
+ check(outside_window,"outside-window CMP was grouped with the constitutive knot");
  check(std::abs(*resistor-.5)<1e-12&&std::abs(*comparator-.500000001)<4e-10,"event order or root location changed");
 }
 void reconstructed_direction(const std::string&path){

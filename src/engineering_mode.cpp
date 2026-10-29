@@ -1,5 +1,7 @@
+#include <cstdlib>
 #include "pulse/engineering.hpp"
 #include "pulse/constitutive.hpp"
+#include "pulse/solver_strategy.hpp"
 #include <algorithm>
 namespace pulse::engineering {
 namespace {
@@ -101,7 +103,9 @@ Mode initial_mode(const Model &m, const Vector &x,
 Mode update_mode(const Model &m, const RunState &old, const Vector &x,
                  const std::map<std::string, double> &regs,
                  const std::vector<Mode::Guard> &candidates,
-                 const std::set<int> &seeds, Stats &stats, Json *details) {
+                 const std::set<int> &seeds, Stats &stats, Json *details, int algorithm) {
+  require(old.mode.numerical_strategy==algorithm,12,"STRATEGY_MISMATCH",
+          "event closure must use the same strategy as root prediction");
   std::map<int, bool> bits;
   for (int i : m.cmps)
     bits[i] = old.mode.bools.at(net_name(m.parts[i].raw.args[0]));
@@ -113,10 +117,13 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
         bits[g.part] = !original[g.part];
       else if (g.kind == "PWA") {
         const int step = direction(m, old.mode, g);
-        const double left = coordinate(m, old.mode, g.part).dot(old.mode.M * x);
+        const Vector left_row=coordinate(m,old.mode,g.part);
+        const double left=old.electrical_flow?old.electrical_flow->observe(left_row,0,1):Flow::tangent(old.mode,x,left_row);
         require(std::isfinite(left) && step * left > 0, 9, "BREAKPOINT_LEFT_DIRECTION",
                 "breakpoint does not have a resolved incoming direction", true, m.parts[g.part].raw.source);
-        require(constitutive::arrived(g, x, g.arrival_error), 9, "BREAKPOINT_NOT_REACHED",
+        // Runtime verifies each member at its own root before advancing the group.
+        const bool reached=constitutive::arrived(g,x,g.arrival_error) || g.row.dot(x)>=0;
+        require(reached, 9, "BREAKPOINT_NOT_REACHED",
                 "a nonlinear segment cannot change before its knot is reached: " +
                 Json({{"residual", g.row.dot(x)}, {"evaluation_bound", g.arrival_error},
                       {"coordinate_scale", g.row.cwiseAbs().dot(x.cwiseAbs())}}).dump(),
@@ -133,7 +140,7 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
             "MODE_DIRECTION_CYCLE",
             "candidate derivative decisions do not have a stable joint mode",
             true);
-    Mode mode = compile_specified(m, x, regs, stats, bits, segments,
+    Mode mode = portfolio_compile(m, x, regs, stats, bits, segments, algorithm,
                                  CompilePurpose::RegionClassification);
     auto next = bits;
     auto segnext = segments;
@@ -179,7 +186,14 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
       if (g.kind == "CMP") {
         Vector left = threshold(m, old.mode, g.part),
                right = threshold(m, mode, g.part);
-        double dl = left.dot(old.mode.M * x), dr = right.dot(mode.M * x);
+        double dl = old.electrical_flow ? old.electrical_flow->observe(left,0,1) : left.dot(old.mode.M*x);
+        // A classification candidate cannot itself be propagated. Reuse the
+        // incoming representation only if all electrical data are compatible;
+        // otherwise independently evaluate the candidate's right tangent.
+        double dr;
+        if(old.electrical_flow && old.electrical_flow->compatible(mode))
+          dr=old.electrical_flow->observe(right,0,1);
+        else dr=Flow::tangent(mode,x,right);
         require(std::isfinite(dr) && dr != 0 && dl != 0, 9,
                 "ZERO_EVENT_DERIVATIVE",
                 "event candidate has zero or nonfinite right derivative", true,
@@ -200,7 +214,8 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
         // voltage boundaries and are reconstructed in the new mode.
         int step = direction(m, old.mode, g);
         Vector row = step * coordinate(m, mode, g.part);
-        double dr = row.dot(mode.M * x);
+        double dr=old.electrical_flow&&old.electrical_flow->compatible(mode)
+          ? old.electrical_flow->observe(row,0,1):Flow::tangent(mode,x,row);
         require(std::isfinite(dr) && dr != 0, 9, "ZERO_EVENT_DERIVATIVE",
                 "PWA candidate has zero crossing derivative", true);
         bool change = dr > 0;
@@ -241,7 +256,7 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
                 true, m.parts[g.part].raw.source);
       }
       if (details)
-        *details = {{"iterations", iteration + 1},
+        *details = {{"numerical_strategy",algorithm},{"elimination_path",mode.elimination_path},{"iterations", iteration + 1},
                     {"directions", directions},
                     {"policy", "CONTROL_AND_CONSTITUTIVE_JOINT"}};
       return mode;

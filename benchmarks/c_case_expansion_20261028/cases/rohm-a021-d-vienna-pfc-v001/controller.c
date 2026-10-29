@@ -23,8 +23,8 @@ PULSE_SW_EXPORT int PULSE_SW_CALL control_step(pulse_software_call *c) {
         /* Include the right-limit sign at an exact comparator crossing. */
         double crossing_up=(s->mod[k]+1)*.25,crossing_down=(3-s->mod[k])*.25;
         int positive=(phase<crossing_up-1e-10)||(phase>=crossing_down-1e-10);
-        c->outputs[2*k]=(s->vac[k]>0)&&!positive;
-        c->outputs[2*k+1]=(s->vac[k]<0)&&positive;
+        c->outputs[2*k]=(s->vac[k]>0)||positive;
+        c->outputs[2*k+1]=(s->vac[k]<0)||positive;
         double a=s->bottom-T+crossing_up*T,b=s->bottom-T+crossing_down*T;
         if(a>t+eps)next=fmin(next,a);if(b>t+eps)next=fmin(next,b);
     }

@@ -1,7 +1,9 @@
+#include "pulse/engineering.hpp"
 #include "pulse/state_coordinates.hpp"
 #include <sstream>
 #include <iomanip>
 #include <bit>
+#include <functional>
 namespace pulse {
 namespace {
 thread_local const Model*owner=nullptr;
@@ -11,24 +13,64 @@ thread_local PersistentChart chart;
 thread_local uint64_t encodes=0,views=0;
 void build(const Model&m){
   int n=m.ns+1;chart=PersistentChart{};chart.weights=Vector::Ones(n);chart.mix=Matrix::Identity(n,n);chart.unmix=chart.mix;chart.T=chart.mix;chart.L=chart.mix;encodes=views=0;
-  chart.selection_reason="No eligible linear two-inductor KCL difference; identity.";
+  chart.selection_reason="No independent multi-storage incidence row; identity.";
   chart.coordinate_ids=m.state_ids;
   if(!m.numerical_coordinates){chart.selection_reason="Public compile API uses physical coordinates.";return;}
 
-  for(const auto&p:m.parts)if((p.raw.kind=="C"||p.raw.kind=="L")&&(!p.curve.x.empty()||p.inductance.rows()>0)){chart.selection_reason="Nonlinear/coupled storage is outside this fixed-chart prototype; identity.";return;}
-  Matrix injection=Matrix::Zero(m.nodes.size(),n);
-  for(const auto&p:m.parts)if(p.raw.kind=="C"||p.raw.kind=="L"){
-    double w=1/number(p.raw.options.at(p.raw.kind));chart.weights[p.state]=w;
-    if(p.raw.kind=="L"){auto[a,b]=p.ports[0];if(a!="0")injection(m.nodes.at(a),p.state)+=1;if(b!="0")injection(m.nodes.at(b),p.state)-=1;}
+  auto linear_scalar=[](const Part&p){return (p.raw.kind=="C"||p.raw.kind=="L")&&p.curve.x.empty()&&p.inductance.rows()==0;};
+  // A fixed, invertible coordinate chart, derived from sparse storage incidence.
+  // It is not a mode-dependent projection: every original degree of freedom is
+  // retained, including cutset imbalances. No assumed zero is written to state.
+  Matrix inductors=Matrix::Zero(m.nodes.size(),n),caps=inductors;
+  std::map<std::string,std::string> parent;parent["0"]="0";
+  for(const auto&[node,index]:m.nodes)parent[node]=node;
+  std::function<std::string(const std::string&)> find=[&](const std::string&node){return parent[node]==node?node:parent[node]=find(parent[node]);};
+  for(const auto&p:m.parts){
+    if(linear_scalar(p)){
+      chart.weights[p.state]=1/number(p.raw.options.at(p.raw.kind));
+      auto[a,b]=p.ports[0];auto& incidence=p.raw.kind=="L"?inductors:caps;
+      if(a!="0")incidence(m.nodes.at(a),p.state)+=1;
+      if(b!="0")incidence(m.nodes.at(b),p.state)-=1;
+    }
+    if(p.raw.kind!="L"&&p.raw.kind!="I")for(const auto&[a,b]:p.ports)parent[find(a)]=find(b);
   }
-  for(int i=0;i<injection.rows();i++){
-    std::vector<int> columns;for(int j=0;j<m.ns;j++)if(injection(i,j))columns.push_back(j);
-    if(columns.size()!=2||injection(i,columns[0])*injection(i,columns[1])>=0)continue;
-    const int pivot=columns.back();chart.mix.row(pivot)=injection.row(i)/injection(i,pivot);
-    chart.unmix.row(pivot)=-chart.mix.row(pivot);chart.unmix(pivot,pivot)=1;
-    require((chart.mix*chart.unmix-Matrix::Identity(n,n)).isZero(0),12,"PERSISTENT_CHART_INVERSE","integer mix is not exactly invertible");
-    chart.active=true;chart.difference_slot=pivot;chart.selection_reason="Fixed graph-derived two-inductor KCL difference; compiler-owned physical state ordinals and exact binary coefficients identify rows.";break;
+  std::vector<bool> used(n,false);
+  auto add_row=[&](const Vector&original){
+    int count=0;for(int j=0;j<m.ns;j++)if(original[j])++count;
+    if(count<2)return;
+    Vector row=chart.unmix.transpose()*original;
+    int pivot=-1;for(int j=0;j<m.ns;j++)if(!used[j]&&std::abs(row[j])==1)pivot=j;
+    if(pivot<0)return;
+    row/=row[pivot];
+    // Unit-pivot integer row operations have an exact inverse in binary64.
+    // Refuse an unsafe chart instead of rounding a numerical inverse.
+    if(row.cwiseAbs().maxCoeff()>1024||!row.allFinite())return;
+    for(int j=0;j<n;j++)if(row[j]!=std::trunc(row[j]))return;
+    Matrix next=chart.mix;next.row(pivot)=row.transpose()*chart.mix;
+    Matrix inverse=chart.unmix;
+    for(int j=0;j<n;j++)if(j!=pivot)inverse.col(j)-=row[j]*chart.unmix.col(pivot);
+    if(!(next*inverse-Matrix::Identity(n,n)).isZero(0))return;
+    chart.mix=std::move(next);chart.unmix=std::move(inverse);used[pivot]=true;
+    chart.active=true;if(chart.difference_slot<0)chart.difference_slot=pivot;
+  };
+  // KCL cutsets may span any number of inductors and intervening voltage
+  // sources/resistors/capacitors. Process these before local nodal differences.
+  std::map<std::string,Vector> cuts;
+  for(const auto&p:m.parts)if(p.raw.kind=="L"&&linear_scalar(p)){
+    auto[a,b]=p.ports[0];if(find(a)==find(b))continue;
+    for(const auto&[node,sign]:{std::pair{a,1.},std::pair{b,-1.}}){
+      auto root=find(node);if(root==find("0"))continue;
+      if(!cuts.count(root))cuts[root]=Vector::Zero(n);
+      cuts[root][p.state]+=sign;
+    }
   }
+  for(const auto&[root,row]:cuts)add_row(row);
+  for(int i=0;i<inductors.rows();i++)add_row(inductors.row(i).transpose());
+  // Voltage differences/imbalances of capacitor networks use the same generic
+  // construction. Capacitor and inductor blocks are independent; any number of
+  // independent rows can be retained, not just the first eligible device pair.
+  for(int i=0;i<caps.rows();i++)add_row(caps.row(i).transpose());
+  if(chart.active)chart.selection_reason="Fixed unit-pivot storage incidence chart: arbitrary-size inductor cutsets, nodal current sums/differences and capacitor voltage imbalances; all degrees of freedom retained.";
   if(!chart.active){chart.weights.setOnes();chart.mix.setIdentity();chart.unmix.setIdentity();}
   chart.T=chart.mix*chart.weights.asDiagonal();chart.L=chart.weights.cwiseInverse().asDiagonal()*chart.unmix;
   chart.coordinate_ids.clear();
@@ -66,7 +108,10 @@ double state_signal(const RunState&s,const std::string&name){
  const Mode&mode=s.internal_mode?*s.internal_mode:s.mode;
  const Vector&x=s.internal.size()?s.internal:s.physical;
  const auto n=net_name(name);auto b=mode.bools.find(n);
- return b!=mode.bools.end()?double(b->second):mode.maps.at(n).dot(x);
+ if(b!=mode.bools.end())return double(b->second);
+ if(s.electrical_flow && s.electrical_flow->compatible(mode))
+   return s.electrical_flow->observe(mode.maps.at(n),0);
+ return mode.maps.at(n).dot(x);
 }
 void publish_physical_state(const Model&m,RunState&s){
  if(s.internal.size()!=m.ns+1)return;
