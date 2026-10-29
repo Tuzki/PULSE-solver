@@ -9,26 +9,38 @@ struct Scope{int before;Scope(int v):before(variant){variant=v;}~Scope(){variant
 const std::array<std::string,3>names={"RAW_QPHI_ELIMINATION_LU","RAW_QPHI_ELIMINATION_QR","PERSISTENT_DIFFERENCE_LU"};
 }
 int portfolio_variant(){return variant;}
-Mode portfolio_mode(const Model&m,const RunState&checkpoint,int algorithm,Stats&stats){
- if(algorithm==0&&!persistent_chart(m).active)return checkpoint.mode;
- std::map<int,bool>bits;for(int i:m.cmps)bits[i]=checkpoint.mode.bools.at(net_name(m.parts[i].raw.args[0]));
- if(algorithm==2)return compile_specified(m,checkpoint.internal,checkpoint.regs,stats,bits,checkpoint.mode.segments,CompilePurpose::AcceptedEntry);
+Mode portfolio_compile(const Model&m,const Vector&internal,
+ const std::map<std::string,double>&regs,Stats&stats,
+ const std::map<int,bool>&bits,const std::map<int,int>&segments,
+ int algorithm,CompilePurpose purpose){
+ require(algorithm>=0&&algorithm<3,12,"STRATEGY_SCOPE","invalid numerical strategy");
  Mode mode;
- {Scope scope(algorithm);mode=compile_specified(m,physical_view(m,checkpoint.internal),checkpoint.regs,stats,bits,checkpoint.mode.segments,CompilePurpose::RegionClassification);}
- const auto&chart=persistent_chart(m);const auto&T=chart.T;const auto&L=chart.L;
- // Raw q/phi equations are eliminated first; bring their operators to the
- // authoritative checkpoint coordinates. No rounded physical view is encoded
- // back into storage, and the legacy elimination errors are not corrected here.
- mode.M=T*mode.M*L;
- if(mode.constraints.rows())mode.constraints=mode.constraints*L;
- if(mode.residual_map.rows())mode.residual_map=mode.residual_map*L;
- if(mode.residual_reference.rows())mode.residual_reference=mode.residual_reference*L;
- if(mode.invariant_lift.rows()){mode.invariant_lift=T*mode.invariant_lift;mode.invariant_reduce=mode.invariant_reduce*L;}
- for(auto&[name,row]:mode.maps)row=L.transpose()*row;
- for(auto&guard:mode.guards)guard.row=L.transpose()*guard.row;
- mode.candidate_roundoff_scale.reset();
- accept_mode_entry(m,mode,checkpoint.internal);
+ if(algorithm==2){
+  Scope scope(2);mode=compile_specified(m,internal,regs,stats,bits,segments,purpose);
+ }else{
+  // Raw strategies compile in physical coordinates, but candidates and accepted
+  // modes are BOTH returned in the authoritative internal chart. Keep every
+  // mode-construction iteration on the attempt's explicitly selected strategy.
+  {Scope scope(algorithm);mode=compile_specified(m,physical_view(m,internal),regs,stats,bits,segments,CompilePurpose::RegionClassification);}
+  const auto&chart=persistent_chart(m);const auto&T=chart.T;const auto&L=chart.L;
+  mode.M=T*mode.M*L;
+  if(mode.observations.cols()==L.rows())mode.observations=mode.observations*L;
+  if(mode.constraints.rows())mode.constraints=mode.constraints*L;
+  if(mode.residual_map.rows())mode.residual_map=mode.residual_map*L;
+  if(mode.residual_reference.rows())mode.residual_reference=mode.residual_reference*L;
+  if(mode.invariant_lift.rows()){mode.invariant_lift=T*mode.invariant_lift;mode.invariant_reduce=mode.invariant_reduce*L;}
+  for(auto&[name,row]:mode.maps)row=L.transpose()*row;
+  for(auto&guard:mode.guards)guard.row=L.transpose()*guard.row;
+  if(mode.candidate_roundoff_scale)
+   mode.candidate_roundoff_scale=std::make_shared<const Matrix>((*mode.candidate_roundoff_scale)*L.cwiseAbs());
+  if(purpose==CompilePurpose::AcceptedEntry)accept_mode_entry(m,mode,internal);
+ }
+ mode.numerical_strategy=algorithm;
  return mode;
+}
+Mode portfolio_mode(const Model&m,const RunState&checkpoint,int algorithm,Stats&stats){
+ std::map<int,bool>bits;for(int i:m.cmps)bits[i]=checkpoint.mode.bools.at(net_name(m.parts[i].raw.args[0]));
+ return portfolio_compile(m,checkpoint.internal,checkpoint.regs,stats,bits,checkpoint.mode.segments,algorithm);
 }
 bool portfolio_retryable(const Error&e){
  static const std::set<std::string>retryable={"PHYSICAL_CONSTRAINT_VIOLATION","DESCRIPTOR_RESIDUAL","CANDIDATE_LINEAR_RESIDUAL","NONFINITE_CANDIDATE","NONFINITE_DESCRIPTOR","UNPREDICTED_GUARD_JUMP","ZERO_EVENT_DERIVATIVE","ENGINEERING_ROOT_BUDGET","PORTFOLIO_QR_RANK","PORTFOLIO_ORIGINAL_RESIDUAL","PORTFOLIO_DYNAMIC_RESIDUAL","INJECTED_PORTFOLIO_REJECTION","MODE_DIRECTION_CYCLE","MODE_CYCLE","INCONSISTENT_MODE_TRANSITION","ROOT_DIRECTION_UNRESOLVED","BREAKPOINT_LEFT_DIRECTION","BREAKPOINT_NOT_REACHED","NO_FORWARD_ADMISSIBLE_MODE","MODE_DIRECTION_BUDGET","INJECTED_EVENT_CLOSURE_REJECTION","TIME_ORDER_UNRESOLVED"};

@@ -1,3 +1,4 @@
+#include "pulse/engineering.hpp"
 #include "pulse/state_coordinates.hpp"
 #include <sstream>
 #include <iomanip>
@@ -107,7 +108,10 @@ double state_signal(const RunState&s,const std::string&name){
  const Mode&mode=s.internal_mode?*s.internal_mode:s.mode;
  const Vector&x=s.internal.size()?s.internal:s.physical;
  const auto n=net_name(name);auto b=mode.bools.find(n);
- return b!=mode.bools.end()?double(b->second):mode.maps.at(n).dot(x);
+ if(b!=mode.bools.end())return double(b->second);
+ if(s.electrical_flow && s.electrical_flow->compatible(mode))
+   return s.electrical_flow->observe(mode.maps.at(n),0);
+ return mode.maps.at(n).dot(x);
 }
 void publish_physical_state(const Model&m,RunState&s){
  if(s.internal.size()!=m.ns+1)return;

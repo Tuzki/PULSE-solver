@@ -4,6 +4,7 @@
 #include <array>
 #include <bit>
 #include <complex>
+#include <cstdlib>
 #include <functional>
 #include <numbers>
 #include <sstream>
@@ -19,6 +20,8 @@ struct Basis {
   CMatrix vectors, inverse;
   CVector poles;
   bool modal = false;
+  bool centered = false;
+  Vector center, center_defect, center_residual;
 };
 std::string key(const Mode &m) {
   std::string s;
@@ -125,9 +128,34 @@ std::shared_ptr<Basis> basis(const Mode &mode) {
   }
   if (n > 0) {
     Matrix a = b->balanced.topLeftCorner(n, n);
+    // A particular affine state is computed independently of modal residues.
+    // Equilibrating equations/unknowns avoids a rank decision based on the
+    // ratio of the fastest and slowest poles. Singular systems retain the
+    // existing phi/integrator path; no inverse or steady state is presumed.
+    Vector rs=Vector::Ones(n),cs=Vector::Ones(n);
+    for(int i=0;i<n;i++){double q=a.row(i).cwiseAbs().maxCoeff();if(q)rs[i]=1/q;}
+    Matrix equilibrated=rs.asDiagonal()*a;
+    for(int j=0;j<n;j++){double q=equilibrated.col(j).cwiseAbs().maxCoeff();if(q)cs[j]=1/q;}
+    equilibrated=equilibrated*cs.asDiagonal();
+    Eigen::FullPivLU<Matrix> affine_lu(equilibrated);
+    affine_lu.setThreshold(64*std::numeric_limits<double>::epsilon()*std::max(1,n));
+    if(affine_lu.isInvertible()){
+      const Vector forcing=b->balanced.topRightCorner(n,1);
+      b->center=cs.asDiagonal()*affine_lu.solve(rs.asDiagonal()*(-forcing));
+      Vector defect(n);
+      for(int i=0;i<n;i++){
+        long double v=forcing[i];for(int j=0;j<n;j++)v+=static_cast<long double>(a(i,j))*b->center[j];defect[i]=double(v);
+      }
+      b->center_residual=defect;
+      b->center_defect=cs.asDiagonal()*affine_lu.solve(rs.asDiagonal()*defect);
+      Vector scale=a.cwiseAbs()*b->center.cwiseAbs()+forcing.cwiseAbs();
+      double backward=0;for(int i=0;i<n;i++)backward=std::max(backward,std::abs(defect[i])/std::max(1e-300,scale[i]));
+      b->centered=b->center.allFinite()&&b->center_defect.allFinite()&&backward<=64*std::numeric_limits<double>::epsilon()*std::max(1,n);
+    }
     Eigen::ComplexEigenSolver<Matrix> eig(a);
     if (eig.info() == Eigen::Success) {
       b->poles = eig.eigenvalues();
+      if((b->poles.array()==Complex(0)).any())b->centered=false;
       b->vectors = eig.eigenvectors();
       refine_eigenpairs(a,b->poles,b->vectors);
       Eigen::FullPivLU<CMatrix> lu(b->vectors);
@@ -194,8 +222,9 @@ struct FlowData {
   Mode mode;
   Vector initial, reduced, scaled;
   std::shared_ptr<Basis> basis;
-  CVector y, forcing;
+  CVector y, forcing, center_shift;
   std::vector<Functional> guards;
+  mutable std::map<std::string,std::shared_ptr<FlowData>> observable_cache;
   // Local scalar Taylor evaluation is anchored at the committed physical
   // point. It avoids subtracting nearly cancelling spectral residues when
   // deciding the direction immediately after a constitutive knot.
@@ -283,6 +312,13 @@ Flow::Flow(const Mode &mode, const Vector &initial)
   if (b.modal && n) {
     d.y = b.inverse * d.scaled.head(n).cast<Complex>();
     d.forcing = b.inverse * b.balanced.topRightCorner(n, 1).cast<Complex>();
+    if(b.centered){
+      d.center_shift=b.inverse*b.center_residual.cast<Complex>();
+      for(int j=0;j<n;j++){
+        require(b.poles[j]!=Complex(0),7,"AFFINE_PARTICULAR_UNRESOLVED","nonsingular particular decomposition produced an unresolved zero pole",true);
+        d.center_shift[j]/=b.poles[j];
+      }
+    }
   }
   for (auto &guard : mode.guards) {
     Functional g;
@@ -292,6 +328,19 @@ Flow::Flow(const Mode &mode, const Vector &initial)
                         b.lift * b.scaling.head(n).asDiagonal())
                            .eval();
       Eigen::RowVectorXcd row = projected.cast<Complex>() * b.vectors;
+      if(b.centered){
+        Vector center_state=initial;
+        center_state.head(initial.size()-1)+=b.lift*(b.center.cwiseProduct(b.scaling.head(n))-d.reduced);
+        // Retain the residual forcing of the approximate particular state.
+        // Its modal phi contribution is represented explicitly, rather than
+        // silently treating a computed equilibrium as an exact equilibrium.
+        g.constant=guard.row.dot(center_state) - (row*d.center_shift).value().real();
+        const CVector amplitude=(b.inverse*(d.scaled.head(n)-b.center).cast<Complex>() +
+                                 d.center_shift).eval();
+        for(int j=0;j<n;j++)g.terms.push_back({b.poles[j],row[j]*amplitude[j]});
+        d.guards.push_back(std::move(g));
+        continue;
+      }
       g.constant -= (row * d.y).value().real();
       for (int j = 0; j < n; ++j) {
         if (b.poles[j] == Complex(0)) {
@@ -309,6 +358,7 @@ Flow::Flow(const Mode &mode, const Vector &initial)
   d.points.emplace(0, initial);
 }
 Vector Flow::state(double t) const {
+  t += offset_.seconds();
   require(t >= 0 && std::isfinite(t), 7, "TIME_ORDER",
           "invalid engineering propagation time", true);
   auto &d = *data_;
@@ -333,23 +383,38 @@ Vector Flow::state(double t) const {
     if (d.points.size() < 4096) d.points.emplace(t, out);
     return out;
   }
-  Vector z(n);
-  if (b.modal) {
-    CVector y(n);
-    for (int j = 0; j < n; ++j)
-      y[j] =
-          std::exp(b.poles[j] * t) * d.y[j] + phi(b.poles[j], t) * d.forcing[j];
-    CVector answer = b.vectors * y;
-    z = answer.real().cwiseProduct(b.scaling.head(n));
-    require(answer.imag().norm() <= 1e-7 * std::max(1., answer.real().norm()),
-            7, "MODAL_COMPLEX_RESIDUAL",
-            "engineering flow has excessive imaginary residual", true);
-  } else {
-    Vector a = (b.balanced * t).exp() * d.scaled;
-    z = a.head(n).cwiseProduct(b.scaling.head(n));
-  }
   Vector out = d.initial;
-  out.head(out.size() - 1) += b.lift * (z - d.reduced);
+  if (b.modal && b.centered) {
+    // Compute each physical storage coordinate from the original anchor.
+    // Use the lower-operation-scale form (absolute or expm1 increment).
+    const CVector amp=(b.inverse*(d.scaled.head(n)-b.center).cast<Complex>() +
+                       d.center_shift).eval();
+    for(int i=0;i<out.size()-1;i++){
+      const Eigen::RowVectorXd projected=b.lift.row(i)*b.scaling.head(n).asDiagonal();
+      const Eigen::RowVectorXcd row=projected.cast<Complex>()*b.vectors;
+      long double absolute=static_cast<long double>(d.initial[i]);
+      long double increment=absolute, abs_scale=std::abs(absolute), inc_scale=abs_scale;
+      for(int j=0;j<n;j++) absolute+=static_cast<long double>(b.lift(i,j))*(
+        static_cast<long double>(b.scaling[j])*b.center[j]-d.reduced[j]);
+      absolute-=(row*d.center_shift).value().real();abs_scale=std::abs(absolute);
+      for(int j=0;j<n;j++){
+        Complex c=row[j]*amp[j], e=std::exp(b.poles[j]*t);
+        Complex delta=b.poles[j]*phi(b.poles[j],t);
+        absolute+=(c*e).real(); increment+=(c*delta).real();
+        abs_scale+=std::abs(c*e);inc_scale+=std::abs(c*delta);
+      }
+      out[i]=double(inc_scale<abs_scale?increment:absolute);
+    }
+  } else {
+    Vector z(n);
+    if(b.modal){
+      CVector y(n);for(int j=0;j<n;j++)y[j]=std::exp(b.poles[j]*t)*d.y[j]+phi(b.poles[j],t)*d.forcing[j];
+      CVector answer=b.vectors*y;z=answer.real().cwiseProduct(b.scaling.head(n));
+      require(answer.imag().norm()<=1e-7*std::max(1.,answer.real().norm()),7,
+        "MODAL_COMPLEX_RESIDUAL","engineering flow has excessive imaginary residual",true);
+    } else {Vector a=(b.balanced*t).exp()*d.scaled;z=a.head(n).cwiseProduct(b.scaling.head(n));}
+    out.head(out.size()-1)+=b.lift*(z-d.reduced);
+  }
   out[out.size() - 1] = 1;
   require(out.allFinite(), 7, "NONFINITE_PROPAGATION",
           "engineering matrix exponential is nonfinite", true);
@@ -358,6 +423,7 @@ Vector Flow::state(double t) const {
   return out;
 }
 double Flow::value(size_t k, double t, int order) const {
+  t += offset_.seconds();
   auto &d = *data_;
   if (t == 0 && order == 0)
     return d.mode.guards.at(k).row.dot(d.initial);
@@ -373,7 +439,7 @@ double Flow::value(size_t k, double t, int order) const {
     Vector row = d.mode.guards.at(k).row;
     for (int j = 0; j < order; ++j)
       row = (row.transpose() * d.mode.M).transpose();
-    return row.dot(state(t));
+    return row.dot(state(t - offset_.seconds()));
   }
   const auto &g = d.guards.at(k);
   long double value = order == 0   ? g.constant + g.linear * t
@@ -388,6 +454,7 @@ double Flow::value(size_t k, double t, int order) const {
   return double(value);
 }
 Range Flow::bounds(size_t k, double a, double b, int order) const {
+  a += offset_.seconds(); b += offset_.seconds();
   auto &d = *data_;
   if (order <= 1 && b * d.local_rate <= .5) {
     const auto coefficients = local_coefficients(d, k, order);
@@ -433,7 +500,7 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
     Vector row = d.mode.guards.at(k).row;
     for (int j = 0; j < order; ++j)
       row = (row.transpose() * d.mode.M).transpose();
-    Vector x = state(mid), term = x;
+    Vector x = state(mid - offset_.seconds()), term = x;
     Range result{row.dot(x), row.dot(x)};
     double q = d.basis->balanced.cwiseAbs().rowwise().sum().maxCoeff() * h;
     if (q > 16)
@@ -512,6 +579,54 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
   }
   double pad = 64 * std::numeric_limits<double>::epsilon() * magnitude;
   return {result.lo - pad - tail, result.hi + pad + tail};
+}
+double Flow::tangent(const Mode &mode,const Vector &initial,const Vector &row){
+  auto b=basis(mode);const int n=int(b->generator.rows())-1;
+  using WVector=Eigen::Matrix<long double,Eigen::Dynamic,1>;
+  WVector z=WVector::Ones(n+1);
+  if(n)z.head(n)=(b->reduce.cast<long double>()*initial.cast<long double>()).cwiseQuotient(b->scaling.head(n).cast<long double>());
+  WVector dz=b->balanced.cast<long double>()*z;
+  WVector projected=(b->lift.cast<long double>().transpose()*row.head(initial.size()-1).cast<long double>()).cwiseProduct(b->scaling.head(n).cast<long double>());
+  return double(projected.dot(dz.head(n)));
+}
+bool Flow::compatible(const Mode &m) const {
+  const auto &old=data_->mode;
+  auto same=[](const Matrix&a,const Matrix&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
+  if(m.numerical_strategy!=old.numerical_strategy||key(m)!=key(old)||m.segments!=old.segments||
+     !same(m.constraints,old.constraints)||!same(m.residual_map,old.residual_map)||
+     !same(m.residual_reference,old.residual_reference)||m.maps.size()!=old.maps.size())return false;
+  for(const auto &[name,row]:old.maps){
+    auto it=m.maps.find(name);
+    if(it==m.maps.end())return false;
+    // BOOL projections are control snapshots, not electrical observations.
+    // All real-valued maps (including source values) still require equality.
+    if(old.bools.count(name)&&m.bools.count(name))continue;
+    if(!same(row,it->second))return false;
+  }
+  return true;
+}
+Flow Flow::continued(const Mode &m,double elapsed) const {
+  require(compatible(m)&&elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
+  // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
+  Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);return next;
+}
+double Flow::observe(const Vector &row,double t,int derivative) const {
+  // Project an arbitrary observable on this same continuous trajectory.
+  for(size_t k=0;k<data_->mode.guards.size();k++){
+    const auto &g=data_->mode.guards[k].row;
+    if(g.size()==row.size()&&(g.array()==row.array()).all())return value(k,t,derivative);
+    if(g.size()==row.size()&&(g.array()==-row.array()).all())return -value(k,t,derivative);
+  }
+  std::string id(reinterpret_cast<const char*>(row.data()),size_t(row.size())*sizeof(double));
+  auto found=data_->observable_cache.find(id);
+  if(found==data_->observable_cache.end()){
+    Mode view=data_->mode;view.maps.clear();view.bools.clear();
+    view.guards.clear();view.guards.push_back({row,0,1,"OBSERVE"});
+    Flow projection(view,data_->initial);
+    found=data_->observable_cache.emplace(std::move(id),projection.data_).first;
+  }
+  Flow projection=*this;projection.data_=found->second;
+  return projection.value(0,t,derivative);
 }
 double Flow::scale(size_t k) const {
   const auto &g = data_->guards.at(k);

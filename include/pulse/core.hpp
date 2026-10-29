@@ -10,6 +10,7 @@
 #include <set>
 #include <stdexcept>
 namespace pulse {
+namespace engineering { class Flow; }
 namespace validated {
 struct State;
 }
@@ -95,6 +96,8 @@ Vector reduce_physical(const Matrix &, const Vector &);
 struct Mode {
   // A region-classification candidate is never an accepted physical flow.
   bool classification_only = false;
+  // Strategy provenance is part of an accepted electrical trajectory.
+  int numerical_strategy = 2;
   // Shared by compiled definitions; released from accepted trajectory states.
   std::shared_ptr<const Matrix> candidate_roundoff_scale;
   Matrix M, observations, constraints, residual_map,
@@ -181,6 +184,8 @@ struct RunState {
   std::string time_origin = "0";
   Vector physical; // public q/phi/INT view, never used to recover small differences
   Vector internal; // authoritative numerical state during simulation
+  std::shared_ptr<const engineering::Flow> electrical_flow;
+  int electrical_strategy = -1;
   std::shared_ptr<const Mode> internal_mode; // retained for accurate observation of published snapshots
   std::shared_ptr<const validated::State> validated_state;
   bool validated_chain = false;

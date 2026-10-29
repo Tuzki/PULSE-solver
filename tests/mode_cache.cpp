@@ -42,8 +42,11 @@ void repeated_modes_exact() {
     Options off; off.mode_cache_capacity = 0;
     auto a = simulate(model, off), b = simulate(model);
     identical(a, b);
-    check(b.stats.cache_hits > 10 && b.stats.modes == 2, "two repeated modes not reused");
-    check(b.stats.mode_cache_peak_entries == 2, "unexpected cache entry count");
+    // Initialization uses strategy 2; transactions explicitly use strategy 0.
+    // Their cache keys must remain distinct even for this unmixed RC chart:
+    // one initial template plus the two repeated strategy-0 gate templates.
+    check(b.stats.cache_hits > 10 && b.stats.modes == 3, "strategy-specific repeated modes not reused");
+    check(b.stats.mode_cache_peak_entries == 3, "strategy-specific cache entry count");
 }
 void reg_values_are_in_key() {
     const std::string network =

@@ -10,16 +10,23 @@ struct Range {
 struct FlowData;
 class Flow {
   std::shared_ptr<FlowData> data_;
+  Time offset_;
 
 public:
   Flow(const Mode &, const Vector &);
   Vector state(double) const;
+  // Continuation retains the original numerical anchor. Compatibility excludes
+  // guard orientation and control bits, but includes every electrical map.
+  bool compatible(const Mode &) const;
+  Flow continued(const Mode &, double elapsed) const;
+  double observe(const Vector &, double time, int derivative = 0) const;
   double value(size_t guard, double time, int derivative = 0) const;
   Range bounds(size_t guard, double lower, double upper,
                int derivative = 0) const;
   double scale(size_t guard) const;
   bool stationary(size_t guard) const;
   bool modal() const;
+  static double tangent(const Mode &, const Vector &, const Vector &row);
 };
 struct Crossing {
   size_t guard = 0;
@@ -36,5 +43,5 @@ Mode initial_mode(const Model &, const Vector &,
 Mode update_mode(const Model &, const RunState &, const Vector &,
                  const std::map<std::string, double> &,
                  const std::vector<Mode::Guard> &, const std::set<int> &seeds,
-                 Stats &, Json *details = nullptr);
+                 Stats &, Json *details = nullptr, int algorithm = 2);
 } // namespace pulse::engineering

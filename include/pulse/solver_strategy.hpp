@@ -10,6 +10,11 @@ struct PortfolioStats {
  void record_failure(int algorithm,const RunState&checkpoint,Time target,const Error&error);
  Json description()const;
 };
+Mode portfolio_compile(const Model &, const Vector &internal,
+                       const std::map<std::string,double> &regs, Stats &,
+                       const std::map<int,bool> &bits,
+                       const std::map<int,int> &segments, int algorithm,
+                       CompilePurpose purpose = CompilePurpose::AcceptedEntry);
 Mode portfolio_mode(const Model&,const RunState&,int,Stats&);
 void portfolio_original_check(const Model&,const RunState&,const Mode&,const Vector&);
 bool portfolio_retryable(const Error&);
