@@ -58,6 +58,21 @@ def main():
         stale,_=run(model,'stale_module',success=False)
         check(stale['diagnostic']['subcode']=='SOFTWARE_STALE_MODULE','stale source is detected')
     finally:dependency.write_bytes(saved)
+    extension='.dll' if sys.platform=='win32' else '.so'
+    module=model.parent/'.pulse_modules'/('CTRL'+extension)
+    saved_binary=module.read_bytes()
+    try:
+        module.write_bytes(saved_binary+b'tampered')
+        stale,_=run(model,'tampered_binary',success=False)
+        check(stale['diagnostic']['subcode']=='SOFTWARE_STALE_MODULE','binary hash is checked before loading')
+    finally:module.write_bytes(saved_binary)
+    manifest=pathlib.Path(str(module)+'.json');saved_manifest=manifest.read_bytes()
+    try:
+        metadata=json.loads(saved_manifest);metadata['abi']=1
+        manifest.write_text(json.dumps(metadata),encoding='utf-8')
+        stale,_=run(model,'wrong_manifest_abi',success=False)
+        check(stale['diagnostic']['subcode']=='SOFTWARE_STALE_MODULE','manifest ABI is checked')
+    finally:manifest.write_bytes(saved_manifest)
     gate=prepare('gate_model','software_gate');build(gate)
     gate_report,gate_dest=run(gate,'gate_run')
     events=[json.loads(x) for x in (gate_dest/'event_log.jsonl').read_text().splitlines()]

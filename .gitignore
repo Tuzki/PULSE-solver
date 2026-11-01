@@ -1,5 +1,8 @@
 # Generated builds and native modules
 /build/
+/build-linux/
+*.so
+*.so.*
 /.build*/
 **/.pulse_modules/
 **/__pycache__/

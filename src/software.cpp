@@ -12,14 +12,17 @@
 #endif
 #include <windows.h>
 #include <bcrypt.h>
+#else
+#include <dlfcn.h>
+#include <openssl/evp.h>
 #endif
 namespace pulse::software {
 std::string file_sha256(const std::string &path) {
-#if defined(_WIN32)
   std::ifstream f(std::filesystem::path(path),std::ios::binary);
   require(bool(f),2,"SOFTWARE_FILE_MISSING","cannot read module dependency: "+path);
   std::vector<unsigned char> bytes((std::istreambuf_iterator<char>(f)),{});
   require(bytes.size()<=64*1024*1024,2,"SOFTWARE_FILE_SIZE","module dependency exceeds 64 MiB");
+#if defined(_WIN32)
   struct Hash {
     BCRYPT_ALG_HANDLE algorithm=nullptr;BCRYPT_HASH_HANDLE hash=nullptr;
     std::vector<unsigned char> object;
@@ -32,22 +35,33 @@ std::string file_sha256(const std::string &path) {
   require(BCryptCreateHash(h.algorithm,&h.hash,h.object.data(),size,nullptr,0,0)>=0&&
           BCryptHashData(h.hash,bytes.data(),ULONG(bytes.size()),0)>=0&&
           BCryptFinishHash(h.hash,digest,sizeof(digest),0)>=0,12,"SOFTWARE_HASH","SHA256 failed");
-  std::ostringstream s;s<<std::hex<<std::setfill('0');for(auto b:digest)s<<std::setw(2)<<unsigned(b);return s.str();
 #else
-  throw Error(2,"SOFTWARE_PLATFORM","native software modules currently require Windows");
+  unsigned char digest[32];unsigned int size=0;
+  require(EVP_Digest(bytes.data(),bytes.size(),digest,&size,EVP_sha256(),nullptr)==1&&size==sizeof(digest),
+          12,"SOFTWARE_HASH","SHA256 failed");
 #endif
+  std::ostringstream s;s<<std::hex<<std::setfill('0');for(auto b:digest)s<<std::setw(2)<<unsigned(b);return s.str();
 }
 namespace {
 struct Loaded {
 #if defined(_WIN32)
   HMODULE handle=nullptr;
   ~Loaded(){if(handle)FreeLibrary(handle);}
+  void load(const std::filesystem::path &path) {
+    handle=LoadLibraryExW(path.wstring().c_str(),nullptr,LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
+  }
+  template<class T>T symbol(const char *name) {return std::bit_cast<T>(GetProcAddress(handle,name));}
+#else
+  void *handle=nullptr;
+  ~Loaded(){if(handle)dlclose(handle);}
+  void load(const std::filesystem::path &path) {handle=dlopen(path.c_str(),RTLD_NOW|RTLD_LOCAL);}
+  template<class T>T symbol(const char *name) {return std::bit_cast<T>(dlsym(handle,name));}
+#endif
   pulse_software_entry_fn entry(const std::string &name) {
     if(name.empty())return nullptr;
-    auto f=std::bit_cast<pulse_software_entry_fn>(GetProcAddress(handle,name.c_str()));
+    auto f=symbol<pulse_software_entry_fn>(name.c_str());
     require(f!=nullptr,2,"SOFTWARE_ENTRY","missing C entry: "+name);return f;
   }
-#endif
   pulse_software_info info{};
 };
 double read(const RunState&s,const std::string&name) {
@@ -100,7 +114,6 @@ struct Data {
 };
 Session::Session(const Model&m):data_(std::make_unique<Data>(m)) {
   if(m.netlist.tasks.empty())return;
-#if defined(_WIN32)
   for(const auto &task:m.netlist.tasks) {
     const auto &p=m.netlist.programs.at(task.program);
     if(!data_->modules.count(p.name)) {
@@ -113,10 +126,9 @@ Session::Session(const Model&m):data_(std::make_unique<Data>(m)) {
         manifest.at("inline_source").get<std::string>()==p.inline_source,2,"SOFTWARE_STALE_MODULE","code declarations changed since module build",false,p.source);
       for(auto &dependency:manifest.at("dependencies"))
         require(dependency.at("sha256")==file_sha256(dependency.at("path")),2,"SOFTWARE_STALE_MODULE","module source/header changed; rebuild software",false,p.source);
-      auto dll=std::filesystem::absolute(std::filesystem::path(p.binary));
-      module->handle=LoadLibraryExW(dll.wstring().c_str(),nullptr,LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
-      require(module->handle!=nullptr,2,"SOFTWARE_LOAD","cannot load software DLL: "+p.binary,false,p.source);
-      auto describe=std::bit_cast<pulse_software_describe_fn>(GetProcAddress(module->handle,"pulse_software_describe"));
+      module->load(std::filesystem::absolute(std::filesystem::path(p.binary)));
+      require(module->handle!=nullptr,2,"SOFTWARE_LOAD","cannot load software module: "+p.binary,false,p.source);
+      auto describe=module->symbol<pulse_software_describe_fn>("pulse_software_describe");
       require(describe!=nullptr,2,"SOFTWARE_ABI","missing pulse_software_describe",false,p.source);
       const auto *info=describe();
       require(info&&info->abi_version==PULSE_SOFTWARE_ABI&&info->struct_size==sizeof(*info)&&
@@ -133,9 +145,6 @@ Session::Session(const Model&m):data_(std::make_unique<Data>(m)) {
     for(int i:m.events)if(net_name(m.parts[i].raw.args[0])==task.wake_trigger)part=i;
     data_->tasks.push_back({&task,module,module->entry(task.init),module->entry(task.entry),part});
   }
-#else
-  throw Error(2,"SOFTWARE_PLATFORM","native software modules currently require Windows");
-#endif
 }
 Session::~Session()=default;
 void Session::initialize(RunState&s,Stats&) {

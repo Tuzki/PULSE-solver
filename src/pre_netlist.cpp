@@ -128,7 +128,11 @@ Netlist parse_pre_markdown(const std::string &text,const std::string&filename) {
     identifier(w[1],l.source);auto o=options(w,l.source,{"SOURCES","SOURCE"});
     if(o.count("SOURCE")==o.count("SOURCES"))bad(l.source,"SOFTWARE_SOURCE","choose SOURCE=INLINE or SOURCES=[...]");
     Netlist::Program p;p.name=w[1];p.source=l.source;
+#if defined(_WIN32)
     p.binary=(base/".pulse_modules"/(p.name+".dll")).string();
+#else
+    p.binary=(base/".pulse_modules"/(p.name+".so")).string();
+#endif
     if(o.count("SOURCE")) {
       if(upper(get(o,"SOURCE"))!="INLINE"||!inline_code.count(p.name))bad(l.source,"SOFTWARE_SOURCE","inline source is missing");
       p.inline_source=inline_code.at(p.name);

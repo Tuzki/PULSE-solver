@@ -30,11 +30,18 @@ def declarations(path):
 
 def main():
     p=argparse.ArgumentParser(); p.add_argument('netlist',type=pathlib.Path)
-    p.add_argument('--cc',default=r'D:\codex\tool\pulse-win\w64devkit\bin\gcc.exe')
+    p.add_argument('--cc',default=os.environ.get('CC', 'gcc'))
     a=p.parse_args(); path=a.netlist.resolve(); root=pathlib.Path(__file__).resolve().parents[1]
     destination=path.parent/'.pulse_modules'; destination.mkdir(exist_ok=True)
     sdk=root/'include'; env=os.environ.copy(); env['PATH']=str(pathlib.Path(a.cc).parent)+os.pathsep+env.get('PATH','')
     compiler=subprocess.check_output([a.cc,'--version'],text=True,env=env).splitlines()[0]
+    target=subprocess.check_output([a.cc,'-dumpmachine'],text=True,env=env).strip()
+    if 'mingw' in target or 'windows' in target:
+        extension='.dll'; platform_flags=['-static-libgcc']
+    elif 'linux' in target:
+        extension='.so'; platform_flags=['-fPIC','-Wl,-z,defs']
+    else:
+        raise ValueError('unsupported compiler target: '+target)
     for name,program in declarations(path).items():
         source_paths=[]
         for filename in program['sources']:
@@ -44,8 +51,8 @@ def main():
         if not source_paths:
             if not program['inline_source']: raise ValueError('empty inline code')
             source=destination/(name+'_inline.c'); source.write_text(program['inline_source'],encoding='utf-8'); source_paths.append(source)
-        binary=destination/(name+'.dll')
-        command=[a.cc,'-std=c11','-O2','-shared','-static-libgcc','-ffp-contract=off','-fno-fast-math',
+        binary=destination/(name+extension)
+        command=[a.cc,'-std=c11','-O2','-shared',*platform_flags,'-ffp-contract=off','-fno-fast-math',
             '-I',str(sdk),'-I',str(path.parent),*[str(x) for x in source_paths],'-o',str(binary),'-lm']
         subprocess.run(command,env=env,check=True)
         dependencies={sdk/'pulse/software.h',*source_paths}
@@ -60,7 +67,7 @@ def main():
                 candidate=pathlib.Path(token)
                 if candidate.is_file(): dependencies.add(candidate.resolve())
         abi=int(re.search(r'#define PULSE_SOFTWARE_ABI (\d+)u',(sdk/'pulse/software.h').read_text()).group(1))
-        manifest={'abi':abi,'compiler':compiler,'command':command,'binary_sha256':sha(binary),**program,
+        manifest={'abi':abi,'compiler':compiler,'target':target,'command':command,'binary_sha256':sha(binary),**program,
           'dependencies':[{'path':str(x.resolve()),'sha256':sha(x)} for x in sorted(dependencies)]}
         pathlib.Path(str(binary)+'.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         print(name,manifest['binary_sha256'],flush=True)
