@@ -19,7 +19,7 @@
 
 Windows 事件版使用 `./build_windows_event.ps1` 独立构建。全案例批测已因
 A010 事件归档膨胀而暂停，定位和离线证据见
-[模板膨胀调查](docs/reports/Trajectory_Template_Bloat_Investigation.md)；
+[A010 根因调查](docs/reports/A010_Root_Cause_Analysis.md)；
 尚未发布最终全案例比较或宣称全部通过。
 
 Linux x86-64（原生 Ubuntu 或 WSL2 Ubuntu）：

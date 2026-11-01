@@ -1,0 +1,1119 @@
+{
+  "source_commit": "81dd926bd5c6222c0804db3a0395a2a65404c083",
+  "scope": "2 ms and 20 ms diagnostic profiles, not full-duration acceptance; frame-pointer Release with -g1 -fno-omit-frame-pointer; no algorithm source changes",
+  "profiles": {
+    "wave20": {
+      "samples": 13869,
+      "period_total": 27793586952,
+      "binary": "/root/pulse-trajectory-v2/build-profile/pulse-solver",
+      "data": "/root/pulse-a010-rootcause-20261102/wave20.data",
+      "method": "frame-pointer samples; ELF-relative addresses from perf mmap and nm; inclusive shares overlap",
+      "call_path_categories": [
+        {
+          "name": "waveform stream_emit call path",
+          "percent": 66.82529382075131
+        },
+        {
+          "name": "other or unavailable caller",
+          "percent": 17.513879875982408
+        },
+        {
+          "name": "mode compilation call path",
+          "percent": 14.867690532843032
+        },
+        {
+          "name": "event search call path",
+          "percent": 0.793135770423246
+        }
+      ],
+      "leaf_modules": [
+        {
+          "name": "libc.so.6",
+          "percent": 50.09733939000649
+        },
+        {
+          "name": "pulse-solver",
+          "percent": 42.829331602855284
+        },
+        {
+          "name": "libstdc++.so.6.0.33",
+          "percent": 6.164828033744322
+        },
+        {
+          "name": "[kernel.kallsyms]",
+          "percent": 0.5551950392962722
+        },
+        {
+          "name": "libm.so.6",
+          "percent": 0.31004398298363256
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "percent": 0.028841300742663493
+        },
+        {
+          "name": "CTRL.so",
+          "percent": 0.014420650371331747
+        }
+      ],
+      "selected_inclusive_symbols": [
+        {
+          "name": "pulse::(anonymous namespace)::stream_emit(pulse::Model const&, pulse::Result&, pulse::RunState const&, pulse::RunState const&, pulse::Time, bool, bool) [clone .isra.0]",
+          "percent": 66.82529382075131
+        },
+        {
+          "name": "pulse::engineering::Flow::compatible(pulse::Mode const&) const",
+          "percent": 26.108587497296128
+        },
+        {
+          "name": "pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose)",
+          "percent": 14.867690532843032
+        },
+        {
+          "name": "pulse::engineering::Flow::observe(Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, double, int) const",
+          "percent": 6.972384454538899
+        },
+        {
+          "name": "pulse::engineering::Flow::Flow(pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&)",
+          "percent": 1.9900497512437811
+        }
+      ]
+    },
+    "trace20": {
+      "samples": 8792,
+      "period_total": 17619238336,
+      "binary": "/root/pulse-trajectory-v2/build-profile/pulse-solver",
+      "data": "/root/pulse-a010-rootcause-20261102/trace20.data",
+      "method": "frame-pointer samples; ELF-relative addresses from perf mmap and nm; inclusive shares overlap",
+      "call_path_categories": [
+        {
+          "name": "archive shared-block encoding",
+          "percent": 34.258416742493175
+        },
+        {
+          "name": "other or unavailable caller",
+          "percent": 25.079617834394906
+        },
+        {
+          "name": "mode compilation call path",
+          "percent": 24.374431301182895
+        },
+        {
+          "name": "other archive template encoding",
+          "percent": 15.195632393084624
+        },
+        {
+          "name": "event search call path",
+          "percent": 1.0919017288444042
+        }
+      ],
+      "leaf_modules": [
+        {
+          "name": "pulse-solver",
+          "percent": 61.16924476797089
+        },
+        {
+          "name": "libc.so.6",
+          "percent": 29.74294813466788
+        },
+        {
+          "name": "libstdc++.so.6.0.33",
+          "percent": 8.32575068243858
+        },
+        {
+          "name": "[kernel.kallsyms]",
+          "percent": 0.5345768880800729
+        },
+        {
+          "name": "libm.so.6",
+          "percent": 0.13648771610555052
+        },
+        {
+          "name": "libcrypto.so.3",
+          "percent": 0.05686988171064604
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "percent": 0.03412192902638763
+        }
+      ],
+      "selected_inclusive_symbols": [
+        {
+          "name": "pulse::TrajectoryPool::encode(nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> const&)",
+          "percent": 34.258416742493175
+        },
+        {
+          "name": "pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose)",
+          "percent": 24.374431301182895
+        },
+        {
+          "name": "pulse::engineering::Flow::observe(Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, double, int) const",
+          "percent": 2.024567788898999
+        },
+        {
+          "name": "pulse::engineering::Flow::Flow(pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&)",
+          "percent": 1.8880800727934486
+        },
+        {
+          "name": "pulse::engineering::Flow::compatible(pulse::Mode const&) const",
+          "percent": 0.6141947224749773
+        }
+      ]
+    },
+    "replay20": {
+      "samples": 12766,
+      "period_total": 25583166128,
+      "binary": "/root/pulse-trajectory-v2/build-profile/pulse-replay",
+      "data": "/root/pulse-a010-rootcause-20261102/replay20.data",
+      "method": "frame-pointer samples; ELF-relative addresses from perf mmap and nm; inclusive shares overlap",
+      "call_path_categories": [
+        {
+          "name": "waveform stream_emit call path",
+          "percent": 71.60426131912894
+        },
+        {
+          "name": "other or unavailable caller",
+          "percent": 28.395738680871062
+        }
+      ],
+      "leaf_modules": [
+        {
+          "name": "libc.so.6",
+          "percent": 59.219802600658
+        },
+        {
+          "name": "pulse-replay",
+          "percent": 35.1950493498355
+        },
+        {
+          "name": "libstdc++.so.6.0.33",
+          "percent": 4.605984646717844
+        },
+        {
+          "name": "[kernel.kallsyms]",
+          "percent": 0.7441641861193795
+        },
+        {
+          "name": "libm.so.6",
+          "percent": 0.18799937333542222
+        },
+        {
+          "name": "libcrypto.so.3",
+          "percent": 0.031333228889237036
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "percent": 0.007833307222309259
+        },
+        {
+          "name": "ld-linux-x86-64.so.2",
+          "percent": 0.007833307222309259
+        }
+      ],
+      "selected_inclusive_symbols": [
+        {
+          "name": "pulse::(anonymous namespace)::stream_emit(pulse::Model const&, pulse::Result&, pulse::RunState const&, pulse::RunState const&, pulse::Time, bool, bool) [clone .isra.0]",
+          "percent": 71.60426131912894
+        },
+        {
+          "name": "pulse::engineering::Flow::compatible(pulse::Mode const&) const",
+          "percent": 30.189566034779887
+        },
+        {
+          "name": "pulse::engineering::Flow::observe(Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, double, int) const",
+          "percent": 5.992480025066583
+        },
+        {
+          "name": "pulse::engineering::Flow::Flow(pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&)",
+          "percent": 1.3081623061256462
+        },
+        {
+          "name": "pulse::engineering::Flow::restore_archive(pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, pulse::Time)",
+          "percent": 0.39166536111546296
+        }
+      ]
+    }
+  },
+  "workload": {
+    "state_dimension_including_homogeneous": 5,
+    "snapshot_bytes": 144,
+    "snapshots": 318075,
+    "transactions": 159037,
+    "templates": 92893,
+    "full_mode_encode_calls": 484805,
+    "snapshot_mode_equals_flow_mode": 166730,
+    "snapshots_with_flow": 166730,
+    "previous_next_equals_following_old_mode": true,
+    "previous_next_equals_following_old_flow_mode": false,
+    "CH006_large_point_errors": {
+      "definition": "abs(actual-reference)>1 V on original full CSV grid; diagnostic only, no acceptance samples removed",
+      "count": 18,
+      "total_reference_samples": 500001,
+      "max_abs_V": 528.304289838798,
+      "max_distance_to_PULSE_event_seconds": 0.0,
+      "examples": [
+        {
+          "time": 0.01,
+          "error_V": -442.13902987426724,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.07005,
+          "error_V": 528.304289838798,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.11,
+          "error_V": -505.5548643299721,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.13,
+          "error_V": -487.1228513259542,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.15,
+          "error_V": -488.10345178618695,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.19,
+          "error_V": -505.36222919660014,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.19005,
+          "error_V": 505.0288076610637,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.25,
+          "error_V": -497.39455988316683,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.25005,
+          "error_V": 497.06637479973557,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.27005,
+          "error_V": 497.7913809032512,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.31,
+          "error_V": -500.77374577902003,
+          "nearest_event_seconds": 0.0
+        },
+        {
+          "time": 0.31005,
+          "error_V": 500.4433584423137,
+          "nearest_event_seconds": 0.0
+        }
+      ]
+    },
+    "offline_id_reuse_potential": {
+      "2": {
+        "known_root_id_reuses": 362411,
+        "calls": 484805,
+        "fraction": 0.7475397324697559
+      },
+      "4": {
+        "known_root_id_reuses": 391186,
+        "calls": 484805,
+        "fraction": 0.8068934932601768
+      },
+      "8": {
+        "known_root_id_reuses": 391912,
+        "calls": 484805,
+        "fraction": 0.8083910025680429
+      }
+    },
+    "reuse_limitation": "Oracle over already-known exact archive IDs; not an implemented fast cache and not measured speedup. Reuse must be established before expensive full encoding."
+  },
+  "voltage-edge-details": [
+    {
+      "time": 0.01,
+      "reference": 442.13910745270283,
+      "actual": 7.757843559375033e-05,
+      "pulse_before_0_1us": 7.75669832364656e-05,
+      "pulse_after_0_1us": 221.0643310546875,
+      "reference_vs_before_abs": 442.1390298857196,
+      "local_jump": 221.06425348770426
+    },
+    {
+      "time": 0.07005,
+      "reference": -0.0029592723918159245,
+      "actual": 528.3013305664062,
+      "pulse_before_0_1us": 528.302001953125,
+      "pulse_after_0_1us": -0.0016903742216527462,
+      "reference_vs_before_abs": 528.3049612255168,
+      "local_jump": 528.3036923273467
+    },
+    {
+      "time": 0.11,
+      "reference": 505.5549418465693,
+      "actual": 7.751659722998738e-05,
+      "pulse_before_0_1us": 7.750515214866027e-05,
+      "pulse_after_0_1us": 252.772216796875,
+      "reference_vs_before_abs": 505.55486434141716,
+      "local_jump": 252.77213929172285
+    },
+    {
+      "time": 0.13,
+      "reference": 487.12292885476046,
+      "actual": 7.752880628686398e-05,
+      "pulse_before_0_1us": 7.751735392957926e-05,
+      "pulse_after_0_1us": 243.55621337890625,
+      "reference_vs_before_abs": 487.12285133740653,
+      "local_jump": 243.55613586155232
+    },
+    {
+      "time": 0.15,
+      "reference": 488.1035293852499,
+      "actual": 7.759906293358654e-05,
+      "pulse_before_0_1us": 7.758761785225943e-05,
+      "pulse_after_0_1us": 244.04652404785156,
+      "reference_vs_before_abs": 488.10345179763203,
+      "local_jump": 244.0464464602337
+    },
+    {
+      "time": 0.19,
+      "reference": 505.36230676621,
+      "actual": 7.756960985716432e-05,
+      "pulse_before_0_1us": 7.75581574998796e-05,
+      "pulse_after_0_1us": 252.67588806152344,
+      "reference_vs_before_abs": 505.3622292080525,
+      "local_jump": 252.67581050336594
+    },
+    {
+      "time": 0.19005,
+      "reference": -0.0029592723918161106,
+      "actual": 505.0258483886719,
+      "pulse_before_0_1us": 505.0265197753906,
+      "pulse_after_0_1us": -0.0017467997968196869,
+      "reference_vs_before_abs": 505.02947904778244,
+      "local_jump": 505.02826657518744
+    },
+    {
+      "time": 0.25,
+      "reference": 497.39463739008704,
+      "actual": 7.750692020636052e-05,
+      "pulse_before_0_1us": 7.749547512503341e-05,
+      "pulse_after_0_1us": 248.6920623779297,
+      "reference_vs_before_abs": 497.3945598946119,
+      "local_jump": 248.69198488245456
+    },
+    {
+      "time": 0.25005,
+      "reference": -0.0029592723918149995,
+      "actual": 497.06341552734375,
+      "pulse_before_0_1us": 497.0640869140625,
+      "pulse_after_0_1us": -0.001766102621331811,
+      "reference_vs_before_abs": 497.0670461864543,
+      "local_jump": 497.06585301668383
+    },
+    {
+      "time": 0.27005,
+      "reference": -0.002959272391817169,
+      "actual": 497.7884216308594,
+      "pulse_before_0_1us": 497.7890930175781,
+      "pulse_after_0_1us": -0.0017643450992181897,
+      "reference_vs_before_abs": 497.79205228996994,
+      "local_jump": 497.79085736267734
+    },
+    {
+      "time": 0.31,
+      "reference": 500.77382329013847,
+      "actual": 7.75111184339039e-05,
+      "pulse_before_0_1us": 7.749966607661918e-05,
+      "pulse_after_0_1us": 250.38165283203125,
+      "reference_vs_before_abs": 500.7737457904724,
+      "local_jump": 250.38157533236517
+    },
+    {
+      "time": 0.31005,
+      "reference": -0.0029592723918148607,
+      "actual": 500.4403991699219,
+      "pulse_before_0_1us": 500.4410705566406,
+      "pulse_after_0_1us": -0.0017579160630702972,
+      "reference_vs_before_abs": 500.44402982903244,
+      "local_jump": 500.4428284727037
+    },
+    {
+      "time": 0.33005,
+      "reference": -0.002959272391816875,
+      "actual": 500.0413513183594,
+      "pulse_before_0_1us": 500.0420227050781,
+      "pulse_after_0_1us": -0.001758883474394679,
+      "reference_vs_before_abs": 500.04498197746994,
+      "local_jump": 500.0437815885525
+    },
+    {
+      "time": 0.37,
+      "reference": 499.3480469164618,
+      "actual": 7.750339136691764e-05,
+      "pulse_before_0_1us": 7.749193900963292e-05,
+      "pulse_after_0_1us": 249.66876220703125,
+      "reference_vs_before_abs": 499.3479694245228,
+      "local_jump": 249.66868471509224
+    },
+    {
+      "time": 0.37005,
+      "reference": -0.0029592723918145654,
+      "actual": 499.01556396484375,
+      "pulse_before_0_1us": 499.0162048339844,
+      "pulse_after_0_1us": -0.0017613702220842242,
+      "reference_vs_before_abs": 499.0191641063762,
+      "local_jump": 499.01796620420646
+    },
+    {
+      "time": 0.39005,
+      "reference": -0.0029592723918167112,
+      "actual": 499.2142028808594,
+      "pulse_before_0_1us": 499.2148742675781,
+      "pulse_after_0_1us": -0.0017608886118978262,
+      "reference_vs_before_abs": 499.21783353996994,
+      "local_jump": 499.21663515619
+    },
+    {
+      "time": 0.43,
+      "reference": 499.934147572285,
+      "actual": 7.750350050628185e-05,
+      "pulse_before_0_1us": 7.749205542495474e-05,
+      "pulse_after_0_1us": 249.96182250976562,
+      "reference_vs_before_abs": 499.93407008022956,
+      "local_jump": 249.9617450177102
+    },
+    {
+      "time": 0.45005,
+      "reference": -0.0029592723918164996,
+      "actual": 499.5061340332031,
+      "pulse_before_0_1us": 499.5068054199219,
+      "pulse_after_0_1us": -0.0017601809231564403,
+      "reference_vs_before_abs": 499.5097646923137,
+      "local_jump": 499.50856560084503
+    }
+  ],
+  "short-replay-equivalence": {
+    "bitwise_equal": true,
+    "arrays": {
+      "AH": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "AL": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "BH": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "BL": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH001": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH002": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH003": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH004": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH005": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH006": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH007": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CTRL_IL": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CTRL_VAC": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CTRL_VOUT": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "MODULATION": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "PI_OUT": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "PR_OUT": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "time": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      }
+    }
+  },
+  "win-original-accuracy": {
+    "method": "full original reference grid; mean/rms/max; provenance atol + 1%; no time shift",
+    "limitation": "diagnostic, does not replace historical windowed acceptance",
+    "passed": 21,
+    "total": 21,
+    "checks": [
+      {
+        "channel": "CH001",
+        "metric": "mean",
+        "reference": -0.0626659441734968,
+        "actual": -0.06266596343380194,
+        "tolerance": 0.0007266594417349681,
+        "passed": true
+      },
+      {
+        "channel": "CH001",
+        "metric": "rms",
+        "reference": 15.183416382463216,
+        "actual": 15.183418605862297,
+        "tolerance": 0.15193416382463215,
+        "passed": true
+      },
+      {
+        "channel": "CH001",
+        "metric": "max",
+        "reference": 32.421217542236924,
+        "actual": 32.42122268676758,
+        "tolerance": 0.32431217542236923,
+        "passed": true
+      },
+      {
+        "channel": "CH002",
+        "metric": "mean",
+        "reference": 9.313207119740546e-16,
+        "actual": 0.0,
+        "tolerance": 0.00010000000000000932,
+        "passed": true
+      },
+      {
+        "channel": "CH002",
+        "metric": "rms",
+        "reference": 219.99978000033,
+        "actual": 219.99977991732902,
+        "tolerance": 2.2000978000033,
+        "passed": true
+      },
+      {
+        "channel": "CH002",
+        "metric": "max",
+        "reference": 311.1269837220809,
+        "actual": 311.1269836425781,
+        "tolerance": 3.1113698372208094,
+        "passed": true
+      },
+      {
+        "channel": "CH003",
+        "metric": "mean",
+        "reference": 6.54559057336202,
+        "actual": 6.545590565220504,
+        "tolerance": 0.0655559057336202,
+        "passed": true
+      },
+      {
+        "channel": "CH003",
+        "metric": "rms",
+        "reference": 6.552627992592983,
+        "actual": 6.552627985775117,
+        "tolerance": 0.06562627992592983,
+        "passed": true
+      },
+      {
+        "channel": "CH003",
+        "metric": "max",
+        "reference": 7.199298039228453,
+        "actual": 7.199297904968262,
+        "tolerance": 0.07209298039228454,
+        "passed": true
+      },
+      {
+        "channel": "CH004",
+        "metric": "mean",
+        "reference": 495.87807373954683,
+        "actual": 495.8780730973084,
+        "tolerance": 4.958880737395468,
+        "passed": true
+      },
+      {
+        "channel": "CH004",
+        "metric": "rms",
+        "reference": 496.4112115600744,
+        "actual": 496.41121101841594,
+        "tolerance": 4.964212115600744,
+        "passed": true
+      },
+      {
+        "channel": "CH004",
+        "metric": "max",
+        "reference": 545.4013666082161,
+        "actual": 545.4013671875,
+        "tolerance": 5.4541136660821605,
+        "passed": true
+      },
+      {
+        "channel": "CH005",
+        "metric": "mean",
+        "reference": -6.587942811645189,
+        "actual": -6.58794329663987,
+        "tolerance": 0.0659794281164519,
+        "passed": true
+      },
+      {
+        "channel": "CH005",
+        "metric": "rms",
+        "reference": 10.732727317367292,
+        "actual": 10.732728575159289,
+        "tolerance": 0.10742727317367293,
+        "passed": true
+      },
+      {
+        "channel": "CH005",
+        "metric": "max",
+        "reference": 2.775082831898228,
+        "actual": 2.775083303451538,
+        "tolerance": 0.02785082831898228,
+        "passed": true
+      },
+      {
+        "channel": "CH006",
+        "metric": "mean",
+        "reference": 247.9764049650698,
+        "actual": 247.97660604125016,
+        "tolerance": 2.4798640496506983,
+        "passed": true
+      },
+      {
+        "channel": "CH006",
+        "metric": "rms",
+        "reference": 351.04494059997444,
+        "actual": 351.0452187838328,
+        "tolerance": 3.5105494059997446,
+        "passed": true
+      },
+      {
+        "channel": "CH006",
+        "metric": "max",
+        "reference": 545.2865439686117,
+        "actual": 545.2865600585938,
+        "tolerance": 5.452965439686117,
+        "passed": true
+      },
+      {
+        "channel": "CH007",
+        "metric": "mean",
+        "reference": 0.04235880758231245,
+        "actual": 0.04236613968317521,
+        "tolerance": 0.0005235880758231245,
+        "passed": true
+      },
+      {
+        "channel": "CH007",
+        "metric": "rms",
+        "reference": 10.739783117279856,
+        "actual": 10.739784576395245,
+        "tolerance": 0.10749783117279857,
+        "passed": true
+      },
+      {
+        "channel": "CH007",
+        "metric": "max",
+        "reference": 32.415231262578246,
+        "actual": 32.41523361206055,
+        "tolerance": 0.32425231262578247,
+        "passed": true
+      }
+    ],
+    "errors": {
+      "CH001": {
+        "rmse": 2.287074912767963e-06,
+        "max_abs": 5.454506229796152e-06
+      },
+      "CH002": {
+        "rmse": 6.080834220852703e-06,
+        "max_abs": 1.5244465771502291e-05
+      },
+      "CH003": {
+        "rmse": 1.421817061811063e-07,
+        "max_abs": 3.945543305405863e-07
+      },
+      "CH004": {
+        "rmse": 1.0543275021762832e-05,
+        "max_abs": 3.266683347646904e-05
+      },
+      "CH005": {
+        "rmse": 1.3618539943558256e-06,
+        "max_abs": 4.70546564201868e-06
+      },
+      "CH006": {
+        "rmse": 2.9855357133760405,
+        "max_abs": 528.304289838798
+      },
+      "CH007": {
+        "rmse": 0.0015699312432598557,
+        "max_abs": 0.36990957727830437
+      }
+    }
+  },
+  "linux-original-accuracy": {
+    "method": "full original reference grid; mean/rms/max; provenance atol + 1%; no time shift",
+    "limitation": "diagnostic, does not replace historical windowed acceptance",
+    "passed": 21,
+    "total": 21,
+    "checks": [
+      {
+        "channel": "CH001",
+        "metric": "mean",
+        "reference": -0.0626659441734968,
+        "actual": -0.06266596343475003,
+        "tolerance": 0.0007266594417349681,
+        "passed": true
+      },
+      {
+        "channel": "CH001",
+        "metric": "rms",
+        "reference": 15.183416382463216,
+        "actual": 15.183418605861352,
+        "tolerance": 0.15193416382463215,
+        "passed": true
+      },
+      {
+        "channel": "CH001",
+        "metric": "max",
+        "reference": 32.421217542236924,
+        "actual": 32.42122268676758,
+        "tolerance": 0.32431217542236923,
+        "passed": true
+      },
+      {
+        "channel": "CH002",
+        "metric": "mean",
+        "reference": 9.313207119740546e-16,
+        "actual": 0.0,
+        "tolerance": 0.00010000000000000932,
+        "passed": true
+      },
+      {
+        "channel": "CH002",
+        "metric": "rms",
+        "reference": 219.99978000033,
+        "actual": 219.99977991732902,
+        "tolerance": 2.2000978000033,
+        "passed": true
+      },
+      {
+        "channel": "CH002",
+        "metric": "max",
+        "reference": 311.1269837220809,
+        "actual": 311.1269836425781,
+        "tolerance": 3.1113698372208094,
+        "passed": true
+      },
+      {
+        "channel": "CH003",
+        "metric": "mean",
+        "reference": 6.54559057336202,
+        "actual": 6.545590565220504,
+        "tolerance": 0.0655559057336202,
+        "passed": true
+      },
+      {
+        "channel": "CH003",
+        "metric": "rms",
+        "reference": 6.552627992592983,
+        "actual": 6.552627985775117,
+        "tolerance": 0.06562627992592983,
+        "passed": true
+      },
+      {
+        "channel": "CH003",
+        "metric": "max",
+        "reference": 7.199298039228453,
+        "actual": 7.199297904968262,
+        "tolerance": 0.07209298039228454,
+        "passed": true
+      },
+      {
+        "channel": "CH004",
+        "metric": "mean",
+        "reference": 495.87807373954683,
+        "actual": 495.8780730973084,
+        "tolerance": 4.958880737395468,
+        "passed": true
+      },
+      {
+        "channel": "CH004",
+        "metric": "rms",
+        "reference": 496.4112115600744,
+        "actual": 496.41121101841594,
+        "tolerance": 4.964212115600744,
+        "passed": true
+      },
+      {
+        "channel": "CH004",
+        "metric": "max",
+        "reference": 545.4013666082161,
+        "actual": 545.4013671875,
+        "tolerance": 5.4541136660821605,
+        "passed": true
+      },
+      {
+        "channel": "CH005",
+        "metric": "mean",
+        "reference": -6.587942811645189,
+        "actual": -6.587943296642038,
+        "tolerance": 0.0659794281164519,
+        "passed": true
+      },
+      {
+        "channel": "CH005",
+        "metric": "rms",
+        "reference": 10.732727317367292,
+        "actual": 10.73272857516193,
+        "tolerance": 0.10742727317367293,
+        "passed": true
+      },
+      {
+        "channel": "CH005",
+        "metric": "max",
+        "reference": 2.775082831898228,
+        "actual": 2.775083303451538,
+        "tolerance": 0.02785082831898228,
+        "passed": true
+      },
+      {
+        "channel": "CH006",
+        "metric": "mean",
+        "reference": 247.9764049650698,
+        "actual": 247.9766060412501,
+        "tolerance": 2.4798640496506983,
+        "passed": true
+      },
+      {
+        "channel": "CH006",
+        "metric": "rms",
+        "reference": 351.04494059997444,
+        "actual": 351.0452187838328,
+        "tolerance": 3.5105494059997446,
+        "passed": true
+      },
+      {
+        "channel": "CH006",
+        "metric": "max",
+        "reference": 545.2865439686117,
+        "actual": 545.2865600585938,
+        "tolerance": 5.452965439686117,
+        "passed": true
+      },
+      {
+        "channel": "CH007",
+        "metric": "mean",
+        "reference": 0.04235880758231245,
+        "actual": 0.042366139680908375,
+        "tolerance": 0.0005235880758231245,
+        "passed": true
+      },
+      {
+        "channel": "CH007",
+        "metric": "rms",
+        "reference": 10.739783117279856,
+        "actual": 10.739784576397051,
+        "tolerance": 0.10749783117279857,
+        "passed": true
+      },
+      {
+        "channel": "CH007",
+        "metric": "max",
+        "reference": 32.415231262578246,
+        "actual": 32.41523361206055,
+        "tolerance": 0.32425231262578247,
+        "passed": true
+      }
+    ],
+    "errors": {
+      "CH001": {
+        "rmse": 2.2870752660408727e-06,
+        "max_abs": 5.454506229796152e-06
+      },
+      "CH002": {
+        "rmse": 6.080834220852703e-06,
+        "max_abs": 1.5244465771502291e-05
+      },
+      "CH003": {
+        "rmse": 1.421817061811063e-07,
+        "max_abs": 3.945543305405863e-07
+      },
+      "CH004": {
+        "rmse": 1.0543275021762832e-05,
+        "max_abs": 3.266683347646904e-05
+      },
+      "CH005": {
+        "rmse": 1.3618557558549374e-06,
+        "max_abs": 4.70546564201868e-06
+      },
+      "CH006": {
+        "rmse": 2.9855357133760405,
+        "max_abs": 528.304289838798
+      },
+      "CH007": {
+        "rmse": 0.0015699312432615508,
+        "max_abs": 0.36990957727830437
+      }
+    }
+  },
+  "full_v2_windows_event": {
+    "status": "COMPLETED",
+    "seconds": 369.0284410999993,
+    "peak_resident_bytes": 1262268416,
+    "total_bytes": 201313249,
+    "files": {
+      "event_log.jsonl": {
+        "bytes": 109069186,
+        "sha256": "b243f7ef1d1a1ed6f7293058ebb27e0f1970723f87e25e6e5f409008b79f211e"
+      },
+      "metadata.json": {
+        "bytes": 1154,
+        "sha256": "85114201693c83cff6447759da5ab5f1af54f0d237f9f1ac77441220185295f4"
+      },
+      "segments.bin": {
+        "bytes": 45802800,
+        "sha256": "1cf276ace7ced41192432a8e96f05ed9c075b9dbefb4de0c39fbf73b6a46d770"
+      },
+      "simulation_report.json": {
+        "bytes": 14045,
+        "sha256": "594415d2ac550bae89c89822097067ba5fcb35fe02c107b48ee783f21125955a"
+      },
+      "templates.bin": {
+        "bytes": 46426064,
+        "sha256": "0651d39f82f946051e298b316232fe14dd5f6e614b98d9f1cf6e243cf4ffbd23"
+      }
+    },
+    "changed_solver_fields": [],
+    "full_replay_verified": false
+  },
+  "batch_status": "Full Windows replay interrupted for investigation; Linux v2 full event/replay not run; all-case comparison not complete.",
+  "causal_hoist_diagnostic": {
+    "bitwise_equal": true,
+    "arrays": {
+      "AH": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "AL": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "BH": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "BL": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH001": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH002": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH003": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH004": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH005": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH006": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH007": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CTRL_IL": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CTRL_VAC": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CTRL_VOUT": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "MODULATION": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "PI_OUT": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "PR_OUT": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "time": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      }
+    },
+    "changed_solver_fields": [],
+    "event_logs_equal": true,
+    "baseline_wall_user_sys_seconds": [
+      27.43,
+      27.23,
+      0.18
+    ],
+    "hoisted_wall_user_sys_seconds": [
+      12.29,
+      12.09,
+      0.1
+    ],
+    "wall_speedup": 2.2318958502847845,
+    "scope": "isolated 20 ms causal diagnostic only; one compatibility condition hoisted per sample; not adopted into production or full case acceptance"
+  },
+  "diagnostic_sha256": {
+    "baseline_solver": "a799a0020319f02ee957d25aa9ef7dfedf3e2aceb9101e965950563bfb90822d",
+    "baseline_replay": "9ce71717558aecd1cb2a8b5ac12d61e50066f1436cae20d3057c4069447f8c35",
+    "hoist_solver": "1c606b965ede018855f720af53dc404394e6554c33319930806e14fa0cc21dca",
+    "wave20_perf": "cb661d51848454a3b556865bf2cfd0aac8d7f128ac534bc91f4181342530e977",
+    "trace20_perf": "c0bfa380e25bea98c0de7369777dec60db09efeff2733905862a41b79a8f1241",
+    "replay20_perf": "67c9032840fca57590bd3474bf73494aede60a25c94c380ed29f76d160a8a9bc"
+  }
+}
