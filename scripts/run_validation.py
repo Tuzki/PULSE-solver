@@ -8,13 +8,15 @@ def main():
     parser.add_argument('--suite',choices=['compatibility','historical','pf','all'],default='all')
     parser.add_argument('--max-transactions',type=int,default=0,help='Explicit per-case cap; 0 means unlimited')
     parser.add_argument('--out',type=pathlib.Path,help='Separate output directory; preserves earlier validation results')
-    args=parser.parse_args();root=args.project.resolve();binary=root/('build/pulse-solver.exe' if platform.system() == 'Windows' else 'build/pulse-solver')
+    parser.add_argument('--build-dir',type=pathlib.Path,help='Native CMake build directory')
+    args=parser.parse_args();root=args.project.resolve()
+    build=args.build_dir.resolve() if args.build_dir else root/('build' if platform.system() == 'Windows' else 'build-linux')
+    binary=build/('pulse-solver.exe' if platform.system() == 'Windows' else 'pulse-solver')
     destination=args.out.resolve() if args.out else root/'reports/validation';destination.mkdir(parents=True,exist_ok=True)
     ledger={'platform':platform.platform(),'machine':platform.machine(),'suite':args.suite,'checks':[],'cases':[]}
     def save(): (destination/f'{args.suite}_ledger.json').write_text(json.dumps(ledger,ensure_ascii=False,indent=2)+'\n')
     if args.suite in ('compatibility','all'):
-        ctest=pathlib.Path('/Users/tuzki/Documents/Codex/pulse-solver-v1/.build_tools/cmake/data/bin/ctest')
-        command=[str(ctest) if ctest.exists() else 'ctest','--test-dir',str(root/'build'),'--output-on-failure']
+        command=['ctest','--test-dir',str(build),'--output-on-failure']
         start=time.perf_counter();result=subprocess.run(command,text=True,capture_output=True,timeout=120)
         (destination/'ctest.log').write_text(result.stdout+result.stderr)
         ledger['checks'].append({'name':'ctest','command':command,'returncode':result.returncode,'wall_seconds':time.perf_counter()-start})
