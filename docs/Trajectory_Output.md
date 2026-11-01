@@ -12,6 +12,20 @@ python3 scripts/build_software.py /path/to/netlist.md --cc gcc
 ./build-linux/pulse-replay trace-001 --out waveform-001
 ```
 
+Windows uses the same C++ implementation and ABI 2 C controller, built with
+MinGW-w64 GCC, CMake, Ninja and Python on PATH:
+
+```powershell
+./build_windows_event.ps1
+python scripts/build_software.py C:/cases/boost/netlist.md --cc gcc
+./build-event-windows/pulse-solver.exe C:/cases/boost/netlist.md --output-format trajectory --out trace-001
+./build-event-windows/pulse-replay.exe trace-001 --out waveform-001
+```
+
+This build directory is separate from the preserved original `build/`.
+Controller DLLs on Windows and shared objects on Linux are built independently
+from the same original C sources. No controller logic is duplicated.
+
 Use a fresh output directory for each run. Replay defaults to the original
 SAVE_DT. `--save-dt` can select a different display grid without re-running the
 electrical or software domain. The original T_atom remains recorded.
@@ -44,8 +58,11 @@ Mode and anchor, then restores the exact continuation offset. It does not rebase
 on the public physical-state snapshot. Derived eigen/Taylor/observation caches
 are rebuilt by the existing code; long-double caches are not rounded to double
 and stored. The reader rejects differing long-double significand/exponent
-precision. Bitwise replay is validated on this Linux build; this prototype does
-not certify bitwise replay across arbitrary compiler/math-library versions.
+precision. Native tests validate bitwise replay on Linux GCC and Windows
+MinGW-w64 GCC. Full-case coverage and failures are recorded in
+[the cross-platform comparison](reports/Win_Linux_All_Cases_Comparison.md).
+This prototype does not certify bitwise replay across arbitrary compiler or
+math-library versions.
 
 ## Checks and completion meaning
 

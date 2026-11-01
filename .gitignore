@@ -1,6 +1,7 @@
 # Generated builds and native modules
 /build/
 /build-linux/
+/build-event-windows/
 *.so
 *.so.*
 /.build*/

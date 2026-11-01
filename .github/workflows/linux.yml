@@ -2,7 +2,7 @@ name: Linux native
 
 on:
   push:
-    branches: [feature/linux-support, experiment/event-trajectory]
+    branches: [feature/linux-support, experiment/event-trajectory, experiment/win-linux-all-cases]
 
   pull_request:
 
