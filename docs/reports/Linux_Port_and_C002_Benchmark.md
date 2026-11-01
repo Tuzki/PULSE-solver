@@ -87,4 +87,31 @@ Ubuntu 目标磁盘位置为 `D:\WSL\Ubuntu`。WSL 系统组件由 Windows 管�
 3. 原始 C002 Linux 0.3 s、COMPLETED、事务数及本地墙钟仍待验证。
 4. C002 Linux 精度比较尚未运行；不得以历史案例结果替代。
 5. MSVC 构建未验证；Windows 本次验证采用原有 GCC 工具链。
-6. 额外 `run_validation.py --suite all` 回归正在运行，结果待收集。
+6. Windows 额外历史/PF 回归执行 20 例，17 完成、3 失败、0 跳过。
+   `rectifier_pf`、`llc_pf`、`llc_100cycles_pf` 均在 t=0 报
+   `MODEL_SINGULAR`，诊断为 descriptor has nonunique or unsupported higher-index dynamics。
+   已从迁移前 d411371 原始源码重新编译 Windows 求解器，原样复现这三项失败。
+   属于基线已有问题，本次不调整数值策略或模型来绕过。
+
+### 既有失败的复现
+
+在未修改的基线 d411371 上构建，使用相同 GCC 16.2.0：
+
+```bash
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+cmake --build build --target pulse-solver
+build/pulse-solver.exe tests/cr002/fixtures/rectifier_pf.md --out reports/repro-rectifier
+build/pulse-solver.exe tests/cr002/fixtures/llc_pf.md --out reports/repro-llc
+build/pulse-solver.exe tests/cr002/fixtures/llc_100cycles_pf.md --out reports/repro-llc100
+```
+
+原始 fixture SHA256：
+
+| fixture | SHA256 |
+|---|---|
+| rectifier_pf.md | e4f93e99534aea9465d7e6c8420f8121cceb35db40cb5dda8524835870567437 |
+| llc_pf.md | 5020b77af8a8142202eef840939fa6ee077548981125d945ce8c8b3f9a6d5a9b |
+| llc_100cycles_pf.md | 92c7909483346248c946f4c16e112f56dd595007999bed2b51583aab3d87bbe6 |
+
+本机详细 ledger：`reports/linux-port-windows-validation/all_ledger.json`；
+基线失败复现：`reports/baseline-failure-reproduction/`。这些是生成证据，不提交二进制或输出产物。
