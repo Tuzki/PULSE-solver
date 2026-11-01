@@ -13,6 +13,19 @@
 
 ## 构建与使用
 
+Linux x86-64（原生 Ubuntu 或 WSL2 Ubuntu）：
+
+```bash
+sudo apt-get install -y build-essential cmake ninja-build python3 libssl-dev
+./build_linux.sh
+python3 scripts/build_software.py examples/software_rc/input.md --cc gcc
+./build-linux/pulse-solver examples/software_rc/input.md --out reports/linux-software-rc
+```
+
+Linux 使用独立 `build-linux/`、ELF 求解器和 `.so` C 控制模块。
+依赖、完整 C002 命令及平台边界见 [Linux 构建说明](docs/Linux_Build.md)；
+实际 Windows/Linux 测试与未解决项见 [Linux 与 C002 报告](docs/reports/Linux_Port_and_C002_Benchmark.md)。
+
 在本目录 PowerShell 中：
 
 ```powershell
@@ -35,7 +48,7 @@
 .\build\pulse-solver.exe .\examples\software_gate\input.md --out .\out-software-gate
 ```
 
-C 接口见 [include/pulse/software.h](include/pulse/software.h)。程序源文件修改后需要重新编译模块；加载时校验 DLL、源文件和实际依赖头文件的 SHA-256，拒绝使用过期模块。
+C 接口见 [include/pulse/software.h](include/pulse/software.h)。程序源文件修改后需要重新编译模块；加载时校验 DLL/.so、源文件和实际依赖头文件的 SHA-256，拒绝使用过期模块。
 
 ## 网表结构
 
