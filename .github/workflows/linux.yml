@@ -1,73 +1,165 @@
 name: Linux native
+
 on:
   push:
     branches: [feature/linux-support]
+
   pull_request:
+
   workflow_dispatch:
     inputs:
       c002:
         description: Run full original 0.3 s C002 regression (CI timing only)
         type: boolean
         default: false
+
 permissions:
   contents: read
+
 jobs:
   native-tests:
     runs-on: ubuntu-24.04
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout PULSE Solver
+        uses: actions/checkout@v4
+
       - name: Install native dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential cmake ninja-build python3 libssl-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 \
+            libssl-dev
+
       - name: Release build and all native tests
         run: ./build_linux.sh
+
       - name: Test summary
         if: always()
         run: |
           python3 - <<'PY'
-          import os, pathlib, xml.etree.ElementTree as ET
+          import os
+          import pathlib
+          import xml.etree.ElementTree as ET
+
           path = pathlib.Path('build-linux/tests.xml')
+
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
               if not path.exists():
-                  summary.write('CTest did not finish; inspect build logs. No PASS claimed.\n')
+                  summary.write(
+                      'CTest did not finish; inspect build logs. No PASS claimed.\n'
+                  )
               else:
                   tests = ET.parse(path).getroot().findall('.//testcase')
-                  failed = sum(t.find('failure') is not None or t.find('error') is not None for t in tests)
-                  skipped = sum(t.find('skipped') is not None for t in tests)
-                  summary.write(f'Total {len(tests)}; passed {len(tests)-failed-skipped}; failed {failed}; skipped {skipped}\n')
+
+                  failed = sum(
+                      t.find('failure') is not None
+                      or t.find('error') is not None
+                      for t in tests
+                  )
+
+                  skipped = sum(
+                      t.find('skipped') is not None
+                      for t in tests
+                  )
+
+                  passed = len(tests) - failed - skipped
+
+                  summary.write(
+                      f'Total {len(tests)}; '
+                      f'passed {passed}; '
+                      f'failed {failed}; '
+                      f'skipped {skipped}\n'
+                  )
           PY
-      - uses: actions/upload-artifact@v4
+
+      - name: Upload native test evidence
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: linux-native-tests
+          if-no-files-found: warn
           path: |
             build-linux/tests.xml
             build-linux/platform.json
             build-linux/Testing/Temporary/
             build-linux/software_acceptance/acceptance.json
+
+      # NEW: Publish compiled Linux executables
+      - name: Upload Linux Release binaries
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pulse-linux-release
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            build-linux/pulse-solver
+            build-linux/libpulse_solver.so
+            include/pulse/software.h
+            scripts/build_software.py
+            build-linux/platform.json
+
   c002-full:
     if: github.event_name == 'workflow_dispatch' && inputs.c002
     needs: native-tests
     runs-on: ubuntu-24.04
     timeout-minutes: 360
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - name: Checkout PULSE Solver
+        uses: actions/checkout@v4
+
+      - name: Checkout PULSE case set
+        uses: actions/checkout@v4
         with:
           repository: Tuzki/PULSE-case-set
           ref: 13660577132de41c37c1c47576c02941d21c532a
           path: case-set
+
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential cmake ninja-build python3 python3-numpy libssl-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 \
+            python3-numpy \
+            libssl-dev
+
       - name: Build and test
         run: ./build_linux.sh
+
       - name: Run full original C002
-        run: python3 scripts/run_c002_linux.py --case-set case-set --out reports/c002-linux-ci
+        run: |
+          python3 scripts/run_c002_linux.py \
+            --case-set case-set \
+            --out reports/c002-linux-ci
+
       - name: Compare original PLECS CSV
-        run: python3 scripts/compare_c002.py --case-set case-set --run reports/c002-linux-ci --out reports/c002-linux-ci/comparison.json
-      - uses: actions/upload-artifact@v4
+        run: |
+          python3 scripts/compare_c002.py \
+            --case-set case-set \
+            --run reports/c002-linux-ci \
+            --out reports/c002-linux-ci/comparison.json
+
+      # Upload results even if precision comparison fails
+      - name: Upload C002 evidence and executables
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: c002-linux-ci-evidence
+          retention-days: 30
+          if-no-files-found: warn
+          include-hidden-files: true
           path: |
             reports/c002-linux-ci/
             build-linux/platform.json
+            build-linux/pulse-solver
+            build-linux/libpulse_solver.so
+            include/pulse/software.h
+            scripts/build_software.py
