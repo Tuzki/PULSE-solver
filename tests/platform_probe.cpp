@@ -33,6 +33,16 @@ int main(int argc, char **argv) {
     if(pulse::software::file_sha256(path.string())!=
        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
       throw std::runtime_error("SHA256 empty vector failed");
+    constexpr size_t large=65*1024*1024;
+    {std::ofstream f(path,std::ios::binary);f.seekp(large-1);f.put('\0');}
+    bool rejected=false;try{pulse::software::file_sha256(path.string());}
+    catch(const std::exception&e){if(pulse::diagnostic(e).at("subcode")!="SOFTWARE_FILE_SIZE")throw;rejected=true;}
+    if(!rejected)throw std::runtime_error("oversized module accepted");
+    if(pulse::software::file_sha256(path.string(),large)!=
+       "25631f11bd18756ec0029380ec886af0c8824dc6b2706bbdb1d9451c7cf45f42")throw std::runtime_error("streamed SHA256 vector failed");
+    rejected=false;try{pulse::software::file_sha256(path.string(),large-1);}
+    catch(const std::exception&e){if(pulse::diagnostic(e).at("subcode")!="SOFTWARE_FILE_SIZE")throw;rejected=true;}
+    if(!rejected)throw std::runtime_error("archive size bound bypassed");
     std::filesystem::remove(path);
   }
 }

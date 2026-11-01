@@ -8,6 +8,23 @@ void check(bool ok,const char*message){if(!ok)throw std::runtime_error(message);
 int main(int argc,char**argv){
   check(argc==3,"fixture and scratch paths required");
   std::filesystem::path fixtures=argv[1],scratch=argv[2];
+  // Many almost-identical templates must share their unchanged data, while
+  // signed zeros and adjacent binary64 values remain distinct and round-trip.
+  {
+    TrajectoryPool pool;std::vector<uint32_t> roots;size_t naive=0;
+    Json base={{"matrix",Json::array()},{"control",0.0}};
+    for(int i=0;i<2049;++i)base["matrix"].push_back(0.0);
+    for(int i=0;i<500;++i){base["control"]=double(i);base["matrix"][1030]=std::nextafter(double(i),INFINITY);naive+=base.dump().size();roots.push_back(pool.encode(base));}
+    auto plus=pool.encode(0.0),minus=pool.encode(-0.0);check(plus!=minus,"signed zero was coalesced");
+    check(std::bit_cast<uint64_t>(pool.decode(minus).get<double>())==std::bit_cast<uint64_t>(-0.0),"signed zero was lost");
+    std::filesystem::create_directories(scratch);auto path=scratch/"shared-templates.bin";pool.write(path,roots);
+    check(std::filesystem::file_size(path)<naive/10,"almost-identical templates grew as full copies");
+    auto [restored,ids]=TrajectoryPool::read(path);check(ids.size()==500,"template roots lost");
+    for(int i=0;i<500;++i){base["control"]=double(i);base["matrix"][1030]=std::nextafter(double(i),INFINITY);check(restored.decode(ids[i]).dump()==base.dump(),"shared template roundtrip differs");}
+    std::filesystem::resize_file(path,std::filesystem::file_size(path)-1);
+    bool rejected=false;try{TrajectoryPool::read(path);}catch(const Error&e){rejected=e.subcode=="TRAJECTORY_TRUNCATED";}
+    check(rejected,"truncated shared pool accepted");
+  }
   for(auto name:{"linear_rc","buck_ccm","boost_dcm"}){
     auto file=fixtures/(std::string(name)+".md");std::ifstream f(file);check(bool(f),"fixture missing");
     std::string text((std::istreambuf_iterator<char>(f)),{});auto model=compile(parse_markdown(text,file.string()));

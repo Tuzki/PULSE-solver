@@ -17,5 +17,5 @@ public:
        std::vector<Json> &logs, uint64_t transaction, size_t delta);
   Json identity() const;
 };
-std::string file_sha256(const std::string &path);
+std::string file_sha256(const std::string &path, size_t max_bytes=64*1024*1024);
 }

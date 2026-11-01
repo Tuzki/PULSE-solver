@@ -6,6 +6,7 @@
 namespace pulse {
 namespace {
 constexpr size_t limit=64*1024*1024; // explicit v1 per-stream resource limit
+constexpr size_t archive_limit=512*1024*1024; // archive files, not C modules
 void u64(std::vector<uint8_t>&b,uint64_t v){for(int i=0;i<8;i++)b.push_back(uint8_t(v>>(i*8)));}
 void real(std::vector<uint8_t>&b,double v){u64(b,std::bit_cast<uint64_t>(v));}
 void time(std::vector<uint8_t>&b,Time t){u64(b,uint64_t(t.whole));u64(b,t.tick);u64(b,t.subtick);}
@@ -63,9 +64,9 @@ struct Reader{
 };
 }
 uint32_t Trajectory::mode(const Mode&m){
-  auto j=encode(m);auto key=j.dump();auto found=ids_.find(key);if(found!=ids_.end())return found->second;
+  auto root=pool_.encode(encode(m));auto found=ids_.find(root);if(found!=ids_.end())return found->second;
   require(ids_.size()<100000,11,"TRAJECTORY_LIMIT","too many templates");
-  auto id=uint32_t(ids_.size());ids_[std::move(key)]=id;templates_.push_back(std::move(j));return id;
+  auto id=uint32_t(ids_.size());ids_[root]=id;templates_.push_back(root);return id;
 }
 void Trajectory::state(const RunState&s){
   require(size_t(s.internal.size())==dimension_,11,"TRAJECTORY_SHAPE","state dimension changed");
@@ -83,11 +84,11 @@ void Trajectory::append(const RunState&a,const RunState&b){
 }
 void Trajectory::write(const std::filesystem::path&dir,const Result&r)const{
   std::filesystem::create_directories(dir);
+  pulse::write(dir/"simulation_report.json",r.report.dump(2)+"\n"); // preserve state even if archive I/O fails
   {std::ofstream f(dir/"segments.bin",std::ios::binary);f.exceptions(std::ios::failbit|std::ios::badbit);f.write(reinterpret_cast<const char*>(bytes_.data()),std::streamsize(bytes_.size()));}
-  pulse::write(dir/"templates.json",templates_.dump()+"\n");
-  std::string log;for(auto&e:r.events)log+=e.dump()+"\n";pulse::write(dir/"event_log.jsonl",log);
-  pulse::write(dir/"simulation_report.json",r.report.dump(2)+"\n");
-  Json manifest={{"format","PULSE_TRAJECTORY"},{"version",1},{"byte_order","little"},
+  pool_.write(dir/"templates.bin",templates_);
+  {std::ofstream log(dir/"event_log.jsonl",std::ios::binary);log.exceptions(std::ios::failbit|std::ios::badbit);for(auto&e:r.events)log<<e.dump()<<'\n';}
+  Json manifest={{"format","PULSE_TRAJECTORY"},{"version",2},{"byte_order","little"},
     {"time_encoding","signed seconds + uint64 tick + uint64 subtick; T128"},
     {"dimension",dimension_},{"records",records_},{"templates",templates_.size()},
     {"long_double_digits",std::numeric_limits<long double>::digits},
@@ -96,23 +97,28 @@ void Trajectory::write(const std::filesystem::path&dir,const Result&r)const{
     {"analog_names",r.analog_names},{"digital_names",r.digital_names},
     {"save_dt",r.save_dt},{"T_atom",r.t_atom},{"t_end",r.t_end},
     {"waveform_validation","DEFERRED_TO_REPLAY"},{"sha256",Json::object()}};
-  for(auto name:{"segments.bin","templates.json","event_log.jsonl","simulation_report.json"})manifest["sha256"][name]=software::file_sha256((dir/name).string());
+  for(auto name:{"segments.bin","templates.bin","event_log.jsonl","simulation_report.json"})manifest["sha256"][name]=software::file_sha256((dir/name).string(),archive_limit);
   pulse::write(dir/"metadata.json",manifest.dump(2)+"\n");
 }
 Result Trajectory::read(const std::filesystem::path&dir,const std::function<void(Result&,const RunState&,const RunState&,bool)>&emit){
   auto meta=json(dir/"metadata.json");
-  require(meta.at("format")=="PULSE_TRAJECTORY"&&meta.at("version")==1,11,"TRAJECTORY_VERSION","unsupported trajectory format");
+  const int version=meta.at("version");
+  require(meta.at("format")=="PULSE_TRAJECTORY"&&(version==1||version==2),11,"TRAJECTORY_VERSION","unsupported trajectory format");
   require(meta.at("long_double_digits")==std::numeric_limits<long double>::digits&&meta.at("long_double_max_exponent")==std::numeric_limits<long double>::max_exponent,11,"TRAJECTORY_PRECISION","replay precision differs");
-  for(auto name:{"segments.bin","templates.json","event_log.jsonl","simulation_report.json"})require(meta.at("sha256").at(name)==software::file_sha256((dir/name).string()),11,"TRAJECTORY_HASH","trajectory stream checksum mismatch");
+  const auto template_file=version==1?"templates.json":"templates.bin";
+  for(auto name:{"segments.bin",template_file,"event_log.jsonl","simulation_report.json"})require(meta.at("sha256").at(name)==software::file_sha256((dir/name).string(),archive_limit),11,"TRAJECTORY_HASH","trajectory stream checksum mismatch");
   auto n=meta.at("dimension").get<size_t>(),count=meta.at("records").get<size_t>();
   require(n>0&&n<=10000&&count<=10000000,11,"TRAJECTORY_SHAPE","invalid record dimensions");
-  auto templates=json(dir/"templates.json");std::vector<Mode> modes;
-  for(auto&v:templates){
+  std::vector<Mode> modes;
+  auto add_mode=[&](const Json&v){
     auto m=decode(v);require(size_t(m.M.rows())==n&&size_t(m.M.cols())==n,11,"TRAJECTORY_SHAPE","template/state dimension differs");
     for(auto&[name,row]:m.maps)require(size_t(row.size())==n,11,"TRAJECTORY_SHAPE","observation dimension differs");
     for(auto&g:m.guards)require(size_t(g.row.size())==n,11,"TRAJECTORY_SHAPE","guard dimension differs");
     modes.push_back(std::move(m));
-  }
+  };
+  if(version==1){auto templates=json(dir/template_file);require(templates.is_array()&&templates.size()<=100000&&meta.at("templates")==templates.size(),11,"TRAJECTORY_SHAPE","invalid template count");for(auto&v:templates){add_mode(v);v=Json();}}
+  else {auto [pool,roots]=TrajectoryPool::read(dir/template_file);require(meta.at("templates")==roots.size(),11,"TRAJECTORY_SHAPE","template count differs");for(auto root:roots)add_mode(pool.decode(root));}
+  require(std::filesystem::file_size(dir/"segments.bin")<=limit,11,"TRAJECTORY_LIMIT","record stream exceeds 64 MiB");
   Reader reader;{std::ifstream f(dir/"segments.bin",std::ios::binary);reader.b.assign(std::istreambuf_iterator<char>(f),{});}
   Result out;out.report=json(dir/"simulation_report.json");out.status=out.report.at("status");out.diagnostic=out.report.at("diagnostic");
   out.save_dt=meta.at("save_dt");out.t_atom=meta.at("T_atom");out.t_end=meta.at("t_end");

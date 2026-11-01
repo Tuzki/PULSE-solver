@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <array>
 #if defined(_WIN32)
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -17,11 +18,10 @@
 #include <openssl/evp.h>
 #endif
 namespace pulse::software {
-std::string file_sha256(const std::string &path) {
+std::string file_sha256(const std::string &path, size_t max_bytes) {
   std::ifstream f(std::filesystem::path(path),std::ios::binary);
   require(bool(f),2,"SOFTWARE_FILE_MISSING","cannot read module dependency: "+path);
-  std::vector<unsigned char> bytes((std::istreambuf_iterator<char>(f)),{});
-  require(bytes.size()<=64*1024*1024,2,"SOFTWARE_FILE_SIZE","module dependency exceeds 64 MiB");
+  require(std::filesystem::file_size(std::filesystem::path(path))<=max_bytes,2,"SOFTWARE_FILE_SIZE","SHA256 input exceeds configured size limit");
 #if defined(_WIN32)
   struct Hash {
     BCRYPT_ALG_HANDLE algorithm=nullptr;BCRYPT_HASH_HANDLE hash=nullptr;
@@ -32,13 +32,26 @@ std::string file_sha256(const std::string &path) {
   DWORD size=0,written=0;
   require(BCryptGetProperty(h.algorithm,BCRYPT_OBJECT_LENGTH,reinterpret_cast<PUCHAR>(&size),sizeof(size),&written,0)>=0,12,"SOFTWARE_HASH","SHA256 property failed");
   h.object.resize(size);unsigned char digest[32];
-  require(BCryptCreateHash(h.algorithm,&h.hash,h.object.data(),size,nullptr,0,0)>=0&&
-          BCryptHashData(h.hash,bytes.data(),ULONG(bytes.size()),0)>=0&&
-          BCryptFinishHash(h.hash,digest,sizeof(digest),0)>=0,12,"SOFTWARE_HASH","SHA256 failed");
+  require(BCryptCreateHash(h.algorithm,&h.hash,h.object.data(),size,nullptr,0,0)>=0,12,"SOFTWARE_HASH","SHA256 initialization failed");
 #else
-  unsigned char digest[32];unsigned int size=0;
-  require(EVP_Digest(bytes.data(),bytes.size(),digest,&size,EVP_sha256(),nullptr)==1&&size==sizeof(digest),
-          12,"SOFTWARE_HASH","SHA256 failed");
+  unsigned char digest[32];
+  std::unique_ptr<EVP_MD_CTX,decltype(&EVP_MD_CTX_free)> context(EVP_MD_CTX_new(),EVP_MD_CTX_free);
+  require(context&&EVP_DigestInit_ex(context.get(),EVP_sha256(),nullptr)==1,12,"SOFTWARE_HASH","SHA256 initialization failed");
+#endif
+  std::array<unsigned char,64*1024> block;size_t total=0;
+  while(f){f.read(reinterpret_cast<char*>(block.data()),std::streamsize(block.size()));auto n=size_t(f.gcount());
+    require(n<=max_bytes-total,2,"SOFTWARE_FILE_SIZE","SHA256 input grew beyond configured size limit");total+=n;if(!n)continue;
+#if defined(_WIN32)
+    require(BCryptHashData(h.hash,block.data(),ULONG(n),0)>=0,12,"SOFTWARE_HASH","SHA256 update failed");
+#else
+    require(EVP_DigestUpdate(context.get(),block.data(),n)==1,12,"SOFTWARE_HASH","SHA256 update failed");
+#endif
+  }
+  require(f.eof()&&!f.bad(),2,"SOFTWARE_FILE_IO","cannot finish reading SHA256 input");
+#if defined(_WIN32)
+  require(BCryptFinishHash(h.hash,digest,sizeof(digest),0)>=0,12,"SOFTWARE_HASH","SHA256 finalization failed");
+#else
+  unsigned int size=0;require(EVP_DigestFinal_ex(context.get(),digest,&size)==1&&size==sizeof(digest),12,"SOFTWARE_HASH","SHA256 finalization failed");
 #endif
   std::ostringstream s;s<<std::hex<<std::setfill('0');for(auto b:digest)s<<std::setw(2)<<unsigned(b);return s.str();
 }
