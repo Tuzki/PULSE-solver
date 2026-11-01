@@ -59,9 +59,18 @@ long double 存储 16 字节、有效尾数 64 位、max_exponent=16384、epsilo
 原 controller.c SHA256：`778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28`。
 保留 T_END=0.3 s、SAVE_DT=0.2 us、控制器和初态。
 
-当前 Linux C002 状态：**NOT_RUN**。实际终止时间、事务数、墙钟均暂无数据。
-Ubuntu 单元测试中的 C 控制器执行成功不代表本案例已完成。
-不得将 CI 中按设计未触发的手动 C002 job 标为仿真通过。
+实际 Linux C002 状态：**COMPLETED**。终止时间 **0.3 s**；有效 SAVE_DT **2e-7 s**；
+事务数 **30,003**；C 控制任务调用 **30,000** 次；T_atom **1e-14 s**。
+退出码 0，诊断为空，输入字节校验保持不变。
+CI 墙钟 **31.291694855 s**，包含进程启动和结果写出，不含控制器编译。
+这是 GitHub Actions Ubuntu 的结果，**不是本机 Linux 性能基线**。
+
+[完整运行与比较工作流](https://github.com/Tuzki/PULSE-solver/actions/runs/41265610784)，
+[运行报告、NPZ、事件记录及比较证据](https://github.com/Tuzki/PULSE-solver/actions/runs/41265610784/artifacts/13067009047)。
+验证提交仍为 `111296f154741c588cc1db23490ca006d190ba05`；后续提交仅文档及回归路径。
+Linux ELF 求解器 SHA256：`02c2c15055cf81c3ebe2bac6896bf39c9fa70aa44836e2fb4794dcc71d436bb5`；
+Linux CTRL.so SHA256：`5cf597bb5c1043c953ad4855e3add8e5e5d281900c89120b6f22c90ab5730782`。
+本次执行 Linux ELF 和 .so，没有 Wine 或 Windows 后端。
 
 ## D. 精度比较方法
 
@@ -70,7 +79,28 @@ Ubuntu 单元测试中的 C 控制器执行成功不代表本案例已完成。
 报告七通道完整参考采样网格上的 mean/rms/max（原通道 atol + 1%），
 及逐点 RMSE/max_abs。这是明确的完整网格统计，区别于历史窗口验收；
 1 us 参考输出无法解析所有开关边沿，不声称逐点误差即求解内核误差。
-尚未执行 Linux C002 精度比较，未声明精度 PASS。
+实际执行 21 项完整网格统计，**20 通过、1 失败**，未跳过。
+失败项：CH003（Diode current）max，PLECS **15.364982074776727 A**，
+PULSE **15.03870964050293 A**；允许差 **0.15374982074776725 A**，
+实际差约 **0.326272434273797 A**。因此比较返回 1，工作流整体显示 failure；
+求解完成与精度比较结果分开记录，不将工作流标为全通过。
+逐点 RMSE：CH005 约 1.6222e-6 A、CH006 约 0.011716 V；
+开关电压 CH002 约 111.425 V，原始比较 JSON 保留全部通道误差。
+已用未修改的 d411371 Windows 基线重新运行相同原始 C002：COMPLETED，
+0.3 s、30,003 事务，并使用同一比较脚本得到完全相同的 CH003 max 失败数值，
+同为 20/21 通过。这项失败并非 Linux 平台新引入，不能据此放宽阈值。
+Windows 基线运行证据在本机 `reports/c002-windows-baseline/`；其墙钟记录
+43.9543425 s 仅用于记录该次复现，不能与 CI 31.291694855 s 作为速度比。
+Windows 基线二进制 SHA256：`11588f926e180ee6f640642443307ce6cb774b6d6629606e1d7bebfb65554669`。
+未改变算法、参考数据或阈值。
+
+保存数据中的一个具体边沿诊断：PLECS CH003 最大值发生在 t=0.00219 s。
+Windows 基线在同一时间保存 CH003≈-7.947e-7 A，而 CH005=15.3649845 A；
+下一保存点 t=0.0021902 s，CH003=15.2987795 A。
+PULSE 自身完整 0.2 us 保存网格的 CH003 最大值为 15.3042869568 A，
+但将其按比较脚本原方法采样到 PLECS 的 1 us 网格，最大值变为上述 15.0387096405 A。
+这些记录表明比较对开关边沿和保存网格敏感；仅作为差异诊断，
+没有改用另一统计方法替换已失败的 21 项比较，也没有更改事件左右值语义。
 
 ## E. 环境安装
 
@@ -82,10 +112,11 @@ Ubuntu 目标磁盘位置为 `D:\WSL\Ubuntu`。WSL 系统组件由 Windows 管�
 
 ## F. 未解决问题
 
-1. 本机 WSL2 Ubuntu 安装尚未完成；可能需要用户手动重启。
+1. 本机 WSL2 Ubuntu 安装尚未完成；WSL/VirtualMachinePlatform 功能已启用，
+   DISM 返回 3010，明确需要用户手动重启，未自动重启。
 2. 本机 Linux 编译、CTest 和实际精度探针尚未运行。
-3. 原始 C002 Linux 0.3 s、COMPLETED、事务数及本地墙钟仍待验证。
-4. C002 Linux 精度比较尚未运行；不得以历史案例结果替代。
+3. 原始 C002 已在 Linux CI 完成 0.3 s，仍缺本机 Linux 墙钟。
+4. C002 完整网格精度比较有 CH003 max 一项失败，仍待归因；没有宣称精度全部通过。
 5. MSVC 构建未验证；Windows 本次验证采用原有 GCC 工具链。
 6. Windows 额外历史/PF 回归执行 20 例，17 完成、3 失败、0 跳过。
    `rectifier_pf`、`llc_pf`、`llc_100cycles_pf` 均在 t=0 报
