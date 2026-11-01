@@ -72,6 +72,14 @@ Linux ELF 求解器 SHA256：`02c2c15055cf81c3ebe2bac6896bf39c9fa70aa44836e2fb47
 Linux CTRL.so SHA256：`5cf597bb5c1043c953ad4855e3add8e5e5d281900c89120b6f22c90ab5730782`。
 本次执行 Linux ELF 和 .so，没有 Wine 或 Windows 后端。
 
+已下载并校验上述 GitHub 运行 artifact，ZIP SHA256 为
+`ff8305294ae8fde772e24870b41b9afa8314ee77925d8e27df5bffbf4bdf9123`。
+与迁移前 d411371 重新构建的 Windows 原生求解器完整 C002 结果对照：
+**1,500,001 点时间数组（float64）、全部七个保存通道数组（float32）逐字节一致，
+event_log.jsonl 的 SHA256 也一致**。每个通道最大保存值差为 0。
+这验证的是本案例的保存数据和事件流，不能推广为任意平台/案例的内部浮点轨迹保证。
+本机对照记录：`reports/c002-cross-platform.json`。
+
 ## D. 精度比较方法
 
 `scripts/compare_c002.py` 校验案例库原 PLECS CSV 的 SHA256、时间单调性、
@@ -108,7 +116,16 @@ PULSE 自身完整 0.2 us 保存网格的 CH003 最大值为 15.3042869568 A，
 用户已明确授权启用 WSL2 所需系统功能和安装 Ubuntu，但禁止自动重启。
 Ubuntu 目标磁盘位置为 `D:\WSL\Ubuntu`。WSL 系统组件由 Windows 管理。
 安装日志保存在工作区 `wsl-setup/`，不上传系统安装程序和二进制产物。
-本机 Linux 验证需在 WSL2 实际可用后继续。
+WSL **3.0.3.0** 已实际安装成功（MSI 退出 0），位置 `C:\Program Files\WSL\`；
+内核版本 **6.18.54.1-1**，默认 WSL 版本 **2**。
+安装前已核对 Microsoft Corporation 有效签名和官方 MSI SHA256
+`ae977286974255bd26bf925f00f40f5692c6b2084155cbc0563c09aea091f211`。
+两个 Windows 功能均由 DISM 成功启用，返回 **3010**，要求重启。
+当前 `wsl --status` 仍报告 WSL2 虚拟化不可用，`wsl --list --verbose` 无发行版。
+已遵守用户要求停在重启边界，没有自动重启、没有创建 C 盘 Ubuntu 虚拟磁盘。
+用户手动重启后需复核虚拟化状态，再将 Ubuntu 24.04 安装到 `D:\WSL\Ubuntu`。
+重启后续装命令已准备在工作区 `wsl-setup/continue-ubuntu-after-reboot.ps1`。
+本机 Linux 编译和计时需在该环境实际可用后继续。
 
 ## F. 未解决问题
 
@@ -116,7 +133,8 @@ Ubuntu 目标磁盘位置为 `D:\WSL\Ubuntu`。WSL 系统组件由 Windows 管�
    DISM 返回 3010，明确需要用户手动重启，未自动重启。
 2. 本机 Linux 编译、CTest 和实际精度探针尚未运行。
 3. 原始 C002 已在 Linux CI 完成 0.3 s，仍缺本机 Linux 墙钟。
-4. C002 完整网格精度比较有 CH003 max 一项失败，仍待归因；没有宣称精度全部通过。
+4. C002 完整网格精度比较有 CH003 max 一项失败，已复现 Windows 相同结果并记录
+   边沿/保存网格敏感性；没有宣称精度全部通过，没有修改验收方法来抹去失败。
 5. MSVC 构建未验证；Windows 本次验证采用原有 GCC 工具链。
 6. Windows 额外历史/PF 回归执行 20 例，17 完成、3 失败、0 跳过。
    `rectifier_pf`、`llc_pf`、`llc_100cycles_pf` 均在 t=0 报
@@ -146,3 +164,16 @@ build/pulse-solver.exe tests/cr002/fixtures/llc_100cycles_pf.md --out reports/re
 
 本机详细 ledger：`reports/linux-port-windows-validation/all_ledger.json`；
 基线失败复现：`reports/baseline-failure-reproduction/`。这些是生成证据，不提交二进制或输出产物。
+
+## 验收核对
+
+- [x] Linux x86-64 原生编译成功（Ubuntu CI）。
+- [x] Linux 原生 CTest 执行完成：24/24，失败 0、跳过 0。
+- [x] Linux .so C 控制器正确加载和执行。
+- [x] C002 使用原网表、原控制器及参数运行到 0.3 s。
+- [x] C002 状态 COMPLETED，30,003 次事务。
+- [x] Windows 原生构建和 24 项 CTest 通过；C002 保存数组和事件流与基线一致。
+- [x] 修改提交并推送到独立 feature/linux-support 分支，未合并 main。
+- [x] 提供本 Markdown 报告、构建文档及完整运行/精度比较脚本。
+- [ ] 本机 Linux 性能基线：等待用户手动重启及 D 盘 Ubuntu 安装。
+- [ ] PLECS 全部精度统计通过：当前 20/21，失败项和证据保留。
