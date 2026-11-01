@@ -377,6 +377,12 @@ Flow::Flow(const Mode &mode, const Vector &initial)
   }
   d.points.emplace(0, initial);
 }
+const Mode &Flow::archive_mode() const {return data_->mode;}
+const Vector &Flow::archive_anchor() const {return data_->initial;}
+Time Flow::archive_offset() const {return offset_;}
+Flow Flow::restore_archive(const Mode &m,const Vector &anchor,Time offset) {
+  Flow flow(m,anchor);flow.offset_=offset;return flow;
+}
 Vector Flow::state(double t) const {
   t += offset_.seconds();
   require(t >= 0 && std::isfinite(t), 7, "TIME_ORDER",

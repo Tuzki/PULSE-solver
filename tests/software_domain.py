@@ -1,5 +1,5 @@
 """End-to-end software ABI, five-zone input and event acceptance."""
-import argparse,json,math,pathlib,shutil,subprocess,sys
+import argparse,json,math,pathlib,shutil,subprocess,sys,zipfile
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--binary',type=pathlib.Path,required=True)
@@ -87,6 +87,20 @@ def main():
         if not h and not l:last_on=t
         elif last_on is not None:check(t-last_on==.015625,'explicit deadtime interval')
     check(gate_report['simulated_seconds']==.5,'self-event circuit reaches full end time')
+    replay_binary=a.binary.with_name('pulse-replay'+a.binary.suffix)
+    for source,baseline,baseline_dest,label in [(model,report,dest,'rc'),(gate,gate_report,gate_dest,'gate')]:
+        trace,trace_dest=run(source,label+'_trajectory','--output-format','trajectory')
+        check(trace['software_states']==baseline['software_states'],'trajectory preserves '+label+' C instance state counters')
+        check(trace['software_final_outputs']==baseline['software_final_outputs'],'trajectory preserves '+label+' held C outputs')
+        check((trace_dest/'event_log.jsonl').read_bytes()==(baseline_dest/'event_log.jsonl').read_bytes(),'trajectory preserves '+label+' software scheduling and events')
+        replay_dest=a.out/(label+'_trajectory_replay')
+        replayed=subprocess.run([str(replay_binary),str(trace_dest),'--out',str(replay_dest)],capture_output=True,text=True,timeout=30)
+        check(replayed.returncode==0,'replay '+label+': '+replayed.stderr)
+        with zipfile.ZipFile(baseline_dest/'out.pewave.npz') as left,zipfile.ZipFile(replay_dest/'out.pewave.npz') as right:
+            arrays=[n for n in left.namelist() if n!='metadata_json.npy']
+            check(all(left.read(n)==right.read(n) for n in arrays),'trajectory replay preserves '+label+' arrays byte for byte')
+    fault_trace,_=run(model,'rc_trajectory_rollback','--output-format','trajectory','--fault','after_mode',success=False)
+    check(fault_trace['software_states']==fault['software_states'] and fault_trace['software_final_outputs']==fault['software_final_outputs'],'trajectory output preserves C rollback on failed transaction')
     (a.out/'acceptance.json').write_text(json.dumps({'passed':True,'checks':checks,'count':len(checks)},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('PASS software domain:',len(checks),'checks')
     return 0

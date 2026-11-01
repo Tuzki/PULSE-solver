@@ -1,5 +1,6 @@
 #include "pulse/core.hpp"
 #include "pulse/npz.hpp"
+#include "pulse/trajectory.hpp"
 #include <algorithm>
 #include <bit>
 #include <fstream>
@@ -95,6 +96,7 @@ void write_result(const Model &m, const Result &r,
                   const std::filesystem::path &destination) {
   try {
     std::filesystem::create_directories(destination);
+    if(r.trajectory){r.trajectory->write(destination,r);return;}
     Json metadata;
     metadata["format"] = "PEWave";
     metadata["version"] = 1;

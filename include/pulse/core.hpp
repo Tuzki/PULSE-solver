@@ -171,6 +171,7 @@ struct Options {
   size_t max_microsteps = 256, max_transactions = 0;
   std::string fault;
   bool retain_history = true; // CLI/C ABI stream outputs without retaining every Mode
+  bool trajectory_output = false; // experimental deferred waveform materialization
 };
 struct Agenda {
   Time at;
@@ -203,6 +204,7 @@ struct RunState {
 struct Segment {
   RunState state;
 };
+class Trajectory;
 struct Result {
   std::string status = "STOPPED_ERROR", evidence = "NOT_CERTIFIED";
   Json diagnostic = Json::object(), report = Json::object();
@@ -213,10 +215,12 @@ struct Result {
   std::vector<float> analog;
   std::vector<uint8_t> digital;
   RunState committed;
+  std::shared_ptr<Trajectory> trajectory;
   Stats stats;
   double t_end = 0, save_dt = 0, t_atom = 0;
 };
 Result simulate(const Model &, const Options & = {});
+Result replay_trajectory(const std::filesystem::path &, std::optional<double> save_dt = {});
 void write_result(const Model &, const Result &, const std::filesystem::path &);
 Json diagnostic(const std::exception &);
 } // namespace pulse

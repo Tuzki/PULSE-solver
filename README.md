@@ -13,6 +13,10 @@
 
 ## 构建与使用
 
+事件轨迹输出实验及完整 Boost 三方计时见
+[轨迹格式说明](docs/Trajectory_Output.md)和
+[C002 实验报告](docs/reports/Trajectory_C002_Experiment.md)。该功能需显式选择，默认仍输出密集波形。
+
 Linux x86-64（原生 Ubuntu 或 WSL2 Ubuntu）：
 
 ```bash

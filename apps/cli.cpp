@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
       };
       if (a == "--help") {
         std::cout << "pulse-solver MODEL.md [--out DIR] [--t-end N] [--save-dt "
-                     "N] [--channels LIST] "
+                     "N] [--channels LIST] [--output-format waveform|trajectory] "
                      "[--atomic-time N] [--atom-exponent N] [--max-transactions N(0=unlimited)] [--no-mode-cache] [--ir]\n";
         return 0;
       } else if (a == "--version") {
@@ -25,6 +25,11 @@ int main(int argc, char **argv) {
         return 0;
       } else if (a == "--out")
         dest = value();
+      else if (a == "--output-format") {
+        auto format=value();
+        pulse::require(format=="waveform"||format=="trajectory",1,"CLI_USAGE","output format must be waveform or trajectory");
+        options.trajectory_output=format=="trajectory";
+      }
       else if (a == "--t-end")
         options.t_end = pulse::number(value());
       else if (a == "--save-dt")

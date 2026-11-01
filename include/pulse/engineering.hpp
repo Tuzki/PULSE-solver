@@ -14,6 +14,12 @@ class Flow {
 
 public:
   Flow(const Mode &, const Vector &);
+  // Read-only archive access. Restore uses the existing constructor/evaluators;
+  // preserve the original anchor and exact continuation offset, never rebase.
+  const Mode &archive_mode() const;
+  const Vector &archive_anchor() const;
+  Time archive_offset() const;
+  static Flow restore_archive(const Mode &, const Vector &, Time);
   Vector state(double) const;
   // Continuation retains the original numerical anchor. Compatibility excludes
   // guard orientation and control bits, but includes every electrical map.

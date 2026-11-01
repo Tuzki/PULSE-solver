@@ -7,6 +7,7 @@
 #include "pulse/constitutive.hpp"
 #include "pulse/software.hpp"
 #include "pulse/time_origin.hpp"
+#include "pulse/trajectory.hpp"
 #include <algorithm>
 #include <chrono>
 #include <iomanip>
@@ -377,7 +378,9 @@ Result simulate(const Model &original, const Options &o) {
     check_agenda_origins(m, state);
     out.stats.queue_peak = state.agenda.size();
     out.committed = state;
-    out.segments.push_back({state});stream_setup(m,out,o);stream_emit(m,out,state,state,state.at,false);
+    out.segments.push_back({state});stream_setup(m,out,o);
+    if(o.trajectory_output){out.trajectory=std::make_shared<Trajectory>();out.trajectory->initial(state);}
+    else stream_emit(m,out,state,state,state.at,false);
     bool first = true;
     while (first || out.committed.at < end) {
       first = false;
@@ -590,7 +593,8 @@ Result simulate(const Model &original, const Options &o) {
       }
       require(accepted_algorithm,7,"ALL_EVENT_ALGORITHMS_FAILED","all registered methods failed from the same event checkpoint: "+failures.dump(),true);
       ++candidate.version;
-      stream_commit(m,out,propagation_old,candidate,false,output_index);
+      if(out.trajectory)out.trajectory->append(propagation_old,candidate);
+      else stream_commit(m,out,propagation_old,candidate,false,output_index);
       out.committed = std::move(candidate);
       if(!o.retain_history)out.segments.clear();
       out.segments.push_back({out.committed});
@@ -609,7 +613,7 @@ Result simulate(const Model &original, const Options &o) {
     ++out.stats.rollbacks;
   }
   try {
-    if(out.save_dt>0&&(out.times.empty()||out.times.back()!=out.committed.at.seconds()))stream_emit(m,out,out.committed,out.committed,out.committed.at,false);
+    if(!out.trajectory&&out.save_dt>0&&(out.times.empty()||out.times.back()!=out.committed.at.seconds()))stream_emit(m,out,out.committed,out.committed,out.committed.at,false);
   } catch (const std::exception &e) {
     out.status = "STOPPED_ERROR";
     out.diagnostic = diagnostic(e);
@@ -693,6 +697,24 @@ Result simulate(const Model &original, const Options &o) {
   for(auto&segment:out.segments)publish_physical_state(m,segment.state);
   auto selected=o.channels?o.channels:m.netlist.channels;
   if(selected&&!(selected->size()==1&&selected->front()=="*"))std::erase_if(out.events,[&](const Json&e){return e.value("kind","")=="TRIG"&&std::find(selected->begin(),selected->end(),e.value("source",""))==selected->end();});
+  out.report["output_format"]=out.trajectory?"trajectory":"waveform";
+  out.report["waveform_validation"]=out.trajectory?"DEFERRED_TO_REPLAY":"PERFORMED_DURING_SIMULATION";
+  return out;
+}
+Result replay_trajectory(const std::filesystem::path &path,std::optional<double>save_dt){
+  Model model;uint64_t index=1;auto start=std::chrono::steady_clock::now();
+  auto out=Trajectory::read(path,[&](Result&r,const RunState&old,const RunState&next,bool initial){
+    if(initial){
+      if(save_dt)r.save_dt=*save_dt;
+      require(std::isfinite(r.save_dt)&&r.save_dt>0,1,"MISSING_SIMULATION_CONFIG","positive replay SAVE_DT required");
+      stream_emit(model,r,old,next,next.at,false);
+    }else stream_commit(model,r,old,next,false,index);
+  });
+  if(out.times.empty()||out.times.back()!=out.committed.at.seconds())stream_emit(model,out,out.committed,out.committed,out.committed.at,false);
+  out.report["output_format"]="waveform";
+  out.report["waveform_validation"]="PASSED";
+  out.report["effective_SAVE_DT"]=out.save_dt;
+  out.report["replay_seconds"]=std::chrono::duration<double>(std::chrono::steady_clock::now()-start).count();
   return out;
 }
 } // namespace pulse
