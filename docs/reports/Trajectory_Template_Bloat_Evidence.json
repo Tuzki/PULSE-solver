@@ -1,0 +1,170 @@
+{
+  "input": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\all-platforms-full-20261101\\rohm-a010-dot-totem-pole-pfc-sync\\win_event\\templates.json",
+  "input_bytes": 1054309089,
+  "sha256": "24d8bd3802de6352f67427e69726d5872a82fa284fdf369ac8c3bbea89621c41",
+  "total_templates": 92893,
+  "sampled_templates": 10000,
+  "original_sample_bytes": 113306928,
+  "prototype_pool_bytes_including_root_ids": 4447456,
+  "prototype_nodes": 126465,
+  "prototype_fraction": 0.03925140393886595,
+  "roundtrip_checked": 10000,
+  "roundtrip_failures": 0,
+  "synthetic_signed_zero_and_one_ulp_check": true,
+  "adjacent_examples": [
+    {
+      "from": 0,
+      "to": 1,
+      "changed_leaves": 53,
+      "first_changed_paths": [
+        "/guards/0/row/data/1",
+        "/guards/0/row/data/2",
+        "/guards/1/row/data/1",
+        "/guards/1/row/data/2",
+        "/guards/2/row/data/1",
+        "/guards/2/row/data/2",
+        "/guards/3/row/data/1",
+        "/guards/3/row/data/2",
+        "/strategy",
+        "/maps/I(L_D002)/data/4",
+        "/maps/V(REF1_N006)/data/0",
+        "/maps/V(REF1_N006)/data/1"
+      ]
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "changed_leaves": 2,
+      "first_changed_paths": [
+        "/maps/MODULATION/data/4",
+        "/residual_reference/data/372"
+      ]
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "changed_leaves": 70,
+      "first_changed_paths": [
+        "/guards/2/row/data/0",
+        "/guards/2/row/data/3",
+        "/guards/3/row/data/0",
+        "/guards/3/row/data/3",
+        "/residual_map/data/7",
+        "/residual_map/data/8",
+        "/residual_map/data/20",
+        "/residual_map/data/27",
+        "/residual_map/data/37",
+        "/residual_map/data/59",
+        "/residual_map/data/232",
+        "/residual_map/data/237"
+      ]
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "changed_leaves": 105,
+      "first_changed_paths": [
+        "/guards/0/row/data/0",
+        "/guards/0/row/data/3",
+        "/guards/1/row/data/0",
+        "/guards/1/row/data/3",
+        "/guards/2/row/data/3",
+        "/guards/3/row/data/0",
+        "/guards/3/row/data/3",
+        "/residual_map/data/7",
+        "/residual_map/data/8",
+        "/residual_map/data/20",
+        "/residual_map/data/26",
+        "/residual_map/data/27"
+      ]
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "changed_leaves": 15,
+      "first_changed_paths": [
+        "/guards/3/step",
+        "/guards/3/row/data/0",
+        "/guards/3/row/data/3",
+        "/guards/3/segment",
+        "/segments/3/1",
+        "/residual_map/data/68",
+        "/residual_map/data/293",
+        "/maps/I(R_D111_BODY_PROXY)/data/0",
+        "/maps/I(R_D111_BODY_PROXY)/data/3",
+        "/maps/D111_BODY_RAW/data/0",
+        "/maps/D111_BODY_RAW/data/3",
+        "/maps/I(V_D111_BODY_PROXY)/data/0"
+      ]
+    }
+  ],
+  "fields": {
+    "M": {
+      "serialized_bytes": 2329796,
+      "unique_bytes": 2284,
+      "unique_values": 10
+    },
+    "bools": {
+      "serialized_bytes": 433155,
+      "unique_bytes": 305,
+      "unique_values": 7
+    },
+    "constraints": {
+      "serialized_bytes": 290000,
+      "unique_bytes": 29,
+      "unique_values": 1
+    },
+    "generator": {
+      "serialized_bytes": 290000,
+      "unique_bytes": 29,
+      "unique_values": 1
+    },
+    "guards": {
+      "serialized_bytes": 6182825,
+      "unique_bytes": 12260,
+      "unique_values": 20
+    },
+    "lift": {
+      "serialized_bytes": 290000,
+      "unique_bytes": 29,
+      "unique_values": 1
+    },
+    "maps": {
+      "serialized_bytes": 66118008,
+      "unique_bytes": 66118008,
+      "unique_values": 10000
+    },
+    "observations": {
+      "serialized_bytes": 290000,
+      "unique_bytes": 29,
+      "unique_values": 1
+    },
+    "reduce": {
+      "serialized_bytes": 290000,
+      "unique_bytes": 29,
+      "unique_values": 1
+    },
+    "residual_map": {
+      "serialized_bytes": 19000156,
+      "unique_bytes": 35640,
+      "unique_values": 19
+    },
+    "residual_reference": {
+      "serialized_bytes": 15922950,
+      "unique_bytes": 3784639,
+      "unique_values": 2377
+    },
+    "segments": {
+      "serialized_bytes": 290000,
+      "unique_bytes": 203,
+      "unique_values": 7
+    },
+    "strategy": {
+      "serialized_bytes": 10000,
+      "unique_bytes": 2,
+      "unique_values": 2
+    }
+  },
+  "audit_wall_seconds": 52.35658079999848,
+  "scope": "offline archive analysis only; no solver execution; prototype size is not measured full-case output or simulation speed"
+}

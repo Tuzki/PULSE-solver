@@ -14,6 +14,19 @@ def main():
     cases = data['cases']; labels = ['PLECS','win_original','win_event','linux_original','linux_event']
     if len(cases) != 20 or not all(row.get('finished') for row in cases.values()):
         p.error('all 20 case attempts must finish before publishing the comparison')
+    # Older ledgers may contain a COMPLETED solver report from before a later
+    # archive failure. That is not a completed end-to-end output operation.
+    for name,row in cases.items():
+        for label,r in row['runs'].items():
+            if label == 'PLECS' or r.get('status') == 'NOT_RUN': continue
+            if r.get('status') == 'COMPLETED' and (r.get('returncode') != 0 or r.get('seconds') is None):
+                r['status'] = 'OUTPUT_FAILED'
+            if r.get('returncode') and not r.get('diagnostic'):
+                path = a.ledger.parent/name/(label+'-stderr.txt')
+                if path.exists():
+                    message = path.read_text(encoding='utf-8')
+                    try: r['diagnostic'] = json.loads(message)
+                    except Exception: r['error'] = message
     def esc(s): return str(s).replace('|','/').replace('\n',' ')
     def cell(r):
         if not r: return '未运行'

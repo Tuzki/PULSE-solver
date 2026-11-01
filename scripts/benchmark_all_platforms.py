@@ -184,9 +184,17 @@ def main():
                 except Exception:
                     try: report = json.loads(''.join(lines))
                     except Exception: report = {'status':'NO_REPORT'}
+                status = report.get('status','NO_REPORT')
+                # The solver report can precede a failed archive write/hash.
+                if status == 'COMPLETED' and (rc != 0 or notified is None): status = 'OUTPUT_FAILED'
                 result = {'seconds': notified, 'process_exit_seconds': total, 'returncode':rc, 'status':report.get('status','NO_REPORT'),
                           'simulated_seconds':report.get('simulated_seconds'), 'diagnostic':report.get('diagnostic'), 'report': report,
                           'files': {f.name: {'bytes':f.stat().st_size,'sha256':sha(f)} for f in local.iterdir() if f.is_file()}}
+                result['status'] = status
+                if rc and not result.get('diagnostic'):
+                    error = (dest/(label+'-stderr.txt')).read_text(encoding='utf-8')
+                    try: result['diagnostic'] = json.loads(error)
+                    except Exception: result['error'] = error
                 result['total_bytes'] = sum(f['bytes'] for f in result['files'].values())
                 row['runs'][label] = result; checkpoint()
                 print('DONE',label,result['status'],result['simulated_seconds'],round(total,3),result['diagnostic'],flush=True)

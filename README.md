@@ -17,9 +17,10 @@
 [轨迹格式说明](docs/Trajectory_Output.md)和
 [C002 实验报告](docs/reports/Trajectory_C002_Experiment.md)。该功能需显式选择，默认仍输出密集波形。
 
-Windows 事件版使用 `./build_windows_event.ps1` 独立构建；全案例 PLECS、
-Windows/Linux 原版与事件版的计时、体积、精度和失败记录见
-[跨平台全案例比较](docs/reports/Win_Linux_All_Cases_Comparison.md)。
+Windows 事件版使用 `./build_windows_event.ps1` 独立构建。全案例批测已因
+A010 事件归档膨胀而暂停，定位和离线证据见
+[模板膨胀调查](docs/reports/Trajectory_Template_Bloat_Investigation.md)；
+尚未发布最终全案例比较或宣称全部通过。
 
 Linux x86-64（原生 Ubuntu 或 WSL2 Ubuntu）：
 

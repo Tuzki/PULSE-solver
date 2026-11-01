@@ -59,8 +59,12 @@ on the public physical-state snapshot. Derived eigen/Taylor/observation caches
 are rebuilt by the existing code; long-double caches are not rounded to double
 and stored. The reader rejects differing long-double significand/exponent
 precision. Native tests validate bitwise replay on Linux GCC and Windows
-MinGW-w64 GCC. Full-case coverage and failures are recorded in
-[the cross-platform comparison](reports/Win_Linux_All_Cases_Comparison.md).
+MinGW-w64 GCC. Full-case testing is paused after finding a v1 full-Mode
+deduplication defect: A010 produced about 1.05 GB of redundant template JSON,
+then failed archive integrity-file size checks. See
+[the offline investigation](reports/Trajectory_Template_Bloat_Investigation.md).
+The candidate block-sharing representation is not yet integrated or validated
+as a native solver format; do not treat it as an A010 validation pass.
 This prototype does not certify bitwise replay across arbitrary compiler or
 math-library versions.
 
