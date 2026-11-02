@@ -7,10 +7,13 @@ namespace pulse::engineering {
 struct Range {
   double lo = 0, hi = 0;
 };
+void reset_flow_statistics();
+Json flow_statistics();
 struct FlowData;
 class Flow {
   std::shared_ptr<FlowData> data_;
   Time offset_;
+  std::shared_ptr<const Mode> archive_view_;
 
 public:
   Flow(const Mode &, const Vector &);
@@ -23,7 +26,8 @@ public:
   static Flow restore_archive(const Mode &, const Vector &, Time);
   Vector state(double) const;
   // Continuation retains the original numerical anchor. Compatibility excludes
-  // guard orientation and control bits, but includes every electrical map.
+  // control snapshots and certified observation-only rows. Changed guards are
+  // reprojected; unchanged guards share the original anchored evaluator.
   bool compatible(const Mode &) const;
   Flow continued(const Mode &, double elapsed) const;
   double observe(const Vector &, double time, int derivative = 0) const;

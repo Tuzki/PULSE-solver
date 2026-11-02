@@ -85,6 +85,8 @@ struct Model {
   std::vector<int> cmps, pwas, registers, events;
   std::vector<std::string> state_ids, registry;
   std::set<std::string> software_outputs;
+  std::map<std::string,std::set<std::string>> dependency_roles;
+  std::set<std::string> observer_signals, observer_regs;
   Vector initial;
   int ns = 0;
   double compile_seconds = 0;
@@ -93,6 +95,10 @@ struct Model {
 Model compile(Netlist);
 Vector reconstruct_physical(const Matrix &, const Vector &);
 Vector reduce_physical(const Matrix &, const Vector &);
+struct ObserverBinding {
+  Matrix A, N, B;
+  std::map<std::string,int> rows;
+};
 struct Mode {
   // A region-classification candidate is never an accepted physical flow.
   bool classification_only = false;
@@ -100,6 +106,9 @@ struct Mode {
   int numerical_strategy = 2;
   // Shared by compiled definitions; released from accepted trajectory states.
   std::shared_ptr<const Matrix> candidate_roundoff_scale;
+  std::shared_ptr<const ObserverBinding> observer_binding;
+  std::set<std::string> observer_maps;
+  std::vector<int> observer_rows;
   Matrix M, observations, constraints, residual_map,
       residual_reference; // homogeneous physical coordinate [q,phi,eta,1]
   // Descriptor tangent flow is retained in factored coordinates. The exact

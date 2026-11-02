@@ -5,12 +5,15 @@
 #include <bit>
 #include <complex>
 #include <cstdlib>
+#include <cstring>
 #include <functional>
 #include <numbers>
 #include <sstream>
 #include <unsupported/Eigen/MatrixFunctions>
 namespace pulse::engineering {
 namespace {
+struct FlowCounts{uint64_t constructions=0,continuations=0,reused=0,reprojected=0;};
+thread_local FlowCounts flow_counts;
 using Complex = std::complex<double>;
 using CMatrix = Eigen::MatrixXcd;
 using CVector = Eigen::VectorXcd;
@@ -297,8 +300,11 @@ long double local_tail(const FlowData &d, size_t k, long double q, int order) {
   return tail;
 }
 } // namespace
+void reset_flow_statistics(){flow_counts={};}
+Json flow_statistics(){return {{"constructions",flow_counts.constructions},{"continuations",flow_counts.continuations},{"shared_continuations",flow_counts.reused},{"reprojected_continuations",flow_counts.reprojected}};}
 Flow::Flow(const Mode &mode, const Vector &initial)
     : data_(std::make_shared<FlowData>()) {
+  ++flow_counts.constructions;
   require(!mode.classification_only, 12, "UNACCEPTED_CANDIDATE",
           "region-classification candidate cannot be propagated");
   auto &d = *data_;
@@ -380,7 +386,7 @@ Flow::Flow(const Mode &mode, const Vector &initial)
   }
   d.points.emplace(0, initial);
 }
-const Mode &Flow::archive_mode() const {return data_->mode;}
+const Mode &Flow::archive_mode() const {return archive_view_?*archive_view_:data_->mode;}
 const Vector &Flow::archive_anchor() const {return data_->initial;}
 Time Flow::archive_offset() const {return offset_;}
 uint64_t Flow::archive_origin_id() const {return data_->archive_origin_id;}
@@ -705,25 +711,38 @@ double Flow::tangent(const Mode &mode,const Vector &initial,const Vector &row){
   return double(projected.dot(dz.head(n)));
 }
 bool Flow::compatible(const Mode &m) const {
-  const auto &old=data_->mode;
+  const auto &old=archive_mode();
   auto same=[](const Matrix&a,const Matrix&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
+  if(m.observer_maps!=old.observer_maps||m.observer_rows!=old.observer_rows)return false;
+  auto same_electrical_rows=[&](const Matrix&a,const Matrix&b){
+    if(a.rows()!=b.rows()||a.cols()!=b.cols())return false;
+    for(int i=0;i<a.rows();++i)if(std::find(m.observer_rows.begin(),m.observer_rows.end(),i)==m.observer_rows.end()&&!(a.row(i).array()==b.row(i).array()).all())return false;
+    return true;
+  };
   if(m.numerical_strategy!=old.numerical_strategy||key(m)!=key(old)||m.segments!=old.segments||
-     !same(m.constraints,old.constraints)||!same(m.residual_map,old.residual_map)||
-     !same(m.residual_reference,old.residual_reference)||m.maps.size()!=old.maps.size())return false;
+     !same(m.constraints,old.constraints)||!same_electrical_rows(m.residual_map,old.residual_map)||
+     !same_electrical_rows(m.residual_reference,old.residual_reference)||m.maps.size()!=old.maps.size())return false;
   for(const auto &[name,row]:old.maps){
     auto it=m.maps.find(name);
     if(it==m.maps.end())return false;
     // BOOL projections are control snapshots, not electrical observations.
     // All real-valued maps (including source values) still require equality.
-    if(old.bools.count(name)&&m.bools.count(name))continue;
+    if((old.bools.count(name)&&m.bools.count(name))||m.observer_maps.count(name))continue;
     if(!same(row,it->second))return false;
   }
   return true;
 }
 Flow Flow::continued(const Mode &m,double elapsed) const {
+  ++flow_counts.continuations;
   require(compatible(m)&&elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
   // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
-  Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);next.data_->archive_origin_id=data_->archive_origin_id;return next;
+  const auto &guards=data_->mode.guards;bool same_guards=guards.size()==m.guards.size();
+  for(size_t i=0;i<guards.size()&&same_guards;++i){const auto&a=guards[i];const auto&b=m.guards[i];
+    same_guards=a.part==b.part&&a.direction==b.direction&&a.kind==b.kind&&a.knot==b.knot&&a.segment==b.segment&&a.step==b.step&&a.row.size()==b.row.size()&&
+      (!a.row.size()||std::memcmp(a.row.data(),b.row.data(),size_t(a.row.size())*sizeof(double))==0);
+  }
+  if(same_guards){++flow_counts.reused;Flow next=*this;next.archive_view_=std::make_shared<const Mode>(m);next.offset_=offset_+Time::from(elapsed);return next;}
+  ++flow_counts.reprojected;Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);next.data_->archive_origin_id=data_->archive_origin_id;return next;
 }
 double Flow::observe(const Vector &row,double t,int derivative) const {
   // Project an arbitrary observable on this same continuous trajectory.

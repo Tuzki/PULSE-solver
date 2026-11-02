@@ -704,6 +704,47 @@ Model compile(Netlist net) {
         };
         for (auto &[n, s] : m.signals)
             dfs(n);
+        // Conservative transitive dependency roles. Observation selection never
+        // determines electrical relevance. Stateful/control roots remain critical.
+        auto mark_role = [&](const std::string &raw, const std::string &role) {
+            std::set<std::string> seen;
+            std::function<void(std::string)> visit_dependency = [&](std::string name) {
+                name=net_name(name);
+                if(!m.signals.count(name)||!seen.insert(name).second)return;
+                m.dependency_roles[name].insert(role);
+                for(const auto &input:deps[name])visit_dependency(input);
+            };
+            if(!is_literal(raw))visit_dependency(raw);
+        };
+        std::set<std::string> task_output_names;
+        for(const auto &task:m.netlist.tasks)for(const auto &output:task.outputs)task_output_names.insert(net_name(output));
+        for(const auto &part:m.parts){
+            const auto &args=part.raw.args;const auto &kind=part.raw.kind;
+            if((kind=="V"||kind=="I")&&args.size()>2)mark_role(args[2],"electrical_excitation");
+            if(kind=="SW"&&args.size()>2)mark_role(args[2],"topology");
+            if(kind=="INT"&&args.size()>1)mark_role(args[1],"dynamics");
+            if(kind=="CMP"&&args.size()>1)mark_role(args[1],"guard");
+            if(kind=="REG")for(size_t i=1;i<args.size();++i){
+                if(task_output_names.count(net_name(args[0]))&&net_name(args[i])==net_name(args[0]))continue;
+                mark_role(args[i],"state_update");
+            }
+            if(kind=="REG"||kind=="EVENT")for(const auto &option:part.raw.options)
+                if(option.first=="SOURCE"||option.first=="CANCEL"||option.first=="DELAY_INPUT"||option.first=="SET"||option.first=="RESET")mark_role(option.second,"event_control");
+        }
+        for(const auto &task:m.netlist.tasks){
+            for(const auto &input:task.inputs)mark_role(input,"software_input");
+            mark_role(task.trigger,"event_control");
+        }
+        // Continuous observation equations are retained in the algebraic system;
+        // their held dependencies are conservatively excluded from rebinding.
+        for(const auto &[name,signal]:m.signals)
+            if(signal.type==Signal::REAL&&!signal.held)mark_role(name,"continuous_equation");
+        for(const auto &[name,signal]:m.signals)
+            if(signal.type==Signal::REAL&&signal.held&&m.dependency_roles[name].empty()){
+                m.observer_signals.insert(name);
+                for(const auto &part:m.parts)if(part.raw.id==signal.driver&&part.raw.kind=="REG")m.observer_regs.insert(name);
+                m.dependency_roles[name].insert("observation_only");
+            }
         // Every physical two-terminal port contributes connectivity. Different
         // windings are never joined merely because a constitutive law couples
         // them. Sensors and numeric control signals contribute no graph edges.

@@ -116,6 +116,7 @@ def summary(data):
     return {'format':'PULSEES1','valid':True,'status':data['end']['status'],'sections':data['headers'],
             'counts':{k:len(data[k]) for k in ('definitions','matrices','values','instances','states','events','flows','diagnostics')},
             'state_dimension':data['meta']['state_dimension'],'last_time_T128':data['events'][-1]['time'],
+            'archive_counts':data['meta'].get('provenance',{}).get('archive_counts',{}),
             'single_state_per_event':True,'complete_component_modes':True,'all_references_valid':True}
 
 

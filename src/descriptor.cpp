@@ -20,7 +20,8 @@ thread_local ModeCacheData *active_mode_cache = nullptr;
 
 std::string candidate_key(const std::map<int, bool> &bits,
                           const std::map<int, int> &segments,
-                          const std::map<std::string, double> &regs) {
+                          const std::map<std::string, double> &regs,
+                          const std::set<std::string>* observation_regs=nullptr) {
     // Exact binary values and length-prefixed fields avoid textual ambiguities.
     // Model topology/parameters are isolated by the per-simulation cache scope.
     std::string key(1,char(portfolio_variant()));
@@ -37,8 +38,10 @@ std::string candidate_key(const std::map<int, bool> &bits,
         word(uint64_t(i));
         word(uint64_t(int64_t(value)));
     }
-    word(regs.size());
+    size_t count=0;for(const auto &[name,value]:regs)if(!observation_regs||!observation_regs->count(name))++count;
+    word(count);
     for (const auto &[name, value] : regs) {
+        if(observation_regs&&observation_regs->count(name))continue;
         word(name.size());
         key += name;
         word(std::bit_cast<uint64_t>(value));
@@ -156,8 +159,9 @@ struct Assembler {
     Matrix A, B, F, D;
     int na = 0, row = 0;
     Assembler(const Model &mm, const std::map<std::string, double> &rr, std::map<int, bool> bb,
-              std::map<int, int> ss)
+              std::map<int, int> ss, bool equations=true)
         : m(mm), regs(rr), bits(std::move(bb)), segments(std::move(ss)) {
+        if(!equations){for(size_t i=0;i<m.parts.size();++i)partidx[m.parts[i].raw.id]=int(i);return;}
         na = int(m.nodes.size());
         for (auto &[n, i] : m.branches) {
             auto &p = m.parts[i];
@@ -650,6 +654,23 @@ struct Assembler {
                 for (int j = 0; j < extra; ++j)
                     mode.residual_map.row(na + j) = N.row(m.nodes.at(m.floating_references[j]));
             }
+            // Retain the original descriptor shape and factorization ordering.
+            // Only structurally isolated held observations may be rebound.
+            if(!m.observer_regs.empty()){
+                auto binding=std::make_shared<ObserverBinding>();bool isolated=true;
+                for(const auto &name:m.observer_signals){
+                    int col=realcol.at(name);int r=col;
+                    if(A(r,col)!=1||A.row(r).cwiseAbs().sum()!=1||A.col(col).cwiseAbs().sum()!=1||!F.col(col).isZero(0))isolated=false;
+                    if(!N.row(col).head(m.ns).isZero(0)||std::bit_cast<uint64_t>(N(col,m.ns))!=std::bit_cast<uint64_t>(held(name)))isolated=false;
+                    binding->rows[name]=r;
+                }
+                if(isolated){
+                    binding->A=m.floating_references.empty()?A:physical_A;
+                    binding->B=m.floating_references.empty()?B:physical_B;binding->N=N;
+                    mode.observer_binding=binding;
+                    for(const auto &[name,r]:binding->rows){mode.observer_maps.insert(name);mode.observer_rows.push_back(r);}
+                }
+            }
             // Classification uses only this physical point, not arbitrary
             // independent coefficient columns. Cache the operation scale, not
             // a previous point's validation result; recheck every cache hit.
@@ -712,6 +733,35 @@ struct Assembler {
         return mode;
     }
 };
+Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::string,double>&regs,
+                       const std::map<int,bool>&bits,const std::map<int,int>&segments){
+    Mode mode=stored;if(!stored.observer_binding)return mode;
+    const auto &binding=*stored.observer_binding;Matrix N=binding.N,B=binding.B;
+    Assembler values(m,regs,bits,segments,false);
+    for(const auto &[name,row]:binding.rows){
+        double value=values.held(name);N(row,m.ns)=value;B(row,m.ns)=value;
+        mode.maps.at(name).setZero();mode.maps.at(name)[m.ns]=value;
+    }
+    int na=int(N.rows());mode.residual_map.topRows(na)=binding.A*N-B;
+    mode.residual_reference.topRows(na)=B;
+    Matrix scale=Matrix::Zero(mode.residual_map.rows(),m.ns+1);
+    scale.topRows(na)=binding.A.cwiseAbs()*N.cwiseAbs()+B.cwiseAbs();
+    for(int i=0;i<na;++i)for(int j=0;j<=m.ns;++j){
+        double floor=std::numeric_limits<double>::epsilon()*(binding.A.row(i).lpNorm<1>()*N.col(j).lpNorm<Eigen::Infinity>()+B.row(i).lpNorm<1>());
+        scale(i,j)=std::max(scale(i,j),floor);
+    }
+    for(size_t j=0;j<m.floating_references.size();++j){
+        mode.residual_map.row(na+j)=N.row(m.nodes.at(m.floating_references[j]));
+        scale.row(na+j)=N.row(m.nodes.at(m.floating_references[j])).cwiseAbs();
+    }
+    mode.candidate_roundoff_scale=std::make_shared<const Matrix>(std::move(scale));
+    std::ostringstream id;id<<std::setprecision(17);
+    for(const auto &[i,b]:bits)id<<m.parts[i].raw.id<<'='<<b<<';';
+    for(const auto &[i,seg]:segments)id<<m.parts[i].raw.id<<'='<<seg<<';';
+    for(const auto &[name,v]:regs)id<<name<<'='<<v<<';';
+    mode.id=id.str();
+    return mode;
+}
 Vector input_map(const Model &m, const Mode &mode, const std::string &name) {
     if (is_literal(name)) {
         Vector v = Vector::Zero(m.ns + 1);
@@ -942,9 +992,12 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
                               : nullptr;
     std::string key;
     if (cache) {
-        key = candidate_key(bits, segments, regs);
-        if (auto it = cache->entries.find(key); it != cache->entries.end()) {
-            Mode mode = instantiate_cached(m, it->second, s, classification_only);
+        key = candidate_key(bits, segments, regs, &m.observer_regs);
+        auto it=cache->entries.find(key);
+        if(it==cache->entries.end())it=cache->entries.find(candidate_key(bits,segments,regs));
+        if (it != cache->entries.end()) {
+            Mode bound=bind_observations(m,it->second,regs,bits,segments);
+            Mode mode = instantiate_cached(m, bound, s, classification_only);
             ++stats.cache_hits;
             return mode;
         }
@@ -995,6 +1048,7 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
         }
     }
     if (cache) {
+        if(!mode.observer_binding)key=candidate_key(bits,segments,regs);
         if (cache->entries.size() >= cache->capacity) {
             cache->entries.erase(cache->insertion_order.front());
             cache->insertion_order.pop_front();

@@ -29,6 +29,7 @@ Json encode(const Mode&m){
     {"lift",encode_matrix(m.invariant_lift)},{"generator",encode_matrix(m.invariant_generator)},
     {"reduce",encode_matrix(m.invariant_reduce)},{"strategy",m.numerical_strategy},
     {"maps",Json::object()},{"bools",m.bools},{"segments",Json::array()},{"guards",Json::array()}};
+  j["observer_maps"]=m.observer_maps;j["observer_rows"]=m.observer_rows;
   for(auto&[n,v]:m.maps)j["maps"][n]=encode_matrix(v);
   for(auto&[part,region]:m.segments)j["segments"].push_back({part,region});
   for(auto&g:m.guards)j["guards"].push_back({{"row",encode_matrix(g.row)},{"part",g.part},
@@ -40,6 +41,7 @@ Mode decode(const Json&j){
   m.constraints=decode_matrix(j.at("constraints"));m.residual_map=decode_matrix(j.at("residual_map"));
   m.residual_reference=decode_matrix(j.at("residual_reference"));
   m.invariant_lift=decode_matrix(j.at("lift"));m.invariant_generator=decode_matrix(j.at("generator"));m.invariant_reduce=decode_matrix(j.at("reduce"));
+  m.observer_maps=j.value("observer_maps",std::set<std::string>{});m.observer_rows=j.value("observer_rows",std::vector<int>{});
   m.numerical_strategy=j.at("strategy");m.bools=j.at("bools").get<std::map<std::string,bool>>();
   for(auto it=j.at("maps").begin();it!=j.at("maps").end();++it){Matrix a=decode_matrix(it.value());require(a.cols()==1,11,"TRAJECTORY_SHAPE","observation is not a column");m.maps[it.key()]=a;}
   for(auto&v:j.at("segments"))m.segments[v.at(0).get<int>()]=v.at(1).get<int>();

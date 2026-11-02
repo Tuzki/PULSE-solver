@@ -301,7 +301,7 @@ void stream_setup(const Model&m,Result&out,const Options&o){
   if(selected)for(const auto&n:*selected){require(std::find(m.registry.begin(),m.registry.end(),n)!=m.registry.end()||(m.signals.count(n)&&m.signals.at(n).type==Signal::TRIG),11,"UNKNOWN_CHANNEL","unknown output channel: "+n);chosen.insert(n);}
   for(const auto&n:m.registry)if(!selected||chosen.count(n)){bool digital=m.signals.count(n)&&m.signals.at(n).type==Signal::BOOL;(digital?out.digital_names:out.analog_names).push_back(n);}
 }
-void stream_emit(const Model&,Result&out,const RunState&old,const RunState&next,Time at,bool,bool replace=false){
+void stream_emit(const Model&,Result&out,const RunState&old,const RunState&next,Time at,bool,bool replace=false,std::optional<bool> compatible_hint=std::nullopt){
   Vector x;const Mode*mode=nullptr;
   if(at==next.at){x=next.internal;mode=&next.mode;}
   else if(at==old.at){x=old.internal;mode=&old.mode;}
@@ -311,22 +311,26 @@ void stream_emit(const Model&,Result&out,const RunState&old,const RunState&next,
   require(out.times.size()<10000000&&(out.times.size()+1)*width<512.*1024*1024,11,"OUTPUT_LIMIT","output exceeds 512 MiB or 10 million samples");
   out.times.push_back(at.seconds());
   const RunState &anchor=at==next.at?next:old;
-  const bool flow_compatible=!out.analog_names.empty() && anchor.electrical_flow && anchor.electrical_flow->compatible(*mode);
-  for(const auto&name:out.analog_names){double v=0;v=mode->maps.at(name).dot(x);
-    if(flow_compatible)
-      v=anchor.electrical_flow->observe(mode->maps.at(name),(at-anchor.at).seconds());
+  const bool flow_compatible=compatible_hint.value_or(false) || (!compatible_hint.has_value() && !out.analog_names.empty() && anchor.electrical_flow && anchor.electrical_flow->compatible(*mode));
+  for(const auto&name:out.analog_names){const auto &row=mode->maps.at(name);
+    double v=flow_compatible?anchor.electrical_flow->observe(row,(at-anchor.at).seconds()):row.dot(x);
     require(std::isfinite(v)&&std::abs(v)<=std::numeric_limits<float>::max(),11,"OUTPUT_NONFINITE","streamed output cannot be represented");out.analog.push_back(float(v));}
   for(const auto&name:out.digital_names)out.digital.push_back(mode->bools.at(name));
 }
 void stream_commit(const Model&m,Result&out,const RunState&old,const RunState&next,bool backward,uint64_t&index){
   if(next.at==old.at){if(!out.times.empty()&&out.times.back()==next.at.seconds())stream_emit(m,out,old,next,next.at,backward,true);return;}
   const Time dt=Time::from(out.save_dt);
-  for(;;){Time at=dt.times(index);if(at>next.at)break;require(at>=old.at,12,"STREAM_TIME","output sample precedes current segment");stream_emit(m,out,old,next,at,backward);++index;}
+  const bool old_compatible=!out.analog_names.empty()&&old.electrical_flow&&old.electrical_flow->compatible(old.mode);
+  std::optional<bool> next_compatible;
+  for(;;){Time at=dt.times(index);if(at>next.at)break;require(at>=old.at,12,"STREAM_TIME","output sample precedes current segment");
+    if(at==next.at&&!next_compatible.has_value())next_compatible=!out.analog_names.empty()&&next.electrical_flow&&next.electrical_flow->compatible(next.mode);
+    stream_emit(m,out,old,next,at,backward,false,at==next.at?*next_compatible:old_compatible);++index;
+  }
 }
 } // namespace
 Result simulate(const Model &original, const Options &o) {
   Model owned_model=original;owned_model.numerical_coordinates=true;const Model&m=owned_model;
-  portfolio_reset_equations();
+  portfolio_reset_equations();engineering::reset_flow_statistics();
   Result out;PortfolioStats portfolio;uint64_t output_index=1,total_event_records=0;
   auto begin = std::chrono::steady_clock::now();
   ScopedModeCache mode_cache(m, o.mode_cache_capacity);
@@ -698,6 +702,9 @@ Result simulate(const Model &original, const Options &o) {
   for(auto&segment:out.segments)publish_physical_state(m,segment.state);
   auto selected=o.channels?o.channels:m.netlist.channels;
   if(selected&&!(selected->size()==1&&selected->front()=="*"))std::erase_if(out.events,[&](const Json&e){return e.value("kind","")=="TRIG"&&std::find(selected->begin(),selected->end(),e.value("source",""))==selected->end();});
+  out.report["flow_statistics"]=engineering::flow_statistics();
+  out.report["dependency_roles"]=m.dependency_roles;
+  if(!m.observer_regs.empty())out.report["mode_cache_policy"]="RUN_SCOPED_ELECTRICAL_KEY_WITH_CERTIFIED_OBSERVER_BINDINGS_FIFO";
   out.report["output_format"]=out.trajectory?"trajectory":"waveform";
   out.report["waveform_validation"]=out.trajectory?"DEFERRED_TO_REPLAY":"PERFORMED_DURING_SIMULATION";
   return out;

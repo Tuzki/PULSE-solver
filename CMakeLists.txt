@@ -90,6 +90,9 @@ install(TARGETS pulse-solver pulse_solver RUNTIME DESTINATION bin LIBRARY DESTIN
 install(FILES include/pulse/pulse.h DESTINATION include/pulse)
 
 if(BUILD_TESTING)
+ add_executable(observer_dependencies_tests tests/observer_dependencies.cpp)
+ target_link_libraries(observer_dependencies_tests PRIVATE pulse_core)
+ add_test(NAME observer_dependencies COMMAND observer_dependencies_tests)
  add_executable(pre_kernel_tests tests/pre_kernel.cpp)
  target_link_libraries(pre_kernel_tests PRIVATE pulse_core)
  add_test(NAME pre_kernel COMMAND pre_kernel_tests)

@@ -16,9 +16,36 @@ import time
 import xmlrpc.client
 import numpy as np
 from scipy.io import loadmat
-from benchmark_all_platforms import sha, statistics
+from benchmark_all_platforms import sha, statistics, arrays
 from benchmark_c002_end_to_end import Transport
 from read_pevt import read, summary
+
+
+def accuracy(path,reference,meta):
+    result=statistics(path,reference,meta)
+    wave=arrays(path);rt=reference['Time'].ravel();result['channels']={}
+    for i,channel in enumerate(meta['channels']):
+        name=channel['pulse'];ref=reference['Values'][i].astype(float)
+        actual=np.interp(rt,wave['time'],wave[name].astype(float));error=actual-ref;absolute=np.abs(error)
+        worst=int(np.argmax(absolute));relative=absolute/np.maximum(np.abs(ref),channel['atol'])
+        stats={}
+        for label,fn in [('mean',np.mean),('rms',lambda x:np.sqrt(np.mean(x*x))),('min',np.min),('max',np.max)]:
+            stats[label]={'reference':float(fn(ref)),'actual':float(fn(actual))}
+        stats.update({'rmse':float(np.sqrt(np.mean(error*error))),'mae':float(np.mean(absolute)),
+                      'max_abs':float(absolute[worst]),'max_abs_time':float(rt[worst]),
+                      'reference_at_max':float(ref[worst]),'actual_at_max':float(actual[worst]),
+                      'max_relative':float(np.max(relative)),
+                      'relative_definition':'abs(error)/max(abs(reference), original channel atol)',
+                      'pointwise_within_atol_plus_one_percent':int(np.sum(absolute<=channel['atol']+.01*np.abs(ref))),
+                      'pointwise_total':int(rt.size)})
+        native_index=int(np.searchsorted(wave['time'],rt[worst]))
+        native_indices=range(max(0,native_index-2),min(wave['time'].size,native_index+3))
+        reference_indices=range(max(0,worst-2),min(rt.size,worst+3))
+        stats['native_neighbors_at_max']=[{'time':float(wave['time'][j]),'value':float(wave[name][j])} for j in native_indices]
+        stats['reference_neighbors_at_max']=[{'time':float(rt[j]),'value':float(ref[j])} for j in reference_indices]
+        result['channels'][name]=stats
+    result['reference']='fresh PLECS result from this repetition; original CSV checked separately'
+    return result
 
 
 def main():
@@ -31,6 +58,8 @@ def main():
     p.add_argument('--max-event-plecs-ratio',type=float,default=10)
     p.add_argument('--diagnostic-t-end',type=float,help='Explicit diagnostic prefix only; never full-case acceptance')
     p.add_argument('--platforms',nargs='+',choices=['linux','win'],default=['linux','win'])
+    p.add_argument('--include-waveform',action='store_true',help='Also measure direct dense output under the same tenfold limit')
+    p.add_argument('--generation-only',action='store_true',help='Measure event generation only; reconstruction/accuracy remain pending')
     a=p.parse_args();root=pathlib.Path(__file__).resolve().parents[1];a.out=a.out.resolve()
     a.out.mkdir(parents=True,exist_ok=True)
     if (a.out/'ledger.json').exists():raise ValueError('use a fresh output directory')
@@ -121,6 +150,9 @@ def main():
             if timed_out:
                 row['stopped_reason']='Event generation exceeded '+str(a.max_event_plecs_ratio)+'x fresh PLECS; remaining work not started.';save();return 2
             if result['status']!='COMPLETED':raise RuntimeError('event generation failed')
+            if a.generation_only:
+                row['validation_pending']='Waveform reconstruction and precision comparison not executed in this timing-only batch.'
+                continue
             row['validation'][platform+'_protocol']=summary(read(local));save()
             replay=str(pathlib.PurePosixPath(binaries[platform]).parent/'pulse-replay') if platform=='linux' else str(a.win_event.resolve().parent/'pulse-replay.exe')
             replay_out=a.native_out+'/'+name+'/linux_replay' if platform=='linux' else str(dest/'win_replay')
@@ -137,8 +169,44 @@ def main():
             csv=csv[csv[:,0]<=end]
             reference={'Time':csv[:,0].reshape(1,-1),'Values':csv[:,1:].T}
             row['validation']['fresh_PLECS_matches_original_CSV']=bool(np.array_equal(fresh['Time'].ravel(),csv[:,0]) and np.array_equal(fresh['Values'],csv[:,1:].T))
-            row['validation'][platform+'_vs_PLECS']=statistics(reconstructed,reference,meta);save()
+            fresh_reference={'Time':fresh['Time'],'Values':fresh['Values']}
+            row['validation'][platform+'_vs_PLECS']=accuracy(reconstructed,fresh_reference,meta);save()
             print('DONE',platform,'accuracy',row['validation'][platform+'_vs_PLECS']['passed'],'/',row['validation'][platform+'_vs_PLECS']['total'],flush=True)
+            # Fair comparison uses the same 7 channels and PLECS reference grid,
+            # separately from the original full-channel dense artifacts.
+            full=arrays(reconstructed);reference_grid={'time':fresh['Time'].ravel()}
+            for channel in meta['channels']:
+                reference_grid[channel['pulse']]=np.interp(reference_grid['time'],full['time'],full[channel['pulse']].astype(float))
+            fair_path=dest/(platform+'-reference-grid.npz');np.savez(fair_path,**reference_grid)
+            row['runs'][platform+'_reference_grid']={'bytes':fair_path.stat().st_size,'sha256':sha(fair_path),
+                'samples':int(reference_grid['time'].size),'channels':len(meta['channels']),'dtype':'float64','grid_seconds':meta['csv_grid_seconds']}
+            del full,reference_grid
+            if a.include_waveform:
+                dense=dest/(platform+'_waveform');dense.mkdir()
+                dense_output=a.native_out+'/'+name+'/linux_waveform' if platform=='linux' else str(dense)
+                dense_command=([binaries[platform],nm+'/netlist.md'] if platform=='linux' else [binaries[platform],str(model/'netlist.md')])+['--t-end',str(end),'--out',dense_output]
+                if platform=='linux':dense_command=prefix+['timeout','--signal=KILL',f'{limit:.9f}s']+dense_command
+                print('START',platform,'direct waveform',flush=True);start=time.perf_counter()
+                with (dest/(platform+'-waveform-stdout.txt')).open('w',encoding='utf-8') as stdout,(dest/(platform+'-waveform-stderr.txt')).open('w',encoding='utf-8') as stderr:
+                    dense_proc=subprocess.Popen(dense_command,stdout=stdout,stderr=stderr)
+                    dense_timeout=False
+                    try:dense_rc=dense_proc.wait(timeout=limit if platform=='win' else limit+5)
+                    except subprocess.TimeoutExpired:dense_proc.kill();dense_rc=dense_proc.wait();dense_timeout=True
+                dense_seconds=time.perf_counter()-start
+                dense_timeout=dense_timeout or (platform=='linux' and (dense_rc in (124,137) or (dense_rc==9 and dense_seconds>=limit)))
+                if platform=='linux':subprocess.run(prefix+['cp','-a',dense_output+'/.',native(dense)],capture_output=True)
+                dense_result={'status':'TIME_LIMIT_EXCEEDED' if dense_timeout else 'OUTPUT_FAILED','process_exit_seconds':dense_seconds,'returncode':dense_rc,'limit_seconds':limit}
+                if (dense/'simulation_report.json').exists():
+                    dense_result['report']=json.loads((dense/'simulation_report.json').read_text(encoding='utf-8'))
+                    if not dense_timeout and dense_rc==0:dense_result['status']=dense_result['report']['status']
+                dense_result['files']={f.name:{'bytes':f.stat().st_size,'sha256':sha(f)} for f in dense.iterdir() if f.is_file()}
+                dense_result['total_bytes']=sum(f['bytes'] for f in dense_result['files'].values());row['runs'][platform+'_waveform']=dense_result;save()
+                print('DONE',platform,'direct waveform',dense_result['status'],dense_seconds,flush=True)
+                if dense_timeout:row['stopped_reason']='Direct waveform simulation exceeded 10x fresh PLECS; remaining work not started.';save();return 2
+                if dense_result['status']!='COMPLETED':raise RuntimeError('direct waveform failed')
+                dense_wave=arrays(dense);replay_wave=arrays(reconstructed)
+                row['validation'][platform+'_direct_vs_reconstructed']={'bitwise_equal':all(k in replay_wave and v.dtype==replay_wave[k].dtype and v.shape==replay_wave[k].shape and v.tobytes()==replay_wave[k].tobytes() for k,v in dense_wave.items()),'arrays':len(dense_wave)}
+                save();del dense_wave,replay_wave
         row['finished']=True;save()
     print('BENCHMARK FINISHED',flush=True)
     return 0
