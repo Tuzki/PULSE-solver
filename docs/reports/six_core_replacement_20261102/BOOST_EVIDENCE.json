@@ -1,0 +1,2374 @@
+{
+  "solver_commit": "5881b86396c8bba86f435ef32e4719e8751becec",
+  "scope": "Boost full 0.3 s, one sequential repetition, PLECS and six-core native Windows/Linux; no A010 or CTest in this batch",
+  "ledger": {
+    "timing": "command start to COMPLETED notification after archive write; process exit separately; replay excluded",
+    "policy": {
+      "max_event_plecs_ratio": 10.0,
+      "on_timeout": "stop entire batch"
+    },
+    "binaries": {
+      "linux": {
+        "path": "/root/pulse-a010-full-fix/build-linux/pulse-solver",
+        "description": "/root/pulse-a010-full-fix/build-linux/pulse-solver: ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=14f896045d05646ba96deffa44dfb83de23860a8, for GNU/Linux 3.2.0, not stripped",
+        "sha256": "def9909162d2956d738d783fd8ce04f8b4c766a87203871b1e15a9fabd8ec41a"
+      },
+      "win": {
+        "path": "D:\\codex\\using plecs\\pulse-linux-port\\build-event-opt-windows\\pulse-solver.exe",
+        "description": "Windows native x86-64",
+        "sha256": "933efdf75996f9e2ea78c6e63bbef5e673eb351900f5072a9d6184ebeb27ceff"
+      }
+    },
+    "cases": {
+      "rohm-c002-d-boost": {
+        "target_seconds": 0.3,
+        "original_end_seconds": 0.3,
+        "scope": "full original duration",
+        "runs": {
+          "PLECS": {
+            "status": "COMPLETED",
+            "seconds": 10.199489400009043,
+            "simulated_seconds": 0.3,
+            "bytes": 19200312,
+            "samples": 300001
+          },
+          "linux_event": {
+            "status": "COMPLETED",
+            "seconds": 6.94823950000864,
+            "process_exit_seconds": 6.963587700010976,
+            "returncode": 0,
+            "limit_seconds": 101.99489400009043,
+            "report": {
+              "Q_repr": 5.421010862427522e-20,
+              "T_atom": 1e-14,
+              "algorithm": "EVENT_CHECKPOINT_STRATEGY_RETRY",
+              "algorithm_portfolio": {
+                "checkpoint_policy": "Same immutable post-event RunState for every attempt; canonical difference state retained. MCU writes, invocation counters and queued events are staged in each candidate and only committed once; failed event closure also restores the checkpoint.",
+                "checkpoint_restores": 0,
+                "exhaustion_policy": "Stop at last committed event; no SPICE fallback, no 1 ns rounding, no tolerance relaxation.",
+                "failures": [],
+                "journal_records": 0,
+                "methods": [
+                  {
+                    "algorithm": 0,
+                    "attempts": 30003,
+                    "committed": 30003,
+                    "executed_paths": {
+                      "ALGEBRAIC_LU": 30000,
+                      "ALGEBRAIC_WIDE_LU": 3
+                    },
+                    "failed": 0,
+                    "name": "RAW_QPHI_ELIMINATION_LU"
+                  },
+                  {
+                    "algorithm": 1,
+                    "attempts": 0,
+                    "committed": 0,
+                    "executed_paths": {},
+                    "failed": 0,
+                    "name": "RAW_QPHI_ELIMINATION_QR"
+                  },
+                  {
+                    "algorithm": 2,
+                    "attempts": 0,
+                    "committed": 0,
+                    "executed_paths": {},
+                    "failed": 0,
+                    "name": "PERSISTENT_DIFFERENCE_LU"
+                  }
+                ],
+                "scope": "Three registered candidates only; raw equation elimination operators evaluated in canonical checkpoint coordinates, not an exact replay of the historical raw-state solver.",
+                "validation": "Inherited entry/endpoint checks plus original unstatically-eliminated algebraic equations and physical q/phi derivatives at start, midpoint, endpoint; engineering sampled checks, not a continuous-time certificate."
+              },
+              "analog_channels": [
+                "CH001",
+                "CH002",
+                "CH003",
+                "CH004",
+                "CH005",
+                "CH006",
+                "CH007"
+              ],
+              "atomic_time_policy": "FIXED_INDEPENDENT_OF_OUTPUT_GRID",
+              "breakpoint_policy": "FIRST_PLUS_ATOM; execute at latest member; verify each knot at its own prediction",
+              "certificate_scope": "engineering numerical point trajectory; no all-history or global mathematical certificate",
+              "committed_prefix_end": "T128:0:4ccccccccccccc00:0000000000000000",
+              "compile_seconds": 0.001835282,
+              "dependency_roles": {
+                "CH001": [
+                  "continuous_equation"
+                ],
+                "CH002": [
+                  "continuous_equation"
+                ],
+                "CH003": [
+                  "continuous_equation"
+                ],
+                "CH004": [
+                  "continuous_equation"
+                ],
+                "CH005": [
+                  "continuous_equation"
+                ],
+                "CH005_RAW": [
+                  "continuous_equation"
+                ],
+                "CH006": [
+                  "continuous_equation"
+                ],
+                "CH007": [
+                  "continuous_equation"
+                ],
+                "CONTROL_CLOCK": [
+                  "event_control",
+                  "state_update"
+                ],
+                "D007_BODY": [
+                  "topology"
+                ],
+                "D007_ON": [
+                  "topology"
+                ],
+                "D007_VDS": [
+                  "continuous_equation",
+                  "guard",
+                  "topology"
+                ],
+                "S001": [
+                  "topology"
+                ]
+              },
+              "diagnostic": {},
+              "digital_channels": [],
+              "effective_SAVE_DT": 2e-07,
+              "effective_T_END": 0.3,
+              "event_records_total": 60002,
+              "event_timing_policy": "First+T_atom fixed window, execute at latest member, validate every PWA at own prediction; no absolute time-error veto; exact software deadlines unchanged",
+              "evidence": "ENGINEERING_POINT_TRAJECTORY",
+              "flow_statistics": {
+                "basis_hits": 30004,
+                "basis_misses": 3,
+                "constructions": 30005,
+                "continuations": 30003,
+                "reprojected_continuations": 0,
+                "shared_continuations": 30003
+              },
+              "history_retained": false,
+              "internal_state": [
+                0.07971043286074561,
+                0.00786739994922327,
+                1.0
+              ],
+              "matrix_exponentials": 30002,
+              "max_algebraic_residual": 0.0,
+              "max_transactions": 0,
+              "microsteps": 30002,
+              "mode_cache_capacity": 128,
+              "mode_cache_evictions": 0,
+              "mode_cache_hits": 89999,
+              "mode_cache_misses": 5,
+              "mode_cache_peak_entries": 5,
+              "mode_cache_policy": "RUN_SCOPED_COMPLETE_CANDIDATE_KEY_FIFO",
+              "mode_compilations": 5,
+              "model_contract": "piecewise-affine modes; explicit transition dynamics where needed; nonzero crossing derivatives; unsupported degeneracy stops safely",
+              "model_version": {
+                "canonical": "P ROFF=1000000000\nCMP CMP_D007_BODY D007_BODY D007_VDS OP=LT THRESHOLD=0 =\nC C_D004 N004 0 C=0.0001 IC_V=800 =\nEVENT EVENT_PRE_TIMER_CONTROL_CLOCK CONTROL_CLOCK MODE=PERIODIC PERIOD=2.0000000000000002e-05 START=0 =\nEVENT EVENT_PRE_WAKE_CONTROL PRE_WAKE_CONTROL AT=0 MODE=AT =\nL L_D002 N000 N002 IC_I=0 L=0.0011999999999999999 =\nMATH MATH_OBS5_SIGN CH005 =-CH005_RAW\nREG REG_PRE_SOFTWARE_CONTROL_0 BOOL::S001 BOOL::S001 CONTROL_CLOCK IC=0 =\nR R_D003 N003 0 R=193.93939393939394 =\nR R_D013 N005 N003 IV_TABLE=[(-1000000,-0.0010000009385),(0.9385,0),(1000000,53269360.047942467)] RANGE=EXTEND =\nR R_D038 N002 N005 R=0.10000000000000001 =\nR R_D039 N003 N004 R=0.01 =\nSEL SEL_D007_BODY BOOL::D007_ON S001 D007_BODY 1 =\nSENSOR SENSOR_D007_VDS D007_VDS V N005 0 =\nSENSOR SENSOR_OBS1 CH001 I SW_D007 =\nSENSOR SENSOR_OBS2 CH002 V N005 0 =\nSENSOR SENSOR_OBS3 CH003 I R_D013 =\nSENSOR SENSOR_OBS4 CH004 V N000 0 =\nSENSOR SENSOR_OBS5 CH005_RAW I V_D001 =\nSENSOR SENSOR_OBS6 CH006 V N003 0 =\nSENSOR SENSOR_OBS7 CH007 I R_D003 =\nSW SW_D007 N005 0 D007_ON ROFF=1G RON=0.035999999999999997 =\nV V_D001 N000 0 DC=400 =\nT 0.29999999999999999\nD 1.9999999999999999e-07\nSAVE CH001 CH002 CH003 CH004 CH005 CH006 CH007\nMCU_DECL MCU MCU0 PROGRAM=CTRL\nMCU_DECL TIMER CONTROL_CLOCK MCU=MCU0 PERIOD=0.000020000 START=0\nMCU_DECL TASK CONTROL MCU=MCU0 TRIGGER=CONTROL_CLOCK ENTRY=control_step INPUTS=[] OUTPUTS=[BOOL::S001] INIT_OUTPUTS=[0] PARAMS=[0.000010000]\nCODE_DECL PROGRAM CTRL SOURCES=[\"controller.c\"]\n",
+                "deadline_inputs": {
+                  "EVENT_PRE_TIMER_CONTROL_CLOCK": {
+                    "PERIOD": "2.0000000000000002e-05",
+                    "START": "0"
+                  },
+                  "EVENT_PRE_WAKE_CONTROL": {
+                    "AT": "0"
+                  }
+                },
+                "encoding": "canonical pulse-netlist-1.1",
+                "parameter_inputs": {
+                  "ROFF": "1G"
+                }
+              },
+              "netlist_format": "1.2pre",
+              "original_equation_cache": {
+                "cache_hits": 90006,
+                "certified_builds": 0,
+                "checks": 90009,
+                "equation_builds": 3,
+                "rebound_hits": 0
+              },
+              "output_format": "trajectory",
+              "parse_and_compile_seconds": 0.002063359,
+              "parse_seconds": 0.000103643,
+              "performance_phases": {
+                "enabled": false
+              },
+              "persistent_chart": {
+                "T": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "cross_event_policy": "Same fixed chart: RunState vector copied directly; no physical-view roundtrip.",
+                "difference_slot": -1,
+                "enabled": false,
+                "initial_encodes": 1,
+                "internal_coordinate_ids": [
+                  "affine[0:C_D004/q:0x1p+0;]+0",
+                  "affine[1:L_D002/phi:0x1p+0;]+0"
+                ],
+                "physical_state_ids": [
+                  "C_D004/q",
+                  "L_D002/phi"
+                ],
+                "physical_view_L": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "physical_views_for_diagnostics": 120007,
+                "reason": "No independent multi-storage incidence row; identity.",
+                "scope": "Linear scalar storage; graph-derived fixed KCL difference, not arbitrary chart selection."
+              },
+              "physical_state_ids": [
+                "C_D004/q",
+                "L_D002/phi"
+              ],
+              "physical_state_view": [
+                0.07971043286074561,
+                0.00786739994922327,
+                1.0
+              ],
+              "projection_count": 0,
+              "queue_peak": 2,
+              "registry": [
+                "CH001",
+                "CH002",
+                "CH003",
+                "CH004",
+                "CH005",
+                "CH005_RAW",
+                "CH006",
+                "CH007",
+                "D007_BODY",
+                "D007_ON",
+                "D007_VDS",
+                "I(C_D004)",
+                "I(L_D002)",
+                "I(R_D003)",
+                "I(R_D013)",
+                "I(R_D038)",
+                "I(R_D039)",
+                "I(SW_D007)",
+                "I(V_D001)",
+                "S001",
+                "V(N000)",
+                "V(N002)",
+                "V(N003)",
+                "V(N004)",
+                "V(N005)"
+              ],
+              "rollbacks": 0,
+              "root_failures": 0,
+              "root_queries": 30002,
+              "run_seconds": 6.253421773,
+              "simulated_seconds": 0.3,
+              "software_final_outputs": {
+                "S001": 0.0
+              },
+              "software_modules": [
+                {
+                  "binary_sha256": "5cf597bb5c1043c953ad4855e3add8e5e5d281900c89120b6f22c90ab5730782",
+                  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+                  "dependencies": [
+                    {
+                      "path": "/root/pulse-a010-full-fix/include/pulse/software.h",
+                      "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+                    },
+                    {
+                      "path": "/root/six-core-boost-5881b86/rohm-c002-d-boost/model-linux/controller.c",
+                      "sha256": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28"
+                    }
+                  ],
+                  "program": "CTRL",
+                  "sources": [
+                    "controller.c"
+                  ]
+                }
+              ],
+              "software_states": {
+                "CONTROL": {
+                  "invocations": 30000,
+                  "state_bytes": 0
+                }
+              },
+              "source_sha256": "3b1a71138e967731c69dee633ae5366ab2f84d945b32d56fbb851f5c0beb0364",
+              "spice_policy": "NOT_IMPLEMENTED: event propagation only",
+              "state_storage": "internal coordinates are authoritative; public physical q/phi/INT snapshots are read-only views",
+              "status": "COMPLETED",
+              "strategy_consistency": {
+                "committed_strategy": 0,
+                "enforced": true,
+                "policy": "One explicit numerical strategy for prediction, propagation, all closure microsteps and commit; failed attempts roll back and recompute all candidates from the immutable checkpoint."
+              },
+              "time_backend": "T128: signed seconds plus 128 fractional bits",
+              "transaction_limit": 0,
+              "transaction_limit_policy": "UNLIMITED_TOTAL; BOUNDED_SAME_TIME_CLOSURE",
+              "transactions": 30003,
+              "version": "1.2.0-pre",
+              "waveform_validation": "DEFERRED_TO_REPLAY"
+            },
+            "files": {
+              "out.pevt": {
+                "bytes": 17481038,
+                "sha256": "26b40a14047998cbfbaa05c89270c0776028e25319156e7fbc050b7496d30d6f"
+              },
+              "simulation_report.json": {
+                "bytes": 9696,
+                "sha256": "610a03e891a9415feefd9b2ecda28209d7fd01f1698251f4040b11427ae02f23"
+              }
+            },
+            "total_bytes": 17490734
+          },
+          "linux_replay": {
+            "status": "COMPLETED",
+            "seconds": 6.5749419999920065
+          },
+          "linux_reference_grid": {
+            "bytes": 19202020,
+            "sha256": "cd7cdf251094e977f7a08d6ce526eef596aad51269e54ef4f2a78d1b3abf9dd9",
+            "samples": 300001,
+            "channels": 7,
+            "dtype": "float64",
+            "grid_seconds": 1e-06
+          },
+          "win_event": {
+            "status": "COMPLETED",
+            "seconds": 8.227045999999973,
+            "process_exit_seconds": 8.228868999998667,
+            "returncode": 0,
+            "limit_seconds": 101.99489400009043,
+            "report": {
+              "Q_repr": 5.421010862427522e-20,
+              "T_atom": 1e-14,
+              "algorithm": "EVENT_CHECKPOINT_STRATEGY_RETRY",
+              "algorithm_portfolio": {
+                "checkpoint_policy": "Same immutable post-event RunState for every attempt; canonical difference state retained. MCU writes, invocation counters and queued events are staged in each candidate and only committed once; failed event closure also restores the checkpoint.",
+                "checkpoint_restores": 0,
+                "exhaustion_policy": "Stop at last committed event; no SPICE fallback, no 1 ns rounding, no tolerance relaxation.",
+                "failures": [],
+                "journal_records": 0,
+                "methods": [
+                  {
+                    "algorithm": 0,
+                    "attempts": 30003,
+                    "committed": 30003,
+                    "executed_paths": {
+                      "ALGEBRAIC_LU": 30000,
+                      "ALGEBRAIC_WIDE_LU": 3
+                    },
+                    "failed": 0,
+                    "name": "RAW_QPHI_ELIMINATION_LU"
+                  },
+                  {
+                    "algorithm": 1,
+                    "attempts": 0,
+                    "committed": 0,
+                    "executed_paths": {},
+                    "failed": 0,
+                    "name": "RAW_QPHI_ELIMINATION_QR"
+                  },
+                  {
+                    "algorithm": 2,
+                    "attempts": 0,
+                    "committed": 0,
+                    "executed_paths": {},
+                    "failed": 0,
+                    "name": "PERSISTENT_DIFFERENCE_LU"
+                  }
+                ],
+                "scope": "Three registered candidates only; raw equation elimination operators evaluated in canonical checkpoint coordinates, not an exact replay of the historical raw-state solver.",
+                "validation": "Inherited entry/endpoint checks plus original unstatically-eliminated algebraic equations and physical q/phi derivatives at start, midpoint, endpoint; engineering sampled checks, not a continuous-time certificate."
+              },
+              "analog_channels": [
+                "CH001",
+                "CH002",
+                "CH003",
+                "CH004",
+                "CH005",
+                "CH006",
+                "CH007"
+              ],
+              "atomic_time_policy": "FIXED_INDEPENDENT_OF_OUTPUT_GRID",
+              "breakpoint_policy": "FIRST_PLUS_ATOM; execute at latest member; verify each knot at its own prediction",
+              "certificate_scope": "engineering numerical point trajectory; no all-history or global mathematical certificate",
+              "committed_prefix_end": "T128:0:4ccccccccccccc00:0000000000000000",
+              "compile_seconds": 0.000559,
+              "dependency_roles": {
+                "CH001": [
+                  "continuous_equation"
+                ],
+                "CH002": [
+                  "continuous_equation"
+                ],
+                "CH003": [
+                  "continuous_equation"
+                ],
+                "CH004": [
+                  "continuous_equation"
+                ],
+                "CH005": [
+                  "continuous_equation"
+                ],
+                "CH005_RAW": [
+                  "continuous_equation"
+                ],
+                "CH006": [
+                  "continuous_equation"
+                ],
+                "CH007": [
+                  "continuous_equation"
+                ],
+                "CONTROL_CLOCK": [
+                  "event_control",
+                  "state_update"
+                ],
+                "D007_BODY": [
+                  "topology"
+                ],
+                "D007_ON": [
+                  "topology"
+                ],
+                "D007_VDS": [
+                  "continuous_equation",
+                  "guard",
+                  "topology"
+                ],
+                "S001": [
+                  "topology"
+                ]
+              },
+              "diagnostic": {},
+              "digital_channels": [],
+              "effective_SAVE_DT": 2e-07,
+              "effective_T_END": 0.3,
+              "event_records_total": 60002,
+              "event_timing_policy": "First+T_atom fixed window, execute at latest member, validate every PWA at own prediction; no absolute time-error veto; exact software deadlines unchanged",
+              "evidence": "ENGINEERING_POINT_TRAJECTORY",
+              "flow_statistics": {
+                "basis_hits": 30004,
+                "basis_misses": 3,
+                "constructions": 30005,
+                "continuations": 30003,
+                "reprojected_continuations": 0,
+                "shared_continuations": 30003
+              },
+              "history_retained": false,
+              "internal_state": [
+                0.07971043286074561,
+                0.00786739994922327,
+                1.0
+              ],
+              "matrix_exponentials": 30002,
+              "max_algebraic_residual": 0.0,
+              "max_transactions": 0,
+              "microsteps": 30002,
+              "mode_cache_capacity": 128,
+              "mode_cache_evictions": 0,
+              "mode_cache_hits": 89999,
+              "mode_cache_misses": 5,
+              "mode_cache_peak_entries": 5,
+              "mode_cache_policy": "RUN_SCOPED_COMPLETE_CANDIDATE_KEY_FIFO",
+              "mode_compilations": 5,
+              "model_contract": "piecewise-affine modes; explicit transition dynamics where needed; nonzero crossing derivatives; unsupported degeneracy stops safely",
+              "model_version": {
+                "canonical": "P ROFF=1000000000\nCMP CMP_D007_BODY D007_BODY D007_VDS OP=LT THRESHOLD=0 =\nC C_D004 N004 0 C=0.0001 IC_V=800 =\nEVENT EVENT_PRE_TIMER_CONTROL_CLOCK CONTROL_CLOCK MODE=PERIODIC PERIOD=2.0000000000000002e-05 START=0 =\nEVENT EVENT_PRE_WAKE_CONTROL PRE_WAKE_CONTROL AT=0 MODE=AT =\nL L_D002 N000 N002 IC_I=0 L=0.0011999999999999999 =\nMATH MATH_OBS5_SIGN CH005 =-CH005_RAW\nREG REG_PRE_SOFTWARE_CONTROL_0 BOOL::S001 BOOL::S001 CONTROL_CLOCK IC=0 =\nR R_D003 N003 0 R=193.93939393939394 =\nR R_D013 N005 N003 IV_TABLE=[(-1000000,-0.0010000009385),(0.9385,0),(1000000,53269360.047942467)] RANGE=EXTEND =\nR R_D038 N002 N005 R=0.10000000000000001 =\nR R_D039 N003 N004 R=0.01 =\nSEL SEL_D007_BODY BOOL::D007_ON S001 D007_BODY 1 =\nSENSOR SENSOR_D007_VDS D007_VDS V N005 0 =\nSENSOR SENSOR_OBS1 CH001 I SW_D007 =\nSENSOR SENSOR_OBS2 CH002 V N005 0 =\nSENSOR SENSOR_OBS3 CH003 I R_D013 =\nSENSOR SENSOR_OBS4 CH004 V N000 0 =\nSENSOR SENSOR_OBS5 CH005_RAW I V_D001 =\nSENSOR SENSOR_OBS6 CH006 V N003 0 =\nSENSOR SENSOR_OBS7 CH007 I R_D003 =\nSW SW_D007 N005 0 D007_ON ROFF=1G RON=0.035999999999999997 =\nV V_D001 N000 0 DC=400 =\nT 0.29999999999999999\nD 1.9999999999999999e-07\nSAVE CH001 CH002 CH003 CH004 CH005 CH006 CH007\nMCU_DECL MCU MCU0 PROGRAM=CTRL\nMCU_DECL TIMER CONTROL_CLOCK MCU=MCU0 PERIOD=0.000020000 START=0\nMCU_DECL TASK CONTROL MCU=MCU0 TRIGGER=CONTROL_CLOCK ENTRY=control_step INPUTS=[] OUTPUTS=[BOOL::S001] INIT_OUTPUTS=[0] PARAMS=[0.000010000]\nCODE_DECL PROGRAM CTRL SOURCES=[\"controller.c\"]\n",
+                "deadline_inputs": {
+                  "EVENT_PRE_TIMER_CONTROL_CLOCK": {
+                    "PERIOD": "2.0000000000000002e-05",
+                    "START": "0"
+                  },
+                  "EVENT_PRE_WAKE_CONTROL": {
+                    "AT": "0"
+                  }
+                },
+                "encoding": "canonical pulse-netlist-1.1",
+                "parameter_inputs": {
+                  "ROFF": "1G"
+                }
+              },
+              "netlist_format": "1.2pre",
+              "original_equation_cache": {
+                "cache_hits": 90006,
+                "certified_builds": 0,
+                "checks": 90009,
+                "equation_builds": 3,
+                "rebound_hits": 0
+              },
+              "output_format": "trajectory",
+              "parse_and_compile_seconds": 0.001655,
+              "parse_seconds": 0.000165,
+              "performance_phases": {
+                "enabled": false
+              },
+              "persistent_chart": {
+                "T": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "cross_event_policy": "Same fixed chart: RunState vector copied directly; no physical-view roundtrip.",
+                "difference_slot": -1,
+                "enabled": false,
+                "initial_encodes": 1,
+                "internal_coordinate_ids": [
+                  "affine[0:C_D004/q:0x1p+0;]+0",
+                  "affine[1:L_D002/phi:0x1p+0;]+0"
+                ],
+                "physical_state_ids": [
+                  "C_D004/q",
+                  "L_D002/phi"
+                ],
+                "physical_view_L": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "physical_views_for_diagnostics": 120007,
+                "reason": "No independent multi-storage incidence row; identity.",
+                "scope": "Linear scalar storage; graph-derived fixed KCL difference, not arbitrary chart selection."
+              },
+              "physical_state_ids": [
+                "C_D004/q",
+                "L_D002/phi"
+              ],
+              "physical_state_view": [
+                0.07971043286074561,
+                0.00786739994922327,
+                1.0
+              ],
+              "projection_count": 0,
+              "queue_peak": 2,
+              "registry": [
+                "CH001",
+                "CH002",
+                "CH003",
+                "CH004",
+                "CH005",
+                "CH005_RAW",
+                "CH006",
+                "CH007",
+                "D007_BODY",
+                "D007_ON",
+                "D007_VDS",
+                "I(C_D004)",
+                "I(L_D002)",
+                "I(R_D003)",
+                "I(R_D013)",
+                "I(R_D038)",
+                "I(R_D039)",
+                "I(SW_D007)",
+                "I(V_D001)",
+                "S001",
+                "V(N000)",
+                "V(N002)",
+                "V(N003)",
+                "V(N004)",
+                "V(N005)"
+              ],
+              "rollbacks": 0,
+              "root_failures": 0,
+              "root_queries": 30002,
+              "run_seconds": 7.629383,
+              "simulated_seconds": 0.3,
+              "software_final_outputs": {
+                "S001": 0.0
+              },
+              "software_modules": [
+                {
+                  "binary_sha256": "867d36291fe2b378622ce36f52fe77312cff7666a4d9ae6569bdcc0d34529264",
+                  "compiler": "gcc (GCC) 16.2.0",
+                  "dependencies": [
+                    {
+                      "path": "D:\\codex\\using plecs\\pulse-linux-port\\include\\pulse\\software.h",
+                      "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+                    },
+                    {
+                      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\six-core-boost-5881b86\\rohm-c002-d-boost\\model-win\\controller.c",
+                      "sha256": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28"
+                    }
+                  ],
+                  "program": "CTRL",
+                  "sources": [
+                    "controller.c"
+                  ]
+                }
+              ],
+              "software_states": {
+                "CONTROL": {
+                  "invocations": 30000,
+                  "state_bytes": 0
+                }
+              },
+              "source_sha256": "3b1a71138e967731c69dee633ae5366ab2f84d945b32d56fbb851f5c0beb0364",
+              "spice_policy": "NOT_IMPLEMENTED: event propagation only",
+              "state_storage": "internal coordinates are authoritative; public physical q/phi/INT snapshots are read-only views",
+              "status": "COMPLETED",
+              "strategy_consistency": {
+                "committed_strategy": 0,
+                "enforced": true,
+                "policy": "One explicit numerical strategy for prediction, propagation, all closure microsteps and commit; failed attempts roll back and recompute all candidates from the immutable checkpoint."
+              },
+              "time_backend": "T128: signed seconds plus 128 fractional bits",
+              "transaction_limit": 0,
+              "transaction_limit_policy": "UNLIMITED_TOTAL; BOUNDED_SAME_TIME_CLOSURE",
+              "transactions": 30003,
+              "version": "1.2.0-pre",
+              "waveform_validation": "DEFERRED_TO_REPLAY"
+            },
+            "files": {
+              "out.pevt": {
+                "bytes": 17481063,
+                "sha256": "61d0e0887ebb3aba22bf6cbdc297f1c64c22a29f2eb44aa5be2720c529b4bd16"
+              },
+              "simulation_report.json": {
+                "bytes": 9721,
+                "sha256": "88914b2cac0490c46718b75e2b194d01cc382229ef885ac52573a4755e85014b"
+              }
+            },
+            "total_bytes": 17490784
+          },
+          "win_replay": {
+            "status": "COMPLETED",
+            "seconds": 9.332806000005803
+          },
+          "win_reference_grid": {
+            "bytes": 19202020,
+            "sha256": "cd7cdf251094e977f7a08d6ce526eef596aad51269e54ef4f2a78d1b3abf9dd9",
+            "samples": 300001,
+            "channels": 7,
+            "dtype": "float64",
+            "grid_seconds": 1e-06
+          }
+        },
+        "validation": {
+          "linux_protocol": {
+            "format": "PULSEES1",
+            "valid": true,
+            "status": "COMPLETED",
+            "sections": [
+              {
+                "type": 1,
+                "codec": 0,
+                "records": 1,
+                "stored_bytes": 17422,
+                "decoded_bytes": 17422,
+                "sha256": "1a05292a3576f08c5cb51d5038623730a3b003b732c1addafd84c2a1e06e7e43"
+              },
+              {
+                "type": 2,
+                "codec": 0,
+                "records": 51,
+                "stored_bytes": 4956,
+                "decoded_bytes": 4956,
+                "sha256": "62c726ff9e119d5ed6704159e142ef7e074c6a62f3f4cd4e1738627587ef3459"
+              },
+              {
+                "type": 3,
+                "codec": 0,
+                "records": 1,
+                "stored_bytes": 5426,
+                "decoded_bytes": 5426,
+                "sha256": "3e67ec1a739ae53b5fedbc3e8002693dc0704b0dfbc5c0575889907b951312cd"
+              },
+              {
+                "type": 4,
+                "codec": 0,
+                "records": 2,
+                "stored_bytes": 56,
+                "decoded_bytes": 56,
+                "sha256": "0434a498b288c97586bdfc5b56e75d4467d9cc928c96e68647c8fe5b94af24ee"
+              },
+              {
+                "type": 5,
+                "codec": 0,
+                "records": 4,
+                "stored_bytes": 48,
+                "decoded_bytes": 48,
+                "sha256": "84ba5d3776e32e930f701ede0170efb8a7423bfc99e5100935a7750638a860b9"
+              },
+              {
+                "type": 6,
+                "codec": 0,
+                "records": 30004,
+                "stored_bytes": 960128,
+                "decoded_bytes": 960128,
+                "sha256": "a2f12b3a4131fd19f8dd456855c49c937cee79497bff340ce18c027194dd2117"
+              },
+              {
+                "type": 7,
+                "codec": 0,
+                "records": 30005,
+                "stored_bytes": 3840576,
+                "decoded_bytes": 3840576,
+                "sha256": "dd85b641abb67ed20672fe138758ab57dfd221be6fc5d6a652aca8ea122f80e7"
+              },
+              {
+                "type": 8,
+                "codec": 0,
+                "records": 30005,
+                "stored_bytes": 1560260,
+                "decoded_bytes": 1560260,
+                "sha256": "ef55b78054cfcf4ec61ed59c2b0b1b74cf17685d9a78191fed4bbcb403c4d5cd"
+              },
+              {
+                "type": 9,
+                "codec": 0,
+                "records": 1,
+                "stored_bytes": 60,
+                "decoded_bytes": 60,
+                "sha256": "433ae3d731ae5398d38dde237ad66622c4287510a643729065055d8f60a64fd9"
+              },
+              {
+                "type": 10,
+                "codec": 0,
+                "records": 30002,
+                "stored_bytes": 11091450,
+                "decoded_bytes": 11091450,
+                "sha256": "89885567084aa2d8c838fbcd4c1d8171deabe0152f2d578b0b9cfb4b37d64b78"
+              }
+            ],
+            "counts": {
+              "definitions": 4,
+              "matrices": 51,
+              "values": 2,
+              "instances": 4,
+              "states": 30004,
+              "events": 30005,
+              "flows": 30005,
+              "diagnostics": 30002
+            },
+            "state_dimension": 3,
+            "last_time_T128": [
+              0,
+              5534023222112865280,
+              0
+            ],
+            "archive_counts": {
+              "definition_candidate_checks": 90007,
+              "definition_encodes": 4,
+              "definition_hits": 90007,
+              "definition_signature_skips": 225014,
+              "equation_calls": 90011
+            },
+            "single_state_per_event": true,
+            "complete_component_modes": true,
+            "all_references_valid": true
+          },
+          "fresh_PLECS_matches_original_CSV": true,
+          "linux_vs_PLECS": {
+            "method": "full original reference grid; mean/rms/max; provenance atol + 1%; no time shift",
+            "limitation": "diagnostic, does not replace historical windowed acceptance",
+            "passed": 20,
+            "total": 21,
+            "checks": [
+              {
+                "channel": "CH001",
+                "metric": "mean",
+                "reference": 4.158690402484035,
+                "actual": 4.190990157704422,
+                "tolerance": 0.041686904024840356,
+                "passed": true
+              },
+              {
+                "channel": "CH001",
+                "metric": "rms",
+                "reference": 5.939791999752849,
+                "actual": 5.984282881384575,
+                "tolerance": 0.059497919997528494,
+                "passed": true
+              },
+              {
+                "channel": "CH001",
+                "metric": "max",
+                "reference": 15.370673857286251,
+                "actual": 15.370677947998047,
+                "tolerance": 0.1538067385728625,
+                "passed": true
+              },
+              {
+                "channel": "CH002",
+                "metric": "mean",
+                "reference": 399.1437466777771,
+                "actual": 399.1589661423886,
+                "tolerance": 3.991537466777771,
+                "passed": true
+              },
+              {
+                "channel": "CH002",
+                "metric": "rms",
+                "reference": 564.2745497191945,
+                "actual": 564.2869044543173,
+                "tolerance": 5.642845497191945,
+                "passed": true
+              },
+              {
+                "channel": "CH002",
+                "metric": "max",
+                "reference": 815.6047148628028,
+                "actual": 815.604736328125,
+                "tolerance": 8.156147148628028,
+                "passed": true
+              },
+              {
+                "channel": "CH003",
+                "metric": "mean",
+                "reference": 4.057044903311257,
+                "actual": 4.0247467347006,
+                "tolerance": 0.04067044903311257,
+                "passed": true
+              },
+              {
+                "channel": "CH003",
+                "metric": "rms",
+                "reference": 5.797388714861683,
+                "actual": 5.751454583461847,
+                "tolerance": 0.05807388714861684,
+                "passed": true
+              },
+              {
+                "channel": "CH003",
+                "metric": "max",
+                "reference": 15.364982074776727,
+                "actual": 15.03870964050293,
+                "tolerance": 0.15374982074776725,
+                "passed": false
+              },
+              {
+                "channel": "CH004",
+                "metric": "mean",
+                "reference": 400.0,
+                "actual": 400.0,
+                "tolerance": 4.0001,
+                "passed": true
+              },
+              {
+                "channel": "CH004",
+                "metric": "rms",
+                "reference": 400.0,
+                "actual": 400.0,
+                "tolerance": 4.0001,
+                "passed": true
+              },
+              {
+                "channel": "CH004",
+                "metric": "max",
+                "reference": 400.0,
+                "actual": 400.0,
+                "tolerance": 4.0001,
+                "passed": true
+              },
+              {
+                "channel": "CH005",
+                "metric": "mean",
+                "reference": 8.215735305795292,
+                "actual": 8.21573690441228,
+                "tolerance": 0.08225735305795293,
+                "passed": true
+              },
+              {
+                "channel": "CH005",
+                "metric": "rms",
+                "reference": 8.300050898129093,
+                "actual": 8.30005249261079,
+                "tolerance": 0.08310050898129094,
+                "passed": true
+              },
+              {
+                "channel": "CH005",
+                "metric": "max",
+                "reference": 15.370673857286251,
+                "actual": 15.37067699432373,
+                "tolerance": 0.1538067385728625,
+                "passed": true
+              },
+              {
+                "channel": "CH006",
+                "metric": "mean",
+                "reference": 796.8604349689975,
+                "actual": 796.8601112174352,
+                "tolerance": 7.968704349689975,
+                "passed": true
+              },
+              {
+                "channel": "CH006",
+                "metric": "rms",
+                "reference": 796.8637448191938,
+                "actual": 796.8634215037133,
+                "tolerance": 7.968737448191938,
+                "passed": true
+              },
+              {
+                "channel": "CH006",
+                "metric": "max",
+                "reference": 814.5399322978998,
+                "actual": 814.5399169921875,
+                "tolerance": 8.145499322978997,
+                "passed": true
+              },
+              {
+                "channel": "CH007",
+                "metric": "mean",
+                "reference": 4.108811617808894,
+                "actual": 4.108809950537673,
+                "tolerance": 0.04118811617808894,
+                "passed": true
+              },
+              {
+                "channel": "CH007",
+                "metric": "rms",
+                "reference": 4.108828684223968,
+                "actual": 4.1088270191962115,
+                "tolerance": 0.041188286842239685,
+                "passed": true
+              },
+              {
+                "channel": "CH007",
+                "metric": "max",
+                "reference": 4.199971525911046,
+                "actual": 4.199971675872803,
+                "tolerance": 0.042099715259110465,
+                "passed": true
+              }
+            ],
+            "errors": {
+              "CH001": {
+                "rmse": 1.171565943847471,
+                "max_abs": 15.364985466003418
+              },
+              "CH002": {
+                "rmse": 111.42533812007565,
+                "max_abs": 814.9191537723219
+              },
+              "CH003": {
+                "rmse": 1.171565908332353,
+                "max_abs": 15.364982869468072
+              },
+              "CH004": {
+                "rmse": 0.0,
+                "max_abs": 0.0
+              },
+              "CH005": {
+                "rmse": 1.6222367226256993e-06,
+                "max_abs": 3.3418560256848195e-06
+              },
+              "CH006": {
+                "rmse": 0.011715782063958725,
+                "max_abs": 0.15362196018156737
+              },
+              "CH007": {
+                "rmse": 6.039715953533836e-05,
+                "max_abs": 0.0007923993344816083
+              }
+            },
+            "channels": {
+              "CH001": {
+                "mean": {
+                  "reference": 4.158690402484035,
+                  "actual": 4.190990157704422
+                },
+                "rms": {
+                  "reference": 5.939791999752849,
+                  "actual": 5.984282881384575
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": 4.0000000467443897e-07
+                },
+                "max": {
+                  "reference": 15.370673857286251,
+                  "actual": 15.370677947998047
+                },
+                "rmse": 1.171565943847471,
+                "mae": 0.1598646723036975,
+                "max_abs": 15.364985466003418,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 0.0,
+                "actual_at_max": 15.364985466003418,
+                "max_relative": 153649.85466003418,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 294147,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": 15.232345581054688
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": 15.298666954040527
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 15.364985466003418
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 7.957071375130909e-07
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 7.957276011438807e-07
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 14.701722970840983
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 15.033371315143167
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 0.0
+                  }
+                ]
+              },
+              "CH002": {
+                "mean": {
+                  "reference": 399.1437466777771,
+                  "actual": 399.1589661423886
+                },
+                "rms": {
+                  "reference": 564.2745497191945,
+                  "actual": 564.2869044543173
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": 2.88323018793335e-08
+                },
+                "max": {
+                  "reference": 815.6047148628028,
+                  "actual": 815.604736328125
+                },
+                "rmse": 111.42533812007565,
+                "mae": 15.564944423594003,
+                "max_abs": 814.9191537723219,
+                "max_abs_time": 0.00333,
+                "reference_at_max": 815.2800055685703,
+                "actual_at_max": 0.36085179624837255,
+                "max_relative": 15711.046531923645,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 294147,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0033298,
+                    "value": 0.3584599494934082
+                  },
+                  {
+                    "time": 0.0033299999999999996,
+                    "value": 0.36085179448127747
+                  },
+                  {
+                    "time": 0.0033301999999999997,
+                    "value": 815.2896118164062
+                  },
+                  {
+                    "time": 0.0033304,
+                    "value": 815.2990112304688
+                  },
+                  {
+                    "time": 0.0033306,
+                    "value": 815.308349609375
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.003328,
+                    "value": 0.33693079815400084
+                  },
+                  {
+                    "time": 0.003329,
+                    "value": 0.34889193485299586
+                  },
+                  {
+                    "time": 0.00333,
+                    "value": 815.2800055685703
+                  },
+                  {
+                    "time": 0.0033309999999999998,
+                    "value": 815.3265423434075
+                  },
+                  {
+                    "time": 0.003332,
+                    "value": 815.369607292869
+                  }
+                ]
+              },
+              "CH003": {
+                "mean": {
+                  "reference": 4.057044903311257,
+                  "actual": 4.0247467347006
+                },
+                "rms": {
+                  "reference": 5.797388714861683,
+                  "actual": 5.751454583461847
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": -8.151162660396949e-07
+                },
+                "max": {
+                  "reference": 15.364982074776727,
+                  "actual": 15.03870964050293
+                },
+                "rmse": 1.171565908332353,
+                "mae": 0.15986390702974446,
+                "max_abs": 15.364982869468072,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 15.364982074776727,
+                "actual_at_max": -7.946913456180482e-07,
+                "max_relative": 120471.84944126708,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 294147,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": -7.947125482132833e-07
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": -7.947019753373752e-07
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": -7.946913456180482e-07
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 15.298779487609863
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 15.232571601867676
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 15.364982074776727
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 15.033934105991749
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 14.702830528406603
+                  }
+                ]
+              },
+              "CH004": {
+                "mean": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "rms": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "min": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "max": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "rmse": 0.0,
+                "mae": 0.0,
+                "max_abs": 0.0,
+                "max_abs_time": 0.0,
+                "reference_at_max": 400.0,
+                "actual_at_max": 400.0,
+                "max_relative": 0.0,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 2e-07,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 4e-07,
+                    "value": 400.0
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.0,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 1e-06,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 2e-06,
+                    "value": 400.0
+                  }
+                ]
+              },
+              "CH005": {
+                "mean": {
+                  "reference": 8.215735305795292,
+                  "actual": 8.21573690441228
+                },
+                "rms": {
+                  "reference": 8.300050898129093,
+                  "actual": 8.30005249261079
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": -2.3886809197293246e-10
+                },
+                "max": {
+                  "reference": 15.370673857286251,
+                  "actual": 15.37067699432373
+                },
+                "rmse": 1.6222367226256993e-06,
+                "mae": 1.59863024081713e-06,
+                "max_abs": 3.3418560256848195e-06,
+                "max_abs_time": 0.002157,
+                "reference_at_max": 13.028903480348564,
+                "actual_at_max": 13.02890682220459,
+                "max_relative": 4.185641833132081e-06,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021566,
+                    "value": 13.161079406738281
+                  },
+                  {
+                    "time": 0.0021568,
+                    "value": 13.094993591308594
+                  },
+                  {
+                    "time": 0.002157,
+                    "value": 13.02890682220459
+                  },
+                  {
+                    "time": 0.0021571999999999997,
+                    "value": 12.962817192077637
+                  },
+                  {
+                    "time": 0.0021574,
+                    "value": 12.896727561950684
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002155,
+                    "value": 13.689701231683706
+                  },
+                  {
+                    "time": 0.002156,
+                    "value": 13.359323232617319
+                  },
+                  {
+                    "time": 0.002157,
+                    "value": 13.028903480348564
+                  },
+                  {
+                    "time": 0.0021579999999999998,
+                    "value": 12.69844473627062
+                  },
+                  {
+                    "time": 0.002159,
+                    "value": 12.36794976152809
+                  }
+                ]
+              },
+              "CH006": {
+                "mean": {
+                  "reference": 796.8604349689975,
+                  "actual": 796.8601112174352
+                },
+                "rms": {
+                  "reference": 796.8637448191938,
+                  "actual": 796.8634215037133
+                },
+                "min": {
+                  "reference": 775.8981153078533,
+                  "actual": 775.8981323242188
+                },
+                "max": {
+                  "reference": 814.5399322978998,
+                  "actual": 814.5399169921875
+                },
+                "rmse": 0.011715782063958725,
+                "mae": 0.0016147593411824771,
+                "max_abs": 0.15362196018156737,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 794.4596522336191,
+                "actual_at_max": 794.3060302734375,
+                "max_relative": 0.00019337168244838146,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": 794.3223876953125
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": 794.314208984375
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 794.3060302734375
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 794.4814453125
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 794.5031127929688
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 794.3879231422749
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 794.3469656828005
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 794.4596522336191
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 794.5673637114514
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 794.6717585757666
+                  }
+                ]
+              },
+              "CH007": {
+                "mean": {
+                  "reference": 4.108811617808894,
+                  "actual": 4.108809950537673
+                },
+                "rms": {
+                  "reference": 4.108828684223968,
+                  "actual": 4.1088270191962115
+                },
+                "min": {
+                  "reference": 4.000724657056119,
+                  "actual": 4.000724792480469
+                },
+                "max": {
+                  "reference": 4.199971525911046,
+                  "actual": 4.199971675872803
+                },
+                "rmse": 6.039715953533836e-05,
+                "mae": 8.35662229622754e-06,
+                "max_abs": 0.0007923993344816083,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 4.096432581829599,
+                "actual_at_max": 4.095640182495117,
+                "max_relative": 0.00019343643979310827,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": 4.095725059509277
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": 4.095682621002197
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 4.095640182495117
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 4.096545219421387
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 4.096656799316406
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 4.096062728702355
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 4.09585154180194
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 4.096432581829599
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 4.096987969137171
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 4.097526255156297
+                  }
+                ]
+              }
+            },
+            "reference": "fresh PLECS result from this repetition; original CSV checked separately"
+          },
+          "win_protocol": {
+            "format": "PULSEES1",
+            "valid": true,
+            "status": "COMPLETED",
+            "sections": [
+              {
+                "type": 1,
+                "codec": 0,
+                "records": 1,
+                "stored_bytes": 17447,
+                "decoded_bytes": 17447,
+                "sha256": "67158c679498e55df5fd4efb55f1327e1ff074ddaef3686da2793a8c05961e80"
+              },
+              {
+                "type": 2,
+                "codec": 0,
+                "records": 51,
+                "stored_bytes": 4956,
+                "decoded_bytes": 4956,
+                "sha256": "62c726ff9e119d5ed6704159e142ef7e074c6a62f3f4cd4e1738627587ef3459"
+              },
+              {
+                "type": 3,
+                "codec": 0,
+                "records": 1,
+                "stored_bytes": 5426,
+                "decoded_bytes": 5426,
+                "sha256": "3e67ec1a739ae53b5fedbc3e8002693dc0704b0dfbc5c0575889907b951312cd"
+              },
+              {
+                "type": 4,
+                "codec": 0,
+                "records": 2,
+                "stored_bytes": 56,
+                "decoded_bytes": 56,
+                "sha256": "0434a498b288c97586bdfc5b56e75d4467d9cc928c96e68647c8fe5b94af24ee"
+              },
+              {
+                "type": 5,
+                "codec": 0,
+                "records": 4,
+                "stored_bytes": 48,
+                "decoded_bytes": 48,
+                "sha256": "84ba5d3776e32e930f701ede0170efb8a7423bfc99e5100935a7750638a860b9"
+              },
+              {
+                "type": 6,
+                "codec": 0,
+                "records": 30004,
+                "stored_bytes": 960128,
+                "decoded_bytes": 960128,
+                "sha256": "a2f12b3a4131fd19f8dd456855c49c937cee79497bff340ce18c027194dd2117"
+              },
+              {
+                "type": 7,
+                "codec": 0,
+                "records": 30005,
+                "stored_bytes": 3840576,
+                "decoded_bytes": 3840576,
+                "sha256": "dd85b641abb67ed20672fe138758ab57dfd221be6fc5d6a652aca8ea122f80e7"
+              },
+              {
+                "type": 8,
+                "codec": 0,
+                "records": 30005,
+                "stored_bytes": 1560260,
+                "decoded_bytes": 1560260,
+                "sha256": "ef55b78054cfcf4ec61ed59c2b0b1b74cf17685d9a78191fed4bbcb403c4d5cd"
+              },
+              {
+                "type": 9,
+                "codec": 0,
+                "records": 1,
+                "stored_bytes": 60,
+                "decoded_bytes": 60,
+                "sha256": "433ae3d731ae5398d38dde237ad66622c4287510a643729065055d8f60a64fd9"
+              },
+              {
+                "type": 10,
+                "codec": 0,
+                "records": 30002,
+                "stored_bytes": 11091450,
+                "decoded_bytes": 11091450,
+                "sha256": "89885567084aa2d8c838fbcd4c1d8171deabe0152f2d578b0b9cfb4b37d64b78"
+              }
+            ],
+            "counts": {
+              "definitions": 4,
+              "matrices": 51,
+              "values": 2,
+              "instances": 4,
+              "states": 30004,
+              "events": 30005,
+              "flows": 30005,
+              "diagnostics": 30002
+            },
+            "state_dimension": 3,
+            "last_time_T128": [
+              0,
+              5534023222112865280,
+              0
+            ],
+            "archive_counts": {
+              "definition_candidate_checks": 90007,
+              "definition_encodes": 4,
+              "definition_hits": 90007,
+              "definition_signature_skips": 225014,
+              "equation_calls": 90011
+            },
+            "single_state_per_event": true,
+            "complete_component_modes": true,
+            "all_references_valid": true
+          },
+          "win_vs_PLECS": {
+            "method": "full original reference grid; mean/rms/max; provenance atol + 1%; no time shift",
+            "limitation": "diagnostic, does not replace historical windowed acceptance",
+            "passed": 20,
+            "total": 21,
+            "checks": [
+              {
+                "channel": "CH001",
+                "metric": "mean",
+                "reference": 4.158690402484035,
+                "actual": 4.190990157704422,
+                "tolerance": 0.041686904024840356,
+                "passed": true
+              },
+              {
+                "channel": "CH001",
+                "metric": "rms",
+                "reference": 5.939791999752849,
+                "actual": 5.984282881384575,
+                "tolerance": 0.059497919997528494,
+                "passed": true
+              },
+              {
+                "channel": "CH001",
+                "metric": "max",
+                "reference": 15.370673857286251,
+                "actual": 15.370677947998047,
+                "tolerance": 0.1538067385728625,
+                "passed": true
+              },
+              {
+                "channel": "CH002",
+                "metric": "mean",
+                "reference": 399.1437466777771,
+                "actual": 399.1589661423886,
+                "tolerance": 3.991537466777771,
+                "passed": true
+              },
+              {
+                "channel": "CH002",
+                "metric": "rms",
+                "reference": 564.2745497191945,
+                "actual": 564.2869044543173,
+                "tolerance": 5.642845497191945,
+                "passed": true
+              },
+              {
+                "channel": "CH002",
+                "metric": "max",
+                "reference": 815.6047148628028,
+                "actual": 815.604736328125,
+                "tolerance": 8.156147148628028,
+                "passed": true
+              },
+              {
+                "channel": "CH003",
+                "metric": "mean",
+                "reference": 4.057044903311257,
+                "actual": 4.0247467347006,
+                "tolerance": 0.04067044903311257,
+                "passed": true
+              },
+              {
+                "channel": "CH003",
+                "metric": "rms",
+                "reference": 5.797388714861683,
+                "actual": 5.751454583461847,
+                "tolerance": 0.05807388714861684,
+                "passed": true
+              },
+              {
+                "channel": "CH003",
+                "metric": "max",
+                "reference": 15.364982074776727,
+                "actual": 15.03870964050293,
+                "tolerance": 0.15374982074776725,
+                "passed": false
+              },
+              {
+                "channel": "CH004",
+                "metric": "mean",
+                "reference": 400.0,
+                "actual": 400.0,
+                "tolerance": 4.0001,
+                "passed": true
+              },
+              {
+                "channel": "CH004",
+                "metric": "rms",
+                "reference": 400.0,
+                "actual": 400.0,
+                "tolerance": 4.0001,
+                "passed": true
+              },
+              {
+                "channel": "CH004",
+                "metric": "max",
+                "reference": 400.0,
+                "actual": 400.0,
+                "tolerance": 4.0001,
+                "passed": true
+              },
+              {
+                "channel": "CH005",
+                "metric": "mean",
+                "reference": 8.215735305795292,
+                "actual": 8.21573690441228,
+                "tolerance": 0.08225735305795293,
+                "passed": true
+              },
+              {
+                "channel": "CH005",
+                "metric": "rms",
+                "reference": 8.300050898129093,
+                "actual": 8.30005249261079,
+                "tolerance": 0.08310050898129094,
+                "passed": true
+              },
+              {
+                "channel": "CH005",
+                "metric": "max",
+                "reference": 15.370673857286251,
+                "actual": 15.37067699432373,
+                "tolerance": 0.1538067385728625,
+                "passed": true
+              },
+              {
+                "channel": "CH006",
+                "metric": "mean",
+                "reference": 796.8604349689975,
+                "actual": 796.8601112174352,
+                "tolerance": 7.968704349689975,
+                "passed": true
+              },
+              {
+                "channel": "CH006",
+                "metric": "rms",
+                "reference": 796.8637448191938,
+                "actual": 796.8634215037133,
+                "tolerance": 7.968737448191938,
+                "passed": true
+              },
+              {
+                "channel": "CH006",
+                "metric": "max",
+                "reference": 814.5399322978998,
+                "actual": 814.5399169921875,
+                "tolerance": 8.145499322978997,
+                "passed": true
+              },
+              {
+                "channel": "CH007",
+                "metric": "mean",
+                "reference": 4.108811617808894,
+                "actual": 4.108809950537673,
+                "tolerance": 0.04118811617808894,
+                "passed": true
+              },
+              {
+                "channel": "CH007",
+                "metric": "rms",
+                "reference": 4.108828684223968,
+                "actual": 4.1088270191962115,
+                "tolerance": 0.041188286842239685,
+                "passed": true
+              },
+              {
+                "channel": "CH007",
+                "metric": "max",
+                "reference": 4.199971525911046,
+                "actual": 4.199971675872803,
+                "tolerance": 0.042099715259110465,
+                "passed": true
+              }
+            ],
+            "errors": {
+              "CH001": {
+                "rmse": 1.171565943847471,
+                "max_abs": 15.364985466003418
+              },
+              "CH002": {
+                "rmse": 111.42533812007565,
+                "max_abs": 814.9191537723219
+              },
+              "CH003": {
+                "rmse": 1.171565908332353,
+                "max_abs": 15.364982869468072
+              },
+              "CH004": {
+                "rmse": 0.0,
+                "max_abs": 0.0
+              },
+              "CH005": {
+                "rmse": 1.6222367226256993e-06,
+                "max_abs": 3.3418560256848195e-06
+              },
+              "CH006": {
+                "rmse": 0.011715782063958725,
+                "max_abs": 0.15362196018156737
+              },
+              "CH007": {
+                "rmse": 6.039715953533836e-05,
+                "max_abs": 0.0007923993344816083
+              }
+            },
+            "channels": {
+              "CH001": {
+                "mean": {
+                  "reference": 4.158690402484035,
+                  "actual": 4.190990157704422
+                },
+                "rms": {
+                  "reference": 5.939791999752849,
+                  "actual": 5.984282881384575
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": 4.0000000467443897e-07
+                },
+                "max": {
+                  "reference": 15.370673857286251,
+                  "actual": 15.370677947998047
+                },
+                "rmse": 1.171565943847471,
+                "mae": 0.1598646723036975,
+                "max_abs": 15.364985466003418,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 0.0,
+                "actual_at_max": 15.364985466003418,
+                "max_relative": 153649.85466003418,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 294147,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": 15.232345581054688
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": 15.298666954040527
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 15.364985466003418
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 7.957071375130909e-07
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 7.957276011438807e-07
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 14.701722970840983
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 15.033371315143167
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 0.0
+                  }
+                ]
+              },
+              "CH002": {
+                "mean": {
+                  "reference": 399.1437466777771,
+                  "actual": 399.1589661423886
+                },
+                "rms": {
+                  "reference": 564.2745497191945,
+                  "actual": 564.2869044543173
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": 2.88323018793335e-08
+                },
+                "max": {
+                  "reference": 815.6047148628028,
+                  "actual": 815.604736328125
+                },
+                "rmse": 111.42533812007565,
+                "mae": 15.564944423594003,
+                "max_abs": 814.9191537723219,
+                "max_abs_time": 0.00333,
+                "reference_at_max": 815.2800055685703,
+                "actual_at_max": 0.36085179624837255,
+                "max_relative": 15711.046531923645,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 294147,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0033298,
+                    "value": 0.3584599494934082
+                  },
+                  {
+                    "time": 0.0033299999999999996,
+                    "value": 0.36085179448127747
+                  },
+                  {
+                    "time": 0.0033301999999999997,
+                    "value": 815.2896118164062
+                  },
+                  {
+                    "time": 0.0033304,
+                    "value": 815.2990112304688
+                  },
+                  {
+                    "time": 0.0033306,
+                    "value": 815.308349609375
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.003328,
+                    "value": 0.33693079815400084
+                  },
+                  {
+                    "time": 0.003329,
+                    "value": 0.34889193485299586
+                  },
+                  {
+                    "time": 0.00333,
+                    "value": 815.2800055685703
+                  },
+                  {
+                    "time": 0.0033309999999999998,
+                    "value": 815.3265423434075
+                  },
+                  {
+                    "time": 0.003332,
+                    "value": 815.369607292869
+                  }
+                ]
+              },
+              "CH003": {
+                "mean": {
+                  "reference": 4.057044903311257,
+                  "actual": 4.0247467347006
+                },
+                "rms": {
+                  "reference": 5.797388714861683,
+                  "actual": 5.751454583461847
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": -8.151162660396949e-07
+                },
+                "max": {
+                  "reference": 15.364982074776727,
+                  "actual": 15.03870964050293
+                },
+                "rmse": 1.171565908332353,
+                "mae": 0.15986390702974446,
+                "max_abs": 15.364982869468072,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 15.364982074776727,
+                "actual_at_max": -7.946913456180482e-07,
+                "max_relative": 120471.84944126708,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 294147,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": -7.947125482132833e-07
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": -7.947019753373752e-07
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": -7.946913456180482e-07
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 15.298779487609863
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 15.232571601867676
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 0.0
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 15.364982074776727
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 15.033934105991749
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 14.702830528406603
+                  }
+                ]
+              },
+              "CH004": {
+                "mean": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "rms": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "min": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "max": {
+                  "reference": 400.0,
+                  "actual": 400.0
+                },
+                "rmse": 0.0,
+                "mae": 0.0,
+                "max_abs": 0.0,
+                "max_abs_time": 0.0,
+                "reference_at_max": 400.0,
+                "actual_at_max": 400.0,
+                "max_relative": 0.0,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 2e-07,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 4e-07,
+                    "value": 400.0
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.0,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 1e-06,
+                    "value": 400.0
+                  },
+                  {
+                    "time": 2e-06,
+                    "value": 400.0
+                  }
+                ]
+              },
+              "CH005": {
+                "mean": {
+                  "reference": 8.215735305795292,
+                  "actual": 8.21573690441228
+                },
+                "rms": {
+                  "reference": 8.300050898129093,
+                  "actual": 8.30005249261079
+                },
+                "min": {
+                  "reference": 0.0,
+                  "actual": -2.3886809197293246e-10
+                },
+                "max": {
+                  "reference": 15.370673857286251,
+                  "actual": 15.37067699432373
+                },
+                "rmse": 1.6222367226256993e-06,
+                "mae": 1.59863024081713e-06,
+                "max_abs": 3.3418560256848195e-06,
+                "max_abs_time": 0.002157,
+                "reference_at_max": 13.028903480348564,
+                "actual_at_max": 13.02890682220459,
+                "max_relative": 4.185641833132081e-06,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021566,
+                    "value": 13.161079406738281
+                  },
+                  {
+                    "time": 0.0021568,
+                    "value": 13.094993591308594
+                  },
+                  {
+                    "time": 0.002157,
+                    "value": 13.02890682220459
+                  },
+                  {
+                    "time": 0.0021571999999999997,
+                    "value": 12.962817192077637
+                  },
+                  {
+                    "time": 0.0021574,
+                    "value": 12.896727561950684
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002155,
+                    "value": 13.689701231683706
+                  },
+                  {
+                    "time": 0.002156,
+                    "value": 13.359323232617319
+                  },
+                  {
+                    "time": 0.002157,
+                    "value": 13.028903480348564
+                  },
+                  {
+                    "time": 0.0021579999999999998,
+                    "value": 12.69844473627062
+                  },
+                  {
+                    "time": 0.002159,
+                    "value": 12.36794976152809
+                  }
+                ]
+              },
+              "CH006": {
+                "mean": {
+                  "reference": 796.8604349689975,
+                  "actual": 796.8601112174352
+                },
+                "rms": {
+                  "reference": 796.8637448191938,
+                  "actual": 796.8634215037133
+                },
+                "min": {
+                  "reference": 775.8981153078533,
+                  "actual": 775.8981323242188
+                },
+                "max": {
+                  "reference": 814.5399322978998,
+                  "actual": 814.5399169921875
+                },
+                "rmse": 0.011715782063958725,
+                "mae": 0.0016147593411824771,
+                "max_abs": 0.15362196018156737,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 794.4596522336191,
+                "actual_at_max": 794.3060302734375,
+                "max_relative": 0.00019337168244838146,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": 794.3223876953125
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": 794.314208984375
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 794.3060302734375
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 794.4814453125
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 794.5031127929688
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 794.3879231422749
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 794.3469656828005
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 794.4596522336191
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 794.5673637114514
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 794.6717585757666
+                  }
+                ]
+              },
+              "CH007": {
+                "mean": {
+                  "reference": 4.108811617808894,
+                  "actual": 4.108809950537673
+                },
+                "rms": {
+                  "reference": 4.108828684223968,
+                  "actual": 4.1088270191962115
+                },
+                "min": {
+                  "reference": 4.000724657056119,
+                  "actual": 4.000724792480469
+                },
+                "max": {
+                  "reference": 4.199971525911046,
+                  "actual": 4.199971675872803
+                },
+                "rmse": 6.039715953533836e-05,
+                "mae": 8.35662229622754e-06,
+                "max_abs": 0.0007923993344816083,
+                "max_abs_time": 0.00219,
+                "reference_at_max": 4.096432581829599,
+                "actual_at_max": 4.095640182495117,
+                "max_relative": 0.00019343643979310827,
+                "relative_definition": "abs(error)/max(abs(reference), original channel atol)",
+                "pointwise_within_atol_plus_one_percent": 300001,
+                "pointwise_total": 300001,
+                "native_neighbors_at_max": [
+                  {
+                    "time": 0.0021896,
+                    "value": 4.095725059509277
+                  },
+                  {
+                    "time": 0.0021898,
+                    "value": 4.095682621002197
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 4.095640182495117
+                  },
+                  {
+                    "time": 0.0021902,
+                    "value": 4.096545219421387
+                  },
+                  {
+                    "time": 0.0021904,
+                    "value": 4.096656799316406
+                  }
+                ],
+                "reference_neighbors_at_max": [
+                  {
+                    "time": 0.002188,
+                    "value": 4.096062728702355
+                  },
+                  {
+                    "time": 0.002189,
+                    "value": 4.09585154180194
+                  },
+                  {
+                    "time": 0.00219,
+                    "value": 4.096432581829599
+                  },
+                  {
+                    "time": 0.002191,
+                    "value": 4.096987969137171
+                  },
+                  {
+                    "time": 0.002192,
+                    "value": 4.097526255156297
+                  }
+                ]
+              }
+            },
+            "reference": "fresh PLECS result from this repetition; original CSV checked separately"
+          }
+        },
+        "input_sha256": {
+          "pulse/netlist.md": "83e90dbfd3b3d8b11532f7b2c4122b8dfa5cbb19eccdd28e56a3639318567894",
+          "pulse/controller.c": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28",
+          "plecs/waveforms_001.csv": "1c8c32deea8ca1f82079902c771f07f6dfe209d9b3cffdb7a095a4506a648df0",
+          "plecs/waveforms_002.csv": "a7a1f60f5962fa4b41ccdfb1652482169d9265169194c2e317f4a0b3fb3f38d5",
+          "plecs/waveforms_003.csv": "453d81146d6f4802e9d17ea14e2ed0c54e13ca091e91d17ebfb42ee71f4dee8a",
+          "plecs/waveforms_004.csv": "4dd2ca52f2cbf39e949491b5fe799062e756c147b128677e913739cc3beb9cac",
+          "plecs/CaseSet_rohm_c002_d_boost.plecs": "b5f6553dbb6a1ba50147e52431ebcdb8fd89343fa4e6f2a8223945eb744a5058"
+        },
+        "finished": true,
+        "event_generation_limit_seconds": 101.99489400009043
+      }
+    }
+  },
+  "cross_platform_reconstruction": {
+    "bitwise_equal": true,
+    "arrays": {
+      "CH001": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH002": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH003": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH004": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH005": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH006": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "CH007": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      },
+      "time": {
+        "bytes_equal": true,
+        "max_abs": 0.0
+      }
+    }
+  }
+}

@@ -49,8 +49,8 @@
     "Windows_Release": "PASS: pulse-solver and pulse-replay built",
     "Linux_Release": "PASS: native pulse-solver and pulse-replay built",
     "CTest": "NOT_RUN",
-    "simulation": "NOT_RUN",
-    "accuracy": "NOT_RUN",
-    "performance": "NOT_RUN"
+    "simulation": "Boost full 0.3 s completed on Windows and native Linux; A010 not run",
+    "accuracy": "Boost statistics 20/21 on both platforms; CH003 peak fails; full point-error evidence preserved",
+    "performance": "Single sequential Boost measurement only; see BOOST_VALIDATION.md"
   }
 }

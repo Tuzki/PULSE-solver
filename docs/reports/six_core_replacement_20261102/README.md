@@ -17,3 +17,5 @@ Package SHA256, generated and integrated file hashes, and build status are in [M
 This integration does not claim CTest, simulation, accuracy or performance success. Those activities remain stopped under the user's instructions. Build-only verification is recorded separately from runtime verification; prior 27/27 results apply to baseline 1058210, not automatically to this commit.
 
 Build-only result: Windows GCC 16.2 Release and Linux GCC 13.3 Release both built `pulse-solver` and `pulse-replay` successfully. CTest and simulations were not run.
+
+Subsequent verification: full 0.3 s Boost completed on both platforms; PLECS statistics are 20/21 with the existing CH003 peak failure. See [Boost validation](BOOST_VALIDATION.md). A010 and CTest remain unrun for this six-core revision.
