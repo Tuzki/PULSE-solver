@@ -1,0 +1,352 @@
+{
+  "repo": "Tuzki/PULSE-solver",
+  "baseline_commit": "5881b86396c8bba86f435ef32e4719e8751becec",
+  "base_report_commit": "052aab8bd78d3eace130f0b2fc3c9282a3cf12af",
+  "changes": {
+    "src/descriptor.cpp": 5,
+    "src/engineering_flow.cpp": 5,
+    "src/pevt.cpp": 2,
+    "src/runtime.cpp": 1,
+    "src/first_root/first_root.cpp": 3
+  },
+  "notes": "Five complete .cpp files are generated LOCALLY by apply_optimizations.py from the exact baseline; this ZIP contains deterministic patch instructions, not already-modified full .cpp files.",
+  "integration_base_commit": "052aab8bd78d3eace130f0b2fc3c9282a3cf12af",
+  "branch": "experiment/a010-five-core-20261103",
+  "package_sha256": "128491c1519692309b997540e92a6c0a8f1e827e62d934110a1992fcd40c1f26",
+  "files": {
+    "src/descriptor.cpp": {
+      "sha256": "12621a8e15b6a9da620dadc73de6fd3e684ffd004ee5535738bef683c4e83e81",
+      "baseline_sha256": "5095ec190a1361b78e63181f9cebffbfb046576f14aa4f141d71c804d88120e5",
+      "edits": 5,
+      "matches_generated_bytes": true
+    },
+    "src/engineering_flow.cpp": {
+      "sha256": "3403d59860e8d9df1ba5c9a870d78569920f119b9dfbdef0a9d45556d739e114",
+      "baseline_sha256": "4891dcd9dd0c7a90cad5208ab24703d0d06e26c425150e5ea33945a0f7d1f323",
+      "edits": 5,
+      "matches_generated_bytes": true
+    },
+    "src/pevt.cpp": {
+      "sha256": "79ecfc5252655fb492607a54d3eeb1c01b720b7d4efa73a57d29968a88c87ed7",
+      "baseline_sha256": "a89389a8e526fd90218f34304efa77a8a8fd629388c5ca327cc147bee8e05487",
+      "edits": 2,
+      "matches_generated_bytes": true
+    },
+    "src/runtime.cpp": {
+      "sha256": "9b9ae241a81387c011a8af2de823247e2ca93188b86732cbc62297e068ca4a6a",
+      "baseline_sha256": "0ce4e58af31d314068897e69345ddb893c698cb633dd142540d4c406837638c1",
+      "edits": 1,
+      "matches_generated_bytes": true
+    },
+    "src/first_root/first_root.cpp": {
+      "sha256": "7fab24eec79eee638228a3bf58590ab4eace6ab34cc5b793382499b0f20faa59",
+      "baseline_sha256": "b79cb7ba58a796b84d739f8e51abb01967ca9c15d72896d039b7277047771b67",
+      "edits": 3,
+      "matches_generated_bytes": true
+    }
+  },
+  "validation": {
+    "windows_release": "PASS",
+    "linux_release": "PASS",
+    "windows_ctest": {
+      "status": "PASS",
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "disabled": 0,
+      "wall_seconds": 22.18,
+      "tests": [
+        {
+          "name": "trajectory_output",
+          "status": "PASS",
+          "seconds": 1.20961
+        },
+        {
+          "name": "platform_probe",
+          "status": "PASS",
+          "seconds": 0.218421
+        },
+        {
+          "name": "parser",
+          "status": "PASS",
+          "seconds": 0.301875
+        },
+        {
+          "name": "compiler_diagnostics",
+          "status": "PASS",
+          "seconds": 0.25606
+        },
+        {
+          "name": "time_origin",
+          "status": "PASS",
+          "seconds": 0.130171
+        },
+        {
+          "name": "electrical_references",
+          "status": "PASS",
+          "seconds": 0.38218
+        },
+        {
+          "name": "C_ABI_compatibility",
+          "status": "PASS",
+          "seconds": 0.049749
+        },
+        {
+          "name": "NPZ_compatibility",
+          "status": "PASS",
+          "seconds": 0.173889
+        },
+        {
+          "name": "engineering_events",
+          "status": "PASS",
+          "seconds": 0.366729
+        },
+        {
+          "name": "engineering_additional",
+          "status": "PASS",
+          "seconds": 0.393588
+        },
+        {
+          "name": "mode_cache",
+          "status": "PASS",
+          "seconds": 0.400768
+        },
+        {
+          "name": "observer_dependencies",
+          "status": "PASS",
+          "seconds": 0.38262
+        },
+        {
+          "name": "pre_kernel",
+          "status": "PASS",
+          "seconds": 0.330708
+        },
+        {
+          "name": "pevt_protocol",
+          "status": "PASS",
+          "seconds": 0.455079
+        },
+        {
+          "name": "software_domain",
+          "status": "PASS",
+          "seconds": 2.31915
+        },
+        {
+          "name": "transaction_budget",
+          "status": "PASS",
+          "seconds": 12.4774
+        },
+        {
+          "name": "a011_boundary",
+          "status": "PASS",
+          "seconds": 0.174391
+        },
+        {
+          "name": "a011_closure",
+          "status": "PASS",
+          "seconds": 0.217463
+        },
+        {
+          "name": "event_retry_merge",
+          "status": "PASS",
+          "seconds": 0.38314
+        },
+        {
+          "name": "a021_control_d",
+          "status": "PASS",
+          "seconds": 0.011484
+        },
+        {
+          "name": "a021_control_dot",
+          "status": "PASS",
+          "seconds": 0.011828
+        },
+        {
+          "name": "general_strategies",
+          "status": "PASS",
+          "seconds": 0.307477
+        },
+        {
+          "name": "a021_sampling",
+          "status": "PASS",
+          "seconds": 0.011806
+        },
+        {
+          "name": "trajectory",
+          "status": "PASS",
+          "seconds": 0.151572
+        },
+        {
+          "name": "strategy_transaction",
+          "status": "PASS",
+          "seconds": 0.42364
+        },
+        {
+          "name": "phi_affine",
+          "status": "PASS",
+          "seconds": 0.189947
+        },
+        {
+          "name": "group_latest",
+          "status": "PASS",
+          "seconds": 0.350541
+        }
+      ],
+      "log_sha256": "2b4e827c1cffe7c4547d6406e059eed8f60791f97e3b9d430680f79df0880271",
+      "junit_sha256": "04287e086eecf8a8267dc608758cfe749b8244e5f8256f184fe699ebd8864693"
+    },
+    "linux_ctest": {
+      "status": "PASS",
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "disabled": 0,
+      "wall_seconds": 11.64,
+      "tests": [
+        {
+          "name": "trajectory_output",
+          "status": "PASS",
+          "seconds": 0.553804
+        },
+        {
+          "name": "platform_probe",
+          "status": "PASS",
+          "seconds": 0.0894211
+        },
+        {
+          "name": "parser",
+          "status": "PASS",
+          "seconds": 0.0126325
+        },
+        {
+          "name": "compiler_diagnostics",
+          "status": "PASS",
+          "seconds": 0.00609028
+        },
+        {
+          "name": "time_origin",
+          "status": "PASS",
+          "seconds": 0.00326849
+        },
+        {
+          "name": "electrical_references",
+          "status": "PASS",
+          "seconds": 0.0209427
+        },
+        {
+          "name": "C_ABI_compatibility",
+          "status": "PASS",
+          "seconds": 0.0043616
+        },
+        {
+          "name": "NPZ_compatibility",
+          "status": "PASS",
+          "seconds": 0.012375
+        },
+        {
+          "name": "engineering_events",
+          "status": "PASS",
+          "seconds": 0.0196703
+        },
+        {
+          "name": "engineering_additional",
+          "status": "PASS",
+          "seconds": 0.0227529
+        },
+        {
+          "name": "mode_cache",
+          "status": "PASS",
+          "seconds": 0.0217912
+        },
+        {
+          "name": "observer_dependencies",
+          "status": "PASS",
+          "seconds": 0.0154426
+        },
+        {
+          "name": "pre_kernel",
+          "status": "PASS",
+          "seconds": 0.00658743
+        },
+        {
+          "name": "pevt_protocol",
+          "status": "PASS",
+          "seconds": 0.111991
+        },
+        {
+          "name": "software_domain",
+          "status": "PASS",
+          "seconds": 0.60317
+        },
+        {
+          "name": "transaction_budget",
+          "status": "PASS",
+          "seconds": 10.019
+        },
+        {
+          "name": "a011_boundary",
+          "status": "PASS",
+          "seconds": 0.0033165
+        },
+        {
+          "name": "a011_closure",
+          "status": "PASS",
+          "seconds": 0.010203
+        },
+        {
+          "name": "event_retry_merge",
+          "status": "PASS",
+          "seconds": 0.00591036
+        },
+        {
+          "name": "a021_control_d",
+          "status": "PASS",
+          "seconds": 0.00164384
+        },
+        {
+          "name": "a021_control_dot",
+          "status": "PASS",
+          "seconds": 0.00156845
+        },
+        {
+          "name": "general_strategies",
+          "status": "PASS",
+          "seconds": 0.0150334
+        },
+        {
+          "name": "a021_sampling",
+          "status": "PASS",
+          "seconds": 0.00209519
+        },
+        {
+          "name": "trajectory",
+          "status": "PASS",
+          "seconds": 0.00609665
+        },
+        {
+          "name": "strategy_transaction",
+          "status": "PASS",
+          "seconds": 0.00796901
+        },
+        {
+          "name": "phi_affine",
+          "status": "PASS",
+          "seconds": 0.00371723
+        },
+        {
+          "name": "group_latest",
+          "status": "PASS",
+          "seconds": 0.00548576
+        }
+      ],
+      "log_sha256": "73270e7d13cf0c7afbcb6bdf7ee7c579fcfdd33f8929cac3f3ad6d6d548966ee",
+      "junit_sha256": "d39ab129b77b20fc81d2ceba81eca01aaf1b6fc3b49f64dae31a6ccb8bb41cd6"
+    },
+    "full_boost_plecs": "NOT_RUN",
+    "full_a010_plecs": "NOT_RUN",
+    "performance": "NOT_MEASURED",
+    "diff_whitespace_check": "PASS (cr-at-eol: existing CRLF convention preserved)"
+  }
+}

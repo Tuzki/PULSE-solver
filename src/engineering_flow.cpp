@@ -714,13 +714,23 @@ double Flow::tangent(const Mode &mode,const Vector &initial,const Vector &row){
 bool Flow::compatible(const Mode &m) const {
   const auto &old=archive_mode();
   auto same=[](const Matrix&a,const Matrix&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
+  // Equivalent to the four byte-exact matrices packed by key(), without allocation.
+  auto same_key_matrix=[](const Matrix&a,const Matrix&b){
+    return a.rows()==b.rows()&&a.cols()==b.cols()&&
+      (a.size()==0||std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
+  };
   if(m.observer_maps!=old.observer_maps||m.observer_rows!=old.observer_rows)return false;
   auto same_electrical_rows=[&](const Matrix&a,const Matrix&b){
     if(a.rows()!=b.rows()||a.cols()!=b.cols())return false;
     for(int i=0;i<a.rows();++i)if(std::find(m.observer_rows.begin(),m.observer_rows.end(),i)==m.observer_rows.end()&&!(a.row(i).array()==b.row(i).array()).all())return false;
     return true;
   };
-  if(m.numerical_strategy!=old.numerical_strategy||key(m)!=key(old)||m.segments!=old.segments||
+  if(m.numerical_strategy!=old.numerical_strategy||
+     !same_key_matrix(m.M,old.M)||
+     !same_key_matrix(m.invariant_lift,old.invariant_lift)||
+     !same_key_matrix(m.invariant_generator,old.invariant_generator)||
+     !same_key_matrix(m.invariant_reduce,old.invariant_reduce)||
+     m.segments!=old.segments||
      !same(m.constraints,old.constraints)||!same_electrical_rows(m.residual_map,old.residual_map)||
      !same_electrical_rows(m.residual_reference,old.residual_reference)||m.maps.size()!=old.maps.size())return false;
   for(const auto &[name,row]:old.maps){
@@ -831,8 +841,8 @@ SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
       continue;
     bool found = false;
     Crossing root;
-    std::function<void(double, double, int)> visit = [&](double a, double b,
-                                                         int depth) {
+    auto visit = [&](auto &&self, double a, double b,
+                     int depth) -> void {
       require(++result.nodes <= budget && depth <= 160, 8,
               "ENGINEERING_ROOT_BUDGET",
               "engineering first-event search exhausted its budget", true);
@@ -897,11 +907,11 @@ SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
             "first event cannot be resolved within the engineering window",
             true);
       }
-      visit(a, mid, depth + 1);
+      self(self, a, mid, depth + 1);
       if (!found)
-        visit(mid, b, depth + 1);
+        self(self, mid, b, depth + 1);
     };
-    visit(0, horizon, 0);
+    visit(visit, 0, horizon, 0);
     if (found) {
       validate_event_timing(flow, root, atom);
       result.candidates.push_back(root);

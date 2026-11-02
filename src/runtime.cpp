@@ -533,8 +533,11 @@ Result simulate(const Model &original, const Options &o) {
         ++out.stats.exponentials;
       validate_physical(algorithm_mode,candidate.internal);
       {six_perf::Scope timer(six_perf::VALIDATION);
+       const double elapsed=(target-checkpoint.at).seconds();
        for(double fraction:{0.,.5,1.}){
-        Vector probe=flow.state(fraction*(target-checkpoint.at).seconds());
+        // Reuse already evaluated endpoints, retaining all three checks.
+        Vector probe=fraction==0.?checkpoint.internal:
+                     fraction==1.?candidate.internal:flow.state(.5*elapsed);
         portfolio_original_check(m,checkpoint,algorithm_mode,probe);
        }
       }

@@ -713,6 +713,8 @@ struct Context {
         }
         int algorithm = o.algorithm == 3 ? (an.valid && (an.scalar || an.real) ? 0 : 2) : o.algorithm;
         std::vector<Result> roots;
+        roots.reserve(size_t(m.m));
+        double earliest_end = horizon;
         double frontier = INFINITY;
         int frontier_guard = 0;
         std::string why;
@@ -742,9 +744,7 @@ struct Context {
                 }
             if (duplicate)
                 continue;
-            double end = horizon;
-            for (auto &known : roots)
-                end = std::min(end, known.bracket.hi);
+            const double end = earliest_end;
             auto z = search(0, end, 0, algorithm);
             if (z.status == Status::UNRESOLVED) {
                 if (z.unresolved_frontier <= frontier) {
@@ -755,6 +755,7 @@ struct Context {
             } else if (z.status == Status::FOUND_CERTIFIED) {
                 z.simultaneous = {guard};
                 roots.push_back(z);
+                earliest_end = std::min(earliest_end, z.bracket.hi);
             }
         }
         if (roots.empty()) {

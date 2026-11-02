@@ -189,7 +189,7 @@ struct PevtArchive::Data {
   uint32_t value_set(const Mode&m) {
     std::vector<double> v;Bytes b;
     for(auto&name:slots){auto&row=m.maps.at(name);require(row.size()==Eigen::Index(nx),11,"PEVT_SHAPE","held value row differs");double value=row[row.size()-1];v.push_back(value);real(b,value);}
-    auto k=key(b);if(value_ids.count(k))return value_ids.at(k);auto id=uint32_t(values.size());value_ids[k]=id;values.push_back(std::move(v));return id;
+    auto k=key(b);if(auto it=value_ids.find(k);it!=value_ids.end())return it->second;auto id=uint32_t(values.size());value_ids[k]=id;values.push_back(std::move(v));return id;
   }
   uint32_t block(const Matrix&m,const std::vector<std::pair<uint32_t,uint32_t>>&bindings) {
     Bytes b;put(b,m.rows(),4);put(b,m.cols(),4);for(Eigen::Index i=0;i<m.size();++i)real(b,m.data()[i]);
@@ -237,7 +237,7 @@ struct PevtArchive::Data {
   }
   uint32_t state(const Vector&x,uint32_t vs) {
     require(size_t(x.size())==nx&&x.allFinite(),11,"PEVT_SHAPE","invalid event state");Bytes b;put(b,vs,4);for(Eigen::Index i=0;i<x.size();++i)real(b,x[i]);auto k=key(b);
-    if(state_ids.count(k))return state_ids.at(k);
+    if(auto it=state_ids.find(k);it!=state_ids.end())return it->second;
     auto id=uint32_t(states.size());state_ids[k]=id;states.push_back({x,vs});return id;
   }
   uint32_t flow(const RunState&s,uint64_t reference) {

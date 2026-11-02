@@ -78,9 +78,8 @@ void check_candidate_reconstruction(const Mode &mode, const Vector &s, Source so
                 backward <= 128 * std::numeric_limits<double>::epsilon() * std::max(1, int(error.size())),
             7, "CANDIDATE_LINEAR_RESIDUAL", detail.str(), true, source);
 }
-Mode instantiate_cached(const Model &m, const Mode &stored, const Vector &s,
+Mode instantiate_cached(const Model &m, Mode mode, const Vector &s,
                         bool classification_only) {
-    Mode mode = stored;
     mode.classification_only = classification_only;
     // Repeat the original state-dependent entry checks, with identical matrix
     // expressions, order, tolerances and diagnostics. No previous accepted
@@ -997,7 +996,7 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
         if(it==cache->entries.end())it=cache->entries.find(candidate_key(bits,segments,regs));
         if (it != cache->entries.end()) {
             Mode bound=bind_observations(m,it->second,regs,bits,segments);
-            Mode mode = instantiate_cached(m, bound, s, classification_only);
+            Mode mode = instantiate_cached(m, std::move(bound), s, classification_only);
             ++stats.cache_hits;
             return mode;
         }
@@ -1073,10 +1072,12 @@ struct OriginalEquations {
  struct ObserverValue {std::string name;int row;double reference;};
  std::vector<ObserverValue> observer_values;
  bool certified_observer_independence=false;
+ mutable Matrix current_rhs_matrix;
  OriginalEquations(const Model&m,const RunState&s){
   std::map<int,bool>bits;for(int i:m.cmps)bits[i]=s.mode.bools.at(net_name(m.parts[i].raw.args[0]));
   Assembler stamp(m,s.regs,bits,s.mode.segments);stamp.stamp();
   A=stamp.A;B=stamp.B;F=stamp.F;D=stamp.D;branches=stamp.branchcol;reals=stamp.realcol;
+  current_rhs_matrix=B;
   // A reduced key is permitted only for an independent held-REG subsystem.
   // Derived held expressions can affect additional B rows and are conservatively
   // excluded. Never infer this certificate from signal names or SAVE lists.
@@ -1102,10 +1103,11 @@ struct OriginalEquations {
  }
  Vector anchored_rhs(const RunState &s,const Vector &xi)const {
   if(!certified_observer_independence)return B*xi;
-  Matrix current_B=B;
+  // Rebind certified held observations only, preserving full B*xi arithmetic.
+  // This cache is thread-local; its equation objects are not shared across threads.
   for(const auto &o:observer_values)
-   current_B(o.row,current_B.cols()-1)=s.regs.at(o.name);
-  return current_B*xi;
+   current_rhs_matrix(o.row,current_rhs_matrix.cols()-1)=s.regs.at(o.name);
+  return current_rhs_matrix*xi;
  }
 };
 thread_local std::map<std::string,std::shared_ptr<OriginalEquations>> original_cache;
