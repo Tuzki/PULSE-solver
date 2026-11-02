@@ -18,4 +18,6 @@ This integration does not claim CTest, simulation, accuracy or performance succe
 
 Build-only result: Windows GCC 16.2 Release and Linux GCC 13.3 Release both built `pulse-solver` and `pulse-replay` successfully. CTest and simulations were not run.
 
-Subsequent verification: full 0.3 s Boost completed on both platforms; PLECS statistics are 20/21 with the existing CH003 peak failure. See [Boost validation](BOOST_VALIDATION.md). A010 and CTest remain unrun for this six-core revision.
+Subsequent verification: full 0.3 s Boost completed on both platforms; PLECS statistics are 20/21 with the existing CH003 peak failure. See [Boost validation](BOOST_VALIDATION.md). CTest remains unrun for this six-core revision.
+
+A010 verification: both platforms completed the full 0.5 s; statistics 21/21 but 18 pointwise failures each in CH006/CH007 remain. See [A010 validation](A010_VALIDATION.md). No complete accuracy pass is claimed.

@@ -49,8 +49,8 @@
     "Windows_Release": "PASS: pulse-solver and pulse-replay built",
     "Linux_Release": "PASS: native pulse-solver and pulse-replay built",
     "CTest": "NOT_RUN",
-    "simulation": "Boost full 0.3 s completed on Windows and native Linux; A010 not run",
-    "accuracy": "Boost statistics 20/21 on both platforms; CH003 peak fails; full point-error evidence preserved",
-    "performance": "Single sequential Boost measurement only; see BOOST_VALIDATION.md"
+    "simulation": "Boost full 0.3 s and A010 full 0.5 s completed on Windows and native Linux",
+    "accuracy": "Boost statistics 20/21 (CH003 peak fails); A010 statistics 21/21 but CH006/CH007 each have 18 pointwise failures; see evidence",
+    "performance": "Single sequential measurements only; A010 event generation 8.08x Linux / 8.31x Windows versus fresh PLECS"
   }
 }
