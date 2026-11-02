@@ -1,0 +1,56 @@
+{
+  "source_commit": "10582101b794f0a15789883d630e986f064814a4",
+  "files": {
+    "src/descriptor.cpp": {
+      "baseline_git_blob": "1218214c596b5e0d357623442fc93fdf79622074",
+      "replacement_sha256": "1adaf2035d2086b5adc59fd4c1cb10213d4e139c0bcaeca0d011241046375d35",
+      "replacement_bytes": 59395,
+      "integrated_sha256": "5095ec190a1361b78e63181f9cebffbfb046576f14aa4f141d71c804d88120e5"
+    },
+    "src/engineering_flow.cpp": {
+      "baseline_git_blob": "4c2199b0db74a28e77810846996323578f1d7984",
+      "replacement_sha256": "4891dcd9dd0c7a90cad5208ab24703d0d06e26c425150e5ea33945a0f7d1f323",
+      "replacement_bytes": 44462,
+      "integrated_sha256": "4891dcd9dd0c7a90cad5208ab24703d0d06e26c425150e5ea33945a0f7d1f323"
+    },
+    "src/runtime.cpp": {
+      "baseline_git_blob": "580a8b8ee4fe68025d2cc6271da8ec43ec197e05",
+      "replacement_sha256": "0ce4e58af31d314068897e69345ddb893c698cb633dd142540d4c406837638c1",
+      "replacement_bytes": 39349,
+      "integrated_sha256": "0ce4e58af31d314068897e69345ddb893c698cb633dd142540d4c406837638c1"
+    },
+    "src/pevt.cpp": {
+      "baseline_git_blob": "4ace1040195de86af6950b2e0d2fba5d898aca80",
+      "replacement_sha256": "a89389a8e526fd90218f34304efa77a8a8fd629388c5ca327cc147bee8e05487",
+      "replacement_bytes": 36504,
+      "integrated_sha256": "a89389a8e526fd90218f34304efa77a8a8fd629388c5ca327cc147bee8e05487"
+    },
+    "src/solver_strategy.cpp": {
+      "baseline_git_blob": "873f983d04903a5c384fc9593ff0c8224fa4f778",
+      "replacement_sha256": "19c129ab198f8a8a9edfc2874e5653c6273aaafcdaf37e8a80e4bd3227613060",
+      "replacement_bytes": 5013,
+      "integrated_sha256": "19c129ab198f8a8a9edfc2874e5653c6273aaafcdaf37e8a80e4bd3227613060"
+    },
+    "src/semantics.cpp": {
+      "baseline_git_blob": "472bf1ab300f472834eec37adf5f85d4b474d22d",
+      "replacement_sha256": "2f12b608879bc96e350f6cd4afe5291daa2ab8c533b8ef2f429a1ee635e045d7",
+      "replacement_bytes": 43241,
+      "integrated_sha256": "2f12b608879bc96e350f6cd4afe5291daa2ab8c533b8ef2f429a1ee635e045d7"
+    }
+  },
+  "status": "SOURCE_TRANSFORMATION_ONLY; C++ compile and Boost/PFC runtime unverified here",
+  "package_sha256": "2ee62e74eb63caeade00414d512bf2c111e9fd117097a1a0a0ccb61e6780fccd",
+  "integration_adjustments": [
+    "Generator include insertion anchor restricted to namespace declarations, excluding closing namespace comments; all baseline Git blob safeguards retained.",
+    "Split differently typed map iterators into separate auto declarations in descriptor.cpp.",
+    "Refresh current observer entries in a copy of B and use the original B*xi expression; avoids cancellation from reference+(current-reference)."
+  ],
+  "validation": {
+    "Windows_Release": "PASS: pulse-solver and pulse-replay built",
+    "Linux_Release": "PASS: native pulse-solver and pulse-replay built",
+    "CTest": "NOT_RUN",
+    "simulation": "NOT_RUN",
+    "accuracy": "NOT_RUN",
+    "performance": "NOT_RUN"
+  }
+}

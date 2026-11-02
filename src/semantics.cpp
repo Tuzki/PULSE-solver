@@ -704,6 +704,8 @@ Model compile(Netlist net) {
         };
         for (auto &[n, s] : m.signals)
             dfs(n);
+        // The original-equation cache additionally certifies algebraic
+        // isolation before applying an observation-only REG cache key.
         // Conservative transitive dependency roles. Observation selection never
         // determines electrical relevance. Stateful/control roots remain critical.
         auto mark_role = [&](const std::string &raw, const std::string &role) {

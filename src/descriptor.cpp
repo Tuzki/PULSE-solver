@@ -1070,28 +1070,84 @@ struct OriginalEquations {
  Matrix A,B,F,D;
  std::map<std::string,std::vector<int>> branches;
  std::map<std::string,int> reals;
+ struct ObserverValue {std::string name;int row;double reference;};
+ std::vector<ObserverValue> observer_values;
+ bool certified_observer_independence=false;
  OriginalEquations(const Model&m,const RunState&s){
   std::map<int,bool>bits;for(int i:m.cmps)bits[i]=s.mode.bools.at(net_name(m.parts[i].raw.args[0]));
   Assembler stamp(m,s.regs,bits,s.mode.segments);stamp.stamp();
   A=stamp.A;B=stamp.B;F=stamp.F;D=stamp.D;branches=stamp.branchcol;reals=stamp.realcol;
+  // A reduced key is permitted only for an independent held-REG subsystem.
+  // Derived held expressions can affect additional B rows and are conservatively
+  // excluded. Never infer this certificate from signal names or SAVE lists.
+  bool safe=!m.observer_regs.empty() &&
+            m.observer_signals.size()==m.observer_regs.size();
+  for(const auto &name:m.observer_regs){
+   auto col=reals.find(name);auto value=s.regs.find(name);
+   if(!safe||col==reals.end()||value==s.regs.end()){safe=false;break;}
+   const int row=col->second;
+   if(row<0||row>=A.rows()||row>=B.rows()||A(row,row)!=1.){safe=false;break;}
+   for(int i=0;i<A.rows();++i){
+    if(i!=row && A(i,row)!=0.){safe=false;break;}
+    if(i!=row && A(row,i)!=0.){safe=false;break;}
+   }
+   if(!safe)break;
+   for(int j=0;j<B.cols()-1;++j)if(B(row,j)!=0.){safe=false;break;}
+   if(!safe || !F.col(row).isZero(0)){safe=false;break;}
+   if(B(row,B.cols()-1)!=value->second){safe=false;break;}
+   observer_values.push_back({name,row,value->second});
+  }
+  certified_observer_independence=safe;
+  if(!safe)observer_values.clear();
+ }
+ Vector anchored_rhs(const RunState &s,const Vector &xi)const {
+  if(!certified_observer_independence)return B*xi;
+  Matrix current_B=B;
+  for(const auto &o:observer_values)
+   current_B(o.row,current_B.cols()-1)=s.regs.at(o.name);
+  return current_B*xi;
  }
 };
 thread_local std::map<std::string,std::shared_ptr<OriginalEquations>> original_cache;
 thread_local std::deque<std::string> original_order;
+thread_local uint64_t original_hits=0,original_builds=0,original_rebound_hits=0,
+                     original_certified_builds=0,original_verifications=0;
 }
-void portfolio_reset_equations(){original_cache.clear();original_order.clear();}
+void portfolio_reset_equations(){
+ original_cache.clear();original_order.clear();
+ original_hits=original_builds=original_rebound_hits=original_certified_builds=original_verifications=0;
+}
+Json portfolio_original_diagnostics(){
+ return {{"checks",original_verifications},{"cache_hits",original_hits},
+         {"equation_builds",original_builds},{"certified_builds",original_certified_builds},
+         {"rebound_hits",original_rebound_hits}};
+}
 void portfolio_original_check(const Model&m,const RunState&entry,const Mode&mode,const Vector&xi){
  require(portfolio_variant()==2,12,"STRATEGY_SCOPE","original-equation check requires canonical stamp");
  std::map<int,bool>bits;for(int i:m.cmps)bits[i]=entry.mode.bools.at(net_name(m.parts[i].raw.args[0]));
- auto key=candidate_key(bits,entry.mode.segments,entry.regs);std::shared_ptr<OriginalEquations>system;
- if(auto it=original_cache.find(key);it!=original_cache.end())system=it->second;
- else{system=std::make_shared<OriginalEquations>(m,entry);if(original_cache.size()>=64){original_cache.erase(original_order.front());original_order.pop_front();}original_cache[key]=system;original_order.push_back(key);}
+ ++original_verifications;
+ auto full_key=candidate_key(bits,entry.mode.segments,entry.regs);
+ auto reduced_key=candidate_key(bits,entry.mode.segments,entry.regs,&m.observer_regs);
+ auto found=original_cache.find(reduced_key);
+ if(found==original_cache.end())found=original_cache.find(full_key);
+ std::shared_ptr<OriginalEquations>system;
+ if(found!=original_cache.end()){
+  system=found->second;++original_hits;
+  if(system->certified_observer_independence)++original_rebound_hits;
+ }else{
+  system=std::make_shared<OriginalEquations>(m,entry);++original_builds;
+  if(system->certified_observer_independence)++original_certified_builds;
+  const std::string &key=system->certified_observer_independence?reduced_key:full_key;
+  if(original_cache.size()>=64){original_cache.erase(original_order.front());original_order.pop_front();}
+  original_cache[key]=system;original_order.push_back(key);
+ }
  Vector u=Vector::Zero(system->A.cols());
  for(auto&[name,i]:m.nodes)u[i]=mode.maps.at("V("+name+")").dot(xi);
  for(auto&[name,cols]:system->branches)for(size_t j=0;j<cols.size();j++)u[cols[j]]=mode.maps.at("I("+name+(cols.size()>1?","+std::to_string(j+1):"")+")").dot(xi);
  for(auto&[name,col]:system->reals)u[col]=mode.maps.at(name).dot(xi);
- Vector r=system->A*u-system->B*xi;
- double residual=r.norm()/std::max(1.,(system->B*xi).norm());
+ Vector rhs=system->anchored_rhs(entry,xi);
+ Vector r=system->A*u-rhs;
+ double residual=r.norm()/std::max(1.,rhs.norm());
  require(u.allFinite()&&std::isfinite(residual)&&residual<=1e-8,7,"PORTFOLIO_ORIGINAL_RESIDUAL","original circuit equations exceed unchanged residual budget",true);
  Vector expected=system->F*u+system->D*xi;
  Vector error=physical_increment(m,(mode.M*xi).head(m.ns)-expected),scale=physical_increment(m,expected);

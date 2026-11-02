@@ -13,8 +13,32 @@
 #include <iomanip>
 #include <regex>
 #include <sstream>
+#include <array>
+#include <cstdio>
 namespace pulse {
+Json portfolio_original_diagnostics();
 namespace {
+namespace six_perf {
+ enum Slot {MODE, FLOW, ROOTS, VALIDATION, CLOSURE, ARCHIVE, COUNT};
+ static constexpr const char* labels[COUNT]={"mode","flow","roots","original_checks","closure","archive_append"};
+ thread_local std::array<double,COUNT> seconds{};
+ thread_local std::array<uint64_t,COUNT> calls{};
+ bool enabled(){static const bool value=std::getenv("PULSE_PROFILE_PHASES")!=nullptr;return value;}
+ void reset(){seconds.fill(0.);calls.fill(0);}
+ struct Scope{
+  Slot slot;std::chrono::steady_clock::time_point begin;
+  explicit Scope(Slot s):slot(s){if(enabled())begin=std::chrono::steady_clock::now();}
+  ~Scope(){if(enabled()){
+   seconds[slot]+=std::chrono::duration<double>(std::chrono::steady_clock::now()-begin).count();
+   ++calls[slot];
+  }}
+ };
+ Json report(){Json out={{"enabled",enabled()}};
+  if(enabled())for(size_t j=0;j<COUNT;++j)out[labels[j]]={{"seconds",seconds[j]},{"calls",calls[j]}};
+  return out;
+ }
+}
+
 Json model_identity(const Model &m) {
   Json deadlines = Json::object();
   for (int index : m.events) {
@@ -330,7 +354,7 @@ void stream_commit(const Model&m,Result&out,const RunState&old,const RunState&ne
 } // namespace
 Result simulate(const Model &original, const Options &o) {
   Model owned_model=original;owned_model.numerical_coordinates=true;const Model&m=owned_model;
-  portfolio_reset_equations();engineering::reset_flow_statistics();
+  portfolio_reset_equations();engineering::reset_flow_statistics();six_perf::reset();
   Result out;PortfolioStats portfolio;uint64_t output_index=1,total_event_records=0;
   auto begin = std::chrono::steady_clock::now();
   ScopedModeCache mode_cache(m, o.mode_cache_capacity);
@@ -417,17 +441,21 @@ Result simulate(const Model &original, const Options &o) {
        target=scheduled_target;due=scheduled_due;candidate=checkpoint;
        found=false;crossings.clear();seeds.clear();root_log=Json::object();logs.clear();attempt_phase="compile_or_propagate";
        try {
-        Mode algorithm_mode=portfolio_mode(m,checkpoint,algorithm,out.stats);
+        Mode algorithm_mode=[&](){six_perf::Scope timer(six_perf::MODE);return portfolio_mode(m,checkpoint,algorithm,out.stats);}();
         ++portfolio.executed_paths[algorithm][algorithm_mode.elimination_path];
-        engineering::Flow flow = checkpoint.electrical_flow && checkpoint.electrical_strategy==algorithm && checkpoint.electrical_flow->compatible(algorithm_mode)
-          ? checkpoint.electrical_flow->continued(algorithm_mode,0)
-          : engineering::Flow(algorithm_mode, checkpoint.internal);
+        engineering::Flow flow=[&](){
+          six_perf::Scope timer(six_perf::FLOW);
+          return checkpoint.electrical_flow && checkpoint.electrical_strategy==algorithm && checkpoint.electrical_flow->compatible(algorithm_mode)
+            ? checkpoint.electrical_flow->continued(algorithm_mode,0)
+            : engineering::Flow(algorithm_mode,checkpoint.internal);
+        }();
       engineering::SearchResult roots;
       if (target > old.at && !algorithm_mode.guards.empty()) {
         ++out.stats.root_queries;
         try {
+          {six_perf::Scope timer(six_perf::ROOTS);
           roots = engineering::next_events(
-              algorithm_mode, flow, (target - old.at).seconds(), out.t_atom);
+              algorithm_mode, flow, (target - old.at).seconds(), out.t_atom);}
         } catch (const std::exception &) {
           ++out.stats.root_failures;
           throw;
@@ -504,9 +532,11 @@ Result simulate(const Model &original, const Options &o) {
       if (target > old.at)
         ++out.stats.exponentials;
       validate_physical(algorithm_mode,candidate.internal);
-      for(double fraction:{0.,.5,1.}){
+      {six_perf::Scope timer(six_perf::VALIDATION);
+       for(double fraction:{0.,.5,1.}){
         Vector probe=flow.state(fraction*(target-checkpoint.at).seconds());
         portfolio_original_check(m,checkpoint,algorithm_mode,probe);
+       }
       }
       propagation_old.mode=std::move(algorithm_mode);
       attempt_phase="event_closure";
@@ -551,8 +581,10 @@ Result simulate(const Model &original, const Options &o) {
         check_agenda_origins(m, candidate);
       }
       Json mode_details;
-      closure(m, candidate, std::move(triggers), crossings, seeds, out, o, logs,
-              out.stats.transactions + 1, mode_details, software_session.get(), algorithm);
+      {six_perf::Scope timer(six_perf::CLOSURE);
+       closure(m, candidate, std::move(triggers), crossings, seeds, out, o, logs,
+               out.stats.transactions + 1, mode_details, software_session.get(), algorithm);
+      }
       if (found) {
         root_log["after_mode"] = candidate.mode.id;
         root_log["mode_update"] = mode_details;
@@ -598,7 +630,7 @@ Result simulate(const Model &original, const Options &o) {
       }
       require(accepted_algorithm,7,"ALL_EVENT_ALGORITHMS_FAILED","all registered methods failed from the same event checkpoint: "+failures.dump(),true);
       ++candidate.version;
-      if(out.trajectory)out.trajectory->append(propagation_old,candidate,logs,out.stats.transactions+1);
+      if(out.trajectory){six_perf::Scope timer(six_perf::ARCHIVE);out.trajectory->append(propagation_old,candidate,logs,out.stats.transactions+1);}
       else stream_commit(m,out,propagation_old,candidate,false,output_index);
       out.committed = std::move(candidate);
       if(!o.retain_history)out.segments.clear();
@@ -703,6 +735,8 @@ Result simulate(const Model &original, const Options &o) {
   auto selected=o.channels?o.channels:m.netlist.channels;
   if(selected&&!(selected->size()==1&&selected->front()=="*"))std::erase_if(out.events,[&](const Json&e){return e.value("kind","")=="TRIG"&&std::find(selected->begin(),selected->end(),e.value("source",""))==selected->end();});
   out.report["flow_statistics"]=engineering::flow_statistics();
+  out.report["original_equation_cache"]=portfolio_original_diagnostics();
+  out.report["performance_phases"]=six_perf::report();
   out.report["dependency_roles"]=m.dependency_roles;
   if(!m.observer_regs.empty())out.report["mode_cache_policy"]="RUN_SCOPED_ELECTRICAL_KEY_WITH_CERTIFIED_OBSERVER_BINDINGS_FIFO";
   out.report["output_format"]=out.trajectory?"trajectory":"waveform";

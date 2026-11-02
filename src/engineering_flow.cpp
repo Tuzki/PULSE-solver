@@ -10,9 +10,10 @@
 #include <numbers>
 #include <sstream>
 #include <unsupported/Eigen/MatrixFunctions>
+#include <unordered_map>
 namespace pulse::engineering {
 namespace {
-struct FlowCounts{uint64_t constructions=0,continuations=0,reused=0,reprojected=0;};
+struct FlowCounts{uint64_t constructions=0,continuations=0,reused=0,reprojected=0,basis_hits=0,basis_misses=0;};
 thread_local FlowCounts flow_counts;
 using Complex = std::complex<double>;
 using CMatrix = Eigen::MatrixXcd;
@@ -82,10 +83,10 @@ void refine_eigenpairs(const Matrix&a,CVector&poles,CMatrix&vectors){
  }
 }
 std::shared_ptr<Basis> basis(const Mode &mode) {
-  static thread_local std::map<std::string, std::shared_ptr<Basis>> cache;
+  static thread_local std::unordered_map<std::string, std::shared_ptr<Basis>> cache;
   auto id = key(mode);
-  if (auto it = cache.find(id); it != cache.end())
-    return it->second;
+  if (auto it = cache.find(id); it != cache.end()) { ++flow_counts.basis_hits; return it->second; }
+  ++flow_counts.basis_misses;
   auto b = std::make_shared<Basis>();
   const int physical = int(mode.M.rows()) - 1;
   if (mode.invariant_generator.size()) {
@@ -301,7 +302,7 @@ long double local_tail(const FlowData &d, size_t k, long double q, int order) {
 }
 } // namespace
 void reset_flow_statistics(){flow_counts={};}
-Json flow_statistics(){return {{"constructions",flow_counts.constructions},{"continuations",flow_counts.continuations},{"shared_continuations",flow_counts.reused},{"reprojected_continuations",flow_counts.reprojected}};}
+Json flow_statistics(){return {{"constructions",flow_counts.constructions},{"continuations",flow_counts.continuations},{"shared_continuations",flow_counts.reused},{"reprojected_continuations",flow_counts.reprojected},{"basis_hits",flow_counts.basis_hits},{"basis_misses",flow_counts.basis_misses}};}
 Flow::Flow(const Mode &mode, const Vector &initial)
     : data_(std::make_shared<FlowData>()) {
   ++flow_counts.constructions;

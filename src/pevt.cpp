@@ -10,6 +10,8 @@
 #include <cstring>
 #include <deque>
 
+#include <cstdio>
+#include <cstdlib>
 namespace pulse {
 namespace {
 constexpr uint32_t none=UINT32_MAX;
@@ -54,8 +56,17 @@ struct PevtArchive::Data {
   std::map<uint64_t,std::pair<uint64_t,uint32_t>> origins;
   // Bounded stable-definition cache; dynamic observation slots bind separately.
   // This is merely a shortcut to the unchanged canonical PULSEES1 encoder.
-  struct RecentEquation { Mode mode; uint32_t id; };
+  struct RecentEquation { Mode mode; uint32_t id; uint64_t discrete_signature; };
   std::deque<RecentEquation> recent_equations_;
+  uint64_t definition_candidate_checks=0,definition_signature_skips=0;
+  static uint64_t discrete_signature(const Mode&m){
+    uint64_t h=14695981039346656037ULL;
+    auto mix=[&](uint64_t v){for(int j=0;j<8;++j){h^=uint8_t(v>>(8*j));h*=1099511628211ULL;}};
+    mix(uint64_t(m.numerical_strategy));mix(m.bools.size());
+    for(const auto &[name,b]:m.bools){mix(name.size());for(unsigned char c:name){h^=c;h*=1099511628211ULL;}mix(b);}
+    mix(m.segments.size());for(const auto &[id,segment]:m.segments){mix(uint64_t(id));mix(uint64_t(segment));}
+    return h;
+  }
   static bool identical(const Matrix&a,const Matrix&b) {
     return a.rows()==b.rows() && a.cols()==b.cols() &&
            (a.size()==0 || std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
@@ -112,7 +123,7 @@ struct PevtArchive::Data {
   }
   uint32_t remember_equation(const Mode&m,uint32_t id) {
     if(recent_equations_.size()>=64)recent_equations_.pop_front();
-    recent_equations_.push_back({m,id});return id;
+    recent_equations_.push_back({m,id,discrete_signature(m)});return id;
   }
 
   explicit Data(const Model&m,const RunState&s):nx(size_t(s.internal.size())) {
@@ -188,8 +199,14 @@ struct PevtArchive::Data {
   }
   uint32_t equation(const Mode&m) {
     ++equation_calls;
-    for(const auto&entry:recent_equations_)
-      if(same_archive_definition(m,entry.mode)){++definition_hits;return bind_instance(instances.at(entry.id).definition,value_set(m));}
+    const auto signature=discrete_signature(m);
+    for(const auto&entry:recent_equations_){
+      if(entry.discrete_signature!=signature){++definition_signature_skips;continue;}
+      ++definition_candidate_checks;
+      if(same_archive_definition(m,entry.mode)){
+        ++definition_hits;return bind_instance(instances.at(entry.id).definition,value_set(m));
+      }
+    }
     ++definition_encodes;
     auto vs=value_set(m);auto encoded=archive_encode_mode(m);Json definition={{"definition_id",0},{"observation_rows",Json::array()},{"guards",Json::array()},{"dynamic_bindings",Json::array()},{"numerical_strategy",m.numerical_strategy},{"component_mode_ids",modes(m)},{"observer_maps",m.observer_maps},{"observer_rows",m.observer_rows}};
     std::map<std::string,std::vector<std::pair<uint32_t,uint32_t>>> binding;
@@ -259,7 +276,7 @@ void PevtArchive::write(const std::filesystem::path&path,const Result&r)const {
   auto&d=*data_;auto events=d.events;auto flow_records=d.flows;Event end=events.back();end.id=events.size();end.kind=6;end.before=end.after;end.pre=end.post;end.members.clear();end.outgoing=none;++end.micro;
   if(end.observer!=none){auto f=flow_records.at(end.observer);f.reference=end.id;end.observer=uint32_t(flow_records.size());flow_records.push_back(f);}
   events.push_back(end);
-  auto meta=d.meta;meta["provenance"]["archive_counts"]={{"equation_calls",d.equation_calls},{"definition_encodes",d.definition_encodes},{"definition_hits",d.definition_hits}};meta["component_modes"]=d.component_modes;meta["atomic_time"]=r.t_atom;meta["default_save_dt"]=r.save_dt;
+  auto meta=d.meta;meta["provenance"]["archive_counts"]={{"equation_calls",d.equation_calls},{"definition_encodes",d.definition_encodes},{"definition_hits",d.definition_hits},{"definition_candidate_checks",d.definition_candidate_checks},{"definition_signature_skips",d.definition_signature_skips}};meta["component_modes"]=d.component_modes;meta["atomic_time"]=r.t_atom;meta["default_save_dt"]=r.save_dt;
   meta["provenance"]["simulation_report"]=r.report;meta["provenance"]["simulation_report"]["analog_channels"]=r.analog_names;meta["provenance"]["simulation_report"]["digital_channels"]=r.digital_names;meta["provenance"]["solver_source_sha256"]=r.report.value("source_sha256","");
   std::vector<Section> sections;sections.push_back({1,1,text(meta)});Bytes b;
   for(size_t i=0;i<d.blocks.size();++i){auto&m=d.blocks[i];put(b,i,4);put(b,m.rows(),4);put(b,m.cols(),4);for(Eigen::Index j=0;j<m.size();++j)real(b,m.data()[j]);}
@@ -276,6 +293,11 @@ void PevtArchive::write(const std::filesystem::path&path,const Result&r)const {
   sections.push_back({9,1,text({{"status",r.status},{"last_event_id",end.id},{"diagnostic",r.diagnostic}})});b.clear();
   for(auto&e:r.events){auto line=e.dump()+"\n";b.insert(b.end(),line.begin(),line.end());}sections.push_back({10,r.events.size(),std::move(b)});
   size_t total=16;for(auto&s:sections){require(s.bytes.size()<=capacity-total-64,11,"PEVT_LIMIT","event stream exceeds 512 MiB");total+=64+s.bytes.size();}
+  if(std::getenv("PULSE_PROFILE_PHASES")){
+    for(const auto &section:sections)
+      std::fprintf(stderr,"PULSE_PEVT_SECTION type=%u count=%zu bytes=%zu\n",
+                   section.type,size_t(section.count),section.bytes.size());
+  }
   auto tmp=path;tmp+=".tmp";std::ofstream f(tmp,std::ios::binary);f.exceptions(std::ios::failbit|std::ios::badbit);
   Bytes header;for(char c:std::string("PULSEES1"))header.push_back(uint8_t(c));put(header,1,2);put(header,sections.size(),2);put(header,0,4);f.write(reinterpret_cast<const char*>(header.data()),header.size());
   for(auto&s:sections){Bytes h;put(h,s.type,4);put(h,0,4);put(h,s.bytes.size(),8);put(h,s.bytes.size(),8);put(h,s.count,8);auto sha=software::buffer_sha256(s.bytes);h.insert(h.end(),sha.begin(),sha.end());

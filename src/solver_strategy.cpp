@@ -38,6 +38,8 @@ Mode portfolio_compile(const Model&m,const Vector&internal,
  mode.numerical_strategy=algorithm;
  return mode;
 }
+// All numerical strategies remain unchanged. Runtime profiling surrounds
+// portfolio_mode() rather than weakening the canonical verification contract.
 Mode portfolio_mode(const Model&m,const RunState&checkpoint,int algorithm,Stats&stats){
  std::map<int,bool>bits;for(int i:m.cmps)bits[i]=checkpoint.mode.bools.at(net_name(m.parts[i].raw.args[0]));
  return portfolio_compile(m,checkpoint.internal,checkpoint.regs,stats,bits,checkpoint.mode.segments,algorithm);
