@@ -2,6 +2,7 @@
 /build/
 /build-linux/
 /build-event-windows/
+/build-event-opt-windows/
 *.so
 *.so.*
 /.build*/

@@ -7,6 +7,7 @@
 #include <limits>
 #include <set>
 #include <cstring>
+#include <deque>
 
 namespace pulse {
 namespace {
@@ -50,6 +51,45 @@ struct PevtArchive::Data {
   std::vector<Modal> modals;std::vector<std::string> slots;std::map<std::string,int> real_rows;
   std::map<std::string,uint32_t> component_ids,signal_ids,block_ids,value_ids,definition_ids,instance_ids,state_ids,component_mode_ids;
   std::map<uint64_t,std::pair<uint64_t,uint32_t>> origins;
+  // Exact, bounded, pre-serialization hot cache. Not a mathematical tolerance.
+  // This is merely a shortcut to the unchanged canonical PULSEES1 encoder.
+  struct RecentEquation { Mode mode; uint32_t id; };
+  std::deque<RecentEquation> recent_equations_;
+  static bool identical(const Matrix&a,const Matrix&b) {
+    return a.rows()==b.rows() && a.cols()==b.cols() &&
+           (a.size()==0 || std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
+  }
+  static bool identical(const Vector&a,const Vector&b) {
+    return a.size()==b.size() &&
+           (a.size()==0 || std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
+  }
+  static bool identical_archive_mode(const Mode&a,const Mode&b) {
+    if(a.numerical_strategy!=b.numerical_strategy || a.bools!=b.bools ||
+       a.segments!=b.segments || a.maps.size()!=b.maps.size() ||
+       a.guards.size()!=b.guards.size())return false;
+    if(!identical(a.M,b.M) || !identical(a.observations,b.observations) ||
+       !identical(a.constraints,b.constraints) ||
+       !identical(a.residual_map,b.residual_map) ||
+       !identical(a.residual_reference,b.residual_reference) ||
+       !identical(a.invariant_lift,b.invariant_lift) ||
+       !identical(a.invariant_generator,b.invariant_generator) ||
+       !identical(a.invariant_reduce,b.invariant_reduce))return false;
+    auto x=a.maps.begin(), y=b.maps.begin();
+    for(;x!=a.maps.end();++x,++y)
+      if(x->first!=y->first || !identical(x->second,y->second))return false;
+    for(size_t i=0;i<a.guards.size();++i){
+      const auto&g=a.guards[i];const auto&h=b.guards[i];
+      if(g.part!=h.part || g.direction!=h.direction || g.kind!=h.kind ||
+         g.knot!=h.knot || g.segment!=h.segment || g.step!=h.step ||
+         !identical(g.row,h.row))return false;
+    }
+    return true;
+  }
+  uint32_t remember_equation(const Mode&m,uint32_t id) {
+    if(recent_equations_.size()>=4)recent_equations_.pop_front();
+    recent_equations_.push_back({m,id});return id;
+  }
+
   explicit Data(const Model&m,const RunState&s):nx(size_t(s.internal.size())) {
     require(nx>0&&nx<=10000,11,"PEVT_SHAPE","invalid state dimension");
     meta={{"state_dimension",nx},{"value_slot_count",0},{"modal_component_count",0},{"state_layout",Json::array()},
@@ -121,6 +161,8 @@ struct PevtArchive::Data {
     auto id=uint32_t(blocks.size());block_ids[k]=id;blocks.push_back(m);return id;
   }
   uint32_t equation(const Mode&m) {
+    for(const auto&entry:recent_equations_)
+      if(identical_archive_mode(m,entry.mode))return entry.id;
     auto vs=value_set(m);auto encoded=archive_encode_mode(m);Json definition={{"definition_id",0},{"observation_rows",Json::array()},{"guards",Json::array()},{"dynamic_bindings",Json::array()},{"numerical_strategy",m.numerical_strategy},{"component_mode_ids",modes(m)}};
     std::map<std::string,std::vector<std::pair<uint32_t,uint32_t>>> binding;
     for(size_t slot=0;slot<slots.size();++slot) {
@@ -146,8 +188,8 @@ struct PevtArchive::Data {
     auto dkey=definition.dump();uint32_t id;
     if(auto i=definition_ids.find(dkey);i!=definition_ids.end())id=i->second;
     else {require(definitions.size()<100000,11,"PEVT_LIMIT","too many equation definitions");id=uint32_t(definitions.size());definition_ids[dkey]=id;definition["definition_id"]=id;definitions.push_back(std::move(definition));}
-    Bytes b;put(b,id,4);put(b,vs,4);auto ikey=key(b);if(instance_ids.count(ikey))return instance_ids.at(ikey);
-    auto index=uint32_t(instances.size());instance_ids[ikey]=index;instances.push_back({id,vs});return index;
+    Bytes b;put(b,id,4);put(b,vs,4);auto ikey=key(b);if(instance_ids.count(ikey))return remember_equation(m,instance_ids.at(ikey));
+    auto index=uint32_t(instances.size());instance_ids[ikey]=index;instances.push_back({id,vs});return remember_equation(m,index);
   }
   uint32_t state(const Vector&x,uint32_t vs) {
     require(size_t(x.size())==nx&&x.allFinite(),11,"PEVT_SHAPE","invalid event state");Bytes b;put(b,vs,4);for(Eigen::Index i=0;i<x.size();++i)real(b,x[i]);auto k=key(b);

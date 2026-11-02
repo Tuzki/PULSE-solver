@@ -310,9 +310,10 @@ void stream_emit(const Model&,Result&out,const RunState&old,const RunState&next,
   size_t width=out.analog_names.size()*sizeof(float)+out.digital_names.size()+sizeof(double);
   require(out.times.size()<10000000&&(out.times.size()+1)*width<512.*1024*1024,11,"OUTPUT_LIMIT","output exceeds 512 MiB or 10 million samples");
   out.times.push_back(at.seconds());
+  const RunState &anchor=at==next.at?next:old;
+  const bool flow_compatible=!out.analog_names.empty() && anchor.electrical_flow && anchor.electrical_flow->compatible(*mode);
   for(const auto&name:out.analog_names){double v=0;v=mode->maps.at(name).dot(x);
-    const RunState &anchor=at==next.at?next:old;
-    if(anchor.electrical_flow && anchor.electrical_flow->compatible(*mode))
+    if(flow_compatible)
       v=anchor.electrical_flow->observe(mode->maps.at(name),(at-anchor.at).seconds());
     require(std::isfinite(v)&&std::abs(v)<=std::numeric_limits<float>::max(),11,"OUTPUT_NONFINITE","streamed output cannot be represented");out.analog.push_back(float(v));}
   for(const auto&name:out.digital_names)out.digital.push_back(mode->bools.at(name));

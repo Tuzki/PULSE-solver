@@ -1,0 +1,681 @@
+{
+  "scope": "PLECS vs optimized PULSE only",
+  "source_parent": "c86e74c023a8a305d848f890b630647eceed45c4",
+  "handoff_zip_sha256": "b9b1fa03558837aec7ffeff9ab3dd23832fd4d0e8d0b65047cd6dea5ad771dbc",
+  "unit_tests": {
+    "Windows": {
+      "passed": 26,
+      "total": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 21.99
+    },
+    "Linux": {
+      "passed": 26,
+      "total": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.9
+    }
+  },
+  "boost": {
+    "input_sha256": {
+      "pulse/netlist.md": "83e90dbfd3b3d8b11532f7b2c4122b8dfa5cbb19eccdd28e56a3639318567894",
+      "pulse/controller.c": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28",
+      "plecs/waveforms_001.csv": "1c8c32deea8ca1f82079902c771f07f6dfe209d9b3cffdb7a095a4506a648df0",
+      "plecs/waveforms_002.csv": "a7a1f60f5962fa4b41ccdfb1652482169d9265169194c2e317f4a0b3fb3f38d5",
+      "plecs/waveforms_003.csv": "453d81146d6f4802e9d17ea14e2ed0c54e13ca091e91d17ebfb42ee71f4dee8a",
+      "plecs/waveforms_004.csv": "4dd2ca52f2cbf39e949491b5fe799062e756c147b128677e913739cc3beb9cac",
+      "plecs/CaseSet_rohm_c002_d_boost.plecs": "b5f6553dbb6a1ba50147e52431ebcdb8fd89343fa4e6f2a8223945eb744a5058"
+    },
+    "binaries": {
+      "win_event": {
+        "path": "D:\\codex\\using plecs\\pulse-linux-port\\build-event-opt-windows\\pulse-solver.exe",
+        "sha256": "ad83c219d40f4ba874ce6f49a521277c24bf6fb4f1b746f4567a47d44d1a4e2b",
+        "description": "Windows native x86-64"
+      },
+      "linux_event": {
+        "path": "/root/pulse-pevt-opt/build-linux/pulse-solver",
+        "sha256": "4d619e870defd05b192af00b5ad24fe40c4bce39969a01fdbb2c2a859770d3dc",
+        "description": "/root/pulse-pevt-opt/build-linux/pulse-solver: ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=dfb4289fa69a8a3882c8c7f473b8074595dea0a0, for GNU/Linux 3.2.0, not stripped"
+      }
+    },
+    "runs": {
+      "PLECS": {
+        "seconds": 10.09983179999108,
+        "status": "COMPLETED",
+        "simulated_seconds": 0.3,
+        "samples": 300001
+      },
+      "win_event": {
+        "seconds": 7.646378400007961,
+        "process_exit_seconds": 7.743198200012557,
+        "returncode": 0,
+        "status": "COMPLETED",
+        "simulated_seconds": 0.3,
+        "diagnostic": {},
+        "files": {
+          "out.pevt": {
+            "bytes": 17479533,
+            "sha256": "ada397f8fd8c773e19cbd6467f7811e8ec9f20de6ae7186798839655c13983db"
+          },
+          "simulation_report.json": {
+            "bytes": 8601,
+            "sha256": "e16659b40991362ebec09c8450eb1970242804ea26eda471f1d876f3e60f4a87"
+          }
+        },
+        "total_bytes": 17488134,
+        "transactions": 30003
+      },
+      "linux_event": {
+        "seconds": 6.5046032999962335,
+        "process_exit_seconds": 6.676330799993593,
+        "returncode": 0,
+        "status": "COMPLETED",
+        "simulated_seconds": 0.3,
+        "diagnostic": {},
+        "files": {
+          "out.pevt": {
+            "bytes": 17479505,
+            "sha256": "9d31bb3db8d11bc4f3dc48777267dd590730094a557f739a0c8371dcfce91e3f"
+          },
+          "simulation_report.json": {
+            "bytes": 8573,
+            "sha256": "5bb57a48f155c893eb3d08e99fac1a42948d2e4f1498bf27b316b0b8669f3a91"
+          }
+        },
+        "total_bytes": 17488078,
+        "transactions": 30003
+      },
+      "win_replay": {
+        "seconds": 13.347643999994034,
+        "process_exit_seconds": 13.34919359999185,
+        "returncode": 0,
+        "status": "COMPLETED",
+        "simulated_seconds": 0.3,
+        "diagnostic": {},
+        "files": {
+          "event_log.jsonl": {
+            "bytes": 11091450,
+            "sha256": "89885567084aa2d8c838fbcd4c1d8171deabe0152f2d578b0b9cfb4b37d64b78"
+          },
+          "out.pewave.npz": {
+            "bytes": 54006142,
+            "sha256": "3cdcd7df32c3637962c4a27a371dd26f86be4a5ab73b726f58ffca4085ccb9bd"
+          },
+          "simulation_report.json": {
+            "bytes": 8618,
+            "sha256": "f3696b027accbba48d653fb803972adf36a485fc15d22d6910fb941bf9b3602e"
+          },
+          "simulation_report.md": {
+            "bytes": 363,
+            "sha256": "5b35702eebb6669323644c26da22da50f6c95b19ae61774cb7004f0f7d94172c"
+          }
+        },
+        "total_bytes": 65106573,
+        "transactions": 30003
+      },
+      "linux_replay": {
+        "seconds": 9.240789999996196,
+        "process_exit_seconds": 9.249800000005052,
+        "returncode": 0,
+        "status": "COMPLETED",
+        "simulated_seconds": 0.3,
+        "diagnostic": {},
+        "files": {
+          "event_log.jsonl": {
+            "bytes": 11091450,
+            "sha256": "89885567084aa2d8c838fbcd4c1d8171deabe0152f2d578b0b9cfb4b37d64b78"
+          },
+          "out.pewave.npz": {
+            "bytes": 54006142,
+            "sha256": "3cdcd7df32c3637962c4a27a371dd26f86be4a5ab73b726f58ffca4085ccb9bd"
+          },
+          "simulation_report.json": {
+            "bytes": 8592,
+            "sha256": "dfbcbb8fbdc47434f6da765cc217e6c4272128758e314fb9c032e2837c83fabb"
+          },
+          "simulation_report.md": {
+            "bytes": 363,
+            "sha256": "5b35702eebb6669323644c26da22da50f6c95b19ae61774cb7004f0f7d94172c"
+          }
+        },
+        "total_bytes": 65106547,
+        "transactions": 30003
+      }
+    },
+    "validation": {
+      "fresh_PLECS_matches_original_CSV": true,
+      "win_replay_vs_PLECS": {
+        "method": "full original reference grid; mean/rms/max; provenance atol + 1%; no time shift",
+        "limitation": "diagnostic, does not replace historical windowed acceptance",
+        "passed": 20,
+        "total": 21,
+        "checks": [
+          {
+            "channel": "CH001",
+            "metric": "mean",
+            "reference": 4.158690402484035,
+            "actual": 4.190990157704422,
+            "tolerance": 0.041686904024840356,
+            "passed": true
+          },
+          {
+            "channel": "CH001",
+            "metric": "rms",
+            "reference": 5.939791999752849,
+            "actual": 5.984282881384575,
+            "tolerance": 0.059497919997528494,
+            "passed": true
+          },
+          {
+            "channel": "CH001",
+            "metric": "max",
+            "reference": 15.370673857286251,
+            "actual": 15.370677947998047,
+            "tolerance": 0.1538067385728625,
+            "passed": true
+          },
+          {
+            "channel": "CH002",
+            "metric": "mean",
+            "reference": 399.1437466777771,
+            "actual": 399.1589661423886,
+            "tolerance": 3.991537466777771,
+            "passed": true
+          },
+          {
+            "channel": "CH002",
+            "metric": "rms",
+            "reference": 564.2745497191945,
+            "actual": 564.2869044543173,
+            "tolerance": 5.642845497191945,
+            "passed": true
+          },
+          {
+            "channel": "CH002",
+            "metric": "max",
+            "reference": 815.6047148628028,
+            "actual": 815.604736328125,
+            "tolerance": 8.156147148628028,
+            "passed": true
+          },
+          {
+            "channel": "CH003",
+            "metric": "mean",
+            "reference": 4.057044903311257,
+            "actual": 4.0247467347006,
+            "tolerance": 0.04067044903311257,
+            "passed": true
+          },
+          {
+            "channel": "CH003",
+            "metric": "rms",
+            "reference": 5.797388714861683,
+            "actual": 5.751454583461847,
+            "tolerance": 0.05807388714861684,
+            "passed": true
+          },
+          {
+            "channel": "CH003",
+            "metric": "max",
+            "reference": 15.364982074776727,
+            "actual": 15.03870964050293,
+            "tolerance": 0.15374982074776725,
+            "passed": false
+          },
+          {
+            "channel": "CH004",
+            "metric": "mean",
+            "reference": 400.0,
+            "actual": 400.0,
+            "tolerance": 4.0001,
+            "passed": true
+          },
+          {
+            "channel": "CH004",
+            "metric": "rms",
+            "reference": 400.0,
+            "actual": 400.0,
+            "tolerance": 4.0001,
+            "passed": true
+          },
+          {
+            "channel": "CH004",
+            "metric": "max",
+            "reference": 400.0,
+            "actual": 400.0,
+            "tolerance": 4.0001,
+            "passed": true
+          },
+          {
+            "channel": "CH005",
+            "metric": "mean",
+            "reference": 8.215735305795292,
+            "actual": 8.21573690441228,
+            "tolerance": 0.08225735305795293,
+            "passed": true
+          },
+          {
+            "channel": "CH005",
+            "metric": "rms",
+            "reference": 8.300050898129093,
+            "actual": 8.30005249261079,
+            "tolerance": 0.08310050898129094,
+            "passed": true
+          },
+          {
+            "channel": "CH005",
+            "metric": "max",
+            "reference": 15.370673857286251,
+            "actual": 15.37067699432373,
+            "tolerance": 0.1538067385728625,
+            "passed": true
+          },
+          {
+            "channel": "CH006",
+            "metric": "mean",
+            "reference": 796.8604349689975,
+            "actual": 796.8601112174352,
+            "tolerance": 7.968704349689975,
+            "passed": true
+          },
+          {
+            "channel": "CH006",
+            "metric": "rms",
+            "reference": 796.8637448191938,
+            "actual": 796.8634215037133,
+            "tolerance": 7.968737448191938,
+            "passed": true
+          },
+          {
+            "channel": "CH006",
+            "metric": "max",
+            "reference": 814.5399322978998,
+            "actual": 814.5399169921875,
+            "tolerance": 8.145499322978997,
+            "passed": true
+          },
+          {
+            "channel": "CH007",
+            "metric": "mean",
+            "reference": 4.108811617808894,
+            "actual": 4.108809950537673,
+            "tolerance": 0.04118811617808894,
+            "passed": true
+          },
+          {
+            "channel": "CH007",
+            "metric": "rms",
+            "reference": 4.108828684223968,
+            "actual": 4.1088270191962115,
+            "tolerance": 0.041188286842239685,
+            "passed": true
+          },
+          {
+            "channel": "CH007",
+            "metric": "max",
+            "reference": 4.199971525911046,
+            "actual": 4.199971675872803,
+            "tolerance": 0.042099715259110465,
+            "passed": true
+          }
+        ],
+        "errors": {
+          "CH001": {
+            "rmse": 1.171565943847471,
+            "max_abs": 15.364985466003418
+          },
+          "CH002": {
+            "rmse": 111.42533812007565,
+            "max_abs": 814.9191537723219
+          },
+          "CH003": {
+            "rmse": 1.171565908332353,
+            "max_abs": 15.364982869468072
+          },
+          "CH004": {
+            "rmse": 0.0,
+            "max_abs": 0.0
+          },
+          "CH005": {
+            "rmse": 1.6222367226256993e-06,
+            "max_abs": 3.3418560256848195e-06
+          },
+          "CH006": {
+            "rmse": 0.011715782063958725,
+            "max_abs": 0.15362196018156737
+          },
+          "CH007": {
+            "rmse": 6.039715953533836e-05,
+            "max_abs": 0.0007923993344816083
+          }
+        }
+      },
+      "linux_replay_vs_PLECS": {
+        "method": "full original reference grid; mean/rms/max; provenance atol + 1%; no time shift",
+        "limitation": "diagnostic, does not replace historical windowed acceptance",
+        "passed": 20,
+        "total": 21,
+        "checks": [
+          {
+            "channel": "CH001",
+            "metric": "mean",
+            "reference": 4.158690402484035,
+            "actual": 4.190990157704422,
+            "tolerance": 0.041686904024840356,
+            "passed": true
+          },
+          {
+            "channel": "CH001",
+            "metric": "rms",
+            "reference": 5.939791999752849,
+            "actual": 5.984282881384575,
+            "tolerance": 0.059497919997528494,
+            "passed": true
+          },
+          {
+            "channel": "CH001",
+            "metric": "max",
+            "reference": 15.370673857286251,
+            "actual": 15.370677947998047,
+            "tolerance": 0.1538067385728625,
+            "passed": true
+          },
+          {
+            "channel": "CH002",
+            "metric": "mean",
+            "reference": 399.1437466777771,
+            "actual": 399.1589661423886,
+            "tolerance": 3.991537466777771,
+            "passed": true
+          },
+          {
+            "channel": "CH002",
+            "metric": "rms",
+            "reference": 564.2745497191945,
+            "actual": 564.2869044543173,
+            "tolerance": 5.642845497191945,
+            "passed": true
+          },
+          {
+            "channel": "CH002",
+            "metric": "max",
+            "reference": 815.6047148628028,
+            "actual": 815.604736328125,
+            "tolerance": 8.156147148628028,
+            "passed": true
+          },
+          {
+            "channel": "CH003",
+            "metric": "mean",
+            "reference": 4.057044903311257,
+            "actual": 4.0247467347006,
+            "tolerance": 0.04067044903311257,
+            "passed": true
+          },
+          {
+            "channel": "CH003",
+            "metric": "rms",
+            "reference": 5.797388714861683,
+            "actual": 5.751454583461847,
+            "tolerance": 0.05807388714861684,
+            "passed": true
+          },
+          {
+            "channel": "CH003",
+            "metric": "max",
+            "reference": 15.364982074776727,
+            "actual": 15.03870964050293,
+            "tolerance": 0.15374982074776725,
+            "passed": false
+          },
+          {
+            "channel": "CH004",
+            "metric": "mean",
+            "reference": 400.0,
+            "actual": 400.0,
+            "tolerance": 4.0001,
+            "passed": true
+          },
+          {
+            "channel": "CH004",
+            "metric": "rms",
+            "reference": 400.0,
+            "actual": 400.0,
+            "tolerance": 4.0001,
+            "passed": true
+          },
+          {
+            "channel": "CH004",
+            "metric": "max",
+            "reference": 400.0,
+            "actual": 400.0,
+            "tolerance": 4.0001,
+            "passed": true
+          },
+          {
+            "channel": "CH005",
+            "metric": "mean",
+            "reference": 8.215735305795292,
+            "actual": 8.21573690441228,
+            "tolerance": 0.08225735305795293,
+            "passed": true
+          },
+          {
+            "channel": "CH005",
+            "metric": "rms",
+            "reference": 8.300050898129093,
+            "actual": 8.30005249261079,
+            "tolerance": 0.08310050898129094,
+            "passed": true
+          },
+          {
+            "channel": "CH005",
+            "metric": "max",
+            "reference": 15.370673857286251,
+            "actual": 15.37067699432373,
+            "tolerance": 0.1538067385728625,
+            "passed": true
+          },
+          {
+            "channel": "CH006",
+            "metric": "mean",
+            "reference": 796.8604349689975,
+            "actual": 796.8601112174352,
+            "tolerance": 7.968704349689975,
+            "passed": true
+          },
+          {
+            "channel": "CH006",
+            "metric": "rms",
+            "reference": 796.8637448191938,
+            "actual": 796.8634215037133,
+            "tolerance": 7.968737448191938,
+            "passed": true
+          },
+          {
+            "channel": "CH006",
+            "metric": "max",
+            "reference": 814.5399322978998,
+            "actual": 814.5399169921875,
+            "tolerance": 8.145499322978997,
+            "passed": true
+          },
+          {
+            "channel": "CH007",
+            "metric": "mean",
+            "reference": 4.108811617808894,
+            "actual": 4.108809950537673,
+            "tolerance": 0.04118811617808894,
+            "passed": true
+          },
+          {
+            "channel": "CH007",
+            "metric": "rms",
+            "reference": 4.108828684223968,
+            "actual": 4.1088270191962115,
+            "tolerance": 0.041188286842239685,
+            "passed": true
+          },
+          {
+            "channel": "CH007",
+            "metric": "max",
+            "reference": 4.199971525911046,
+            "actual": 4.199971675872803,
+            "tolerance": 0.042099715259110465,
+            "passed": true
+          }
+        ],
+        "errors": {
+          "CH001": {
+            "rmse": 1.171565943847471,
+            "max_abs": 15.364985466003418
+          },
+          "CH002": {
+            "rmse": 111.42533812007565,
+            "max_abs": 814.9191537723219
+          },
+          "CH003": {
+            "rmse": 1.171565908332353,
+            "max_abs": 15.364982869468072
+          },
+          "CH004": {
+            "rmse": 0.0,
+            "max_abs": 0.0
+          },
+          "CH005": {
+            "rmse": 1.6222367226256993e-06,
+            "max_abs": 3.3418560256848195e-06
+          },
+          "CH006": {
+            "rmse": 0.011715782063958725,
+            "max_abs": 0.15362196018156737
+          },
+          "CH007": {
+            "rmse": 6.039715953533836e-05,
+            "max_abs": 0.0007923993344816083
+          }
+        }
+      }
+    }
+  },
+  "a010_full": {
+    "timing": "command start to COMPLETED notification after archive write; process exit separately; replay excluded",
+    "policy": {
+      "max_event_plecs_ratio": 10.0,
+      "on_timeout": "stop entire batch"
+    },
+    "binaries": {
+      "linux": {
+        "path": "/root/pulse-pevt-opt/build-linux/pulse-solver",
+        "description": "/root/pulse-pevt-opt/build-linux/pulse-solver: ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=dfb4289fa69a8a3882c8c7f473b8074595dea0a0, for GNU/Linux 3.2.0, not stripped",
+        "sha256": "4d619e870defd05b192af00b5ad24fe40c4bce39969a01fdbb2c2a859770d3dc"
+      },
+      "win": {
+        "path": "D:\\codex\\using plecs\\pulse-linux-port\\build-event-opt-windows\\pulse-solver.exe",
+        "description": "Windows native x86-64",
+        "sha256": "ad83c219d40f4ba874ce6f49a521277c24bf6fb4f1b746f4567a47d44d1a4e2b"
+      }
+    },
+    "cases": {
+      "rohm-a010-dot-totem-pole-pfc-sync": {
+        "target_seconds": 0.5,
+        "runs": {
+          "PLECS": {
+            "status": "COMPLETED",
+            "seconds": 14.713740399995004,
+            "simulated_seconds": 0.5,
+            "bytes": 32000312,
+            "samples": 500001
+          },
+          "linux_event": {
+            "status": "TIME_LIMIT_EXCEEDED",
+            "seconds": null,
+            "process_exit_seconds": 147.18668420000176,
+            "returncode": 9,
+            "limit_seconds": 147.13740399995004,
+            "files": {},
+            "total_bytes": 0
+          }
+        },
+        "validation": {},
+        "input_sha256": {
+          "pulse/netlist.md": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a",
+          "pulse/controller.c": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53",
+          "pulse/transition.h": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472",
+          "plecs/waveforms_001.csv": "92f3646123d56f75135069040f3cf0e423d161870ea0fb605ba08e8ec6754564",
+          "plecs/waveforms_002.csv": "2d125cd01979d03c50668e1cbb4870098a495e1df768581de20acbc4e6eeee08",
+          "plecs/waveforms_003.csv": "b8f3d2f6989d1b52b398fc6d04a80bdadc0050419b3e42efef82ff6dee0d6a22",
+          "plecs/waveforms_004.csv": "8fdc4d29cf6cf844634fa799fffce4af8a1d7895a419246deef5fa3b36127542",
+          "plecs/waveforms_005.csv": "9302f124f2e46d9fa35eb37345073fe7412bc3704e578e612ce00fb84c0f7f26",
+          "plecs/waveforms_006.csv": "6ff64b7602a4776a9bd17ed305c6abaa5aeebb02e4f8da163104fc62b6d067b6",
+          "plecs/CaseSet_rohm_a010_dot_totem_pole_pfc_sync.plecs": "1a7787034dbcecaab3e7d9e6543f3093453f9acf3cae664ef74ca7d3fa866bb9"
+        },
+        "finished": false,
+        "event_generation_limit_seconds": 147.13740399995004,
+        "stopped_reason": "Event generation exceeded 10.0x fresh PLECS; remaining work not started."
+      }
+    }
+  },
+  "a010_50ms_at_commit_preparation": {
+    "timing": "command start to COMPLETED notification after archive write; process exit separately; replay excluded",
+    "policy": {
+      "max_event_plecs_ratio": 10.0,
+      "on_timeout": "stop entire batch"
+    },
+    "binaries": {
+      "linux": {
+        "path": "/root/pulse-pevt-opt/build-linux/pulse-solver",
+        "description": "/root/pulse-pevt-opt/build-linux/pulse-solver: ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=dfb4289fa69a8a3882c8c7f473b8074595dea0a0, for GNU/Linux 3.2.0, not stripped",
+        "sha256": "4d619e870defd05b192af00b5ad24fe40c4bce39969a01fdbb2c2a859770d3dc"
+      },
+      "win": {
+        "path": "D:\\codex\\using plecs\\pulse-linux-port\\build-event-opt-windows\\pulse-solver.exe",
+        "description": "Windows native x86-64",
+        "sha256": "ad83c219d40f4ba874ce6f49a521277c24bf6fb4f1b746f4567a47d44d1a4e2b"
+      }
+    },
+    "cases": {
+      "rohm-a010-dot-totem-pole-pfc-sync": {
+        "target_seconds": 0.05,
+        "original_end_seconds": 0.5,
+        "scope": "diagnostic prefix",
+        "runs": {
+          "PLECS": {
+            "status": "COMPLETED",
+            "seconds": 1.43777129999944,
+            "simulated_seconds": 0.05,
+            "bytes": 3200312,
+            "samples": 50001
+          },
+          "linux_event": {
+            "status": "TIME_LIMIT_EXCEEDED",
+            "seconds": null,
+            "process_exit_seconds": 14.4402715999895,
+            "returncode": 9,
+            "limit_seconds": 14.377712999994401,
+            "files": {},
+            "total_bytes": 0
+          }
+        },
+        "validation": {},
+        "input_sha256": {
+          "pulse/netlist.md": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a",
+          "pulse/controller.c": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53",
+          "pulse/transition.h": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472",
+          "plecs/waveforms_001.csv": "92f3646123d56f75135069040f3cf0e423d161870ea0fb605ba08e8ec6754564",
+          "plecs/waveforms_002.csv": "2d125cd01979d03c50668e1cbb4870098a495e1df768581de20acbc4e6eeee08",
+          "plecs/waveforms_003.csv": "b8f3d2f6989d1b52b398fc6d04a80bdadc0050419b3e42efef82ff6dee0d6a22",
+          "plecs/waveforms_004.csv": "8fdc4d29cf6cf844634fa799fffce4af8a1d7895a419246deef5fa3b36127542",
+          "plecs/waveforms_005.csv": "9302f124f2e46d9fa35eb37345073fe7412bc3704e578e612ce00fb84c0f7f26",
+          "plecs/waveforms_006.csv": "6ff64b7602a4776a9bd17ed305c6abaa5aeebb02e4f8da163104fc62b6d067b6",
+          "plecs/CaseSet_rohm_a010_dot_totem_pole_pfc_sync.plecs": "1a7787034dbcecaab3e7d9e6543f3093453f9acf3cae664ef74ca7d3fa866bb9"
+        },
+        "finished": false,
+        "event_generation_limit_seconds": 14.377712999994401,
+        "stopped_reason": "Event generation exceeded 10.0x fresh PLECS; remaining work not started."
+      }
+    }
+  }
+}

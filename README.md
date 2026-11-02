@@ -13,6 +13,9 @@
 
 ## 构建与使用
 
+方程精确热缓存优化候选及 Boost/A010 当前验证结果见
+[优化版报告](docs/reports/PEVT_Hot_Cache_Boost_A010.md)。A010 完整运行触发十倍用时上限，尚未通过完整精度验证。
+
 用户指定的 PULSEES1 事件文件格式已加入 Windows/Linux 实现，使用方法见
 [PEVT 实现说明](docs/PEVT_Implementation.md)。完整 Boost 的精度、耗时、文件大小和未解决项见
 [PULSEES1 初步验证报告](docs/reports/PEVT_Boost_Preliminary_Verification.md)。
