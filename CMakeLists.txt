@@ -24,7 +24,7 @@ add_library(pulse_core STATIC src/netlist.cpp src/common.cpp src/semantics.cpp s
  src/propagate.cpp src/runtime.cpp src/engineering_flow.cpp src/engineering_mode.cpp
  src/time_origin.cpp src/output.cpp src/npz.cpp src/first_root/first_root.cpp
  src/first_root/interval_math.cpp src/first_root/exclusion.cpp
- src/pre_netlist.cpp src/constitutive.cpp src/software.cpp src/state_coordinates.cpp src/solver_strategy.cpp src/trajectory.cpp)
+ src/pre_netlist.cpp src/constitutive.cpp src/software.cpp src/state_coordinates.cpp src/solver_strategy.cpp src/trajectory.cpp src/pevt.cpp)
 if(WIN32)
  target_link_libraries(pulse_core PUBLIC bcrypt)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -94,6 +94,8 @@ if(BUILD_TESTING)
  target_link_libraries(pre_kernel_tests PRIVATE pulse_core)
  add_test(NAME pre_kernel COMMAND pre_kernel_tests)
  find_package(Python3 REQUIRED COMPONENTS Interpreter)
+ add_test(NAME pevt_protocol COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/pevt_protocol.py" --replay "$<TARGET_FILE:pulse-replay>" --scratch "${CMAKE_CURRENT_BINARY_DIR}/trajectory-output-test")
+ set_tests_properties(pevt_protocol PROPERTIES DEPENDS trajectory_output)
  if(Python3_Interpreter_FOUND)
   add_test(NAME software_domain COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/software_domain.py" --binary "$<TARGET_FILE:pulse-solver>" --cc "${CMAKE_C_COMPILER}" --out "${CMAKE_CURRENT_BINARY_DIR}/software_acceptance")
  endif()

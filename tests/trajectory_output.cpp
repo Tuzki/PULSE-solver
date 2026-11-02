@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include "pulse/software.hpp"
 using namespace pulse;
 void check(bool ok,const char*message){if(!ok)throw std::runtime_error(message);}
 int main(int argc,char**argv){
@@ -28,7 +29,7 @@ int main(int argc,char**argv){
   for(auto name:{"linear_rc","buck_ccm","boost_dcm"}){
     auto file=fixtures/(std::string(name)+".md");std::ifstream f(file);check(bool(f),"fixture missing");
     std::string text((std::istreambuf_iterator<char>(f)),{});auto model=compile(parse_markdown(text,file.string()));
-    Options options;options.retain_history=false;
+    Options options;options.retain_history=true;
     auto original=simulate(model,options);check(original.status=="COMPLETED","original did not complete");
     options.trajectory_output=true;auto trace=simulate(model,options);
     check(trace.status==original.status,"trajectory completion differs");
@@ -36,6 +37,8 @@ int main(int argc,char**argv){
     check(trace.report.at("internal_state")==original.report.at("internal_state"),"final internal state changed");
     check(trace.events==original.events,"event semantics changed");
     auto dir=scratch/name;write_result(model,trace,dir);auto replay=replay_trajectory(dir);
+    Json expected=Json::array();for(auto&segment:original.segments){auto&s=segment.state;std::vector<double>x(s.internal.data(),s.internal.data()+s.internal.size());Json regions=Json::array();for(auto [part,region]:s.mode.segments)regions.push_back({part,region});expected.push_back({{"time",s.at.canonical()},{"x",x},{"bools",s.mode.bools},{"regions",regions}});}
+    {std::ofstream out(dir/"expected-slices.json");out<<expected;}
     check(replay.times==original.times,"replay time axis differs");
     check(replay.analog.size()==original.analog.size(),"sample count differs");
     check(std::memcmp(replay.analog.data(),original.analog.data(),original.analog.size()*sizeof(float))==0,"analog samples differ bitwise");
@@ -48,15 +51,18 @@ int main(int argc,char**argv){
       auto a=flow.state(.03125),b=restored.state(.03125);
       check(a.size()==b.size()&&std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0,"continuation anchor/offset not preserved");
     }
-    auto path=dir/"segments.bin";std::fstream stream(path,std::ios::in|std::ios::out|std::ios::binary);
-    char first;stream.read(&first,1);char corrupted=first^1;stream.seekp(0);stream.write(&corrupted,1);stream.close();
-    bool rejected=false;try{replay_trajectory(dir);}catch(const Error&e){rejected=e.subcode=="TRAJECTORY_HASH";}
+    auto path=dir/"out.pevt";std::ifstream input(path,std::ios::binary);std::vector<uint8_t> original_file((std::istreambuf_iterator<char>(input)),{});input.close();
+    auto put_file=[&](const std::vector<uint8_t>&b){std::ofstream out(path,std::ios::binary);out.write(reinterpret_cast<const char*>(b.data()),b.size());};
+    auto corrupted=original_file;corrupted[80]^=1;put_file(corrupted);
+    bool rejected=false;try{replay_trajectory(dir);}catch(const Error&e){rejected=e.subcode=="PEVT_HASH";}
     check(rejected,"corrupted stream was accepted");
-    {std::fstream restore(path,std::ios::in|std::ios::out|std::ios::binary);restore.write(&first,1);}
-    auto metadata_path=dir/"metadata.json";Json metadata;{std::ifstream in(metadata_path);in>>metadata;}
-    metadata["long_double_digits"]=1;{std::ofstream out(metadata_path);out<<metadata;}
+    auto word=[&](size_t pos){uint64_t v=0;for(int i=0;i<8;++i)v|=uint64_t(original_file[pos+i])<<(8*i);return v;};auto length=word(24);
+    Json metadata=Json::parse(original_file.begin()+80,original_file.begin()+80+length);metadata["numerical_context"]["long_double_digits"]=1;auto encoded=metadata.dump();
+    std::vector<uint8_t> wrong(original_file.begin(),original_file.begin()+80);for(int i=0;i<8;++i){wrong[24+i]=uint8_t(uint64_t(encoded.size())>>(8*i));wrong[32+i]=wrong[24+i];}
+    std::vector<uint8_t> payload(encoded.begin(),encoded.end());auto hash=software::buffer_sha256(payload);std::copy(hash.begin(),hash.end(),wrong.begin()+48);wrong.insert(wrong.end(),payload.begin(),payload.end());wrong.insert(wrong.end(),original_file.begin()+80+length,original_file.end());put_file(wrong);
     rejected=false;try{replay_trajectory(dir);}catch(const Error&e){rejected=e.subcode=="TRAJECTORY_PRECISION";}
     check(rejected,"different replay precision was accepted");
+    wrong=original_file;wrong.pop_back();put_file(wrong);rejected=false;try{replay_trajectory(dir);}catch(const Error&e){rejected=e.subcode=="PEVT_TRUNCATED";}check(rejected,"truncated file accepted");put_file(original_file);
   }
   // Deferred materialization must still run the original per-sample check.
   Result invalid;invalid.status="COMPLETED";invalid.evidence="ENGINEERING_POINT_TRAJECTORY";

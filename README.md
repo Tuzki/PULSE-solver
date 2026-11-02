@@ -13,6 +13,10 @@
 
 ## 构建与使用
 
+用户指定的 PULSEES1 事件文件格式已加入 Windows/Linux 实现，使用方法见
+[PEVT 实现说明](docs/PEVT_Implementation.md)。完整 Boost 的精度、耗时、文件大小和未解决项见
+[PULSEES1 初步验证报告](docs/reports/PEVT_Boost_Preliminary_Verification.md)。
+
 事件轨迹输出实验及完整 Boost 三方计时见
 [轨迹格式说明](docs/Trajectory_Output.md)和
 [C002 实验报告](docs/reports/Trajectory_C002_Experiment.md)。该功能需显式选择，默认仍输出密集波形。

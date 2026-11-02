@@ -1,5 +1,7 @@
 """End-to-end software ABI, five-zone input and event acceptance."""
 import argparse,json,math,pathlib,shutil,subprocess,sys,zipfile
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]/'scripts'))
+from read_pevt import read as read_pevt
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--binary',type=pathlib.Path,required=True)
@@ -92,7 +94,7 @@ def main():
         trace,trace_dest=run(source,label+'_trajectory','--output-format','trajectory')
         check(trace['software_states']==baseline['software_states'],'trajectory preserves '+label+' C instance state counters')
         check(trace['software_final_outputs']==baseline['software_final_outputs'],'trajectory preserves '+label+' held C outputs')
-        check((trace_dest/'event_log.jsonl').read_bytes()==(baseline_dest/'event_log.jsonl').read_bytes(),'trajectory preserves '+label+' software scheduling and events')
+        check(read_pevt(trace_dest)['sections'][10][1]==(baseline_dest/'event_log.jsonl').read_bytes(),'trajectory preserves '+label+' software scheduling and events')
         replay_dest=a.out/(label+'_trajectory_replay')
         replayed=subprocess.run([str(replay_binary),str(trace_dest),'--out',str(replay_dest)],capture_output=True,text=True,timeout=30)
         check(replayed.returncode==0,'replay '+label+': '+replayed.stderr)

@@ -19,6 +19,7 @@ public:
   const Mode &archive_mode() const;
   const Vector &archive_anchor() const;
   Time archive_offset() const;
+  uint64_t archive_origin_id() const;
   static Flow restore_archive(const Mode &, const Vector &, Time);
   Vector state(double) const;
   // Continuation retains the original numerical anchor. Compatibility excludes

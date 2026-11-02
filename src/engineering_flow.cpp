@@ -222,6 +222,7 @@ struct Functional {
 };
 } // namespace
 struct FlowData {
+  uint64_t archive_origin_id=0;
   Mode mode;
   Vector initial, reduced, scaled;
   std::shared_ptr<Basis> basis;
@@ -301,6 +302,8 @@ Flow::Flow(const Mode &mode, const Vector &initial)
   require(!mode.classification_only, 12, "UNACCEPTED_CANDIDATE",
           "region-classification candidate cannot be propagated");
   auto &d = *data_;
+  static thread_local uint64_t archive_serial=0;
+  d.archive_origin_id=++archive_serial;
   d.mode = mode;
   d.initial = initial;
   d.basis = basis(mode);
@@ -380,6 +383,7 @@ Flow::Flow(const Mode &mode, const Vector &initial)
 const Mode &Flow::archive_mode() const {return data_->mode;}
 const Vector &Flow::archive_anchor() const {return data_->initial;}
 Time Flow::archive_offset() const {return offset_;}
+uint64_t Flow::archive_origin_id() const {return data_->archive_origin_id;}
 Flow Flow::restore_archive(const Mode &m,const Vector &anchor,Time offset) {
   Flow flow(m,anchor);flow.offset_=offset;return flow;
 }
@@ -719,7 +723,7 @@ bool Flow::compatible(const Mode &m) const {
 Flow Flow::continued(const Mode &m,double elapsed) const {
   require(compatible(m)&&elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
   // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
-  Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);return next;
+  Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);next.data_->archive_origin_id=data_->archive_origin_id;return next;
 }
 double Flow::observe(const Vector &row,double t,int derivative) const {
   // Project an arbitrary observable on this same continuous trajectory.

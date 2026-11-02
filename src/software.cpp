@@ -18,6 +18,21 @@
 #include <openssl/evp.h>
 #endif
 namespace pulse::software {
+std::array<uint8_t,32> buffer_sha256(std::span<const uint8_t> bytes) {
+  std::array<uint8_t,32> digest{};
+#if defined(_WIN32)
+  BCRYPT_ALG_HANDLE algorithm=nullptr;BCRYPT_HASH_HANDLE hash=nullptr;
+  struct Cleanup {BCRYPT_ALG_HANDLE&a;BCRYPT_HASH_HANDLE&h;~Cleanup(){if(h)BCryptDestroyHash(h);if(a)BCryptCloseAlgorithmProvider(a,0);}} cleanup{algorithm,hash};
+  require(BCryptOpenAlgorithmProvider(&algorithm,BCRYPT_SHA256_ALGORITHM,nullptr,0)>=0,12,"SOFTWARE_HASH","SHA256 provider failed");
+  DWORD size=0,written=0;require(BCryptGetProperty(algorithm,BCRYPT_OBJECT_LENGTH,reinterpret_cast<PUCHAR>(&size),sizeof(size),&written,0)>=0,12,"SOFTWARE_HASH","SHA256 property failed");
+  std::vector<uint8_t> object(size);require(BCryptCreateHash(algorithm,&hash,object.data(),size,nullptr,0,0)>=0,12,"SOFTWARE_HASH","SHA256 initialization failed");
+  for(size_t i=0;i<bytes.size();i+=65536)require(BCryptHashData(hash,const_cast<PUCHAR>(bytes.data()+i),ULONG(std::min(size_t(65536),bytes.size()-i)),0)>=0,12,"SOFTWARE_HASH","SHA256 update failed");
+  require(BCryptFinishHash(hash,digest.data(),DWORD(digest.size()),0)>=0,12,"SOFTWARE_HASH","SHA256 finish failed");
+#else
+  unsigned int size=0;require(EVP_Digest(bytes.data(),bytes.size(),digest.data(),&size,EVP_sha256(),nullptr)==1&&size==digest.size(),12,"SOFTWARE_HASH","SHA256 failed");
+#endif
+  return digest;
+}
 std::string file_sha256(const std::string &path, size_t max_bytes) {
   std::ifstream f(std::filesystem::path(path),std::ios::binary);
   require(bool(f),2,"SOFTWARE_FILE_MISSING","cannot read module dependency: "+path);

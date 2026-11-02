@@ -379,7 +379,7 @@ Result simulate(const Model &original, const Options &o) {
     out.stats.queue_peak = state.agenda.size();
     out.committed = state;
     out.segments.push_back({state});stream_setup(m,out,o);
-    if(o.trajectory_output){out.trajectory=std::make_shared<Trajectory>();out.trajectory->initial(state);}
+    if(o.trajectory_output){out.trajectory=std::make_shared<Trajectory>();out.trajectory->initial(m,state);}
     else stream_emit(m,out,state,state,state.at,false);
     bool first = true;
     while (first || out.committed.at < end) {
@@ -593,7 +593,7 @@ Result simulate(const Model &original, const Options &o) {
       }
       require(accepted_algorithm,7,"ALL_EVENT_ALGORITHMS_FAILED","all registered methods failed from the same event checkpoint: "+failures.dump(),true);
       ++candidate.version;
-      if(out.trajectory)out.trajectory->append(propagation_old,candidate);
+      if(out.trajectory)out.trajectory->append(propagation_old,candidate,logs,out.stats.transactions+1);
       else stream_commit(m,out,propagation_old,candidate,false,output_index);
       out.committed = std::move(candidate);
       if(!o.retain_history)out.segments.clear();

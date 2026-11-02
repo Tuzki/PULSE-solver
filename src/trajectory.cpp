@@ -1,5 +1,6 @@
 #include "pulse/trajectory.hpp"
 #include "pulse/software.hpp"
+#include "pulse/pevt.hpp"
 #include <bit>
 #include <fstream>
 #include <limits>
@@ -63,6 +64,8 @@ struct Reader{
   }
 };
 }
+Json archive_encode_mode(const Mode&m){return encode(m);}
+Mode archive_decode_mode(const Json&j){return decode(j);}
 uint32_t Trajectory::mode(const Mode&m){
   auto root=pool_.encode(encode(m));auto found=ids_.find(root);if(found!=ids_.end())return found->second;
   require(ids_.size()<100000,11,"TRAJECTORY_LIMIT","too many templates");
@@ -77,12 +80,18 @@ void Trajectory::state(const RunState&s){
   for(double v:anchor)real(bytes_,v);
   require(bytes_.size()<=limit,11,"TRAJECTORY_LIMIT","v1 record stream exceeds 64 MiB");
 }
-void Trajectory::initial(const RunState&s){dimension_=size_t(s.internal.size());state(s);}
+void Trajectory::initial(const RunState&s){initial(Model{},s);}
+void Trajectory::initial(const Model&m,const RunState&s){pevt_=std::make_shared<PevtArchive>(m,s);}
 void Trajectory::append(const RunState&a,const RunState&b){
+  if(pevt_){pevt_->append(a,b,{},0);return;}
   const auto checkpoint=bytes_.size();
   try{state(a);state(b);++records_;}catch(...){bytes_.resize(checkpoint);throw;}
 }
+void Trajectory::append(const RunState&a,const RunState&b,const std::vector<Json>&logs,uint64_t transaction){
+  require(bool(pevt_),11,"PEVT_CAPTURE","event archive not initialized");pevt_->append(a,b,logs,transaction);
+}
 void Trajectory::write(const std::filesystem::path&dir,const Result&r)const{
+  if(pevt_){std::filesystem::create_directories(dir);pulse::write(dir/"simulation_report.json",r.report.dump(2)+"\n");pevt_->write(dir/"out.pevt",r);return;}
   std::filesystem::create_directories(dir);
   pulse::write(dir/"simulation_report.json",r.report.dump(2)+"\n"); // preserve state even if archive I/O fails
   {std::ofstream f(dir/"segments.bin",std::ios::binary);f.exceptions(std::ios::failbit|std::ios::badbit);f.write(reinterpret_cast<const char*>(bytes_.data()),std::streamsize(bytes_.size()));}
@@ -101,6 +110,8 @@ void Trajectory::write(const std::filesystem::path&dir,const Result&r)const{
   pulse::write(dir/"metadata.json",manifest.dump(2)+"\n");
 }
 Result Trajectory::read(const std::filesystem::path&dir,const std::function<void(Result&,const RunState&,const RunState&,bool)>&emit){
+  if(std::filesystem::is_regular_file(dir))return PevtArchive::read(dir,emit);
+  if(std::filesystem::exists(dir/"out.pevt"))return PevtArchive::read(dir/"out.pevt",emit);
   auto meta=json(dir/"metadata.json");
   const int version=meta.at("version");
   require(meta.at("format")=="PULSE_TRAJECTORY"&&(version==1||version==2),11,"TRAJECTORY_VERSION","unsupported trajectory format");
