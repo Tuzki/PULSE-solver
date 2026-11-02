@@ -1,0 +1,123 @@
+{
+  "case": "rohm-a010-dot-totem-pole-pfc-sync",
+  "target_seconds": 0.5,
+  "policy": "Stop the entire batch if event generation exceeds 5x fresh PLECS; replay excluded.",
+  "validation": {},
+  "input_sha256": {
+    "pulse/netlist.md": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a",
+    "pulse/controller.c": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53",
+    "pulse/transition.h": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472",
+    "plecs/waveforms_001.csv": "92f3646123d56f75135069040f3cf0e423d161870ea0fb605ba08e8ec6754564",
+    "plecs/waveforms_002.csv": "2d125cd01979d03c50668e1cbb4870098a495e1df768581de20acbc4e6eeee08",
+    "plecs/waveforms_003.csv": "b8f3d2f6989d1b52b398fc6d04a80bdadc0050419b3e42efef82ff6dee0d6a22",
+    "plecs/waveforms_004.csv": "8fdc4d29cf6cf844634fa799fffce4af8a1d7895a419246deef5fa3b36127542",
+    "plecs/waveforms_005.csv": "9302f124f2e46d9fa35eb37345073fe7412bc3704e578e612ce00fb84c0f7f26",
+    "plecs/waveforms_006.csv": "6ff64b7602a4776a9bd17ed305c6abaa5aeebb02e4f8da163104fc62b6d067b6",
+    "plecs/CaseSet_rohm_a010_dot_totem_pole_pfc_sync.plecs": "1a7787034dbcecaab3e7d9e6543f3093453f9acf3cae664ef74ca7d3fa866bb9"
+  },
+  "binaries": {
+    "linux": {
+      "path": "/root/pulse-pevt/build-linux/pulse-solver",
+      "sha256": "b9722c00ace91d7abe1b6e4c0639b480a87aab61bf335fa606465d9779c33b1f",
+      "description": "/root/pulse-pevt/build-linux/pulse-solver: ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=c38310c52c63eecbbf433eb30ed44380887c6865, for GNU/Linux 3.2.0, not stripped"
+    },
+    "win": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\build-event-windows\\pulse-solver.exe",
+      "sha256": "b40f9a46ba4880a097f4f3a87e4868b8a5e84895a34e7481e4a3c04651908cda",
+      "description": "Windows native x86-64"
+    }
+  },
+  "finished": false,
+  "event_generation_limit_seconds": 66.43872799999372,
+  "stopped_reason": "Linux event generation exceeded 5x fresh PLECS; Windows and reconstruction not started.",
+  "runs": {
+    "linux_original": {
+      "seconds": 622.2072716000002,
+      "process_exit_seconds": 622.2594735000021,
+      "returncode": 0,
+      "status": "COMPLETED",
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "files": {
+        "event_log.jsonl": {
+          "bytes": 109066334,
+          "sha256": "6062e94542f8a366bc27e9f7afbcbfc10afed7eb01d487767ccb79eeb5907513"
+        },
+        "out.pewave.npz": {
+          "bytes": 320012322,
+          "sha256": "9a6858bc2570d774354a3ed26ac519048a523a4bf99e5ec5308e059ace90dd50"
+        },
+        "simulation_report.json": {
+          "bytes": 13975,
+          "sha256": "65470664b5d6a78fec0b5ec47609ddc02f6ba805fed49eb7e179b065094bb3da"
+        },
+        "simulation_report.md": {
+          "bytes": 363,
+          "sha256": "f72f272b06590b9e3f8dcfbaa0869d0d8e67c31dc8c9b80a4dcaeea161cf7719"
+        }
+      },
+      "total_bytes": 429092994,
+      "reused_from": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\all-platforms-full-20261101\\rohm-a010-dot-totem-pole-pfc-sync\\linux_original",
+      "measured_in_this_session": false,
+      "transactions": 159037
+    },
+    "win_original": {
+      "seconds": 857.6857192999996,
+      "process_exit_seconds": 857.690720300001,
+      "returncode": 0,
+      "status": "COMPLETED",
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "files": {
+        "event_log.jsonl": {
+          "bytes": 109069186,
+          "sha256": "b243f7ef1d1a1ed6f7293058ebb27e0f1970723f87e25e6e5f409008b79f211e"
+        },
+        "out.pewave.npz": {
+          "bytes": 320012498,
+          "sha256": "40ae02d4e51be33bdb9c6a0832f988c7e500287afb04478735ee643bbfd8b987"
+        },
+        "simulation_report.json": {
+          "bytes": 14041,
+          "sha256": "6969d88dc02e3b598ac4bd38ebc5d613bb65ad28f8a33adab1683ccdef6a7ef8"
+        },
+        "simulation_report.md": {
+          "bytes": 363,
+          "sha256": "f72f272b06590b9e3f8dcfbaa0869d0d8e67c31dc8c9b80a4dcaeea161cf7719"
+        }
+      },
+      "total_bytes": 429096088,
+      "reused_from": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\all-platforms-full-20261101\\rohm-a010-dot-totem-pole-pfc-sync\\win_original",
+      "measured_in_this_session": false,
+      "transactions": 159037
+    },
+    "PLECS": {
+      "seconds": 13.287745599998743,
+      "status": "COMPLETED",
+      "simulated_seconds": 0.5,
+      "bytes": 32000312
+    },
+    "linux_event": {
+      "seconds": 66.65439669998887,
+      "returncode": 9,
+      "status": "TIME_LIMIT_EXCEEDED",
+      "limit_seconds": 66.43872799999372,
+      "files": {},
+      "total_bytes": 0,
+      "termination_evidence": "GNU timeout --signal=KILL; WSL exposed SIGKILL as exit code 9; subsequent pgrep found no matching solver process.",
+      "classification_note": "Initial harness recognized 124/137 only; classification corrected for observed WSL signal exit code 9. No simulation rerun."
+    },
+    "win_event": {
+      "status": "NOT_RUN",
+      "reason": "User 5x stop policy"
+    },
+    "linux_replay": {
+      "status": "NOT_RUN",
+      "reason": "User 5x stop policy"
+    },
+    "win_replay": {
+      "status": "NOT_RUN",
+      "reason": "User 5x stop policy"
+    }
+  }
+}
