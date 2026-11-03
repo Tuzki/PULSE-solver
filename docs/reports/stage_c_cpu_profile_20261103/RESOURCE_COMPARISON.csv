@@ -1,0 +1,5 @@
+run,completion_wall_seconds,cpu_seconds,peak_rss_kib,scope
+Stage B COW,61.601001628000006,62.19,1162312,saved unprofiled baseline
+Stage C accepted,57.71677421199999,58.169999999999995,1162484,saved unprofiled acceptance
+Stage C CPU sampling,62.099543744,63.049699999999994,1162484,"perf 999 Hz plus syscall trace, no return probes or allocation observer"
+Stage C exact counters,116.65816926699999,117.97837799999999,1162512,heavy paired probes plus allocation observer; not a speed benchmark

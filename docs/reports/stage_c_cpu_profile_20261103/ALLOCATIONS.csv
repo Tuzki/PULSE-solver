@@ -1,0 +1,10 @@
+name,calls,requested_bytes,failures
+malloc,497793125,65433575374,0
+calloc,61824119,3448226839,0
+realloc,41,25480,0
+memalign,0,0,0
+aligned_alloc,0,0,0
+posix_memalign,0,0,0
+valloc,0,0,0
+pvalloc,0,0,0
+reallocarray,0,0,0

@@ -1,0 +1,2794 @@
+{
+  "solver_commit": "f8138727a45f7213898a87b0a10c94a57eb33c04",
+  "source_unchanged": true,
+  "text_identity": {
+    "equal": true,
+    "sha256": "d2e8a8803411b91ccbc5be1d788acbfbc2109b89c7424b9edc451eea046f3de9",
+    "release": "/root/pulse-stage-c-20261103/build-linux/pulse-solver",
+    "symbols": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+    "extra_flag": "-g1 only; all optimization and strict floating options retained"
+  },
+  "sampling": {
+    "pid": 354,
+    "started_utc": "2026-11-03T15:39:18.687013+00:00",
+    "command": [
+      "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "/root/stage-a-regression-20261103/model/netlist.md",
+      "--t-end",
+      ".5",
+      "--output-format",
+      "trajectory",
+      "--out",
+      "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/run"
+    ],
+    "perf_command": [
+      "/usr/lib/linux-tools/6.8.0-147-generic/perf",
+      "record",
+      "-e",
+      "cpu-clock",
+      "-F",
+      "999",
+      "--call-graph",
+      "dwarf,32768",
+      "-m",
+      "4096",
+      "-o",
+      "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/perf.data",
+      "-p",
+      "354"
+    ],
+    "duration": ".5",
+    "completion_wall_seconds": 62.099543744,
+    "exit_wall_seconds": 62.15836027900001,
+    "returncode": 0,
+    "cpu_user_seconds": 61.089417,
+    "cpu_system_seconds": 1.960283,
+    "cpu_total_seconds": 63.049699999999994,
+    "peak_rss_kib": 1162484,
+    "peak_threads_observed": 1,
+    "thread_poll_interval_seconds": 0.1,
+    "binary_sha256": "85e2d4a3b4080392f7dc55b4352b009cd616beb509f8e9290c1507513e9207eb",
+    "model_sha256": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a",
+    "allocation_observer_sha256": null,
+    "counter_enabled": false,
+    "cpu_scope": "target process through exit; gate setup excluded from wall; RSS includes observer",
+    "environment": {}
+  },
+  "counter_run": {
+    "pid": 396,
+    "started_utc": "2026-11-03T15:31:32.594111+00:00",
+    "command": [
+      "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "/root/stage-a-regression-20261103/model/netlist.md",
+      "--t-end",
+      ".5",
+      "--output-format",
+      "trajectory",
+      "--out",
+      "/root/stage-c-cpu-profile-20261103/full-500ms/run"
+    ],
+    "perf_command": [
+      "/usr/lib/linux-tools/6.8.0-147-generic/perf",
+      "record",
+      "-e",
+      "cpu-clock",
+      "-F",
+      "499",
+      "--call-graph",
+      "dwarf,32768",
+      "-m",
+      "4096",
+      "-o",
+      "/root/stage-c-cpu-profile-20261103/full-500ms/perf.data",
+      "-p",
+      "396"
+    ],
+    "duration": ".5",
+    "completion_wall_seconds": 116.65816926699999,
+    "exit_wall_seconds": 116.733582902,
+    "returncode": 0,
+    "cpu_user_seconds": 75.284869,
+    "cpu_system_seconds": 42.693509,
+    "cpu_total_seconds": 117.97837799999999,
+    "peak_rss_kib": 1162512,
+    "peak_threads_observed": null,
+    "thread_poll_interval_seconds": 0.1,
+    "binary_sha256": "85e2d4a3b4080392f7dc55b4352b009cd616beb509f8e9290c1507513e9207eb",
+    "model_sha256": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a",
+    "allocation_observer_sha256": "424c5b3fbc96a7905e9c45803437713431065422aebbe29f4e57e46901f7ecd2",
+    "counter_enabled": true,
+    "cpu_scope": "target process through exit; gate setup excluded from wall; RSS includes observer",
+    "environment": {
+      "LD_PRELOAD": "/root/stage-c-cpu-profile-20261103/tools/alloc_observer.so",
+      "PULSE_ALLOC_REPORT": "/root/stage-c-cpu-profile-20261103/full-500ms/allocations.json"
+    }
+  },
+  "counts": {
+    "group": "pulse_sc_397",
+    "pid": 396,
+    "possible_cpus": 12,
+    "probes": [
+      {
+        "index": 0,
+        "label": "observe",
+        "entries": 472296,
+        "returns": 472296,
+        "wall_ns": 14647669099,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 1,
+        "label": "bind_observations",
+        "entries": 377391,
+        "returns": 377391,
+        "wall_ns": 28403249323,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 2,
+        "label": "flow_ctor",
+        "entries": 478908,
+        "returns": 478908,
+        "wall_ns": 3402878183,
+        "context_entries": 357471,
+        "context_wall_ns": 1889808679,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 3,
+        "label": "flow_compatible",
+        "entries": 515849,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 4,
+        "label": "flow_continued",
+        "entries": 234237,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 5,
+        "label": "flow_state",
+        "entries": 322190,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 6,
+        "label": "flow_value",
+        "entries": 2046122,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 7,
+        "label": "flow_bounds",
+        "entries": 662711,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 8,
+        "label": "closure",
+        "entries": 159037,
+        "returns": 159037,
+        "wall_ns": 56934446617,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 9,
+        "label": "roots",
+        "entries": 159036,
+        "returns": 159036,
+        "wall_ns": 7963535026,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 10,
+        "label": "fingerprint",
+        "entries": 159036,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 11,
+        "label": "agenda_check",
+        "entries": 282131,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 12,
+        "label": "changed_edges",
+        "entries": 159036,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 13,
+        "label": "mode_compile",
+        "entries": 377417,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 14,
+        "label": "portfolio_compile",
+        "entries": 377413,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 15,
+        "label": "portfolio_mode",
+        "entries": 159037,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 16,
+        "label": "original_check",
+        "entries": 477111,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 17,
+        "label": "cow_binding_edit",
+        "entries": 5603403,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 3019128,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 18,
+        "label": "mode_copy",
+        "entries": 969125,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 377391,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 19,
+        "label": "time_from",
+        "entries": 369239,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 20,
+        "label": "time_times",
+        "entries": 30000,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 21,
+        "label": "time_canonical",
+        "entries": 535608,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 22,
+        "label": "decimal_binary",
+        "entries": 285107,
+        "returns": 285107,
+        "wall_ns": 1037688455,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 23,
+        "label": "decimal_parse",
+        "entries": 766308,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 24,
+        "label": "decimal_add",
+        "entries": 156070,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 25,
+        "label": "decimal_times",
+        "entries": 156070,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 26,
+        "label": "decimal_compare",
+        "entries": 227084,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 27,
+        "label": "decimal_canonical",
+        "entries": 441177,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 28,
+        "label": "software_call",
+        "entries": 156061,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 29,
+        "label": "software_execute",
+        "entries": 159036,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 30,
+        "label": "archive_equation",
+        "entries": 514713,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 31,
+        "label": "archive_compare",
+        "entries": 514693,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 32,
+        "label": "archive_append",
+        "entries": 159037,
+        "returns": 159037,
+        "wall_ns": 9947858792,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 33,
+        "label": "archive_write",
+        "entries": 1,
+        "returns": 1,
+        "wall_ns": 1902338202,
+        "context_entries": 0,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      },
+      {
+        "index": 34,
+        "label": "cow_binding_detach",
+        "entries": 734886,
+        "returns": 0,
+        "wall_ns": 0,
+        "context_entries": 377391,
+        "context_wall_ns": 0,
+        "collisions": 0,
+        "unmatched_returns": 0,
+        "map_errors": 0
+      }
+    ],
+    "observer_binding_identities": [
+      {
+        "pointer": "0x626903006750",
+        "bindings": 225
+      },
+      {
+        "pointer": "0x626902fdab10",
+        "bindings": 237
+      },
+      {
+        "pointer": "0x626902eca890",
+        "bindings": 14956
+      },
+      {
+        "pointer": "0x626901a5f580",
+        "bindings": 60347
+      },
+      {
+        "pointer": "0x626900c0cc20",
+        "bindings": 1189
+      },
+      {
+        "pointer": "0x626900a913f0",
+        "bindings": 1
+      },
+      {
+        "pointer": "0x626900c0f6e0",
+        "bindings": 58425
+      },
+      {
+        "pointer": "0x62690253f9f0",
+        "bindings": 24
+      },
+      {
+        "pointer": "0x626903042840",
+        "bindings": 5
+      },
+      {
+        "pointer": "0x626902e27390",
+        "bindings": 1980
+      },
+      {
+        "pointer": "0x626900b3c2c0",
+        "bindings": 984
+      },
+      {
+        "pointer": "0x626900b5f910",
+        "bindings": 1997
+      },
+      {
+        "pointer": "0x626900d067a0",
+        "bindings": 29279
+      },
+      {
+        "pointer": "0x626900b3c3f0",
+        "bindings": 59819
+      },
+      {
+        "pointer": "0x626902ec70f0",
+        "bindings": 66895
+      },
+      {
+        "pointer": "0x626900af0030",
+        "bindings": 100
+      },
+      {
+        "pointer": "0x626902e352b0",
+        "bindings": 2853
+      },
+      {
+        "pointer": "0x626900b54af0",
+        "bindings": 14909
+      },
+      {
+        "pointer": "0x626902e7fc80",
+        "bindings": 31787
+      },
+      {
+        "pointer": "0x626902f91f30",
+        "bindings": 201
+      },
+      {
+        "pointer": "0x626902f18de0",
+        "bindings": 14575
+      },
+      {
+        "pointer": "0x626900a75e30",
+        "bindings": 1
+      },
+      {
+        "pointer": "0x626900bd40f0",
+        "bindings": 1189
+      },
+      {
+        "pointer": "0x626900c9e060",
+        "bindings": 1189
+      },
+      {
+        "pointer": "0x6269042dac20",
+        "bindings": 14175
+      },
+      {
+        "pointer": "0x626900e02360",
+        "bindings": 49
+      }
+    ]
+  },
+  "probe_manifest": [
+    {
+      "address": 1068000,
+      "size": 3680,
+      "symbol": "_ZNK5pulse11engineering4Flow7observeERKN5Eigen6MatrixIdLin1ELi1ELi0ELin1ELi1EEEdi",
+      "function": "pulse::engineering::Flow::observe(Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, double, int) const",
+      "label": "observe",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 1068000
+    },
+    {
+      "address": 2205456,
+      "size": 9283,
+      "symbol": "_ZN5pulse12_GLOBAL__N_117bind_observationsERKNS_5ModelERKNS_4ModeERKSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEdSt4lessISD_ESaISt4pairIKSD_dEEERKS7_IibSE_IiESaISG_IKibEEERKS7_IiiSN_SaISG_ISO_iEEE",
+      "function": "pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&)",
+      "label": "bind_observations",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 2205456
+    },
+    {
+      "address": 1027184,
+      "size": 15877,
+      "symbol": "_ZN5pulse11engineering4FlowC2ERKNS_4ModeERKN5Eigen6MatrixIdLin1ELi1ELi0ELin1ELi1EEE",
+      "function": "pulse::engineering::Flow::Flow(pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&)",
+      "label": "flow_ctor",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": "observe",
+      "offset": 1027184
+    },
+    {
+      "address": 982144,
+      "size": 2997,
+      "symbol": "_ZNK5pulse11engineering4Flow10compatibleERKNS_4ModeE",
+      "function": "pulse::engineering::Flow::compatible(pulse::Mode const&) const",
+      "label": "flow_compatible",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 982144
+    },
+    {
+      "address": 1043120,
+      "size": 1126,
+      "symbol": "_ZNK5pulse11engineering4Flow21continued_after_checkERKNS_4ModeEd",
+      "function": "pulse::engineering::Flow::continued_after_check(pulse::Mode const&, double) const",
+      "label": "flow_continued",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1043120
+    },
+    {
+      "address": 1053008,
+      "size": 11291,
+      "symbol": "_ZNK5pulse11engineering4Flow5stateEd",
+      "function": "pulse::engineering::Flow::state(double) const",
+      "label": "flow_state",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1053008
+    },
+    {
+      "address": 1064304,
+      "size": 3695,
+      "symbol": "_ZNK5pulse11engineering4Flow5valueEmdi",
+      "function": "pulse::engineering::Flow::value(unsigned long, double, int) const",
+      "label": "flow_value",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1064304
+    },
+    {
+      "address": 1071680,
+      "size": 13415,
+      "symbol": "_ZNK5pulse11engineering4Flow6boundsEmddi",
+      "function": "pulse::engineering::Flow::bounds(unsigned long, double, double, int) const",
+      "label": "flow_bounds",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1071680
+    },
+    {
+      "address": 737744,
+      "size": 14962,
+      "symbol": "_ZN5pulse12_GLOBAL__N_17closureERKNS_5ModelERKNS_11EventKernelERNS_8RunStateESt3setINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4lessISF_ESaISF_EERKSt6vectorINS_4Mode5GuardESaISM_EERKS9_IiSG_IiESaIiEERNS_6ResultERKNS_7OptionsERSK_IN8nlohmann16json_abi_v3_11_310basic_jsonISt3mapSK_SF_blmdSaNS12_14adl_serializerESK_IhSaIhEEvEESaIS18_EEmRS18_PNS_8software7SessionEi",
+      "function": "pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int)",
+      "label": "closure",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 737744
+    },
+    {
+      "address": 1090080,
+      "size": 2921,
+      "symbol": "_ZN5pulse11engineering11next_eventsERKNS_4ModeERKNS0_4FlowEddm",
+      "function": "pulse::engineering::next_events(pulse::Mode const&, pulse::engineering::Flow const&, double, double, unsigned long)",
+      "label": "roots",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 1090080
+    },
+    {
+      "address": 874816,
+      "size": 10776,
+      "symbol": "_ZN5pulse17event_fingerprintERKNS_8RunStateERKSt3setINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4lessIS9_ESaIS9_EE",
+      "function": "pulse::event_fingerprint(pulse::RunState const&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&)",
+      "label": "fingerprint",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 874816
+    },
+    {
+      "address": 707376,
+      "size": 1485,
+      "symbol": "_ZN5pulse12_GLOBAL__N_120check_agenda_originsERKNS_5ModelERKNS_8RunStateE",
+      "function": "pulse::(anonymous namespace)::check_agenda_origins(pulse::Model const&, pulse::RunState const&)",
+      "label": "agenda_check",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 707376
+    },
+    {
+      "address": 873488,
+      "size": 1323,
+      "symbol": "_ZNK5pulse11EventKernel13changed_edgesB5cxx11ERKNS_4ModeES3_",
+      "function": "pulse::EventKernel::changed_edges[abi:cxx11](pulse::Mode const&, pulse::Mode const&) const",
+      "label": "changed_edges",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 873488
+    },
+    {
+      "address": 2310048,
+      "size": 11181,
+      "symbol": "_ZN5pulse17compile_specifiedERKNS_5ModelERKN5Eigen6MatrixIdLin1ELi1ELi0ELin1ELi1EEERKSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEdSt4lessISE_ESaISt4pairIKSE_dEEERNS_5StatsERKS8_IibSF_IiESaISH_IKibEEERKS8_IiiSQ_SaISH_ISR_iEEENS_14CompilePurposeE",
+      "function": "pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose)",
+      "label": "mode_compile",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 2310048
+    },
+    {
+      "address": 1709136,
+      "size": 5817,
+      "symbol": "_ZN5pulse17portfolio_compileERKNS_5ModelERKN5Eigen6MatrixIdLin1ELi1ELi0ELin1ELi1EEERKSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEdSt4lessISE_ESaISt4pairIKSE_dEEERNS_5StatsERKS8_IibSF_IiESaISH_IKibEEERKS8_IiiSQ_SaISH_ISR_iEEEiNS_14CompilePurposeE",
+      "function": "pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose)",
+      "label": "portfolio_compile",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1709136
+    },
+    {
+      "address": 1714960,
+      "size": 1661,
+      "symbol": "_ZN5pulse14portfolio_modeERKNS_5ModelERKNS_8RunStateEiRNS_5StatsE",
+      "function": "pulse::portfolio_mode(pulse::Model const&, pulse::RunState const&, int, pulse::Stats&)",
+      "label": "portfolio_mode",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1714960
+    },
+    {
+      "address": 2233168,
+      "size": 14645,
+      "symbol": "_ZN5pulse24portfolio_original_checkERKNS_5ModelERKNS_8RunStateERKNS_4ModeERKN5Eigen6MatrixIdLin1ELi1ELi0ELin1ELi1EEE",
+      "function": "pulse::portfolio_original_check(pulse::Model const&, pulse::RunState const&, pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&)",
+      "label": "original_check",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 2233168
+    },
+    {
+      "address": 1135952,
+      "size": 1540,
+      "symbol": "_ZN5pulse8CowValueINS_11ModeBindingEE4editEv",
+      "function": "pulse::CowValue<pulse::ModeBinding>::edit()",
+      "label": "cow_binding_edit",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": "bind_observations",
+      "offset": 1135952
+    },
+    {
+      "address": 1133616,
+      "size": 1392,
+      "symbol": "_ZN5pulse4ModeC2ERKS0_",
+      "function": "pulse::Mode::Mode(pulse::Mode const&)",
+      "label": "mode_copy",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": "bind_observations",
+      "offset": 1133616
+    },
+    {
+      "address": 363392,
+      "size": 1482,
+      "symbol": "_ZN5pulse4Time4fromEd",
+      "function": "pulse::Time::from(double)",
+      "label": "time_from",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 363392
+    },
+    {
+      "address": 365536,
+      "size": 264,
+      "symbol": "_ZNK5pulse4Time5timesEm",
+      "function": "pulse::Time::times(unsigned long) const",
+      "label": "time_times",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 365536
+    },
+    {
+      "address": 366752,
+      "size": 1505,
+      "symbol": "_ZNK5pulse4Time9canonicalB5cxx11Ev",
+      "function": "pulse::Time::canonical[abi:cxx11]() const",
+      "label": "time_canonical",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 366752
+    },
+    {
+      "address": 1350976,
+      "size": 5084,
+      "symbol": "_ZN5pulse31decimal_origin_from_binary_timeElmm",
+      "function": "pulse::decimal_origin_from_binary_time(long, unsigned long, unsigned long)",
+      "label": "decimal_binary",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 1350976
+    },
+    {
+      "address": 1348704,
+      "size": 2261,
+      "symbol": "_ZN5pulse20parse_decimal_originESt17basic_string_viewIcSt11char_traitsIcEE",
+      "function": "pulse::parse_decimal_origin(std::basic_string_view<char, std::char_traits<char> >)",
+      "label": "decimal_parse",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1348704
+    },
+    {
+      "address": 1356064,
+      "size": 3312,
+      "symbol": "_ZN5pulse19add_decimal_originsERKNS_13DecimalOriginES2_",
+      "function": "pulse::add_decimal_origins(pulse::DecimalOrigin const&, pulse::DecimalOrigin const&)",
+      "label": "decimal_add",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1356064
+    },
+    {
+      "address": 1359376,
+      "size": 4984,
+      "symbol": "_ZN5pulse20times_decimal_originERKNS_13DecimalOriginEm",
+      "function": "pulse::times_decimal_origin(pulse::DecimalOrigin const&, unsigned long)",
+      "label": "decimal_times",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1359376
+    },
+    {
+      "address": 1348032,
+      "size": 661,
+      "symbol": "_ZN5pulse23compare_decimal_originsERKNS_13DecimalOriginES2_",
+      "function": "pulse::compare_decimal_origins(pulse::DecimalOrigin const&, pulse::DecimalOrigin const&)",
+      "label": "decimal_compare",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1348032
+    },
+    {
+      "address": 1364368,
+      "size": 3955,
+      "symbol": "_ZN5pulse24canonical_decimal_originB5cxx11ERKNS_13DecimalOriginE",
+      "function": "pulse::canonical_decimal_origin[abi:cxx11](pulse::DecimalOrigin const&)",
+      "label": "decimal_canonical",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1364368
+    },
+    {
+      "address": 1545712,
+      "size": 12129,
+      "symbol": "_ZN5pulse8software4Data4callERKNS1_4TaskERKNS_8RunStateERS5_RSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEdSt4lessISF_ESaISt4pairIKSF_dEEEbRSt6vectorINS0_6WakeupESaISP_EEPSO_IN8nlohmann16json_abi_v3_11_310basic_jsonIS9_SO_SF_blmdSaNSU_14adl_serializerESO_IhSaIhEEvEESaISZ_EEmmj",
+      "function": "pulse::software::Data::call(pulse::software::Data::Task const&, pulse::RunState const&, pulse::RunState&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > >&, bool, std::vector<pulse::software::Wakeup, std::allocator<pulse::software::Wakeup> >&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >*, unsigned long, unsigned long, unsigned int)",
+      "label": "software_call",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1545712
+    },
+    {
+      "address": 1514912,
+      "size": 1016,
+      "symbol": "_ZN5pulse8software7Session7executeERKNS_8RunStateERS2_RKSt3setINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4lessISC_ESaISC_EERNS_8CowValueISt3mapISC_dSE_SaISt4pairIKSC_dEEEEERSt6vectorIN8nlohmann16json_abi_v3_11_310basic_jsonISK_SS_SC_blmdSaNSU_14adl_serializerESS_IhSaIhEEvEESaISZ_EEmm",
+      "function": "pulse::software::Session::execute(pulse::RunState const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, pulse::CowValue<std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, unsigned long)",
+      "label": "software_execute",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1514912
+    },
+    {
+      "address": 2046672,
+      "size": 16212,
+      "symbol": "_ZN5pulse11PevtArchive4Data8equationERKNS_4ModeE",
+      "function": "pulse::PevtArchive::Data::equation(pulse::Mode const&)",
+      "label": "archive_equation",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 2046672
+    },
+    {
+      "address": 1979264,
+      "size": 1277,
+      "symbol": "_ZNK5pulse11PevtArchive4Data23same_archive_definitionERKNS_4ModeES4_",
+      "function": "pulse::PevtArchive::Data::same_archive_definition(pulse::Mode const&, pulse::Mode const&) const",
+      "label": "archive_compare",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": false,
+      "parent": null,
+      "offset": 1979264
+    },
+    {
+      "address": 2097600,
+      "size": 7877,
+      "symbol": "_ZN5pulse11PevtArchive4Data6appendERKNS_8RunStateES4_RKSt6vectorIN8nlohmann16json_abi_v3_11_310basic_jsonISt3mapS5_NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEblmdSaNS7_14adl_serializerES5_IhSaIhEEvEESaISJ_EEm",
+      "function": "pulse::PevtArchive::Data::append(pulse::RunState const&, pulse::RunState const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > > const&, unsigned long)",
+      "label": "archive_append",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 2097600
+    },
+    {
+      "address": 1901376,
+      "size": 21493,
+      "symbol": "_ZNK5pulse11PevtArchive5writeERKNSt10filesystem7__cxx114pathERKNS_6ResultE",
+      "function": "pulse::PevtArchive::write(std::filesystem::__cxx11::path const&, pulse::Result const&) const",
+      "label": "archive_write",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "timing": true,
+      "parent": null,
+      "offset": 1901376
+    },
+    {
+      "label": "cow_binding_detach",
+      "function": "CowValue<ModeBinding>::edit() actual detach branch",
+      "address": 1136016,
+      "size": 0,
+      "symbol": "instruction+0x40",
+      "path": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+      "offset": 1136016,
+      "timing": false,
+      "parent": "bind_observations"
+    }
+  ],
+  "allocation": {
+    "scope": "libc public allocation API requests after observer initialization; startup and cleanup included; requested bytes are cumulative and include realloc replacement sizes",
+    "slot_overflow": 0,
+    "observer_static_bytes": 1302528,
+    "threads": [
+      {
+        "tid": 396,
+        "free_calls": 601714115,
+        "free_null": 42096873,
+        "size_overflows": 0,
+        "apis": [
+          {
+            "name": "malloc",
+            "calls": 497793125,
+            "requested_bytes": 65433575374,
+            "failures": 0
+          },
+          {
+            "name": "calloc",
+            "calls": 61824119,
+            "requested_bytes": 3448226839,
+            "failures": 0
+          },
+          {
+            "name": "realloc",
+            "calls": 41,
+            "requested_bytes": 25480,
+            "failures": 0
+          },
+          {
+            "name": "memalign",
+            "calls": 0,
+            "requested_bytes": 0,
+            "failures": 0
+          },
+          {
+            "name": "aligned_alloc",
+            "calls": 0,
+            "requested_bytes": 0,
+            "failures": 0
+          },
+          {
+            "name": "posix_memalign",
+            "calls": 0,
+            "requested_bytes": 0,
+            "failures": 0
+          },
+          {
+            "name": "valloc",
+            "calls": 0,
+            "requested_bytes": 0,
+            "failures": 0
+          },
+          {
+            "name": "pvalloc",
+            "calls": 0,
+            "requested_bytes": 0,
+            "failures": 0
+          },
+          {
+            "name": "reallocarray",
+            "calls": 0,
+            "requested_bytes": 0,
+            "failures": 0
+          }
+        ],
+        "size_bins": [
+          {
+            "bin": 0,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 1,
+            "calls": 1306623,
+            "requested_bytes": 1306623
+          },
+          {
+            "bin": 2,
+            "calls": 1306634,
+            "requested_bytes": 2613276
+          },
+          {
+            "bin": 3,
+            "calls": 1512009,
+            "requested_bytes": 6048316
+          },
+          {
+            "bin": 4,
+            "calls": 4625122,
+            "requested_bytes": 44703677
+          },
+          {
+            "bin": 5,
+            "calls": 76364901,
+            "requested_bytes": 1804795740
+          },
+          {
+            "bin": 6,
+            "calls": 236802225,
+            "requested_bytes": 9409570624
+          },
+          {
+            "bin": 7,
+            "calls": 207571668,
+            "requested_bytes": 16009125787
+          },
+          {
+            "bin": 8,
+            "calls": 12232610,
+            "requested_bytes": 2361575809
+          },
+          {
+            "bin": 9,
+            "calls": 3649121,
+            "requested_bytes": 1320970982
+          },
+          {
+            "bin": 10,
+            "calls": 8573714,
+            "requested_bytes": 5058801417
+          },
+          {
+            "bin": 11,
+            "calls": 414197,
+            "requested_bytes": 606031496
+          },
+          {
+            "bin": 12,
+            "calls": 4880428,
+            "requested_bytes": 14635506654
+          },
+          {
+            "bin": 13,
+            "calls": 228,
+            "requested_bytes": 1299729
+          },
+          {
+            "bin": 14,
+            "calls": 31,
+            "requested_bytes": 300818
+          },
+          {
+            "bin": 15,
+            "calls": 24,
+            "requested_bytes": 521010
+          },
+          {
+            "bin": 16,
+            "calls": 377633,
+            "requested_bytes": 16993473324
+          },
+          {
+            "bin": 17,
+            "calls": 29,
+            "requested_bytes": 2520331
+          },
+          {
+            "bin": 18,
+            "calls": 13,
+            "requested_bytes": 2118684
+          },
+          {
+            "bin": 19,
+            "calls": 12,
+            "requested_bytes": 3971310
+          },
+          {
+            "bin": 20,
+            "calls": 12,
+            "requested_bytes": 7941614
+          },
+          {
+            "bin": 21,
+            "calls": 12,
+            "requested_bytes": 15879172
+          },
+          {
+            "bin": 22,
+            "calls": 11,
+            "requested_bytes": 29657992
+          },
+          {
+            "bin": 23,
+            "calls": 9,
+            "requested_bytes": 48826462
+          },
+          {
+            "bin": 24,
+            "calls": 8,
+            "requested_bytes": 80876182
+          },
+          {
+            "bin": 25,
+            "calls": 6,
+            "requested_bytes": 125933100
+          },
+          {
+            "bin": 26,
+            "calls": 4,
+            "requested_bytes": 180556736
+          },
+          {
+            "bin": 27,
+            "calls": 1,
+            "requested_bytes": 126900828
+          },
+          {
+            "bin": 28,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 29,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 30,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 31,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 32,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 33,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 34,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 35,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 36,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 37,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 38,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 39,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 40,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 41,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 42,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 43,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 44,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 45,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 46,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 47,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 48,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 49,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 50,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 51,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 52,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 53,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 54,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 55,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 56,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 57,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 58,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 59,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 60,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 61,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 62,
+            "calls": 0,
+            "requested_bytes": 0
+          },
+          {
+            "bin": 63,
+            "calls": 0,
+            "requested_bytes": 0
+          }
+        ]
+      }
+    ]
+  },
+  "analysis": {
+    "sample_count": 61912,
+    "period_weight_total_ns": 61973973912,
+    "cpu_seconds_os": 63.049699999999994,
+    "modules": [
+      {
+        "module": "memory_allocator",
+        "exclusive_cpu_percent": 23.444566481457553,
+        "exclusive_cpu_seconds_estimate": 14.78172883285954,
+        "samples": 14515,
+        "ci95_percent_ideal": "[23.112509916094552, 23.77991821658401]"
+      },
+      {
+        "module": "mode_binding",
+        "exclusive_cpu_percent": 17.85760434164621,
+        "exclusive_cpu_seconds_estimate": 11.259165964594908,
+        "samples": 11056,
+        "ci95_percent_ideal": "[17.55791477310852, 18.161282346306564]"
+      },
+      {
+        "module": "pevt_archive",
+        "exclusive_cpu_percent": 10.408321488564415,
+        "exclusive_cpu_seconds_estimate": 6.562415473575397,
+        "samples": 6444,
+        "ci95_percent_ideal": "[10.170234158894562, 10.651321609502553]"
+      },
+      {
+        "module": "flow_evaluation",
+        "exclusive_cpu_percent": 7.845005814704742,
+        "exclusive_cpu_seconds_estimate": 4.946252631153895,
+        "samples": 4857,
+        "ci95_percent_ideal": "[7.63581615927509, 8.05942633417287]"
+      },
+      {
+        "module": "original_equation_checks",
+        "exclusive_cpu_percent": 6.845199638196149,
+        "exclusive_cpu_seconds_estimate": 4.315877836283757,
+        "samples": 4238,
+        "ci95_percent_ideal": "[6.648955372999807, 7.046798829841011]"
+      },
+      {
+        "module": "flow_compatibility",
+        "exclusive_cpu_percent": 6.785437395012275,
+        "exclusive_cpu_seconds_estimate": 4.278197921243055,
+        "samples": 4201,
+        "ci95_percent_ideal": "[6.590003372564956, 6.986233759593369]"
+      },
+      {
+        "module": "mode_entry_and_compile_residual",
+        "exclusive_cpu_percent": 5.259077400180902,
+        "exclusive_cpu_seconds_estimate": 3.315832523581858,
+        "samples": 3256,
+        "ci95_percent_ideal": "[5.086010343300734, 5.43769619980469]"
+      },
+      {
+        "module": "closure_residual",
+        "exclusive_cpu_percent": 4.89565835379248,
+        "exclusive_cpu_seconds_estimate": 3.0866979050910963,
+        "samples": 3031,
+        "ci95_percent_ideal": "[4.728471309391162, 5.068442236320715]"
+      },
+      {
+        "module": "runtime_initialization_other",
+        "exclusive_cpu_percent": 2.715144075461946,
+        "exclusive_cpu_seconds_estimate": 1.7118901941465305,
+        "samples": 1681,
+        "ci95_percent_ideal": "[2.590027577881161, 2.8461279834694273]"
+      },
+      {
+        "module": "kernel_or_unknown",
+        "exclusive_cpu_percent": 2.3662617909290606,
+        "exclusive_cpu_seconds_estimate": 1.4919209603953998,
+        "samples": 1465,
+        "ci95_percent_ideal": "[2.249457405268642, 2.4889768785841393]"
+      },
+      {
+        "module": "cow_binding_copy",
+        "exclusive_cpu_percent": 2.317805918077271,
+        "exclusive_cpu_seconds_estimate": 1.461369677929965,
+        "samples": 1435,
+        "ci95_percent_ideal": "[2.202206869916156, 2.4393216809508194]"
+      },
+      {
+        "module": "state_mode_copy",
+        "exclusive_cpu_percent": 2.127212818193565,
+        "exclusive_cpu_seconds_estimate": 1.341201300232588,
+        "samples": 1317,
+        "ci95_percent_ideal": "[2.016490477745426, 2.243875523377377]"
+      },
+      {
+        "module": "t128_and_origins",
+        "exclusive_cpu_percent": 1.8445535598914589,
+        "exclusive_cpu_seconds_estimate": 1.162985485850885,
+        "samples": 1142,
+        "ci95_percent_ideal": "[1.741512801496751, 1.953569757208848]"
+      },
+      {
+        "module": "flow_construction",
+        "exclusive_cpu_percent": 1.6846491794805531,
+        "exclusive_cpu_seconds_estimate": 1.06216625371495,
+        "samples": 1043,
+        "ci95_percent_ideal": "[1.5862317706008544, 1.789061869251584]"
+      },
+      {
+        "module": "software_control",
+        "exclusive_cpu_percent": 1.5279751905930998,
+        "exclusive_cpu_seconds_estimate": 0.9633837737433776,
+        "samples": 946,
+        "ci95_percent_ideal": "[1.4343169265252653, 1.6276481766730653]"
+      },
+      {
+        "module": "event_scheduling",
+        "exclusive_cpu_percent": 0.96588706551234,
+        "exclusive_cpu_seconds_estimate": 0.6089888971443338,
+        "samples": 598,
+        "ci95_percent_ideal": "[0.8918316472931431, 1.0460269532698336]"
+      },
+      {
+        "module": "disk_io_kernel",
+        "exclusive_cpu_percent": 0.8334410130507818,
+        "exclusive_cpu_seconds_estimate": 0.5254820584054787,
+        "samples": 516,
+        "ci95_percent_ideal": "[0.7648175799224838, 0.9081653504792885]"
+      },
+      {
+        "module": "root_search_own",
+        "exclusive_cpu_percent": 0.16636516345781108,
+        "exclusive_cpu_seconds_estimate": 0.1048927364646595,
+        "samples": 103,
+        "ci95_percent_ideal": "[0.13720757684279253, 0.20170642945437836]"
+      },
+      {
+        "module": "flow_continuation",
+        "exclusive_cpu_percent": 0.10983331179738984,
+        "exclusive_cpu_seconds_estimate": 0.0692495735883189,
+        "samples": 68,
+        "ci95_percent_ideal": "[0.08665559148563627, 0.1392017263280938]"
+      }
+    ],
+    "bind_breakdown": [
+      {
+        "component": "matrix_math_and_matrix_buffers",
+        "cpu_seconds_estimate": 7.60115907740018,
+        "percent_of_process": 12.055821165525261,
+        "percent_within_bind": 42.822719449225474,
+        "samples": 7464
+      },
+      {
+        "component": "strings_and_map_lifecycle",
+        "cpu_seconds_estimate": 6.699896244669853,
+        "percent_of_process": 10.626372916397468,
+        "percent_within_bind": 37.74526678141136,
+        "samples": 6579
+      },
+      {
+        "component": "COW_binding_clone_including_children",
+        "cpu_seconds_estimate": 1.9878701124176248,
+        "percent_of_process": 3.152862126889779,
+        "percent_within_bind": 11.199082042455537,
+        "samples": 1952
+      },
+      {
+        "component": "mode_id_string_formatting",
+        "cpu_seconds_estimate": 1.2729701027264504,
+        "percent_of_process": 2.0189947021579013,
+        "percent_within_bind": 7.171543316121629,
+        "samples": 1250
+      },
+      {
+        "component": "initial_Mode_copy",
+        "cpu_seconds_estimate": 0.18839957520351464,
+        "percent_of_process": 0.29881121591936943,
+        "percent_within_bind": 1.0613884107860012,
+        "samples": 185
+      }
+    ],
+    "groups": [
+      {
+        "group": "closure",
+        "inclusive_cpu_seconds_estimate": 25.97164522386613,
+        "inclusive_cpu_percent": 41.19233751130637,
+        "samples": 25503
+      },
+      {
+        "group": "bind_observations",
+        "inclusive_cpu_seconds_estimate": 17.750295112417625,
+        "inclusive_cpu_percent": 28.15286212688978,
+        "samples": 17430
+      },
+      {
+        "group": "software",
+        "inclusive_cpu_seconds_estimate": 8.967819779687296,
+        "inclusive_cpu_percent": 14.223413877761985,
+        "samples": 8806
+      },
+      {
+        "group": "archive",
+        "inclusive_cpu_seconds_estimate": 8.305875326269543,
+        "inclusive_cpu_percent": 13.173536632639875,
+        "samples": 8156
+      },
+      {
+        "group": "observe",
+        "inclusive_cpu_seconds_estimate": 5.950371448184519,
+        "inclusive_cpu_percent": 9.437588835766896,
+        "samples": 5843
+      },
+      {
+        "group": "flow_compatible",
+        "inclusive_cpu_seconds_estimate": 4.724246645238402,
+        "inclusive_cpu_percent": 7.492893138648404,
+        "samples": 4639
+      },
+      {
+        "group": "roots",
+        "inclusive_cpu_seconds_estimate": 2.8117363629021837,
+        "inclusive_cpu_percent": 4.459555498126373,
+        "samples": 2761
+      },
+      {
+        "group": "flow_ctor",
+        "inclusive_cpu_seconds_estimate": 1.7006880572425376,
+        "inclusive_cpu_percent": 2.6973769220829564,
+        "samples": 1670
+      },
+      {
+        "group": "observe_temporary_flow",
+        "inclusive_cpu_seconds_estimate": 0.7617453094715079,
+        "inclusive_cpu_percent": 1.2081664297712882,
+        "samples": 748
+      },
+      {
+        "group": "t128",
+        "inclusive_cpu_seconds_estimate": 0.7138816336089934,
+        "inclusive_cpu_percent": 1.132252228970151,
+        "samples": 701
+      }
+    ],
+    "top20": [
+      {
+        "rank": 1,
+        "function": "__memcmp_avx2_movbe",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./string/../sysdeps/x86_64/multiarch/memcmp-avx2-movbe.S:167",
+        "self_cpu_percent": 12.191497609510273,
+        "total_cpu_percent": 12.204419175604084,
+        "self_cpu_seconds_estimate": 7.686702668303397,
+        "total_cpu_seconds_estimate": 7.694849676960847,
+        "self_samples": 7548,
+        "total_samples": 7556,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[11.936115133145234, 12.451571609129557]",
+        "representative_stack_leaf_to_root": "__memcmp_avx2_movbe <- std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, bool>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, bool> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, bool> > >::find(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const [clone .isra.0] <- pulse::engineering::Flow::compatible(pulse::Mode const&) const <- pulse::engineering::Flow::continue_if_compatible(pulse::Mode const&, double) const <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 2,
+        "function": "_int_malloc",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./malloc/./malloc/malloc.c:4373",
+        "self_cpu_percent": 6.149050264892105,
+        "total_cpu_percent": 11.167463496575785,
+        "self_cpu_seconds_estimate": 3.876957744863677,
+        "total_cpu_seconds_estimate": 7.041052232200542,
+        "self_samples": 3807,
+        "total_samples": 6914,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[5.962529827573099, 6.341012011371637]",
+        "representative_stack_leaf_to_root": "_int_malloc <- malloc <- operator new(unsigned long) <- std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_M_copy<false, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_Alloc_node>(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >*, std::_Rb_tree_node_base*, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_Alloc_node&) [clone .isra.0] <- std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_M_copy<false, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_Alloc_node>(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >*, std::_Rb_tree_node_base*, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_Alloc_node&) [clone .isra.0] <- std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_M_copy<false, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_Alloc_node>(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >*, std::_Rb_tree_node_base*, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, Eigen::Matrix<double, -1, 1, 0, -1, 1> > > >::_Alloc_node&) [clone .isra.0] <- pulse::CowValue<pulse::ModeBinding>::edit() <- pulse::engineering::Flow::observe(Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, double, int) const <- pulse::state_signals_prepared(pulse::RunState const&, std::vector<pulse::PreparedSignal, std::allocator<pulse::PreparedSignal> > const&) <- pulse::software::Data::call(pulse::software::Data::Task const&, pulse::RunState const&, pulse::RunState&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > >&, bool, std::vector<pulse::software::Wakeup, std::allocator<pulse::software::Wakeup> >&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >*, unsigned long, unsigned long, unsigned int) <- pulse::software::Session::execute(pulse::RunState const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, pulse::CowValue<std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, unsigned long) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 3,
+        "function": "Eigen::internal::gebp_kernel<double, double, long, Eigen::internal::blas_data_mapper<double, long, 0, 0, 1>, 4, 4, false, false>::operator()(Eigen::internal::blas_data_mapper<double, long, 0, 0, 1> const&, double const*, double const*, long, long, long, double, long, long, long, long) [clone .constprop.1]",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/usr/lib/gcc/x86_64-linux-gnu/13/include/emmintrin.h:176",
+        "self_cpu_percent": 4.349722186328983,
+        "total_cpu_percent": 4.656609381056984,
+        "self_cpu_seconds_estimate": 2.7424867893138645,
+        "total_cpu_seconds_estimate": 2.9359782449282847,
+        "self_samples": 2693,
+        "total_samples": 2883,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[4.191864588123763, 4.513244365948029]",
+        "representative_stack_leaf_to_root": "Eigen::internal::gebp_kernel<double, double, long, Eigen::internal::blas_data_mapper<double, long, 0, 0, 1>, 4, 4, false, false>::operator()(Eigen::internal::blas_data_mapper<double, long, 0, 0, 1> const&, double const*, double const*, long, long, long, double, long, long, long, long) [clone .constprop.1] <- Eigen::internal::general_matrix_matrix_product<long, double, 0, false, double, 0, false, 0, 1>::run(long, long, long, double const*, long, double const*, long, double*, long, long, double, Eigen::internal::level3_blocking<double, double>&, Eigen::internal::GemmParallelInfo<long>*) [clone .isra.0] <- void Eigen::internal::generic_product_impl<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::DenseShape, Eigen::DenseShape, 8>::scaleAndAddTo<Eigen::Matrix<double, -1, -1, 0, -1, -1> >(Eigen::Matrix<double, -1, -1, 0, -1, -1>&, Eigen::Matrix<double, -1, -1, 0, -1, -1> const&, Eigen::Matrix<double, -1, -1, 0, -1, -1> const&, double const&) <- void Eigen::internal::call_assignment<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, 0>, Eigen::internal::assign_op<double, double> >(Eigen::Matrix<double, -1, -1, 0, -1, -1>&, Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, 0> const&, Eigen::internal::assign_op<double, double> const&, Eigen::internal::enable_if<Eigen::internal::evaluator_assume_aliasing<Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, 0>, Eigen::internal::evaluator_traits<Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, 0> >::Shape>::value, void*>::type) [clone .isra.0] <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 4,
+        "function": "malloc",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./malloc/./malloc/malloc.c:3186",
+        "self_cpu_percent": 4.165589869492182,
+        "total_cpu_percent": 14.675668691045354,
+        "self_cpu_seconds_estimate": 2.6263919159452125,
+        "total_cpu_seconds_estimate": 9.252965082698022,
+        "self_samples": 2579,
+        "total_samples": 9086,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[4.0110291079816935, 4.325838060744033]",
+        "representative_stack_leaf_to_root": "malloc <- Eigen::PlainObjectBase<Eigen::Matrix<double, -1, 1, 0, -1, 1> >::resize(long, long) <- Eigen::MatrixBase<Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, 0> >::norm() const <- pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose) <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 5,
+        "function": "cfree@GLIBC_2.2.5",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./malloc/./malloc/malloc.c:3375",
+        "self_cpu_percent": 3.6438816384545807,
+        "total_cpu_percent": 8.663910065899987,
+        "self_cpu_seconds_estimate": 2.2974564414006973,
+        "total_cpu_seconds_estimate": 5.462569304819743,
+        "self_samples": 2256,
+        "total_samples": 5364,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[3.4991356078554303, 3.7943798357231135]",
+        "representative_stack_leaf_to_root": "cfree@GLIBC_2.2.5 <- nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>::basic_json(std::initializer_list<nlohmann::json_abi_v3_11_3::detail::json_ref<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >, bool, nlohmann::json_abi_v3_11_3::detail::value_t) [clone .constprop.0] <- nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>::push_back(std::initializer_list<nlohmann::json_abi_v3_11_3::detail::json_ref<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 6,
+        "function": "_int_free",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./malloc/./malloc/malloc.c:4572 (discriminator 1)",
+        "self_cpu_percent": 3.5631218503682645,
+        "total_cpu_percent": 3.5631218503682645,
+        "self_cpu_seconds_estimate": 2.2465376372916395,
+        "total_cpu_seconds_estimate": 2.2465376372916395,
+        "self_samples": 2206,
+        "total_samples": 2206,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[3.41996401472033, 3.7120418738818697]",
+        "representative_stack_leaf_to_root": "_int_free <- cfree@GLIBC_2.2.5 <- nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>::json_value::destroy(nlohmann::json_abi_v3_11_3::detail::value_t) <- nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>::basic_json(std::initializer_list<nlohmann::json_abi_v3_11_3::detail::json_ref<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >, bool, nlohmann::json_abi_v3_11_3::detail::value_t) [clone .constprop.0] <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 7,
+        "function": "malloc_consolidate",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./malloc/./malloc/malloc.c:4849",
+        "self_cpu_percent": 3.388680708101822,
+        "total_cpu_percent": 4.424021191368394,
+        "self_cpu_seconds_estimate": 2.1365530204160743,
+        "total_cpu_seconds_estimate": 2.789332089094198,
+        "self_samples": 2098,
+        "total_samples": 2739,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[3.2490230516446283, 3.534122198208668]",
+        "representative_stack_leaf_to_root": "malloc_consolidate <- _int_malloc <- malloc <- Eigen::DenseStorage<double, -1, -1, -1, 0>::DenseStorage(Eigen::DenseStorage<double, -1, -1, -1, 0> const&) <- pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) <- pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose) <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 8,
+        "function": "__memmove_avx_unaligned_erms",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:275",
+        "self_cpu_percent": 3.3095361157772323,
+        "total_cpu_percent": 3.60027135288797,
+        "self_cpu_seconds_estimate": 2.086652592389197,
+        "total_cpu_seconds_estimate": 2.2699602871818065,
+        "self_samples": 2049,
+        "total_samples": 2229,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[3.1714994073018485, 3.4533664786746305]",
+        "representative_stack_leaf_to_root": "__memmove_avx_unaligned_erms <- pulse::engineering::Flow::compatible(pulse::Mode const&) const <- pulse::engineering::Flow::continued(pulse::Mode const&, double) const <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 9,
+        "function": "pulse::engineering::(anonymous namespace)::prepare_local(pulse::engineering::FlowData&)",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/root/pulse-stage-c-20261103/third_party/eigen-3.4.0/Eigen/src/Core/util/Memory.h:182",
+        "self_cpu_percent": 3.1948572166946634,
+        "total_cpu_percent": 5.695180255847009,
+        "self_cpu_seconds_estimate": 2.014347890554335,
+        "total_cpu_seconds_estimate": 3.590794065770771,
+        "self_samples": 1978,
+        "total_samples": 3526,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[3.0592076425903514, 3.3363146753197195]",
+        "representative_stack_leaf_to_root": "_int_malloc <- __libc_calloc <- pulse::engineering::(anonymous namespace)::prepare_local(pulse::engineering::FlowData&) <- pulse::engineering::Flow::value(unsigned long, double, int) const <- pulse::engineering::next_events(pulse::Mode const&, pulse::engineering::Flow const&, double, double, unsigned long) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 10,
+        "function": "pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&)",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/root/pulse-stage-c-20261103/src/descriptor.cpp:775 (discriminator 5)",
+        "self_cpu_percent": 2.6715337898953355,
+        "total_cpu_percent": 28.15286212688978,
+        "self_cpu_seconds_estimate": 1.684394039927639,
+        "total_cpu_seconds_estimate": 17.750295112417625,
+        "self_samples": 1654,
+        "total_samples": 17430,
+        "actual_calls": 377391,
+        "self_cpu_ns_per_call_estimate": 4463.2596959854345,
+        "total_cpu_ns_per_call_estimate": 47034.230048987985,
+        "self_percent_ci95_ideal": "[2.5474234658207817, 2.8015169358425798]",
+        "representative_stack_leaf_to_root": "std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >*) [clone .isra.0] <- std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >*) [clone .isra.0] <- pulse::(anonymous namespace)::Assembler::~Assembler() <- pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) <- pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose) <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 11,
+        "function": "Eigen::internal::gemm_pack_lhs<double, long, Eigen::internal::const_blas_data_mapper<double, long, 0>, 4, 2, double __vector(2), 0, false, false>::operator()(double*, Eigen::internal::const_blas_data_mapper<double, long, 0> const&, long, long, long, long) [clone .isra.0]",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/usr/lib/gcc/x86_64-linux-gnu/13/include/emmintrin.h:134",
+        "self_cpu_percent": 2.5584700865744927,
+        "total_cpu_percent": 2.5584700865744927,
+        "self_cpu_seconds_estimate": 1.613107714174958,
+        "total_cpu_seconds_estimate": 1.613107714174958,
+        "self_samples": 1584,
+        "total_samples": 1584,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[2.4370104657229135, 2.6858165589735665]",
+        "representative_stack_leaf_to_root": "Eigen::internal::gemm_pack_lhs<double, long, Eigen::internal::const_blas_data_mapper<double, long, 0>, 4, 2, double __vector(2), 0, false, false>::operator()(double*, Eigen::internal::const_blas_data_mapper<double, long, 0> const&, long, long, long, long) [clone .isra.0] <- Eigen::internal::general_matrix_matrix_product<long, double, 0, false, double, 0, false, 0, 1>::run(long, long, long, double const*, long, double const*, long, double*, long, long, double, Eigen::internal::level3_blocking<double, double>&, Eigen::internal::GemmParallelInfo<long>*) [clone .isra.0] <- void Eigen::internal::generic_product_impl<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::DenseShape, Eigen::DenseShape, 8>::scaleAndAddTo<Eigen::Matrix<double, -1, -1, 0, -1, -1> >(Eigen::Matrix<double, -1, -1, 0, -1, -1>&, Eigen::Matrix<double, -1, -1, 0, -1, -1> const&, Eigen::Matrix<double, -1, -1, 0, -1, -1> const&, double const&) <- Eigen::internal::product_evaluator<Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, 0>, 8, Eigen::DenseShape, Eigen::DenseShape, double, double>::product_evaluator(Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, -1, 0, -1, -1>, 0> const&) <- pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) <- pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose) <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- [unknown]"
+      },
+      {
+        "rank": 12,
+        "function": "pulse::engineering::Flow::compatible(pulse::Mode const&) const",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/usr/include/c++/13/bits/stl_map.h:1266 (discriminator 1)",
+        "self_cpu_percent": 2.2095878020416073,
+        "total_cpu_percent": 7.492893138648404,
+        "self_cpu_seconds_estimate": 1.3931384804238274,
+        "total_cpu_seconds_estimate": 4.724246645238402,
+        "self_samples": 1368,
+        "total_samples": 4639,
+        "actual_calls": 515849,
+        "self_cpu_ns_per_call_estimate": 2700.671088678717,
+        "total_cpu_ns_per_call_estimate": 9158.196769284039,
+        "self_percent_ci95_ideal": "[2.0967302684803104, 2.3283754787183635]",
+        "representative_stack_leaf_to_root": "__memcmp_avx2_movbe <- std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, bool>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, bool> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, bool> > >::find(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const [clone .isra.0] <- pulse::engineering::Flow::compatible(pulse::Mode const&) const <- pulse::engineering::Flow::continue_if_compatible(pulse::Mode const&, double) const <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 13,
+        "function": "std::_Rb_tree_increment(std::_Rb_tree_node_base const*)",
+        "module": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+        "source": "??:?",
+        "self_cpu_percent": 2.0739113580565967,
+        "total_cpu_percent": 2.0739113580565967,
+        "self_cpu_seconds_estimate": 1.3075948895206098,
+        "total_cpu_seconds_estimate": 1.3075948895206098,
+        "self_samples": 1284,
+        "total_samples": 1284,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[1.9645941397976738, 2.1891755550407415]",
+        "representative_stack_leaf_to_root": "std::_Rb_tree_increment(std::_Rb_tree_node_base const*) <- pulse::PevtArchive::Data::same_archive_definition(pulse::Mode const&, pulse::Mode const&) const <- pulse::PevtArchive::Data::equation(pulse::Mode const&) <- pulse::PevtArchive::Data::append(pulse::RunState const&, pulse::RunState const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > > const&, unsigned long) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 14,
+        "function": "Eigen::internal::general_matrix_vector_product<long, double, Eigen::internal::const_blas_data_mapper<double, long, 0>, 0, false, double, Eigen::internal::const_blas_data_mapper<double, long, 1>, false, 0>::run(long, long, Eigen::internal::const_blas_data_mapper<double, long, 0> const&, Eigen::internal::const_blas_data_mapper<double, long, 1> const&, double*, long, double) [clone .isra.0]",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/root/pulse-stage-c-20261103/third_party/eigen-3.4.0/Eigen/src/Core/products/GeneralMatrixVector.h:167 (discriminator 1)",
+        "self_cpu_percent": 1.8267864065124693,
+        "total_cpu_percent": 1.8284016022741956,
+        "self_cpu_seconds_estimate": 1.1517833489468923,
+        "total_cpu_seconds_estimate": 1.1528017250290736,
+        "self_samples": 1131,
+        "total_samples": 1132,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[1.724248650707811, 1.9353018059029918]",
+        "representative_stack_leaf_to_root": "Eigen::internal::general_matrix_vector_product<long, double, Eigen::internal::const_blas_data_mapper<double, long, 0>, 0, false, double, Eigen::internal::const_blas_data_mapper<double, long, 1>, false, 0>::run(long, long, Eigen::internal::const_blas_data_mapper<double, long, 0> const&, Eigen::internal::const_blas_data_mapper<double, long, 1> const&, double*, long, double) [clone .isra.0] <- Eigen::MatrixBase<Eigen::Product<Eigen::Matrix<double, -1, -1, 0, -1, -1>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, 0> >::norm() const <- pulse::validate_physical(pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 15,
+        "function": "pulse::engineering::Flow::bounds(unsigned long, double, double, int) const",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/root/pulse-stage-c-20261103/src/engineering_flow.cpp:548 (discriminator 1)",
+        "self_cpu_percent": 1.8138648404186588,
+        "total_cpu_percent": 1.9301589352629538,
+        "self_cpu_seconds_estimate": 1.1436363402894432,
+        "total_cpu_seconds_estimate": 1.2169594182064865,
+        "self_samples": 1123,
+        "total_samples": 1195,
+        "actual_calls": 662711,
+        "self_cpu_ns_per_call_estimate": 1725.6939152804816,
+        "total_cpu_ns_per_call_estimate": 1836.3350211577692,
+        "self_percent_ci95_ideal": "[1.7116945262099459, 1.9220144016046425]",
+        "representative_stack_leaf_to_root": "pulse::engineering::Flow::bounds(unsigned long, double, double, int) const <- void pulse::engineering::next_events(pulse::Mode const&, pulse::engineering::Flow const&, double, double, unsigned long)::{lambda(auto:1&&, double, double, int)#1}::operator()<{lambda(auto:1&&, double, double, int)#1}&>({lambda(auto:1&&, double, double, int)#1}&, double, double, int) const <- pulse::engineering::next_events(pulse::Mode const&, pulse::engineering::Flow const&, double, double, unsigned long) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 16,
+        "function": "clear_page_erms",
+        "module": "[kernel.kallsyms]",
+        "source": "external / physical ELF symbol",
+        "self_cpu_percent": 1.6555756557694792,
+        "total_cpu_percent": 1.6555756557694792,
+        "self_cpu_seconds_estimate": 1.0438354842356894,
+        "total_cpu_seconds_estimate": 1.0438354842356894,
+        "self_samples": 1025,
+        "total_samples": 1025,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[1.5580232891920687, 1.7591269108688852]",
+        "representative_stack_leaf_to_root": "clear_page_erms <- __alloc_frozen_pages_noprof <- alloc_pages_mpol <- vma_alloc_folio_noprof <- do_anonymous_page <- __handle_mm_fault <- handle_mm_fault <- do_user_addr_fault <- exc_page_fault <- asm_exc_page_fault <- _int_malloc <- malloc <- Eigen::PlainObjectBase<Eigen::Matrix<double, -1, -1, 0, -1, -1> >::resize(long, long) <- void Eigen::internal::generic_product_impl<Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::DenseShape, Eigen::DenseShape, 8>::scaleAndAddTo<Eigen::Matrix<double, -1, -1, 0, -1, -1> >(Eigen::Matrix<double, -1, -1, 0, -1, -1>&, Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const> const&, Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const> const&, double const&) <- Eigen::internal::product_evaluator<Eigen::Product<Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, 0>, 8, Eigen::DenseShape, Eigen::DenseShape, double, double>::product_evaluator(Eigen::Product<Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::CwiseUnaryOp<Eigen::internal::scalar_abs_op<double>, Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, 0> const&) <- pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) <- pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose) <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 17,
+        "function": "pulse::portfolio_original_check(pulse::Model const&, pulse::RunState const&, pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&)",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/usr/include/c++/13/bits/stl_tree.h:287",
+        "self_cpu_percent": 1.6329629151053107,
+        "total_cpu_percent": 7.247383382866003,
+        "self_cpu_seconds_estimate": 1.029578219085153,
+        "total_cpu_seconds_estimate": 4.569453480746866,
+        "self_samples": 1011,
+        "total_samples": 4487,
+        "actual_calls": 477111,
+        "self_cpu_ns_per_call_estimate": 2157.9427409662594,
+        "total_cpu_ns_per_call_estimate": 9577.338356790904,
+        "self_percent_ci95_ideal": "[1.5360888803777342, 1.7358386442898444]",
+        "representative_stack_leaf_to_root": "std::_Rb_tree_increment(std::_Rb_tree_node_base*) <- pulse::portfolio_original_check(pulse::Model const&, pulse::RunState const&, pulse::Mode const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 18,
+        "function": "unlink_chunk.isra.0",
+        "module": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "source": "./malloc/./malloc/malloc.c:1610",
+        "self_cpu_percent": 1.537666365163458,
+        "total_cpu_percent": 1.5392815609251842,
+        "self_cpu_seconds_estimate": 0.9694940302364645,
+        "total_cpu_seconds_estimate": 0.9705124063186458,
+        "self_samples": 952,
+        "total_samples": 953,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[1.4437065154448592, 1.6376397343506333]",
+        "representative_stack_leaf_to_root": "unlink_chunk.isra.0 <- malloc_consolidate <- _int_malloc <- malloc <- Eigen::DenseStorage<double, -1, -1, -1, 0>::DenseStorage(Eigen::DenseStorage<double, -1, -1, -1, 0> const&) <- pulse::(anonymous namespace)::bind_observations(pulse::Model const&, pulse::Mode const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) <- pulse::compile_specified(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, pulse::CompilePurpose) <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::portfolio_mode(pulse::Model const&, pulse::RunState const&, int, pulse::Stats&) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 19,
+        "function": "std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, unsigned int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, unsigned int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, unsigned int> > >::find(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [clone .isra.0]",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/usr/include/c++/13/bits/stl_algobase.h:238",
+        "self_cpu_percent": 1.3955291381315416,
+        "total_cpu_percent": 2.5600852823362192,
+        "self_cpu_seconds_estimate": 0.8798769350045224,
+        "total_cpu_seconds_estimate": 1.614126090257139,
+        "self_samples": 864,
+        "total_samples": 1585,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[1.306097012291332, 1.4909924207457947]",
+        "representative_stack_leaf_to_root": "std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, unsigned int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, unsigned int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, unsigned int> > >::find(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [clone .isra.0] <- pulse::PevtArchive::Data::bind_instance(unsigned int, unsigned int) <- pulse::PevtArchive::Data::flow(pulse::RunState const&, unsigned long) <- pulse::PevtArchive::Data::append(pulse::RunState const&, pulse::RunState const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > > const&, unsigned long) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      },
+      {
+        "rank": 20,
+        "function": "Eigen::internal::general_matrix_vector_product<long, double, Eigen::internal::const_blas_data_mapper<double, long, 1>, 1, false, double, Eigen::internal::const_blas_data_mapper<double, long, 0>, false, 0>::run(long, long, Eigen::internal::const_blas_data_mapper<double, long, 1> const&, Eigen::internal::const_blas_data_mapper<double, long, 0> const&, double*, long, double) [clone .constprop.0]",
+        "module": "/root/pulse-stage-c-20261103/build-profile-stage-c/pulse-solver",
+        "source": "/root/pulse-stage-c-20261103/third_party/eigen-3.4.0/Eigen/src/Core/products/GeneralMatrixVector.h:346 (discriminator 1)",
+        "self_cpu_percent": 1.2840806305724253,
+        "total_cpu_percent": 1.2840806305724253,
+        "self_cpu_seconds_estimate": 0.8096089853340225,
+        "total_cpu_seconds_estimate": 0.8096089853340225,
+        "self_samples": 795,
+        "total_samples": 795,
+        "actual_calls": "not instrumented / possibly inline",
+        "self_cpu_ns_per_call_estimate": "",
+        "total_cpu_ns_per_call_estimate": "",
+        "self_percent_ci95_ideal": "[1.1983693322656819, 1.37583691490409]",
+        "representative_stack_leaf_to_root": "Eigen::internal::general_matrix_vector_product<long, double, Eigen::internal::const_blas_data_mapper<double, long, 1>, 1, false, double, Eigen::internal::const_blas_data_mapper<double, long, 0>, false, 0>::run(long, long, Eigen::internal::const_blas_data_mapper<double, long, 1> const&, Eigen::internal::const_blas_data_mapper<double, long, 0> const&, double*, long, double) [clone .constprop.0] <- void Eigen::internal::gemv_dense_selector<2, 1, true>::run<Eigen::Transpose<Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, Eigen::Matrix<double, -1, 1, 0, -1, 1> >(Eigen::Transpose<Eigen::Matrix<double, -1, -1, 0, -1, -1> const> const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, Eigen::Matrix<double, -1, 1, 0, -1, 1>&, Eigen::Matrix<double, -1, 1, 0, -1, 1>::Scalar const&) [clone .isra.0] <- void Eigen::internal::call_assignment<Eigen::Matrix<double, -1, 1, 0, -1, 1>, Eigen::Product<Eigen::Transpose<Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, 0>, Eigen::internal::assign_op<double, double> >(Eigen::Matrix<double, -1, 1, 0, -1, 1>&, Eigen::Product<Eigen::Transpose<Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, 0> const&, Eigen::internal::assign_op<double, double> const&, Eigen::internal::enable_if<Eigen::internal::evaluator_assume_aliasing<Eigen::Product<Eigen::Transpose<Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, 0>, Eigen::internal::evaluator_traits<Eigen::Product<Eigen::Transpose<Eigen::Matrix<double, -1, -1, 0, -1, -1> const>, Eigen::Matrix<double, -1, 1, 0, -1, 1>, 0> >::Shape>::value, void*>::type) [clone .isra.0] <- pulse::portfolio_compile(pulse::Model const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, pulse::Stats&, std::map<int, bool, std::less<int>, std::allocator<std::pair<int const, bool> > > const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&, int, pulse::CompilePurpose) <- pulse::engineering::update_mode(pulse::Model const&, pulse::RunState const&, Eigen::Matrix<double, -1, 1, 0, -1, 1> const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > const&, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Stats&, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>*, int) <- pulse::(anonymous namespace)::closure(pulse::Model const&, pulse::EventKernel const&, pulse::RunState&, std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<pulse::Mode::Guard, std::allocator<pulse::Mode::Guard> > const&, std::set<int, std::less<int>, std::allocator<int> > const&, pulse::Result&, pulse::Options const&, std::vector<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>, std::allocator<nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void> > >&, unsigned long, nlohmann::json_abi_v3_11_3::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long, unsigned long, double, std::allocator, nlohmann::json_abi_v3_11_3::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> >, void>&, pulse::software::Session*, int) <- pulse::simulate(pulse::Model const&, pulse::Options const&) <- main <- __libc_start_call_main <- __libc_start_main@@GLIBC_2.34 <- _start"
+      }
+    ],
+    "method": "Physical frames; exclusive module allocation is one category per sample. Function and nested-group Total shares overlap. CPU seconds are sample-weight estimates scaled to target OS CPU; mean per-call costs join a separate verified full execution count. CI is ideal independent-sample Wilson interval and excludes correlation and systematic bias."
+  },
+  "machine": {
+    "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 0\ncpu cores\t: 6\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 1\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 0\ncpu cores\t: 6\napicid\t\t: 1\ninitial apicid\t: 1\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 2\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 1\ncpu cores\t: 6\napicid\t\t: 2\ninitial apicid\t: 2\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 3\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 1\ncpu cores\t: 6\napicid\t\t: 3\ninitial apicid\t: 3\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 4\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 2\ncpu cores\t: 6\napicid\t\t: 4\ninitial apicid\t: 4\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 5\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 2\ncpu cores\t: 6\napicid\t\t: 5\ninitial apicid\t: 5\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 6\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 3\ncpu cores\t: 6\napicid\t\t: 6\ninitial apicid\t: 6\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 7\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 3\ncpu cores\t: 6\napicid\t\t: 7\ninitial apicid\t: 7\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 8\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 4\ncpu cores\t: 6\napicid\t\t: 8\ninitial apicid\t: 8\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 9\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 4\ncpu cores\t: 6\napicid\t\t: 9\ninitial apicid\t: 9\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 10\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 5\ncpu cores\t: 6\napicid\t\t: 10\ninitial apicid\t: 10\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\nprocessor\t: 11\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 5 6600H with Radeon Graphics\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3293.732\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 12\ncore id\t\t: 5\ncpu cores\t: 6\napicid\t\t: 11\ninitial apicid\t: 11\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso ibpb_no_ret spectre_v2_user tsa\nbogomips\t: 6587.46\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:\n\n",
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "commands": [
+      {
+        "command": [
+          "uname",
+          "-a"
+        ],
+        "returncode": 0,
+        "stdout": "Linux tuzki-lenovo 6.18.54.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "g++",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "cmake version 3.28.3\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/lib/linux-tools/6.8.0-147-generic/perf",
+          "version",
+          "--build-options"
+        ],
+        "returncode": 0,
+        "stdout": "perf version 6.8.12\n                 dwarf: [ on  ]  # HAVE_DWARF_SUPPORT\n    dwarf_getlocations: [ on  ]  # HAVE_DWARF_GETLOCATIONS_SUPPORT\n         syscall_table: [ on  ]  # HAVE_SYSCALL_TABLE_SUPPORT\n                libbfd: [ OFF ]  # HAVE_LIBBFD_SUPPORT\n            debuginfod: [ OFF ]  # HAVE_DEBUGINFOD_SUPPORT\n                libelf: [ on  ]  # HAVE_LIBELF_SUPPORT\n               libnuma: [ on  ]  # HAVE_LIBNUMA_SUPPORT\nnuma_num_possible_cpus: [ on  ]  # HAVE_LIBNUMA_SUPPORT\n               libperl: [ OFF ]  # HAVE_LIBPERL_SUPPORT\n             libpython: [ on  ]  # HAVE_LIBPYTHON_SUPPORT\n              libslang: [ on  ]  # HAVE_SLANG_SUPPORT\n             libcrypto: [ on  ]  # HAVE_LIBCRYPTO_SUPPORT\n             libunwind: [ on  ]  # HAVE_LIBUNWIND_SUPPORT\n    libdw-dwarf-unwind: [ on  ]  # HAVE_DWARF_SUPPORT\n                  zlib: [ on  ]  # HAVE_ZLIB_SUPPORT\n                  lzma: [ on  ]  # HAVE_LZMA_SUPPORT\n             get_cpuid: [ on  ]  # HAVE_AUXTRACE_SUPPORT\n                   bpf: [ on  ]  # HAVE_LIBBPF_SUPPORT\n                   aio: [ on  ]  # HAVE_AIO_SUPPORT\n                  zstd: [ on  ]  # HAVE_ZSTD_SUPPORT\n               libpfm4: [ OFF ]  # HAVE_LIBPFM\n         libtraceevent: [ on  ]  # HAVE_LIBTRACEEVENT\n         bpf_skeletons: [ OFF ]  # HAVE_BPF_SKEL\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "baseline_B": {
+    "command": [
+      "/usr/bin/time",
+      "-v",
+      "-o",
+      "/root/stage-b-cow-regression-20261103/benchmark/500ms-cow/resource.txt",
+      "/root/pulse-stage-b-cow-20261103/build-linux/pulse-solver",
+      "/root/stage-a-regression-20261103/model/netlist.md",
+      "--t-end",
+      "0.5",
+      "--output-format",
+      "trajectory",
+      "--out",
+      "/root/stage-b-cow-regression-20261103/benchmark/500ms-cow"
+    ],
+    "started_utc": "2026-11-03T13:33:33.973229+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "completion_wall_seconds": 61.601001628000006,
+    "exit_wall_seconds": 61.657130698,
+    "cpu_user_seconds": 60.71,
+    "cpu_system_seconds": 1.48,
+    "peak_rss_kib": 1162312,
+    "cpu_seconds": 62.19
+  },
+  "accepted_Stage_C": {
+    "command": [
+      "/usr/bin/time",
+      "-v",
+      "-o",
+      "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/resource.txt",
+      "/root/pulse-stage-c-20261103/build-linux/pulse-solver",
+      "/root/stage-a-regression-20261103/model/netlist.md",
+      "--t-end",
+      "0.5",
+      "--output-format",
+      "trajectory",
+      "--out",
+      "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c"
+    ],
+    "started_utc": "2026-11-03T14:43:08.976039+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "completion_wall_seconds": 57.71677421199999,
+    "exit_wall_seconds": 57.76855031299999,
+    "cpu_user_seconds": 56.62,
+    "cpu_system_seconds": 1.55,
+    "peak_rss_kib": 1162484,
+    "cpu_seconds": 58.169999999999995
+  },
+  "counter_regression": {
+    "baseline_pevt": "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/out.pevt",
+    "candidate_pevt": "/root/stage-c-cpu-profile-20261103/full-500ms/run/out.pevt",
+    "baseline_sections": {
+      "1": {
+        "records": 1,
+        "payload_sha256": "dfebe2f1fe937b6c9d8bbbcb935e8634af5718070fa3b1a5aecc1d9b29cc2f15",
+        "size": 41143
+      },
+      "2": {
+        "records": 229,
+        "payload_sha256": "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f",
+        "size": 75588
+      },
+      "3": {
+        "records": 1,
+        "payload_sha256": "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1",
+        "size": 76234
+      },
+      "4": {
+        "records": 89243,
+        "payload_sha256": "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98",
+        "size": 5354580
+      },
+      "5": {
+        "records": 92893,
+        "payload_sha256": "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992",
+        "size": 1114716
+      },
+      "6": {
+        "records": 159038,
+        "payload_sha256": "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07",
+        "size": 7633824
+      },
+      "7": {
+        "records": 159039,
+        "payload_sha256": "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8",
+        "size": 29248440
+      },
+      "8": {
+        "records": 196639,
+        "payload_sha256": "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5",
+        "size": 10225228
+      },
+      "9": {
+        "records": 1,
+        "payload_sha256": "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965",
+        "size": 61
+      },
+      "10": {
+        "records": 159036,
+        "payload_sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314",
+        "size": 109066308
+      }
+    },
+    "candidate_sections": {
+      "1": {
+        "records": 1,
+        "payload_sha256": "8b2c4038bb6268aa9531f76a06dc1527a0c7a21bbb39fe30dbf8895b39a2c723",
+        "size": 41144
+      },
+      "2": {
+        "records": 229,
+        "payload_sha256": "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f",
+        "size": 75588
+      },
+      "3": {
+        "records": 1,
+        "payload_sha256": "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1",
+        "size": 76234
+      },
+      "4": {
+        "records": 89243,
+        "payload_sha256": "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98",
+        "size": 5354580
+      },
+      "5": {
+        "records": 92893,
+        "payload_sha256": "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992",
+        "size": 1114716
+      },
+      "6": {
+        "records": 159038,
+        "payload_sha256": "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07",
+        "size": 7633824
+      },
+      "7": {
+        "records": 159039,
+        "payload_sha256": "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8",
+        "size": 29248440
+      },
+      "8": {
+        "records": 196639,
+        "payload_sha256": "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5",
+        "size": 10225228
+      },
+      "9": {
+        "records": 1,
+        "payload_sha256": "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965",
+        "size": 61
+      },
+      "10": {
+        "records": 159036,
+        "payload_sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314",
+        "size": 109066308
+      }
+    },
+    "simulation_sections_identical": true,
+    "different_simulation_sections": [],
+    "metadata_section_1_identical": false,
+    "report_disagreements": [],
+    "report_required_fields": [
+      "transactions",
+      "root_queries",
+      "root_failures",
+      "mode_compilations",
+      "microsteps",
+      "matrix_exponentials",
+      "event_records_total",
+      "analog_channels",
+      "digital_channels",
+      "simulated_seconds",
+      "effective_SAVE_DT",
+      "effective_T_END",
+      "T_atom",
+      "software_final_outputs",
+      "software_states",
+      "original_equation_cache"
+    ],
+    "status": "PASS_SCOPED_COMPARISON"
+  },
+  "sampling_regression": {
+    "baseline_pevt": "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/out.pevt",
+    "candidate_pevt": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/run/out.pevt",
+    "baseline_sections": {
+      "1": {
+        "records": 1,
+        "payload_sha256": "dfebe2f1fe937b6c9d8bbbcb935e8634af5718070fa3b1a5aecc1d9b29cc2f15",
+        "size": 41143
+      },
+      "2": {
+        "records": 229,
+        "payload_sha256": "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f",
+        "size": 75588
+      },
+      "3": {
+        "records": 1,
+        "payload_sha256": "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1",
+        "size": 76234
+      },
+      "4": {
+        "records": 89243,
+        "payload_sha256": "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98",
+        "size": 5354580
+      },
+      "5": {
+        "records": 92893,
+        "payload_sha256": "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992",
+        "size": 1114716
+      },
+      "6": {
+        "records": 159038,
+        "payload_sha256": "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07",
+        "size": 7633824
+      },
+      "7": {
+        "records": 159039,
+        "payload_sha256": "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8",
+        "size": 29248440
+      },
+      "8": {
+        "records": 196639,
+        "payload_sha256": "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5",
+        "size": 10225228
+      },
+      "9": {
+        "records": 1,
+        "payload_sha256": "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965",
+        "size": 61
+      },
+      "10": {
+        "records": 159036,
+        "payload_sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314",
+        "size": 109066308
+      }
+    },
+    "candidate_sections": {
+      "1": {
+        "records": 1,
+        "payload_sha256": "173a24dc392aec6ed7861e8213951e4c00849c22ab3cf2fa30178a8bbfe7f7bd",
+        "size": 41142
+      },
+      "2": {
+        "records": 229,
+        "payload_sha256": "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f",
+        "size": 75588
+      },
+      "3": {
+        "records": 1,
+        "payload_sha256": "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1",
+        "size": 76234
+      },
+      "4": {
+        "records": 89243,
+        "payload_sha256": "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98",
+        "size": 5354580
+      },
+      "5": {
+        "records": 92893,
+        "payload_sha256": "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992",
+        "size": 1114716
+      },
+      "6": {
+        "records": 159038,
+        "payload_sha256": "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07",
+        "size": 7633824
+      },
+      "7": {
+        "records": 159039,
+        "payload_sha256": "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8",
+        "size": 29248440
+      },
+      "8": {
+        "records": 196639,
+        "payload_sha256": "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5",
+        "size": 10225228
+      },
+      "9": {
+        "records": 1,
+        "payload_sha256": "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965",
+        "size": 61
+      },
+      "10": {
+        "records": 159036,
+        "payload_sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314",
+        "size": 109066308
+      }
+    },
+    "simulation_sections_identical": true,
+    "different_simulation_sections": [],
+    "metadata_section_1_identical": false,
+    "report_disagreements": [],
+    "report_required_fields": [
+      "transactions",
+      "root_queries",
+      "root_failures",
+      "mode_compilations",
+      "microsteps",
+      "matrix_exponentials",
+      "event_records_total",
+      "analog_channels",
+      "digital_channels",
+      "simulated_seconds",
+      "effective_SAVE_DT",
+      "effective_T_END",
+      "T_atom",
+      "software_final_outputs",
+      "software_states",
+      "original_equation_cache"
+    ],
+    "status": "PASS_SCOPED_COMPARISON"
+  },
+  "limitations": [
+    "CPU shares are sampling estimates, not guaranteed 1% relative error",
+    "Only selected outlined functions have true invocation counts",
+    "Heavy paired-probe CPU stacks are excluded from primary CPU analysis",
+    "Allocator counts public API requests; not a live heap map",
+    "Observer delegated API nesting fixed after capture; all affected delegated APIs had zero uses in the captured solver run",
+    "/proc/PID/io unavailable; first telemetry incomplete, second contains 618 valid records"
+  ],
+  "raw_artifacts": {
+    "allocation-api-smoke.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/allocation-api-smoke.json",
+      "bytes": 3536,
+      "sha256": "b5b1dc0cb765d29ddeae60d66265206826cd64e21c00e479bcf5c97072d5b1f7"
+    },
+    "allocation-smoke.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/allocation-smoke.json",
+      "bytes": 241,
+      "sha256": "22a791e571851ad8dc93dc7a197cda9d7aaf62afffb046c196977180a8ffee98"
+    },
+    "analysis/BIND_BREAKDOWN.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/BIND_BREAKDOWN.csv",
+      "bytes": 738,
+      "sha256": "092f348dab78c81199536ceaac55dae2d44f4d329c78aca506d70212d4434472"
+    },
+    "analysis/FLAMEGRAPH.svg": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/FLAMEGRAPH.svg",
+      "bytes": 696428,
+      "sha256": "4854fc693525c0bb5de9427e3f03bfd6ffe9958586475fac8c39b1732917fa68"
+    },
+    "analysis/FUNCTION_HOTSPOTS.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/FUNCTION_HOTSPOTS.csv",
+      "bytes": 2580183,
+      "sha256": "6a444481d0144ba322a836055717b0edd17db44a2b57c936881c0495d8c3fb5a"
+    },
+    "analysis/MODULE_EXCLUSIVE.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/MODULE_EXCLUSIVE.csv",
+      "bytes": 1924,
+      "sha256": "8a468ae7a7b46cb2362822d44fc2bab48424aba7cd5465e009ee03d381f02f23"
+    },
+    "analysis/NESTED_GROUPS.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/NESTED_GROUPS.csv",
+      "bytes": 609,
+      "sha256": "0dac245a366fecb2e6546f701a8547b1e964bf101a3ca89d8bd0f25a203716be"
+    },
+    "analysis/analysis.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/analysis.json",
+      "bytes": 90578,
+      "sha256": "b553e736128670bbd49d666f1d8d2cb2ebfb81b190e6210d4ea0d1688f92dd7b"
+    },
+    "analysis/stacks.folded": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis/stacks.folded",
+      "bytes": 14591365,
+      "sha256": "f9baff5b9d8ad86ef7884dd5a3135216db6376a1648679ebc26b32673d78afc1"
+    },
+    "analysis-final/BIND_BREAKDOWN.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/BIND_BREAKDOWN.csv",
+      "bytes": 527,
+      "sha256": "95f4019561f6d52a4274cd6afb48797a7e442ebecdca5f7940e7542962c15c9a"
+    },
+    "analysis-final/FLAMEGRAPH.svg": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/FLAMEGRAPH.svg",
+      "bytes": 696428,
+      "sha256": "4854fc693525c0bb5de9427e3f03bfd6ffe9958586475fac8c39b1732917fa68"
+    },
+    "analysis-final/FUNCTION_HOTSPOTS.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/FUNCTION_HOTSPOTS.csv",
+      "bytes": 2580183,
+      "sha256": "6a444481d0144ba322a836055717b0edd17db44a2b57c936881c0495d8c3fb5a"
+    },
+    "analysis-final/MODULE_EXCLUSIVE.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/MODULE_EXCLUSIVE.csv",
+      "bytes": 2046,
+      "sha256": "f6b577c4cdca04a4b488ec2fa0cf2bed38af115c1a18d5a45fc7ced3a20f889b"
+    },
+    "analysis-final/NESTED_GROUPS.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/NESTED_GROUPS.csv",
+      "bytes": 608,
+      "sha256": "2cfca9dbdaba4d263be774f4867b29e336b4e1b7e10f5c667bb390416138143d"
+    },
+    "analysis-final/OBSERVE_BREAKDOWN.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/OBSERVE_BREAKDOWN.csv",
+      "bytes": 442,
+      "sha256": "967713a2499e884f11de801b4712ade6b705203f0df2df8b87af5dc032831c97"
+    },
+    "analysis-final/REPEAT_COST_CONTEXTS.csv": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/REPEAT_COST_CONTEXTS.csv",
+      "bytes": 349,
+      "sha256": "44cf758b0f2f980b61e5eb5291834fa3b2791bcc28f987f865c5a7db6ce80a5d"
+    },
+    "analysis-final/analysis.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/analysis.json",
+      "bytes": 90356,
+      "sha256": "9744453339b4de772ae74d6ab51d1d549ab7dd3d1083d3c17f88301c58ac74b7"
+    },
+    "analysis-final/stacks.folded": {
+      "path": "/root/stage-c-cpu-profile-20261103/analysis-final/stacks.folded",
+      "bytes": 14591365,
+      "sha256": "f9baff5b9d8ad86ef7884dd5a3135216db6376a1648679ebc26b32673d78afc1"
+    },
+    "count-smoke.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/count-smoke.json",
+      "bytes": 401,
+      "sha256": "d9a351ecd5af26902b3940a71a1e666747c11652866de917876b7a910ddb96db"
+    },
+    "count-smoke.stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/count-smoke.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cpu-sampling-500ms/export-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/export-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cpu-sampling-500ms/io-trace-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/io-trace-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cpu-sampling-500ms/io-trace.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/io-trace.txt",
+      "bytes": 1732,
+      "sha256": "3006d50cdbc8f0e24581af5c87bb62e9c33f914507b6a8f1ef980c5d674c842f"
+    },
+    "cpu-sampling-500ms/measurement.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/measurement.json",
+      "bytes": 1352,
+      "sha256": "05d8028a589beafd988ac353904e2e123a238de72be2a1e12367d9c050b70b4e"
+    },
+    "cpu-sampling-500ms/perf-script.txt.gz": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/perf-script.txt.gz",
+      "bytes": 16622064,
+      "sha256": "39557a8c5c16c9936bfad0acbab936ac0b5b038bc0706a7377670c7c9b0f8245"
+    },
+    "cpu-sampling-500ms/perf-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/perf-stderr.txt",
+      "bytes": 178,
+      "sha256": "506cbfa611b9bd5fc62f6e294d6e6c82ecc7bd8714567face27773f25701be9c"
+    },
+    "cpu-sampling-500ms/perf-stdout.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/perf-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cpu-sampling-500ms/perf.data": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/perf.data",
+      "bytes": 2044890896,
+      "sha256": "45fcb3152f1a1eddd1ff462e20473e7ff882306feb6af9b857de3edd30d7479e"
+    },
+    "cpu-sampling-500ms/probes.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/probes.json",
+      "bytes": 21722,
+      "sha256": "36391e5ecffbca999f4f1502403f45a21ca76c279ca2957db07192c623637dbf"
+    },
+    "cpu-sampling-500ms/probes.tsv": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/probes.tsv",
+      "bytes": 3125,
+      "sha256": "1e18cdf1da5fe54ff83b9cce28f94bb10711f0fbea48ca36cd0574ca0f4a9f97"
+    },
+    "cpu-sampling-500ms/regression-stdout.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/regression-stdout.json",
+      "bytes": 3935,
+      "sha256": "37c74354674808fd5c4c98b22d4064a3f6f7e33e396183821f9cda7bc10868de"
+    },
+    "cpu-sampling-500ms/regression.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/regression.json",
+      "bytes": 3934,
+      "sha256": "4494f80182327b5bf4e8b1cb1c3eb08b3d6112a10c4520ea0381554ace03cc0a"
+    },
+    "cpu-sampling-500ms/run/out.pevt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/run/out.pevt",
+      "bytes": 162836777,
+      "sha256": "ece38179361dd172d25d62c76f8705aee4388d836872e5971db5de6a81c721f1"
+    },
+    "cpu-sampling-500ms/run/simulation_report.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/run/simulation_report.json",
+      "bytes": 17483,
+      "sha256": "d4971e199e74a7166c8b314e567705c0dfc930d8cfa67c3ec4393bee89786d44"
+    },
+    "cpu-sampling-500ms/solver-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/solver-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cpu-sampling-500ms/stdout.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/stdout.json",
+      "bytes": 17483,
+      "sha256": "d4971e199e74a7166c8b314e567705c0dfc930d8cfa67c3ec4393bee89786d44"
+    },
+    "cpu-sampling-500ms/telemetry-errors.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/telemetry-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "cpu-sampling-500ms/telemetry.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/cpu-sampling-500ms/telemetry.json",
+      "bytes": 117214,
+      "sha256": "c0b693389c8a521f5eb9ac75226aa46335a9eb7d2f44f89550ee82d248f6db2b"
+    },
+    "full-500ms/allocations.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/allocations.json",
+      "bytes": 3857,
+      "sha256": "aa23ae9d389ce114639bb6022bf02bf1da9bed63d0fb4b20243e8e28622882c9"
+    },
+    "full-500ms/counter-ready.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/counter-ready.txt",
+      "bytes": 22,
+      "sha256": "e942fa1988209c8f74fd5c2c839c2eb8f93cf9c2531fd0b9ba84520d64092b53"
+    },
+    "full-500ms/counter-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/counter-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full-500ms/counts.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/counts.json",
+      "bytes": 7324,
+      "sha256": "c34b28f3cdc01efe1f133aa19678e980c45f45f62c2df201ad40e00685dd6e94"
+    },
+    "full-500ms/measurement.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/measurement.json",
+      "bytes": 1577,
+      "sha256": "137014ac708673e3d59d00f0a104908747b56ae73741ac997538a0e5addbf4ce"
+    },
+    "full-500ms/perf-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/perf-stderr.txt",
+      "bytes": 170,
+      "sha256": "2b1f81a2993ca7b4c1a6bf50f0b1eef09316af93a4b35aad4f995a6c8f065835"
+    },
+    "full-500ms/perf-stdout.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/perf-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full-500ms/perf.data": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/perf.data",
+      "bytes": 1921079420,
+      "sha256": "b260879cfad6411f42ea60451fe6864c3cd32a6440116fe9362abe4e2e4f37d5"
+    },
+    "full-500ms/probes.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/probes.json",
+      "bytes": 21722,
+      "sha256": "36391e5ecffbca999f4f1502403f45a21ca76c279ca2957db07192c623637dbf"
+    },
+    "full-500ms/probes.tsv": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/probes.tsv",
+      "bytes": 3125,
+      "sha256": "1e18cdf1da5fe54ff83b9cce28f94bb10711f0fbea48ca36cd0574ca0f4a9f97"
+    },
+    "full-500ms/regression-stdout.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/regression-stdout.json",
+      "bytes": 3927,
+      "sha256": "37fdb3ed9acd7cf594bbfd09593eb243017cf894371b9cfb20b6787401dbe857"
+    },
+    "full-500ms/regression.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/regression.json",
+      "bytes": 3926,
+      "sha256": "cc38c3036aab104cbc41f5c8bb61981309a4fa92fb3e42f6abc0cb6a7de718df"
+    },
+    "full-500ms/run/out.pevt": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/run/out.pevt",
+      "bytes": 162836779,
+      "sha256": "ecfd4eb41bb6d151bf608463aaa96a0920bbfef38f1bbd24f0b46b725980f738"
+    },
+    "full-500ms/run/simulation_report.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/run/simulation_report.json",
+      "bytes": 17485,
+      "sha256": "0cdc7491d9ba4746a8057c2f70db0b7ad4a219d27e694fdba567a9290ce17bae"
+    },
+    "full-500ms/solver-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/solver-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full-500ms/stdout.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/stdout.json",
+      "bytes": 17485,
+      "sha256": "0cdc7491d9ba4746a8057c2f70db0b7ad4a219d27e694fdba567a9290ce17bae"
+    },
+    "full-500ms/telemetry-errors.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/telemetry-errors.json",
+      "bytes": 58,
+      "sha256": "364e650847312c9ec77e360fc5a0f0a2d6ee7b2d36423bd17a90aad9552fbfb2"
+    },
+    "full-500ms/telemetry.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/full-500ms/telemetry.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "install-bpftrace.log": {
+      "path": "/root/stage-c-cpu-profile-20261103/install-bpftrace.log",
+      "bytes": 928,
+      "sha256": "4366c7bdc2faafe7471aad77cc53d2727268811898ff336420b0651007e91b80"
+    },
+    "preflight-2ms-3/allocations.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/allocations.json",
+      "bytes": 3739,
+      "sha256": "48983e6a35a83d59c83909a2cb3ff4df2259548140e69765841f1ee26961c309"
+    },
+    "preflight-2ms-3/counter-ready.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/counter-ready.txt",
+      "bytes": 22,
+      "sha256": "f3bedd479ce6c0f92239f7dab88b73ac63ffc21bd330d4ca7b91877258cc5ba9"
+    },
+    "preflight-2ms-3/counter-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/counter-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preflight-2ms-3/counts.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/counts.json",
+      "bytes": 6560,
+      "sha256": "206a39f3e813f26637f171d583f7c2a37ea1e5b02d16d07e14d407a8a3a56f4b"
+    },
+    "preflight-2ms-3/measurement.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/measurement.json",
+      "bytes": 1586,
+      "sha256": "de604abc6bcaaf3e6f2c1bd8fb368b475788318ef492d59dfebf68b7a24dda3f"
+    },
+    "preflight-2ms-3/perf-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/perf-stderr.txt",
+      "bytes": 169,
+      "sha256": "c0bb75c8deac2e3b2a7f465bdc191fc8e0b8821a2d02684f18ae26c46b37184d"
+    },
+    "preflight-2ms-3/perf-stdout.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/perf-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preflight-2ms-3/perf.data": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/perf.data",
+      "bytes": 10895556,
+      "sha256": "9066ba443a835be4ce70a0850ad2720ee48f40b24820b0b7fe50fd338a1c8fee"
+    },
+    "preflight-2ms-3/probes.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/probes.json",
+      "bytes": 21722,
+      "sha256": "36391e5ecffbca999f4f1502403f45a21ca76c279ca2957db07192c623637dbf"
+    },
+    "preflight-2ms-3/probes.tsv": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/probes.tsv",
+      "bytes": 3125,
+      "sha256": "1e18cdf1da5fe54ff83b9cce28f94bb10711f0fbea48ca36cd0574ca0f4a9f97"
+    },
+    "preflight-2ms-3/run/out.pevt": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/run/out.pevt",
+      "bytes": 1629120,
+      "sha256": "e1136143432250bbbe24c8a6e0f163a41b60ea6d365ffb527cf70a1b80697ade"
+    },
+    "preflight-2ms-3/run/simulation_report.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/run/simulation_report.json",
+      "bytes": 17431,
+      "sha256": "9efe6f488a0b4945597bead5d13c86f1652aa1502bf62361ced518b1c760a2e0"
+    },
+    "preflight-2ms-3/solver-stderr.txt": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/solver-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preflight-2ms-3/stdout.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/stdout.json",
+      "bytes": 17431,
+      "sha256": "9efe6f488a0b4945597bead5d13c86f1652aa1502bf62361ced518b1c760a2e0"
+    },
+    "preflight-2ms-3/telemetry.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/preflight-2ms-3/telemetry.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "profile-build.log": {
+      "path": "/root/stage-c-cpu-profile-20261103/profile-build.log",
+      "bytes": 1882,
+      "sha256": "3379dbc2b87e9abc8d2c4068f912da668048067a6973ed30cf30ca9d5bf7a05f"
+    },
+    "profile-configure.log": {
+      "path": "/root/stage-c-cpu-profile-20261103/profile-configure.log",
+      "bytes": 754,
+      "sha256": "e3d1387a490ac217c9441813dfbb6b361f49b0462b546b4b68e516db5245ec26"
+    },
+    "release.text": {
+      "path": "/root/stage-c-cpu-profile-20261103/release.text",
+      "bytes": 2449114,
+      "sha256": "d2e8a8803411b91ccbc5be1d788acbfbc2109b89c7424b9edc451eea046f3de9"
+    },
+    "smoke-probes.tsv": {
+      "path": "/root/stage-c-cpu-profile-20261103/smoke-probes.tsv",
+      "bytes": 156,
+      "sha256": "03432c0349a8fc564839599437fdb4b1a4a089427c3f0a6bcafa2669d738f20e"
+    },
+    "symbols.text": {
+      "path": "/root/stage-c-cpu-profile-20261103/symbols.text",
+      "bytes": 2449114,
+      "sha256": "d2e8a8803411b91ccbc5be1d788acbfbc2109b89c7424b9edc451eea046f3de9"
+    },
+    "text_identity.json": {
+      "path": "/root/stage-c-cpu-profile-20261103/text_identity.json",
+      "bytes": 333,
+      "sha256": "f1b807e05655bc8dac5282c4d4596800823170ef0896b4b61acd56b837ab1234"
+    },
+    "tools/alloc-smoke": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/alloc-smoke",
+      "bytes": 16472,
+      "sha256": "4866db72b43a7749db8a7d5248e791c4c8db73724902be521c9240e80f10c638"
+    },
+    "tools/alloc-smoke.c": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/alloc-smoke.c",
+      "bytes": 629,
+      "sha256": "47b350a3fb6088468eb9326d7bea0e3f6ee57a97e61d5072176ca1d2251a5b2b"
+    },
+    "tools/alloc_observer.so": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/alloc_observer.so",
+      "bytes": 39320,
+      "sha256": "424c5b3fbc96a7905e9c45803437713431065422aebbe29f4e57e46901f7ecd2"
+    },
+    "tools/alloc_observer_checked.so": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/alloc_observer_checked.so",
+      "bytes": 39480,
+      "sha256": "cda614ad1b1f733b5df8edb33e6e2fa6db0cdfbc19f748b8c6dc84b0286a25b6"
+    },
+    "tools/bpf-smoke": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/bpf-smoke",
+      "bytes": 16200,
+      "sha256": "254a7d95100ceefa09409ea706f5d14c0cdc338d866efc0fbc35ac3c595198e3"
+    },
+    "tools/count_uprobes": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/count_uprobes",
+      "bytes": 90336,
+      "sha256": "17175fb6e805ee2e2336115c31a59e74034cfc362159c8466b13aca937191c71"
+    },
+    "tools/probe-smoke": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/probe-smoke",
+      "bytes": 18360,
+      "sha256": "187a5cd95d9f48760eda6394849e1a1892bf3ae94cf8994276b234924d7fe220"
+    },
+    "tools/probe-smoke.c": {
+      "path": "/root/stage-c-cpu-profile-20261103/tools/probe-smoke.c",
+      "bytes": 226,
+      "sha256": "6656dc9b6821f7aa2aa923c42f0f5914600f2f08791c6c69c47ec8281182abc6"
+    }
+  }
+}
