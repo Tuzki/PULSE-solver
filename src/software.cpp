@@ -199,5 +199,17 @@ std::vector<Wakeup> Session::execute(const RunState&snapshot,RunState&candidate,
   }
   return w;
 }
+std::vector<Wakeup> Session::execute(const RunState&snapshot,RunState&candidate,
+ const std::set<std::string>&triggers,CowValue<std::map<std::string,double>>&writes,
+ std::vector<Json>&logs,uint64_t tx,size_t delta) {
+  std::vector<Wakeup>w;
+  for(auto &t:data_->tasks) {
+    uint32_t flags=0;
+    if(triggers.count(t.spec->trigger)&&!t.spec->self_trigger)flags|=PULSE_SW_EXTERNAL;
+    if(triggers.count(t.spec->wake_trigger))flags|=PULSE_SW_WAKEUP;
+    if(flags)data_->call(t,snapshot,candidate,writes.edit(),false,w,&logs,tx,delta,flags);
+  }
+  return w;
+}
 Json Session::identity()const{return data_->identity;}
 }

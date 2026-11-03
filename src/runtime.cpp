@@ -1,4 +1,5 @@
 #include "pulse/core.hpp"
+#include "pulse/event_kernel.hpp"
 #include "pulse/state_coordinates.hpp"
 #include "pulse/solver_strategy.hpp"
 #include <fstream>
@@ -133,8 +134,9 @@ void fault(const Options &o, const std::string &point) {
           "fault injection at " + point);
 }
 bool valid(const RunState &s, const Agenda &a) {
-  auto i = s.generations.read().find(a.part);
-  return a.generation == (i == s.generations.read().end() ? 0 : i->second);
+  const auto& generations=s.generations.read();
+  const auto i=generations.find(a.part);
+  return a.generation==(i==generations.end()?0:i->second);
 }
 void check_agenda_origins(const Model &m, const RunState &s) {
   std::map<Time, const Agenda *> ordered;
@@ -165,46 +167,18 @@ void check_agenda_origins(const Model &m, const RunState &s) {
   }
 }
 void prune(RunState &s) {
+  // Removing invalidated entries cannot introduce a deadline-origin conflict.
+  // Avoid detaching a shared COW queue on the common no-op path.
+  const auto& pending=s.agenda.read();
+  if (std::none_of(pending.begin(),pending.end(),[&](const Agenda& a){return !valid(s,a);})) return;
   std::erase_if(s.agenda.edit(), [&](auto &a) { return !valid(s, a); });
 }
-std::string fingerprint(const RunState &s, const std::set<std::string> &trig) {
-  std::ostringstream x;
-  x << std::setprecision(17) << s.mode.id;
-  for (auto &t : trig)
-    x << "!" << t;
-  for (const auto &[name, state] : s.software.read()) {
-    x << "$" << name << ":" << state.invocation << ":";
-    for (auto byte : state.bytes) x << unsigned(byte) << ",";
-  }
-  std::vector<std::string> pending;
-  for (const auto &a : s.agenda.read())
-    if (valid(s, a))
-      pending.push_back(a.at.canonical() + ":" + a.trigger + ":" + a.origin);
-  std::sort(pending.begin(), pending.end());
-  for (auto &a : pending)
-    x << "@" << a;
-  return x.str();
-}
+
 double snapshot(const RunState &s, const std::string &name) {
   return state_signal(s,name);
 }
-std::set<std::string> edges(const Model &m, const Mode &before,
-                            const Mode &after) {
-  std::set<std::string> result;
-  for (int i : m.events) {
-    const auto &p = m.parts[i].raw;
-    if (op(p, "MODE") != "EDGE")
-      continue;
-    auto source = net_name(op(p, "SOURCE"));
-    bool a = before.bools.at(source), b = after.bools.at(source);
-    auto direction = op(p, "EDGE");
-    if (a != b && (direction == "BOTH" || (direction == "RISE" && b) ||
-                   (direction == "FALL" && !b)))
-      result.insert(net_name(p.args[0]));
-  }
-  return result;
-}
-void closure(const Model &m, RunState &candidate,
+
+void closure(const Model &m, const EventKernel& kernel, RunState &candidate,
              std::set<std::string> triggers,
              const std::vector<Mode::Guard> &crossings,
              const std::set<int> &seeds, Result &out, const Options &o,
@@ -216,11 +190,11 @@ void closure(const Model &m, RunState &candidate,
        ++delta) {
     require(delta < o.max_microsteps, 9, "MICROSTEP_BUDGET",
             "same-time transaction budget exhausted", true);
-    require(seen.insert(fingerprint(candidate, triggers)).second, 9,
+    require(seen.insert(event_fingerprint(candidate, triggers)).second, 9,
             "ZERO_TIME_CYCLE", "same-time configuration repeated", true);
     ++out.stats.microsteps;
     RunState snap = candidate;
-    auto newregs = snap.regs.read();
+    auto newregs = snap.regs; // O(1) snapshot until first register/software write
     std::set<std::string> next;
     for (const auto &t : triggers)
       logs.push_back({{"time_canonical", candidate.at.canonical()},
@@ -233,48 +207,44 @@ void closure(const Model &m, RunState &candidate,
                       {"before_mode", snap.mode.id},
                       {"policy", "SCHEDULED_OR_CAUSAL"},
                       {"certificate_scope", "ENGINEERING_POINT_TRAJECTORY"}});
-    for (int i : m.registers) {
-      const auto &p = m.parts[i].raw;
-      auto name = net_name(p.args[0]);
-      if (m.software_outputs.count(name)) continue;
-      if (op(p, "MODE") == "SR") {
-        bool set = triggers.count(net_name(op(p, "SET"))),
-             reset = triggers.count(net_name(op(p, "RESET")));
-        if (set || reset)
-          newregs[name] = set && reset ? (op(p, "PRIORITY") == "SET") : set;
-      } else if (triggers.count(net_name(p.args[2])))
-        newregs[name] = snapshot(snap, p.args[1]);
+    // Rules remain in the original Model.registers order. The trigger and
+    // lvalue names were canonicalized once, not on every microstep.
+    for (const auto& rule:kernel.registers()) {
+      if (rule.kind==EventKernel::RegisterRule::Kind::SetReset) {
+        const bool set=triggers.count(rule.set)!=0, reset=triggers.count(rule.reset)!=0;
+        if (set||reset)
+          newregs.edit()[rule.name]=set&&reset?rule.set_priority:set;
+      } else if (triggers.count(rule.clock))
+        newregs.edit()[rule.name]=snapshot(snap,rule.expression);
     }
-    for (int i : m.events) {
-      const auto &p = m.parts[i].raw;
-      if (op(p, "MODE") == "DELAY" && p.options.count("CANCEL") &&
-          triggers.count(net_name(op(p, "CANCEL"))))
-        ++candidate.generations.edit()[i];
-    }
-    for (int i : m.events) {
-      const auto &p = m.parts[i].raw;
-      if (op(p, "MODE") != "DELAY" ||
-          !triggers.count(net_name(op(p, "SOURCE"))))
-        continue;
-      double delay = p.options.count("DELAY_INPUT")
-                         ? snapshot(snap, op(p, "DELAY_INPUT"))
-                         : number(op(p, "DELAY"));
+    bool agenda_validity_changed=false;
+    for (const auto& rule:kernel.delays())
+      if (rule.has_cancel&&triggers.count(rule.cancel)) {
+        ++candidate.generations.edit()[rule.part];
+        agenda_validity_changed=true;
+      }
+    bool deadline_added=false;
+    for (const auto& rule:kernel.delays()) {
+      if (!triggers.count(rule.source)) continue;
+      const auto& p=m.parts[rule.part].raw;
+      const double delay=rule.has_delay_input
+          ? snapshot(snap,rule.delay_input) : number(rule.delay_literal);
       require(delay >= 0 && std::isfinite(delay), 7, "INVALID_DELAY",
               "latched delay is negative or nonfinite", false, p.source);
-      if (op(p, "POLICY", "TRANSPORT") == "REPLACE")
-        ++candidate.generations.edit()[i];
-      auto trigger = net_name(p.args[0]);
-      if (delay == 0)
-        next.insert(trigger);
-      else
+      if (rule.replace) {
+        ++candidate.generations.edit()[rule.part];
+        agenda_validity_changed=true;
+      }
+      if (delay == 0) next.insert(rule.trigger);
+      else {
         candidate.agenda.edit().push_back(
-            {candidate.at + Time::from(delay), i, 0, candidate.generations.edit()[i],
-             trigger,
-             sum_origin(
-                 candidate.time_origin,
-                 p.options.count("DELAY_INPUT")
-                     ? exact_time_origin(Time::from(delay))
-                     : time_input(p.option_text.at("DELAY"), m.netlist))});
+            {candidate.at + Time::from(delay), rule.part, 0,
+             candidate.generations.edit()[rule.part],rule.trigger,
+             sum_origin(candidate.time_origin,
+                rule.has_delay_input ? exact_time_origin(Time::from(delay)) :
+                                       time_input(p.option_text.at("DELAY"),m.netlist))});
+        deadline_added=true;
+      }
     }
     if (software_session) {
       auto wakeups = software_session->execute(snap, candidate, triggers, newregs, logs, tx, delta);
@@ -284,9 +254,13 @@ void closure(const Model &m, RunState &candidate,
                 "software wakeup does not advance simulated time", true);
         candidate.agenda.edit().push_back({candidate.at + delay, wake.part, 0, 0, wake.trigger,
                                     sum_origin(candidate.time_origin, exact_time_origin(delay))});
+        deadline_added=true;
       }
     }
-    check_agenda_origins(m, candidate);
+    // Reuse validation only when the valid agenda is unchanged. Invalidation
+    // can expose adjacent known origins previously separated by an unproven
+    // origin, so cancellation and REPLACE also require the original check.
+    if(deadline_added || agenda_validity_changed) check_agenda_origins(m, candidate);
     fault(o, "after_queue");
     candidate.regs = std::move(newregs);
     fault(o, "after_reg");
@@ -309,7 +283,7 @@ void closure(const Model &m, RunState &candidate,
     }else { candidate.electrical_flow.reset(); candidate.electrical_strategy=-1; }
     candidate.mode.version = ++candidate.version;
     fault(o, "after_mode");
-    auto newedges = edges(m, snap.mode, candidate.mode);
+    auto newedges = kernel.changed_edges(snap.mode, candidate.mode);
     next.insert(newedges.begin(), newedges.end());
     for (auto &log : logs)
       if (log.value("delta", size_t(-1)) == delta)
@@ -377,6 +351,14 @@ Result simulate(const Model &original, const Options &o) {
             "TIME_RESOLUTION_UNRESOLVED",
             "atomic time is below representation or nonfinite", true);
     Time end = Time::from(out.t_end);
+    const EventKernel kernel(m);
+    // A periodic rule can be inactive; defer conversion until its first due
+    // event, retaining the original error timing for unused rules.
+    struct PreparedPeriod {
+      Time start, period;
+      std::string start_origin, period_origin;
+    };
+    std::map<int,PreparedPeriod> prepared_periodic;
     RunState state;
     // This experimental RunState vector is the authoritative fixed-chart xi.
     // Physical q/phi views are never fed back across an event.
@@ -571,19 +553,24 @@ Result simulate(const Model &original, const Options &o) {
           }
           triggers.insert(a.trigger);
           candidate.time_origin = a.origin;
-          const auto &p = m.parts[a.part].raw;
-          if (op(p, "MODE") == "PERIODIC") {
+          if (const auto* periodic=kernel.periodic(a.part)) {
             auto cycle = a.cycle + 1;
+            auto found=prepared_periodic.find(a.part);
+            if(found==prepared_periodic.end()){
+              // The original conversion and parameter-resolution routines are
+              // unchanged. Time+origin values are immutable per frozen Model.
+              PreparedPeriod prepared;
+              prepared.start=Time::from(number(periodic->start_literal));
+              prepared.period=Time::from(number(periodic->period_literal));
+              prepared.start_origin=time_input(periodic->start_origin,m.netlist);
+              prepared.period_origin=time_input(m.parts[a.part].raw.option_text.at("PERIOD"),m.netlist);
+              found=prepared_periodic.emplace(a.part,std::move(prepared)).first;
+            }
+            const auto& p=found->second;
             remaining.push_back(
-                {Time::from(number(op(p, "START", "0"))) +
-                     Time::from(number(op(p, "PERIOD"))).times(cycle),
+                {p.start+p.period.times(cycle),
                  a.part, cycle, 0, a.trigger,
-                 sum_origin(time_input(p.option_text.count("START")
-                                           ? p.option_text.at("START")
-                                           : "0",
-                                       m.netlist),
-                            time_input(p.option_text.at("PERIOD"), m.netlist),
-                            cycle)});
+                 sum_origin(p.start_origin,p.period_origin,cycle)});
           }
         }
         candidate.agenda = std::move(remaining);
@@ -591,7 +578,7 @@ Result simulate(const Model &original, const Options &o) {
       }
       Json mode_details;
       {six_perf::Scope timer(six_perf::CLOSURE);
-       closure(m, candidate, std::move(triggers), crossings, seeds, out, o, logs,
+       closure(m, kernel, candidate, std::move(triggers), crossings, seeds, out, o, logs,
                out.stats.transactions + 1, mode_details, software_session.get(), algorithm);
       }
       if (found) {

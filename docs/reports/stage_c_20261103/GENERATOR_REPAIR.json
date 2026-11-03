@@ -1,0 +1,7 @@
+{
+  "file": "scripts/apply_stage_c.py",
+  "reason": "Stale pre-COW PEVT blob in a generator pinned to the post-COW commit",
+  "before": "'src/pevt.cpp': 'ec1cbd9a4f0f8acc58e089f0fb7a76f97e8d9439'",
+  "after": "'src/pevt.cpp': 'f533c9fdeb71362e1424c57486ec5932109cc9d6'",
+  "verified_pinned_commit": "44207f2e863db73b234a1e778f72838ffe1b5e13"
+}

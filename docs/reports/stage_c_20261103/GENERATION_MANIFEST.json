@@ -1,0 +1,42 @@
+{
+  "base_commit": "44207f2e863db73b234a1e778f72838ffe1b5e13",
+  "files": {
+    "src/runtime.cpp": {
+      "bytes": 40213,
+      "sha256": "5c14b4af5ee4ba8f43df1be4d64f3c10fa87d93792d6fb0afc07ba0386b06df8"
+    },
+    "include/pulse/software.hpp": {
+      "bytes": 1131,
+      "sha256": "418d1c2cdc8f361122635a8295380654a32c7b7b0bccd980dad29d871dc0141e"
+    },
+    "src/software.cpp": {
+      "bytes": 12780,
+      "sha256": "01863e142075dd850e254164ca2872a6fc707eeb3f3685d18a9fe68aa3e563e9"
+    },
+    "CMakeLists.txt": {
+      "bytes": 11277,
+      "sha256": "9f60cbe745c6fc7c16416b720f37a97152671160033932dede569055cf04dfb7"
+    },
+    "src/engineering_flow.cpp": {
+      "bytes": 47739,
+      "sha256": "3addfd0770a073453f009e15976a09114e917fe852c66ce70489eae27b8cdd5a"
+    },
+    "src/pevt.cpp": {
+      "bytes": 37685,
+      "sha256": "5870c5831fe930d02f82b8541d6a27c3267facca5a45863b4b775eb1201b48bc"
+    },
+    "include/pulse/event_kernel.hpp": {
+      "bytes": 1800,
+      "sha256": "15ef1a52d5caaca991f477b4a2df21202e81661fa0b29cb82016f5b656a12aaf"
+    },
+    "src/event_kernel.cpp": {
+      "bytes": 4732,
+      "sha256": "770dc15530bf4b407e2d25394fd39878ed2130ff6814b74ad3a1188c72d83f2e"
+    },
+    "tests/stage_c_event_kernel.cpp": {
+      "bytes": 3535,
+      "sha256": "44f9581afd1ef0835316842f5722758a26e4dde97365575233242aab4fe11d89"
+    }
+  },
+  "status": "SOURCE_GENERATED_ONLY_REQUIRES_FULL_BUILD_AND_REGRESSION"
+}

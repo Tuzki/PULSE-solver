@@ -17,6 +17,11 @@ public:
   std::vector<Wakeup> execute(const RunState &snapshot, RunState &candidate,
        const std::set<std::string> &triggers, std::map<std::string,double> &writes,
        std::vector<Json> &logs, uint64_t transaction, size_t delta);
+  // COW-aware variant: no register-map copy if no task actually executes.
+  std::vector<Wakeup> execute(const RunState &snapshot, RunState &candidate,
+       const std::set<std::string> &triggers,
+       CowValue<std::map<std::string,double>> &writes,
+       std::vector<Json> &logs, uint64_t transaction, size_t delta);
   Json identity() const;
 };
 std::string file_sha256(const std::string &path, size_t max_bytes=64*1024*1024);

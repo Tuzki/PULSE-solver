@@ -21,7 +21,7 @@ string(APPEND PULSE_SOURCE_ID_INPUT "CMakeLists.txt:${PULSE_CMAKE_HASH}\n")
 string(SHA256 PULSE_SOURCE_SHA256 "${PULSE_SOURCE_ID_INPUT}")
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${PULSE_ID_FILES})
 add_library(pulse_core STATIC src/netlist.cpp src/common.cpp src/semantics.cpp src/descriptor.cpp
- src/propagate.cpp src/runtime.cpp src/engineering_flow.cpp src/engineering_mode.cpp
+ src/propagate.cpp src/runtime.cpp src/event_kernel.cpp src/engineering_flow.cpp src/engineering_mode.cpp
  src/time_origin.cpp src/output.cpp src/npz.cpp src/first_root/first_root.cpp
  src/first_root/interval_math.cpp src/first_root/exclusion.cpp
  src/pre_netlist.cpp src/constitutive.cpp src/software.cpp src/state_coordinates.cpp src/solver_strategy.cpp src/trajectory.cpp src/pevt.cpp)
@@ -202,4 +202,10 @@ if(BUILD_TESTING)
  add_executable(cow_value_tests tests/test_cow_value.cpp)
  target_link_libraries(cow_value_tests PRIVATE pulse_core)
  add_test(NAME cow_value COMMAND cow_value_tests)
+endif()
+
+if(BUILD_TESTING)
+ add_executable(stage_c_event_kernel_tests tests/stage_c_event_kernel.cpp)
+ target_link_libraries(stage_c_event_kernel_tests PRIVATE pulse_core)
+ add_test(NAME stage_c_event_kernel COMMAND stage_c_event_kernel_tests)
 endif()

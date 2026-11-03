@@ -80,24 +80,33 @@ struct PevtArchive::Data {
        a.numerical_strategy!=b.numerical_strategy || a.bools!=b.bools ||
        a.segments!=b.segments || a.binding.read().maps.size()!=b.binding.read().maps.size() ||
        a.binding.read().guards.size()!=b.binding.read().guards.size())return false;
-    if(!identical(a.definition.read().M,b.definition.read().M) || !identical(a.binding.read().observations,b.binding.read().observations) ||
-       !identical(a.definition.read().constraints,b.definition.read().constraints) ||
-       !identical(a.binding.read().residual_map,b.binding.read().residual_map) ||
-       !same_reference(a,b) ||
-       !identical(a.definition.read().invariant_lift,b.definition.read().invariant_lift) ||
-       !identical(a.definition.read().invariant_generator,b.definition.read().invariant_generator) ||
-       !identical(a.definition.read().invariant_reduce,b.definition.read().invariant_reduce))return false;
-    auto x=a.binding.read().maps.begin(), y=b.binding.read().maps.begin();
-    for(;x!=a.binding.read().maps.end();++x,++y)
-      if(x->first!=y->first)return false;
-      else if(a.observer_maps.count(x->first)){
-        if(x->second.size()!=y->second.size()||!x->second.size()||std::memcmp(x->second.data(),y->second.data(),size_t(x->second.size()-1)*sizeof(double))!=0)return false;
-      }else if(!identical(x->second,y->second))return false;
-    for(size_t i=0;i<a.binding.read().guards.size();++i){
-      const auto&g=a.binding.read().guards[i];const auto&h=b.binding.read().guards[i];
-      if(g.part!=h.part || g.direction!=h.direction || g.kind!=h.kind ||
-         g.knot!=h.knot || g.segment!=h.segment || g.step!=h.step ||
-         !identical(g.row,h.row))return false;
+    // Only skip byte-identical comparisons when COW storage is literally
+    // shared. Dynamic observer validation remains mandatory.
+    const bool distinct_definition=!a.definition.shares_storage_with(b.definition);
+    const bool distinct_binding=!a.binding.shares_storage_with(b.binding);
+    if((distinct_definition &&
+        (!identical(a.definition.read().M,b.definition.read().M) ||
+         !identical(a.definition.read().constraints,b.definition.read().constraints) ||
+         !identical(a.definition.read().invariant_lift,b.definition.read().invariant_lift) ||
+         !identical(a.definition.read().invariant_generator,b.definition.read().invariant_generator) ||
+         !identical(a.definition.read().invariant_reduce,b.definition.read().invariant_reduce))) ||
+       (distinct_binding &&
+        (!identical(a.binding.read().observations,b.binding.read().observations) ||
+         !identical(a.binding.read().residual_map,b.binding.read().residual_map))) ||
+       !same_reference(a,b))return false;
+    if(distinct_binding){
+      auto x=a.binding.read().maps.begin(), y=b.binding.read().maps.begin();
+      for(;x!=a.binding.read().maps.end();++x,++y)
+        if(x->first!=y->first)return false;
+        else if(a.observer_maps.count(x->first)){
+          if(x->second.size()!=y->second.size()||!x->second.size()||std::memcmp(x->second.data(),y->second.data(),size_t(x->second.size()-1)*sizeof(double))!=0)return false;
+        }else if(!identical(x->second,y->second))return false;
+      for(size_t i=0;i<a.binding.read().guards.size();++i){
+        const auto&g=a.binding.read().guards[i];const auto&h=b.binding.read().guards[i];
+        if(g.part!=h.part || g.direction!=h.direction || g.kind!=h.kind ||
+           g.knot!=h.knot || g.segment!=h.segment || g.step!=h.step ||
+           !identical(g.row,h.row))return false;
+      }
     }
     return true;
   }

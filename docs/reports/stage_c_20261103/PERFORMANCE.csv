@@ -1,0 +1,5 @@
+version,simulated_seconds,completion_wall_seconds,exit_wall_seconds,cpu_seconds,peak_rss_kib,pevt_bytes,transactions,acceptance
+B+COW,0.5,61.601001628000006,61.657130698,62.19,1162312,162836777,159037,saved pinned baseline
+Stage C final,0.5,57.71677421199999,57.76855031299999,58.169999999999995,1162484,162836778,159037,final one-round acceptance
+B+COW,0.005,0.9330144159999918,0.9352349779999827,0.92,36016,,2393,early signature only
+Stage C final,0.005,0.9330690689999983,0.9352553669999963,0.92,36268,,2393,early signature only

@@ -6,6 +6,7 @@
 #include <complex>
 #include <cstdlib>
 #include <cstring>
+#include <deque>
 #include <functional>
 #include <numbers>
 #include <sstream>
@@ -84,8 +85,34 @@ void refine_eigenpairs(const Matrix&a,CVector&poles,CMatrix&vectors){
 }
 std::shared_ptr<Basis> basis(const Mode &mode) {
   static thread_local std::unordered_map<std::string, std::shared_ptr<Basis>> cache;
+  // Pointer identity is safe only while the exact COW storage is retained.
+  // Pin at most 128 definitions; any subsequent Mode::definition.edit()
+  // detaches, making the old pointer-key result immutable.
+  struct IdentityBasis {
+    CowValue<ModeDefinition> owner;
+    std::shared_ptr<Basis> prepared;
+  };
+  static thread_local std::unordered_map<const ModeDefinition*,IdentityBasis> by_identity;
+  static thread_local std::deque<const ModeDefinition*> identity_order;
+  const auto* identity=std::addressof(mode.definition.read());
+  if(auto it=by_identity.find(identity);it!=by_identity.end()) {
+    ++flow_counts.basis_hits;
+    return it->second.prepared;
+  }
+  const auto remember_identity=[&](const std::shared_ptr<Basis>& b) {
+    if(by_identity.size()>=128){
+      by_identity.erase(identity_order.front());
+      identity_order.pop_front();
+    }
+    identity_order.push_back(identity);
+    by_identity.emplace(identity,IdentityBasis{mode.definition,b});
+  };
   auto id = key(mode);
-  if (auto it = cache.find(id); it != cache.end()) { ++flow_counts.basis_hits; return it->second; }
+  if (auto it = cache.find(id); it != cache.end()) {
+    ++flow_counts.basis_hits;
+    remember_identity(it->second);
+    return it->second;
+  }
   ++flow_counts.basis_misses;
   auto b = std::make_shared<Basis>();
   const int physical = int(mode.definition.read().M.rows()) - 1;
@@ -177,6 +204,7 @@ std::shared_ptr<Basis> basis(const Mode &mode) {
   if (cache.size() >= 128)
     cache.erase(cache.begin());
   cache.emplace(std::move(id), b);
+  remember_identity(b);
   return b;
 }
 Complex phi(Complex pole, double t) {
@@ -726,11 +754,15 @@ bool Flow::compatible(const Mode &m) const {
     for(int i=0;i<a.rows();++i)if(std::find(m.observer_rows.begin(),m.observer_rows.end(),i)==m.observer_rows.end()&&!(a.row(i).array()==b.row(i).array()).all())return false;
     return true;
   };
+  // Shared COW definitions have identical bytes. Other Mode fields are
+  // still verified by the original compatibility rules below.
+  const bool distinct_definition=!m.definition.shares_storage_with(old.definition);
   if(m.numerical_strategy!=old.numerical_strategy||
-     !same_key_matrix(m.definition.read().M,old.definition.read().M)||
-     !same_key_matrix(m.definition.read().invariant_lift,old.definition.read().invariant_lift)||
-     !same_key_matrix(m.definition.read().invariant_generator,old.definition.read().invariant_generator)||
-     !same_key_matrix(m.definition.read().invariant_reduce,old.definition.read().invariant_reduce)||
+     (distinct_definition&&
+       (!same_key_matrix(m.definition.read().M,old.definition.read().M)||
+        !same_key_matrix(m.definition.read().invariant_lift,old.definition.read().invariant_lift)||
+        !same_key_matrix(m.definition.read().invariant_generator,old.definition.read().invariant_generator)||
+        !same_key_matrix(m.definition.read().invariant_reduce,old.definition.read().invariant_reduce)))||
      m.segments!=old.segments||
      !same(m.definition.read().constraints,old.definition.read().constraints)||!same_electrical_rows(m.binding.read().residual_map,old.binding.read().residual_map)||
      !same_electrical_rows(m.binding.read().residual_reference,old.binding.read().residual_reference)||m.binding.read().maps.size()!=old.binding.read().maps.size())return false;
