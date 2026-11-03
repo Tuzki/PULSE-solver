@@ -1,0 +1,17 @@
+version,operation,requests,distinct,repeats,repeat_fraction
+D,bind_input_A,17784,25,17759,0.9985942420152947
+D,bind_input_N,17784,17784,0,0.0
+D,bind_input_B,17784,3002,14782,0.8311965811965812
+D,bind_matrix_residual_inputs,17784,17784,0,0.0
+D,bind_matrix_scale_inputs,17784,17784,0,0.0
+D,taylor_recurrence_inputs,14127,14127,0,0.0
+D,flow_common_anchor_inputs,50301,14127,36174,0.7191507127094888
+D,observe_basis_row_inputs,36174,27,36147,0.9992536075634434
+D1,bind_input_A,17784,25,17759,0.9985942420152947
+D1,bind_input_N,17784,17784,0,0.0
+D1,bind_input_B,17784,3002,14782,0.8311965811965812
+D1,bind_matrix_residual_inputs,17784,17784,0,0.0
+D1,bind_matrix_scale_inputs,17784,17784,0,0.0
+D1,taylor_recurrence_inputs,14127,14127,0,0.0
+D1,flow_common_anchor_inputs,50301,14127,36174,0.7191507127094888
+D1,observe_basis_row_inputs,36174,27,36147,0.9992536075634434

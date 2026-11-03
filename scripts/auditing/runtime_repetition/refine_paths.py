@@ -7,7 +7,7 @@ def refine(source):
  ('src/solver_strategy.cpp',r'Mode portfolio_compile\([\s\S]*?int algorithm,CompilePurpose purpose\)\{','portfolio_compile'),
  ('src/state_coordinates.cpp',r'void publish_physical_state\(const Model&m,RunState&s\)\{','publish_physical'),
  ('src/state_coordinates.cpp',r'std::vector<double> state_signals_prepared\([^\n]*\)\{','state_signals_prepared'),
- ('src/engineering_flow.cpp',r'auto same=\[\]\(const Matrix&a,const Matrix&b\)\{','flow_same_matrix')]
+ ('src/engineering_flow.cpp',r'auto same=\[\]\(const (?:Matrix|auto)&a,const (?:Matrix|auto)&b\)\{','flow_same_matrix')]
  sites=[]
  for file,pattern,name in entries:
   p=source/file;s=p.read_text()

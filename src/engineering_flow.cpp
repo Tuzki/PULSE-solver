@@ -766,7 +766,9 @@ double Flow::tangent(const Mode &mode,const Vector &initial,const Vector &row){
 bool Flow::compatible(const Mode &m) const {
   const auto &old=archive_mode();
   if (&m == &old) return true; // A Mode is always compatible with itself.
-  auto same=[](const Matrix&a,const Matrix&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
+  // Keep original coefficient-wise numerical equality (+0 == -0);
+  // template deduction avoids implicit Vector -> Matrix materialization.
+  auto same=[](const auto&a,const auto&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
   // Equivalent to the four byte-exact matrices packed by key(), without allocation.
   auto same_key_matrix=[](const Matrix&a,const Matrix&b){
     return a.rows()==b.rows()&&a.cols()==b.cols()&&

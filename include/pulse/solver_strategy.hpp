@@ -10,6 +10,10 @@ struct PortfolioStats {
  void record_failure(int algorithm,const RunState&checkpoint,Time target,const Error&error);
  Json description()const;
 };
+// Internal: return immutable, chart-adapted observer Binding from the
+// current simulation-scoped exact-source cache (or materialize once).
+CowValue<ModeBinding> coordinate_bound_binding(const Model &,
+    const CowValue<ModeBinding> &, const Matrix &chart_l);
 Mode portfolio_compile(const Model &, const Vector &internal,
                        const std::map<std::string,double> &regs, Stats &,
                        const std::map<int,bool> &bits,

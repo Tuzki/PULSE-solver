@@ -100,6 +100,9 @@ Vector reconstruct_physical(const Matrix &, const Vector &);
 Vector reduce_physical(const Matrix &, const Vector &);
 struct ObserverBinding {
   Matrix A, N, B;
+  // A is static within this compiled binding; cache original-order
+  // lpNorm<1>() rows, never dynamic B or N norms.
+  Vector a_row_norm;
   std::map<std::string,int> rows;
 };
 struct ModeDefinition;

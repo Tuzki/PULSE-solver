@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-import json,os,subprocess
+import json,os,subprocess,argparse
 from pathlib import Path
-root=Path('/root/cd-repeat-audit-20261104')
-for version in ['C','D']:
+p=argparse.ArgumentParser();p.add_argument('--work',type=Path,default=Path('/root/cd-repeat-audit-20261104'));p.add_argument('--versions',nargs='+',choices=['C','D','D1'],default=['C','D']);args=p.parse_args()
+root=args.work
+for version in args.versions:
  v=root/version
  command=['g++','-std=c++20','-O2','-fPIC','-shared',str(Path(__file__).parent/'counters.cpp'),'-I'+str(v),'-I'+str(v/'source/third_party'),'-ldl','-o',str(v/'libcounts.so')]
  subprocess.run(command,check=True)

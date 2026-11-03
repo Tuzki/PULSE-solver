@@ -1,0 +1,5 @@
+version,metric,unchanged_Release,count_build,difference
+D,calls,48260808,48260808,0
+D,bytes,5013901486,5013901430,-56
+D1,calls,36261870,36261870,0
+D1,bytes,4184549801,4184549746,-55

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <bit>
 #include <deque>
+#include <cstring>
 #include <functional>
 #include <iomanip>
 #include <sstream>
@@ -21,6 +22,14 @@ struct ModeCacheData {
     std::map<std::string,std::shared_ptr<const Mode>> rebound_entries;
     std::deque<std::string> rebound_order;
     size_t rebound_capacity=512;
+    // Coordinate-adapted Binding is derived solely from the exact
+    // physical COW object and fixed chart L. Scoped to this Model.
+    struct CoordinateEntry {
+        CowValue<ModeBinding> physical, internal;
+        Matrix chart_l;
+    };
+    std::map<const ModeBinding*,CoordinateEntry,std::less<const ModeBinding*>> coordinate_entries;
+    std::deque<const ModeBinding*> coordinate_order;
 };
 namespace {
 thread_local ModeCacheData *active_mode_cache = nullptr;
@@ -673,6 +682,9 @@ struct Assembler {
                 if(isolated){
                     binding->A=m.floating_references.empty()?A:physical_A;
                     binding->B=m.floating_references.empty()?B:physical_B;binding->N=N;
+                    binding->a_row_norm.resize(binding->A.rows());
+                    for(int i=0;i<binding->A.rows();++i)
+                        binding->a_row_norm[i]=binding->A.row(i).lpNorm<1>();
                     mode.observer_binding=binding;
                     for(const auto &[name,r]:binding->rows){mode.observer_maps.insert(name);mode.observer_rows.push_back(r);}
                 }
@@ -766,7 +778,10 @@ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::strin
     std::vector<double> a_row_norm(static_cast<size_t>(na)), b_row_norm(static_cast<size_t>(na));
     std::vector<double> n_col_norm(static_cast<size_t>(m.ns + 1));
     for(int i=0;i<na;++i){
-        a_row_norm[size_t(i)]=binding.A.row(i).lpNorm<1>();
+        // Fallback keeps manually assembled ObserverBinding instances
+        // equivalent; compiled bindings always have a cached A norm.
+        a_row_norm[size_t(i)]=binding.a_row_norm.size()==na
+            ?binding.a_row_norm[i]:binding.A.row(i).lpNorm<1>();
         b_row_norm[size_t(i)]=B.row(i).lpNorm<1>();
     }
     for(int j=0;j<=m.ns;++j)
@@ -841,6 +856,49 @@ ScopedModeCache::ScopedModeCache(const Model &model, size_t capacity)
 }
 ScopedModeCache::~ScopedModeCache() {
     active_mode_cache = previous_;
+}
+// No process-global cache: entries die with the simulation's ScopedModeCache.
+// The physical COW is retained in every entry to keep its address unique;
+// a caller's later edit() detaches and cannot corrupt cached equations.
+CowValue<ModeBinding> coordinate_bound_binding(const Model &m,
+                                                const CowValue<ModeBinding> &physical,
+                                                const Matrix &L) {
+    ModeCacheData *cache = active_mode_cache && active_mode_cache->model == &m &&
+                                   active_mode_cache->capacity ? active_mode_cache : nullptr;
+    const ModeBinding *const key = &physical.read();
+    auto same_chart = [&](const Matrix &old) {
+        return old.rows()==L.rows() && old.cols()==L.cols() &&
+               (old.size()==0 || std::memcmp(old.data(),L.data(),
+                                           size_t(old.size())*sizeof(double))==0);
+    };
+    if (cache) {
+        const auto hit=cache->coordinate_entries.find(key);
+        if (hit!=cache->coordinate_entries.end() && same_chart(hit->second.chart_l))
+            return hit->second.internal;
+    }
+    CowValue<ModeBinding> internal=physical;
+    auto &b=internal.edit(); // One detached materialization for this exact source.
+    if(b.observations.cols()==L.rows())b.observations=b.observations*L;
+    if(b.residual_map.rows())b.residual_map=b.residual_map*L;
+    if(b.residual_reference.rows())b.residual_reference=b.residual_reference*L;
+    for(auto &[name,row]:b.maps)row=L.transpose()*row;
+    for(auto &guard:b.guards)guard.row=L.transpose()*guard.row;
+    if (cache) {
+        auto hit=cache->coordinate_entries.find(key);
+        if(hit!=cache->coordinate_entries.end()) {
+            hit->second.internal=internal;
+            hit->second.chart_l=L;
+        } else {
+            if(cache->coordinate_entries.size()>=cache->rebound_capacity) {
+                cache->coordinate_entries.erase(cache->coordinate_order.front());
+                cache->coordinate_order.pop_front();
+            }
+            cache->coordinate_entries.emplace(key,
+                ModeCacheData::CoordinateEntry{physical,internal,L});
+            cache->coordinate_order.push_back(key);
+        }
+    }
+    return internal;
 }
 Mode settle(const Model &m, const Vector &s, const std::map<std::string, double> &regs, Stats &stats,
             const std::set<int> &crossed, bool initial) {

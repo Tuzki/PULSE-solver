@@ -24,13 +24,11 @@ Mode portfolio_compile(const Model&m,const Vector&internal,
   {Scope scope(algorithm);mode=compile_specified(m,physical_view(m,internal),regs,stats,bits,segments,CompilePurpose::RegionClassification);}
   const auto&chart=persistent_chart(m);const auto&T=chart.T;const auto&L=chart.L;
   mode.definition.edit().M=T*mode.definition.read().M*L;
-  if(mode.binding.read().observations.cols()==L.rows())mode.binding.edit().observations=mode.binding.read().observations*L;
   if(mode.definition.read().constraints.rows())mode.definition.edit().constraints=mode.definition.read().constraints*L;
-  if(mode.binding.read().residual_map.rows())mode.binding.edit().residual_map=mode.binding.read().residual_map*L;
-  if(mode.binding.read().residual_reference.rows())mode.binding.edit().residual_reference=mode.binding.read().residual_reference*L;
   if(mode.definition.read().invariant_lift.rows()){mode.definition.edit().invariant_lift=T*mode.definition.read().invariant_lift;mode.definition.edit().invariant_reduce=mode.definition.read().invariant_reduce*L;}
-  for(auto&[name,row]:mode.binding.edit().maps)row=L.transpose()*row;
-  for(auto&guard:mode.binding.edit().guards)guard.row=L.transpose()*guard.row;
+  // A cache hit skips only repeated chart materialization. Original
+  // compile_specified() entry checks and all definition transforms ran.
+  mode.binding=coordinate_bound_binding(m,mode.binding,L);
   if(mode.candidate_roundoff_scale)
    mode.candidate_roundoff_scale=std::make_shared<const Matrix>((*mode.candidate_roundoff_scale)*L.cwiseAbs());
   if(purpose==CompilePurpose::AcceptedEntry)accept_mode_entry(m,mode,internal);

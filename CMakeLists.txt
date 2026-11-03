@@ -211,6 +211,12 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_TESTING)
+  add_executable(stage_d1_regression_tests tests/stage_d1_regression.cpp)
+  target_link_libraries(stage_d1_regression_tests PRIVATE pulse_core)
+  add_test(NAME stage_d1_regression COMMAND stage_d1_regression_tests)
+endif()
+
+if(BUILD_TESTING)
   add_executable(stage_d_runtime_tests tests/stage_d_runtime.cpp)
   target_link_libraries(stage_d_runtime_tests PRIVATE pulse_core)
   add_test(NAME stage_d_runtime COMMAND stage_d_runtime_tests)

@@ -1,0 +1,95 @@
+{
+  "base": "b3906c7713f057a763536629b5d7873cb21d34e9",
+  "dry_run": false,
+  "changed_files": {
+    "CMakeLists.txt": {
+      "before_sha256": "0863f10077181a9b49898ed5d588782de07d3f89f25a70da4a55d3b57119f666",
+      "after_sha256": "d37111551ff9800dc8277be51b22bdd578e7ffe2889ae3417ceca54aaf1aa608",
+      "bytes": 11971
+    },
+    "include/pulse/core.hpp": {
+      "before_sha256": "f465ec8dc075838cd56b7b76747cdfada3949a47a9e1f3ecdee56e83cf1b7776",
+      "after_sha256": "b49d48cc0fd24500da6863a0c0f57058093a05241c1e41922082b64e13bda1ca",
+      "bytes": 9340
+    },
+    "include/pulse/solver_strategy.hpp": {
+      "before_sha256": "efa78f08c4bd341ab718ccce4915ec929b5cf151ecb210154b5055f22c758d39",
+      "after_sha256": "95e6e7af320e974741fd467d23b27d1cb7c118232869d3c98416268fabfef655",
+      "bytes": 1288
+    },
+    "src/descriptor.cpp": {
+      "before_sha256": "6ae7d46c38832d2b791bffa0dfbd172669a55fb9aa833fecc4be366d2455af39",
+      "after_sha256": "ea84288be5219431b31f1827786f73d681cbc1689c74be38e89925e23de78b73",
+      "bytes": 66807
+    },
+    "src/engineering_flow.cpp": {
+      "before_sha256": "ef3b1e0eb306348e219a249c146870c4f4bfa0657bc734720b2824925d76cb04",
+      "after_sha256": "cf4cb6e5fa96b9f298b5b16725e92959d36266731bfd6a67f2035fc33d73578d",
+      "bytes": 49348
+    },
+    "src/solver_strategy.cpp": {
+      "before_sha256": "d634f764c3333e9bdeebd135322b653f87e567327f84357fce0adf46f8571b64",
+      "after_sha256": "d32749bc552556786072636ad69d0a20db6b041a64a2466d71419e996c684d8a",
+      "bytes": 5045
+    },
+    "tests/stage_d1_regression.cpp": {
+      "before_sha256": null,
+      "after_sha256": "6e8409ff161f91121532b7e7567833f1fda02de908bc26889e3820c6acb045c3",
+      "bytes": 6907
+    }
+  },
+  "operations": [
+    {
+      "path": "src/engineering_flow.cpp",
+      "label": "D1a nonallocating exact semantic comparison"
+    },
+    {
+      "path": "include/pulse/core.hpp",
+      "label": "D1c immutable A row norms"
+    },
+    {
+      "path": "src/descriptor.cpp",
+      "label": "D1c populate once after A materialization"
+    },
+    {
+      "path": "src/descriptor.cpp",
+      "label": "D1c use precomputed A norms (B remains dynamic)"
+    },
+    {
+      "path": "src/descriptor.cpp",
+      "label": "D1b cache lifetime under existing ScopedModeCache"
+    },
+    {
+      "path": "include/pulse/solver_strategy.hpp",
+      "label": "D1b helper declaration (no new runtime module)"
+    },
+    {
+      "path": "src/descriptor.cpp",
+      "label": "D1b scoped exact-source coordinate reuse"
+    },
+    {
+      "path": "src/descriptor.cpp",
+      "label": "D1b std::memcmp include"
+    },
+    {
+      "path": "src/solver_strategy.cpp",
+      "label": "D1b remove per-call observations edit"
+    },
+    {
+      "path": "src/solver_strategy.cpp",
+      "label": "D1b remove per-call residual Binding edits"
+    },
+    {
+      "path": "src/solver_strategy.cpp",
+      "label": "D1b replace repeated Binding coordinate edits"
+    },
+    {
+      "path": "tests/stage_d1_regression.cpp",
+      "label": "add"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "label": "D1 explicit regression target"
+    }
+  ]
+}
