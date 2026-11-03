@@ -46,7 +46,7 @@ void complete(const Result &r) {
     check(r.status == "COMPLETED", r.status + " " + r.diagnostic.dump());
 }
 double value(const Result &r, const std::string &name) {
-    return r.committed.mode.maps.at(name).dot(r.committed.physical);
+    return r.committed.mode.binding.read().maps.at(name).dot(r.committed.physical);
 }
 std::vector<Json> triggers(const Result &r, const std::string &source) {
     std::vector<Json> result;
@@ -126,11 +126,11 @@ void buck_capacitor_commutation() {
         if (segment.state.at == at(diode[0])) diode_state = &segment.state;
     }
     check(off_state && diode_state, "event states absent from segments");
-    near(off_state->mode.maps.at("V(SW)").dot(off_state->physical), 10, .05,
+    near(off_state->mode.binding.read().maps.at("V(SW)").dot(off_state->physical), 10, .05,
          "switch OFF retains charged commutation capacitor");
-    near(diode_state->mode.maps.at("V(SW)").dot(diode_state->physical), -.5,
+    near(diode_state->mode.binding.read().maps.at("V(SW)").dot(diode_state->physical), -.5,
          2e-5, "diode ON voltage threshold");
-    check(diode_state->mode.maps.at("I(L1)").dot(diode_state->physical) > .9,
+    check(diode_state->mode.binding.read().maps.at("I(L1)").dot(diode_state->physical) > .9,
           "commutation lost positive inductor current");
     // Independent preservation check at the scheduled switch instant.
     // Uses the old mode solely to locate its left limit, not as a root oracle.
@@ -206,8 +206,8 @@ void rollback_all_boundaries() {
         near(value(r, "X"), 0, 0, "fault leaked integrated state");
         near(value(r, "Q"), 0, 0, "fault leaked sampled register");
         check(r.events.empty(), "fault leaked event log");
-        check(r.committed.agenda.size() == 1 && r.committed.agenda[0].at == Time::from(.5) &&
-              r.committed.agenda[0].trigger == "CLK", "fault leaked or removed queued deadline");
+        check(r.committed.agenda.read().size() == 1 && r.committed.agenda.read()[0].at == Time::from(.5) &&
+              r.committed.agenda.read()[0].trigger == "CLK", "fault leaked or removed queued deadline");
         check(r.stats.rollbacks == 1, "rollback accounting missing");
     }
 }
@@ -218,7 +218,7 @@ void transport_delay() {
     check(clk.size() == 1 && late.size() == 1, "transport trigger count");
     check(at(clk[0]) == Time::from(.5) && at(late[0]) == Time::from(.625), "exact delayed deadline");
     near(value(r, "Q"), .5, 1e-12, "REG samples at source, not delayed endpoint");
-    check(r.committed.agenda.empty(), "consumed delay remained pending");
+    check(r.committed.agenda.read().empty(), "consumed delay remained pending");
     history(r);
 }
 }

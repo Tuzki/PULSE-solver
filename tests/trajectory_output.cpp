@@ -67,8 +67,8 @@ int main(int argc,char**argv){
   // Deferred materialization must still run the original per-sample check.
   Result invalid;invalid.status="COMPLETED";invalid.evidence="ENGINEERING_POINT_TRAJECTORY";
   invalid.save_dt=.1;invalid.t_end=.1;invalid.analog_names={"X"};
-  RunState state;state.internal=Vector::Ones(2);state.mode.M=Matrix::Zero(2,2);
-  state.mode.maps["X"]=Vector::Constant(2,std::numeric_limits<double>::max());
+  RunState state;state.internal=Vector::Ones(2);state.mode.definition.edit().M=Matrix::Zero(2,2);
+  state.mode.binding.edit().maps["X"]=Vector::Constant(2,std::numeric_limits<double>::max());
   invalid.trajectory=std::make_shared<Trajectory>();invalid.trajectory->initial(state);
   invalid.report={{"status","COMPLETED"},{"diagnostic",Json::object()},{"evidence",invalid.evidence}};
   invalid.trajectory->write(scratch/"nonfinite",invalid);

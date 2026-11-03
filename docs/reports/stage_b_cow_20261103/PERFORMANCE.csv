@@ -1,0 +1,5 @@
+version,window_seconds,complete_wall_seconds,exit_wall_seconds,os_cpu_seconds,peak_rss_kib,transactions,pevt_bytes,status,source
+Stage B,0.5,68.08481087199999,68.13564573,69.25180000000002,not recorded,159037,162836775,COMPLETED,saved one-round baseline
+B1/B2 COW,0.5,61.601001628000006,61.657130698,62.19,1162312,159037,162836777,COMPLETED,one measured run
+Stage B,0.005,1.1717688379999913,1.1737836949999974,1.1500000000000001,36304,2393,,COMPLETED,fresh early signature only
+B1/B2 COW,0.005,0.945541545000026,0.9475098880000132,0.93,36152,2393,,COMPLETED,fresh early signature only

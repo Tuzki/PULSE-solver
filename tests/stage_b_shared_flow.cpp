@@ -31,7 +31,7 @@ int main() {
           !std::memcmp(x.data(), y.data(), size_t(x.size()) * sizeof(double)),
           "continued state differs bitwise");
     Mode incompatible = s.mode;
-    incompatible.M(0, int(m.ns)) += 1;
+    incompatible.definition.edit().M(0, int(m.ns)) += 1;
     check(!flow.continue_if_compatible(incompatible,0).has_value(),
           "changed generator must reject exact-compatibility shortcut");
     const std::vector<std::string> names = {"0.75", "V(OUT)", "V(IN)", "V(OUT)", "1"};

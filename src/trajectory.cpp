@@ -23,31 +23,31 @@ Matrix decode_matrix(const Json&j){
   require(m.allFinite(),11,"TRAJECTORY_NONFINITE","nonfinite numerical template");return m;
 }
 Json encode(const Mode&m){
-  Json j={{"M",encode_matrix(m.M)},{"observations",encode_matrix(m.observations)},
-    {"constraints",encode_matrix(m.constraints)},{"residual_map",encode_matrix(m.residual_map)},
-    {"residual_reference",encode_matrix(m.residual_reference)},
-    {"lift",encode_matrix(m.invariant_lift)},{"generator",encode_matrix(m.invariant_generator)},
-    {"reduce",encode_matrix(m.invariant_reduce)},{"strategy",m.numerical_strategy},
+  Json j={{"M",encode_matrix(m.definition.read().M)},{"observations",encode_matrix(m.binding.read().observations)},
+    {"constraints",encode_matrix(m.definition.read().constraints)},{"residual_map",encode_matrix(m.binding.read().residual_map)},
+    {"residual_reference",encode_matrix(m.binding.read().residual_reference)},
+    {"lift",encode_matrix(m.definition.read().invariant_lift)},{"generator",encode_matrix(m.definition.read().invariant_generator)},
+    {"reduce",encode_matrix(m.definition.read().invariant_reduce)},{"strategy",m.numerical_strategy},
     {"maps",Json::object()},{"bools",m.bools},{"segments",Json::array()},{"guards",Json::array()}};
   j["observer_maps"]=m.observer_maps;j["observer_rows"]=m.observer_rows;
-  for(auto&[n,v]:m.maps)j["maps"][n]=encode_matrix(v);
+  for(const auto&[n,v]:m.binding.read().maps)j["maps"][n]=encode_matrix(v);
   for(auto&[part,region]:m.segments)j["segments"].push_back({part,region});
-  for(auto&g:m.guards)j["guards"].push_back({{"row",encode_matrix(g.row)},{"part",g.part},
+  for(const auto&g:m.binding.read().guards)j["guards"].push_back({{"row",encode_matrix(g.row)},{"part",g.part},
     {"direction",g.direction},{"kind",g.kind},{"knot",g.knot},{"segment",g.segment},{"step",g.step}});
   return j;
 }
 Mode decode(const Json&j){
-  Mode m;m.M=decode_matrix(j.at("M"));m.observations=decode_matrix(j.at("observations"));
-  m.constraints=decode_matrix(j.at("constraints"));m.residual_map=decode_matrix(j.at("residual_map"));
-  m.residual_reference=decode_matrix(j.at("residual_reference"));
-  m.invariant_lift=decode_matrix(j.at("lift"));m.invariant_generator=decode_matrix(j.at("generator"));m.invariant_reduce=decode_matrix(j.at("reduce"));
+  Mode m;m.definition.edit().M=decode_matrix(j.at("M"));m.binding.edit().observations=decode_matrix(j.at("observations"));
+  m.definition.edit().constraints=decode_matrix(j.at("constraints"));m.binding.edit().residual_map=decode_matrix(j.at("residual_map"));
+  m.binding.edit().residual_reference=decode_matrix(j.at("residual_reference"));
+  m.definition.edit().invariant_lift=decode_matrix(j.at("lift"));m.definition.edit().invariant_generator=decode_matrix(j.at("generator"));m.definition.edit().invariant_reduce=decode_matrix(j.at("reduce"));
   m.observer_maps=j.value("observer_maps",std::set<std::string>{});m.observer_rows=j.value("observer_rows",std::vector<int>{});
   m.numerical_strategy=j.at("strategy");m.bools=j.at("bools").get<std::map<std::string,bool>>();
-  for(auto it=j.at("maps").begin();it!=j.at("maps").end();++it){Matrix a=decode_matrix(it.value());require(a.cols()==1,11,"TRAJECTORY_SHAPE","observation is not a column");m.maps[it.key()]=a;}
+  for(auto it=j.at("maps").begin();it!=j.at("maps").end();++it){Matrix a=decode_matrix(it.value());require(a.cols()==1,11,"TRAJECTORY_SHAPE","observation is not a column");m.binding.edit().maps[it.key()]=a;}
   for(auto&v:j.at("segments"))m.segments[v.at(0).get<int>()]=v.at(1).get<int>();
   for(auto&v:j.at("guards")){
     Mode::Guard g;g.row=decode_matrix(v.at("row"));g.part=v.at("part");g.direction=v.at("direction");g.kind=v.at("kind").get<std::string>();
-    g.knot=v.at("knot");g.segment=v.at("segment");g.step=v.at("step");m.guards.push_back(std::move(g));
+    g.knot=v.at("knot");g.segment=v.at("segment");g.step=v.at("step");m.binding.edit().guards.push_back(std::move(g));
   }
   return m;
 }
@@ -124,9 +124,9 @@ Result Trajectory::read(const std::filesystem::path&dir,const std::function<void
   require(n>0&&n<=10000&&count<=10000000,11,"TRAJECTORY_SHAPE","invalid record dimensions");
   std::vector<Mode> modes;
   auto add_mode=[&](const Json&v){
-    auto m=decode(v);require(size_t(m.M.rows())==n&&size_t(m.M.cols())==n,11,"TRAJECTORY_SHAPE","template/state dimension differs");
-    for(auto&[name,row]:m.maps)require(size_t(row.size())==n,11,"TRAJECTORY_SHAPE","observation dimension differs");
-    for(auto&g:m.guards)require(size_t(g.row.size())==n,11,"TRAJECTORY_SHAPE","guard dimension differs");
+    auto m=decode(v);require(size_t(m.definition.read().M.rows())==n&&size_t(m.definition.read().M.cols())==n,11,"TRAJECTORY_SHAPE","template/state dimension differs");
+    for(const auto&[name,row]:m.binding.read().maps)require(size_t(row.size())==n,11,"TRAJECTORY_SHAPE","observation dimension differs");
+    for(const auto&g:m.binding.read().guards)require(size_t(g.row.size())==n,11,"TRAJECTORY_SHAPE","guard dimension differs");
     modes.push_back(std::move(m));
   };
   if(version==1){auto templates=json(dir/template_file);require(templates.is_array()&&templates.size()<=100000&&meta.at("templates")==templates.size(),11,"TRAJECTORY_SHAPE","invalid template count");for(auto&v:templates){add_mode(v);v=Json();}}

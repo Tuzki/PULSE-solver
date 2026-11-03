@@ -23,11 +23,11 @@ void future_comparator_is_deferred(){
  check(std::abs(*resistor-.5)<1e-12&&std::abs(*comparator-.500000001)<4e-10,"event order or root location changed");
 }
 void reconstructed_direction(const std::string&path){
- std::ifstream in(path);Json j;in>>j;int n=j["initial"].size();Mode m;m.M.resize(n,n);Vector x(n);
- for(int i=0;i<n;i++){x[i]=j["initial"][i];for(int k=0;k<n;k++)m.M(i,k)=j["M"][i][k];}
- Vector guard(n);for(int i=0;i<n;i++)guard[i]=j["guard"][i];m.guards.push_back({guard,0,1,"CMP"});engineering::Flow flow(m,x);
+ std::ifstream in(path);Json j;in>>j;int n=j["initial"].size();Mode m;m.definition.edit().M.resize(n,n);Vector x(n);
+ for(int i=0;i<n;i++){x[i]=j["initial"][i];for(int k=0;k<n;k++)m.definition.edit().M(i,k)=j["M"][i][k];}
+ Vector guard(n);for(int i=0;i<n;i++)guard[i]=j["guard"][i];m.binding.edit().guards.push_back({guard,0,1,"CMP"});engineering::Flow flow(m,x);
  for(auto&sample:j["samples"]){auto state=flow.state(sample["time"]);check(std::abs(state[3]-sample["state"][3].get<double>())<1e-23,"finite fast-mode or difference reconstruction inaccurate");}
- double time=j["event_time"],expected=j["oriented_slope"];auto state=flow.state(time);double direct=guard.dot(m.M*state),along=flow.value(0,time,1);
+ double time=j["event_time"],expected=j["oriented_slope"];auto state=flow.state(time);double direct=guard.dot(m.definition.read().M*state),along=flow.value(0,time,1);
  check(direct>0&&along>0,"reconstructed state reversed the event direction");
  check(std::abs(direct-expected)<1e-4*std::abs(expected)&&std::abs(along-expected)<1e-6*std::abs(expected),"event derivative lost agreement with the independent reference");
 }

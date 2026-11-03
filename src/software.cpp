@@ -109,10 +109,10 @@ struct Data {
             std::map<std::string,double>&writes,bool initial,
             std::vector<Wakeup>&wakeups,std::vector<Json>*logs,uint64_t tx,size_t delta,
             uint32_t trigger_flags=0) {
-    auto &spec=*t.spec;auto old=snapshot.software.at(spec.name);
+    auto &spec=*t.spec;auto old=snapshot.software.read().at(spec.name);
     auto next=old;std::vector<double> inputs=state_signals_prepared(snapshot,t.input_plan),outputs;
     outputs.reserve(t.output_keys.size());
-    for(const auto &name:t.output_keys)outputs.push_back(snapshot.regs.at(name));
+    for(const auto &name:t.output_keys)outputs.push_back(snapshot.regs.read().at(name));
     pulse_software_call c{PULSE_SOFTWARE_ABI,sizeof(pulse_software_call),snapshot.at.seconds(),
       old.invocation,inputs.data(),inputs.size(),spec.parameters.data(),spec.parameters.size(),
       old.bytes.data(),next.bytes.data(),next.bytes.size(),outputs.data(),outputs.size(),
@@ -129,7 +129,7 @@ struct Data {
       writes[name]=v;
     }
     if(!initial)++next.invocation;
-    candidate.software[spec.name]=std::move(next);
+    candidate.software.edit()[spec.name]=std::move(next);
     if(!std::isnan(c.next_delay)) {
       require(!initial&&std::isfinite(c.next_delay)&&c.next_delay>0&&t.self_part>=0,
         7,"SOFTWARE_WAKEUP","next_delay must be finite, positive and associated with a task wakeup",false,spec.source);
@@ -182,8 +182,8 @@ Session::Session(const Model&m):data_(std::make_unique<Data>(m)) {
 }
 Session::~Session()=default;
 void Session::initialize(RunState&s,Stats&) {
-  for(auto &t:data_->tasks)s.software[t.spec->name].bytes.resize(t.module->info.state_bytes,0);
-  RunState snapshot=s;auto writes=s.regs;std::vector<Wakeup> wakeups;
+  for(auto &t:data_->tasks)s.software.edit()[t.spec->name].bytes.resize(t.module->info.state_bytes,0);
+  RunState snapshot=s;auto writes=s.regs.read();std::vector<Wakeup> wakeups;
   for(auto &t:data_->tasks)data_->call(t,snapshot,s,writes,true,wakeups,nullptr,0,0);
   s.regs=std::move(writes);
 }

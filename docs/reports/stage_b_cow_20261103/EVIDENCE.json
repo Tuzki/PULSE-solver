@@ -1,0 +1,3104 @@
+{
+  "base_commit": "0cb30419575f9254901882c14aa88d6e01e78f3f",
+  "branch": "performance/stage-b-cow-20261103",
+  "scope": "Remaining B1/B2 COW only; Stage C absent; validation stopped after exact 17-channel waveform equivalence",
+  "package": {
+    "path": "C:\\Users\\49605\\Downloads\\PULSE_StageB_Remaining_B1_B2_COW_Source_20261103.zip",
+    "bytes": 14986,
+    "sha256": "65fe62836366326d727059c3d8978f7c22e48afeab3ad99fda48eadc1a523a4a"
+  },
+  "apply_command": "python reports/remaining-b-20261103/package/pulse_stage_b_complete_candidate/scripts/apply_remaining_b.py . --in-place",
+  "source_sha256": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae",
+  "windows_binary": {
+    "path": "D:\\codex\\using plecs\\pulse-linux-port\\build-event-opt-windows\\pulse-solver.exe",
+    "bytes": 6570158,
+    "sha256": "1aff4956c7cdca3785711e7dca635d2f34bb7e9a2e7e625752425d5699a1b0d7"
+  },
+  "ctest": {
+    "windows": {
+      "total": 32,
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "trajectory_output",
+          "seconds": 1.25285,
+          "status": "passed"
+        },
+        {
+          "name": "platform_probe",
+          "seconds": 0.233962,
+          "status": "passed"
+        },
+        {
+          "name": "parser",
+          "seconds": 0.153816,
+          "status": "passed"
+        },
+        {
+          "name": "compiler_diagnostics",
+          "seconds": 0.282096,
+          "status": "passed"
+        },
+        {
+          "name": "time_origin",
+          "seconds": 0.181199,
+          "status": "passed"
+        },
+        {
+          "name": "electrical_references",
+          "seconds": 0.439601,
+          "status": "passed"
+        },
+        {
+          "name": "C_ABI_compatibility",
+          "seconds": 0.056725,
+          "status": "passed"
+        },
+        {
+          "name": "NPZ_compatibility",
+          "seconds": 0.229263,
+          "status": "passed"
+        },
+        {
+          "name": "engineering_events",
+          "seconds": 0.556396,
+          "status": "passed"
+        },
+        {
+          "name": "engineering_additional",
+          "seconds": 0.563481,
+          "status": "passed"
+        },
+        {
+          "name": "mode_cache",
+          "seconds": 0.482951,
+          "status": "passed"
+        },
+        {
+          "name": "observer_dependencies",
+          "seconds": 0.446118,
+          "status": "passed"
+        },
+        {
+          "name": "pre_kernel",
+          "seconds": 0.392344,
+          "status": "passed"
+        },
+        {
+          "name": "pevt_protocol",
+          "seconds": 0.53692,
+          "status": "passed"
+        },
+        {
+          "name": "software_domain",
+          "seconds": 2.04357,
+          "status": "passed"
+        },
+        {
+          "name": "transaction_budget",
+          "seconds": 4.47516,
+          "status": "passed"
+        },
+        {
+          "name": "a011_boundary",
+          "seconds": 0.172347,
+          "status": "passed"
+        },
+        {
+          "name": "a011_closure",
+          "seconds": 0.204675,
+          "status": "passed"
+        },
+        {
+          "name": "event_retry_merge",
+          "seconds": 0.530135,
+          "status": "passed"
+        },
+        {
+          "name": "a021_control_d",
+          "seconds": 0.013206,
+          "status": "passed"
+        },
+        {
+          "name": "a021_control_dot",
+          "seconds": 0.013476,
+          "status": "passed"
+        },
+        {
+          "name": "general_strategies",
+          "seconds": 0.327798,
+          "status": "passed"
+        },
+        {
+          "name": "a021_sampling",
+          "seconds": 0.013008,
+          "status": "passed"
+        },
+        {
+          "name": "trajectory",
+          "seconds": 0.202563,
+          "status": "passed"
+        },
+        {
+          "name": "strategy_transaction",
+          "seconds": 0.434831,
+          "status": "passed"
+        },
+        {
+          "name": "phi_affine",
+          "seconds": 0.193397,
+          "status": "passed"
+        },
+        {
+          "name": "group_latest",
+          "seconds": 0.401314,
+          "status": "passed"
+        },
+        {
+          "name": "stage_a_exact_time",
+          "seconds": 0.3245,
+          "status": "passed"
+        },
+        {
+          "name": "stage_a_batch",
+          "seconds": 0.367708,
+          "status": "passed"
+        },
+        {
+          "name": "stage_b_shared_flow",
+          "seconds": 0.330617,
+          "status": "passed"
+        },
+        {
+          "name": "stage_b_cow_transaction",
+          "seconds": 0.13814,
+          "status": "passed"
+        },
+        {
+          "name": "cow_value",
+          "seconds": 0.054426,
+          "status": "passed"
+        }
+      ]
+    },
+    "linux": {
+      "total": 32,
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "trajectory_output",
+          "seconds": 0.6054,
+          "status": "passed"
+        },
+        {
+          "name": "platform_probe",
+          "seconds": 0.0851535,
+          "status": "passed"
+        },
+        {
+          "name": "parser",
+          "seconds": 0.0104598,
+          "status": "passed"
+        },
+        {
+          "name": "compiler_diagnostics",
+          "seconds": 0.00721247,
+          "status": "passed"
+        },
+        {
+          "name": "time_origin",
+          "seconds": 0.00388991,
+          "status": "passed"
+        },
+        {
+          "name": "electrical_references",
+          "seconds": 0.0149424,
+          "status": "passed"
+        },
+        {
+          "name": "C_ABI_compatibility",
+          "seconds": 0.00755143,
+          "status": "passed"
+        },
+        {
+          "name": "NPZ_compatibility",
+          "seconds": 0.011966,
+          "status": "passed"
+        },
+        {
+          "name": "engineering_events",
+          "seconds": 0.0231229,
+          "status": "passed"
+        },
+        {
+          "name": "engineering_additional",
+          "seconds": 0.02479,
+          "status": "passed"
+        },
+        {
+          "name": "mode_cache",
+          "seconds": 0.0200579,
+          "status": "passed"
+        },
+        {
+          "name": "observer_dependencies",
+          "seconds": 0.0164526,
+          "status": "passed"
+        },
+        {
+          "name": "pre_kernel",
+          "seconds": 0.00930136,
+          "status": "passed"
+        },
+        {
+          "name": "pevt_protocol",
+          "seconds": 0.06526,
+          "status": "passed"
+        },
+        {
+          "name": "software_domain",
+          "seconds": 0.705971,
+          "status": "passed"
+        },
+        {
+          "name": "transaction_budget",
+          "seconds": 3.33422,
+          "status": "passed"
+        },
+        {
+          "name": "a011_boundary",
+          "seconds": 0.0117964,
+          "status": "passed"
+        },
+        {
+          "name": "a011_closure",
+          "seconds": 0.0117168,
+          "status": "passed"
+        },
+        {
+          "name": "event_retry_merge",
+          "seconds": 0.00801335,
+          "status": "passed"
+        },
+        {
+          "name": "a021_control_d",
+          "seconds": 0.002012,
+          "status": "passed"
+        },
+        {
+          "name": "a021_control_dot",
+          "seconds": 0.00208465,
+          "status": "passed"
+        },
+        {
+          "name": "general_strategies",
+          "seconds": 0.0250214,
+          "status": "passed"
+        },
+        {
+          "name": "a021_sampling",
+          "seconds": 0.00220228,
+          "status": "passed"
+        },
+        {
+          "name": "trajectory",
+          "seconds": 0.0066592,
+          "status": "passed"
+        },
+        {
+          "name": "strategy_transaction",
+          "seconds": 0.0103025,
+          "status": "passed"
+        },
+        {
+          "name": "phi_affine",
+          "seconds": 0.00447547,
+          "status": "passed"
+        },
+        {
+          "name": "group_latest",
+          "seconds": 0.00739483,
+          "status": "passed"
+        },
+        {
+          "name": "stage_a_exact_time",
+          "seconds": 0.047497,
+          "status": "passed"
+        },
+        {
+          "name": "stage_a_batch",
+          "seconds": 0.00691054,
+          "status": "passed"
+        },
+        {
+          "name": "stage_b_shared_flow",
+          "seconds": 0.00590119,
+          "status": "passed"
+        },
+        {
+          "name": "stage_b_cow_transaction",
+          "seconds": 0.00260551,
+          "status": "passed"
+        },
+        {
+          "name": "cow_value",
+          "seconds": 0.00254625,
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "performance": {
+    "baseline_binary": {
+      "path": "/root/pulse-stage-b-20261103/build-linux/pulse-solver",
+      "bytes": 3107368,
+      "sha256": "9a9dc73d582f63bfe3a7e517e31b7b4c927bd3858f15869c93a2f713ccd13ac7"
+    },
+    "candidate_binary": {
+      "path": "/root/pulse-stage-b-cow-20261103/build-linux/pulse-solver",
+      "bytes": 3094104,
+      "sha256": "734bc2405757bff7f690a266bb35994dab9b78f0c4d3924be22380d5543e0343"
+    },
+    "netlist": {
+      "path": "/root/stage-a-regression-20261103/model/netlist.md",
+      "bytes": 3627,
+      "sha256": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a"
+    },
+    "wall_limit_seconds": 132.8290989997913,
+    "timing": "command start through archive write and root COMPLETED notification; replay excluded",
+    "baseline": {
+      "command": [
+        "/root/pulse-stage-b-20261103/build-linux/pulse-solver",
+        "/root/stage-a-regression-20261103/model/netlist.md",
+        "--t-end",
+        ".5",
+        "--output-format",
+        "trajectory",
+        "--out",
+        "/root/stage-b-regression-20261103/B_0"
+      ],
+      "pid": 393,
+      "returncode": 0,
+      "timed_out": false,
+      "completion_wall_seconds": 68.08481087199999,
+      "exit_wall_seconds": 68.13564573,
+      "cpu_user_seconds": 67.90189400000001,
+      "cpu_system_seconds": 1.349906,
+      "cpu_seconds": 69.25180000000002
+    },
+    "prefix_old": {
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/root/stage-b-cow-regression-20261103/benchmark/5ms-old/resource.txt",
+        "/root/pulse-stage-b-20261103/build-linux/pulse-solver",
+        "/root/stage-a-regression-20261103/model/netlist.md",
+        "--t-end",
+        "0.005",
+        "--output-format",
+        "trajectory",
+        "--out",
+        "/root/stage-b-cow-regression-20261103/benchmark/5ms-old"
+      ],
+      "started_utc": "2026-11-03T13:33:31.836599+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "completion_wall_seconds": 1.1717688379999913,
+      "exit_wall_seconds": 1.1737836949999974,
+      "cpu_user_seconds": 1.12,
+      "cpu_system_seconds": 0.03,
+      "peak_rss_kib": 36304,
+      "cpu_seconds": 1.1500000000000001
+    },
+    "prefix_new": {
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/root/stage-b-cow-regression-20261103/benchmark/5ms-cow/resource.txt",
+        "/root/pulse-stage-b-cow-20261103/build-linux/pulse-solver",
+        "/root/stage-a-regression-20261103/model/netlist.md",
+        "--t-end",
+        "0.005",
+        "--output-format",
+        "trajectory",
+        "--out",
+        "/root/stage-b-cow-regression-20261103/benchmark/5ms-cow"
+      ],
+      "started_utc": "2026-11-03T13:33:33.011272+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "completion_wall_seconds": 0.945541545000026,
+      "exit_wall_seconds": 0.9475098880000132,
+      "cpu_user_seconds": 0.9,
+      "cpu_system_seconds": 0.03,
+      "peak_rss_kib": 36152,
+      "cpu_seconds": 0.93
+    },
+    "prefix_comparison": {
+      "payload_sha256_equal": true,
+      "whole_file_sha256_equal": false,
+      "whole_files": [
+        {
+          "path": "/root/stage-b-cow-regression-20261103/benchmark/5ms-old/out.pevt",
+          "bytes": 3931267,
+          "sha256": "2af3b30e1b02c1119b040c8b3401e48bb5307187fc76e0841c36b8731ade6380"
+        },
+        {
+          "path": "/root/stage-b-cow-regression-20261103/benchmark/5ms-cow/out.pevt",
+          "bytes": 3931266,
+          "sha256": "9e0332ef1d54579c504da9eea0069dbe125f431558b2d0b8f132823b091646d7"
+        }
+      ],
+      "baseline_sections": [
+        [
+          1,
+          1,
+          "63ca2f0e4a5e5f45051275b9073acc2d5ccece946ec1ffdf5662dd0e3e15eda2"
+        ],
+        [
+          2,
+          151,
+          "e73df2555d0fefef4fc9880f15a30b254f743c533b0b7a01da4611189ed777c0"
+        ],
+        [
+          3,
+          1,
+          "8c9a264143378e03be0c08850f95cf1b8727c1ebf31ff22cf6067fe7616488a7"
+        ],
+        [
+          4,
+          899,
+          "01f9502e6d0ea668127dde772cf239b6380f0e20f3c783ade25b0fe8734b96fb"
+        ],
+        [
+          5,
+          2093,
+          "9009c905fcce3fa375d3ed9bccf27bdac9c07cf6ec97ca03c2fdf2978653dfe9"
+        ],
+        [
+          6,
+          2394,
+          "7fc2b14933d308e5b8406083100f178a79486627fc265fbdc920cf0e085c6038"
+        ],
+        [
+          7,
+          2395,
+          "1af21809ff67aba4c69b89d4714c41c53c8f58896ad830b0f6f8668e996a97ae"
+        ],
+        [
+          8,
+          2697,
+          "740e44a72ad0026ddd7b48c030efe84b020e2e87ff4ba8b2c8bcfdd28139588d"
+        ],
+        [
+          9,
+          1,
+          "b23d3afdbd4536a9004d96cf5f8ba1b6aa853fb9b1da36fd3be9d82f8e998204"
+        ],
+        [
+          10,
+          2392,
+          "e198ebd92ca1e175a58c8c8118c45419875b4d30772e4bb71ff2bb07be823ca4"
+        ]
+      ],
+      "candidate_sections": [
+        [
+          1,
+          1,
+          "28f33f05f9b576b2cdd8c209e98773bf088170de010e459413264d6710c4cf93"
+        ],
+        [
+          2,
+          151,
+          "e73df2555d0fefef4fc9880f15a30b254f743c533b0b7a01da4611189ed777c0"
+        ],
+        [
+          3,
+          1,
+          "8c9a264143378e03be0c08850f95cf1b8727c1ebf31ff22cf6067fe7616488a7"
+        ],
+        [
+          4,
+          899,
+          "01f9502e6d0ea668127dde772cf239b6380f0e20f3c783ade25b0fe8734b96fb"
+        ],
+        [
+          5,
+          2093,
+          "9009c905fcce3fa375d3ed9bccf27bdac9c07cf6ec97ca03c2fdf2978653dfe9"
+        ],
+        [
+          6,
+          2394,
+          "7fc2b14933d308e5b8406083100f178a79486627fc265fbdc920cf0e085c6038"
+        ],
+        [
+          7,
+          2395,
+          "1af21809ff67aba4c69b89d4714c41c53c8f58896ad830b0f6f8668e996a97ae"
+        ],
+        [
+          8,
+          2697,
+          "740e44a72ad0026ddd7b48c030efe84b020e2e87ff4ba8b2c8bcfdd28139588d"
+        ],
+        [
+          9,
+          1,
+          "b23d3afdbd4536a9004d96cf5f8ba1b6aa853fb9b1da36fd3be9d82f8e998204"
+        ],
+        [
+          10,
+          2392,
+          "e198ebd92ca1e175a58c8c8118c45419875b4d30772e4bb71ff2bb07be823ca4"
+        ]
+      ],
+      "counters": {
+        "transactions": 2393,
+        "root_queries": 2392,
+        "mode_compilations": 12,
+        "original_equation_cache": {
+          "cache_hits": 7170,
+          "certified_builds": 9,
+          "checks": 7179,
+          "equation_builds": 9,
+          "rebound_hits": 7170
+        },
+        "analog_channels": [
+          "CH001",
+          "CH002",
+          "CH003",
+          "CH004",
+          "CH005",
+          "CH006",
+          "CH007",
+          "CTRL_IL",
+          "CTRL_VAC",
+          "CTRL_VOUT",
+          "MODULATION",
+          "PI_OUT",
+          "PR_OUT"
+        ],
+        "digital_channels": [
+          "AH",
+          "AL",
+          "BH",
+          "BL"
+        ],
+        "T_atom": 1e-14,
+        "effective_SAVE_DT": 1e-07,
+        "effective_T_END": 0.005
+      },
+      "report": {
+        "Q_repr": 5.421010862427522e-20,
+        "T_atom": 1e-14,
+        "algorithm": "EVENT_CHECKPOINT_STRATEGY_RETRY",
+        "algorithm_portfolio": {
+          "checkpoint_policy": "Same immutable post-event RunState for every attempt; canonical difference state retained. MCU writes, invocation counters and queued events are staged in each candidate and only committed once; failed event closure also restores the checkpoint.",
+          "checkpoint_restores": 0,
+          "exhaustion_policy": "Stop at last committed event; no SPICE fallback, no 1 ns rounding, no tolerance relaxation.",
+          "failures": [],
+          "journal_records": 0,
+          "methods": [
+            {
+              "algorithm": 0,
+              "attempts": 2393,
+              "committed": 2393,
+              "executed_paths": {
+                "ALGEBRAIC_LU": 2383,
+                "ALGEBRAIC_WIDE_LU": 10
+              },
+              "failed": 0,
+              "name": "RAW_QPHI_ELIMINATION_LU"
+            },
+            {
+              "algorithm": 1,
+              "attempts": 0,
+              "committed": 0,
+              "executed_paths": {},
+              "failed": 0,
+              "name": "RAW_QPHI_ELIMINATION_QR"
+            },
+            {
+              "algorithm": 2,
+              "attempts": 0,
+              "committed": 0,
+              "executed_paths": {},
+              "failed": 0,
+              "name": "PERSISTENT_DIFFERENCE_LU"
+            }
+          ],
+          "scope": "Three registered candidates only; raw equation elimination operators evaluated in canonical checkpoint coordinates, not an exact replay of the historical raw-state solver.",
+          "validation": "Inherited entry/endpoint checks plus original unstatically-eliminated algebraic equations and physical q/phi derivatives at start, midpoint, endpoint; engineering sampled checks, not a continuous-time certificate."
+        },
+        "analog_channels": [
+          "CH001",
+          "CH002",
+          "CH003",
+          "CH004",
+          "CH005",
+          "CH006",
+          "CH007",
+          "CTRL_IL",
+          "CTRL_VAC",
+          "CTRL_VOUT",
+          "MODULATION",
+          "PI_OUT",
+          "PR_OUT"
+        ],
+        "atomic_time_policy": "FIXED_INDEPENDENT_OF_OUTPUT_GRID",
+        "breakpoint_policy": "FIRST_PLUS_ATOM; execute at latest member; verify each knot at its own prediction",
+        "certificate_scope": "engineering numerical point trajectory; no all-history or global mathematical certificate",
+        "committed_prefix_end": "T128:0:0147ae147ae147b0:0000000000000000",
+        "compile_seconds": 0.007690404,
+        "dependency_roles": {
+          "AH": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "AL": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "BH": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "BL": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "CH001": [
+            "continuous_equation"
+          ],
+          "CH001_RAW": [
+            "continuous_equation"
+          ],
+          "CH002": [
+            "continuous_equation"
+          ],
+          "CH003": [
+            "continuous_equation"
+          ],
+          "CH004": [
+            "continuous_equation"
+          ],
+          "CH005": [
+            "continuous_equation"
+          ],
+          "CH006": [
+            "continuous_equation"
+          ],
+          "CH007": [
+            "continuous_equation"
+          ],
+          "CTRL_IL": [
+            "continuous_equation",
+            "software_input"
+          ],
+          "CTRL_VAC": [
+            "continuous_equation",
+            "software_input"
+          ],
+          "CTRL_VOUT": [
+            "continuous_equation",
+            "software_input"
+          ],
+          "D001_COS": [
+            "continuous_equation",
+            "dynamics"
+          ],
+          "D001_DC": [
+            "continuous_equation",
+            "dynamics"
+          ],
+          "D001_DS": [
+            "continuous_equation",
+            "dynamics"
+          ],
+          "D001_SIN": [
+            "continuous_equation",
+            "dynamics",
+            "electrical_excitation"
+          ],
+          "D001_WAVE": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "MODULATION": [
+            "observation_only"
+          ],
+          "PI_OUT": [
+            "observation_only"
+          ],
+          "PR_OUT": [
+            "observation_only"
+          ],
+          "SAMPLE_CLOCK": [
+            "event_control",
+            "state_update"
+          ]
+        },
+        "diagnostic": {},
+        "digital_channels": [
+          "AH",
+          "AL",
+          "BH",
+          "BL"
+        ],
+        "effective_SAVE_DT": 1e-07,
+        "effective_T_END": 0.005,
+        "event_records_total": 3888,
+        "event_timing_policy": "First+T_atom fixed window, execute at latest member, validate every PWA at own prediction; no absolute time-error veto; exact software deadlines unchanged",
+        "evidence": "ENGINEERING_POINT_TRAJECTORY",
+        "flow_statistics": {
+          "basis_hits": 6863,
+          "basis_misses": 5,
+          "constructions": 5673,
+          "continuations": 2997,
+          "reprojected_continuations": 0,
+          "shared_continuations": 2997
+        },
+        "history_retained": false,
+        "internal_state": [
+          0.4691811459669034,
+          -1.6401557678965515e-15,
+          0.9999999999999981,
+          0.0003687070559405554,
+          1.0
+        ],
+        "matrix_exponentials": 2392,
+        "max_algebraic_residual": 0.0,
+        "max_transactions": 0,
+        "microsteps": 2392,
+        "mode_cache_capacity": 128,
+        "mode_cache_evictions": 0,
+        "mode_cache_hits": 5373,
+        "mode_cache_misses": 12,
+        "mode_cache_peak_entries": 12,
+        "mode_cache_policy": "RUN_SCOPED_ELECTRICAL_KEY_WITH_CERTIFIED_OBSERVER_BINDINGS_FIFO",
+        "mode_compilations": 12,
+        "model_contract": "piecewise-affine modes; explicit transition dynamics where needed; nonzero crossing derivatives; unsupported degeneracy stops safely",
+        "model_version": {
+          "canonical": "P ROFF=1000000000\nC C_D003 REF1_N004 REF1_N005 C=0.001 IC_V=500 =\nEVENT EVENT_PRE_TIMER_SAMPLE_CLOCK SAMPLE_CLOCK MODE=PERIODIC PERIOD=1.6666666666666667e-05 START=0 =\nEVENT EVENT_PRE_WAKE_CONTROL PRE_WAKE_CONTROL AT=0 MODE=AT =\nINT INT_D001_C D001_COS D001_DC IC=1 =\nINT INT_D001_S D001_SIN D001_DS IC=0 =\nI I_D085_BODY REF1_N007 REF1_N006 D085_BODY_I =\nI I_D091_BODY REF1_N006 REF1_N008 D091_BODY_I =\nI I_D105_BODY REF1_N009 0 D105_BODY_I =\nI I_D111_BODY 0 REF1_N010 D111_BODY_I =\nL L_D002 REF1_N002 REF1_N003 IC_I=0 L=0.00033 =\nMATH MATH_CH001_SIGN CH001 =-CH001_RAW\nMATH MATH_D001_DC D001_DC =-314.15926535897933*D001_SIN\nMATH MATH_D001_DS D001_DS =314.15926535897933*D001_COS\nMATH MATH_D001_WAVE D001_WAVE =311.12698372208092*D001_SIN\nMATH MATH_D085_BODY_CORRECTION D085_BODY_CORRECTED =D085_BODY_RAW - 1e-9*D085_VDS\nMATH MATH_D091_BODY_CORRECTION D091_BODY_CORRECTED =D091_BODY_RAW - 1e-9*D091_VDS\nMATH MATH_D105_BODY_CORRECTION D105_BODY_CORRECTED =D105_BODY_RAW - 1e-9*D105_VDS\nMATH MATH_D111_BODY_CORRECTION D111_BODY_CORRECTED =D111_BODY_RAW - 1e-9*D111_VDS\nREG REG_PRE_SOFTWARE_CONTROL_0 BOOL::AH BOOL::AH SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_1 BOOL::AL BOOL::AL SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_2 BOOL::BH BOOL::BH SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_3 BOOL::BL BOOL::BL SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_4 REAL::PI_OUT REAL::PI_OUT SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_5 REAL::PR_OUT REAL::PR_OUT SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_6 REAL::MODULATION REAL::MODULATION SAMPLE_CLOCK IC=0 =\nR R_D004 REF1_N004 REF1_N005 R=75.757575757575751 =\nR R_D006 REF1_N003 REF1_N006 R=0.0050000000000000001 =\nR R_D085_BODY_PROXY D085_BODY_PROXY 0 IV_TABLE=[(-1000000,-125000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D091_BODY_PROXY D091_BODY_PROXY 0 IV_TABLE=[(-1000000,-125000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D105_BODY_PROXY D105_BODY_PROXY 0 IV_TABLE=[(-1000000,-250000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D111_BODY_PROXY D111_BODY_PROXY 0 IV_TABLE=[(-1000000,-250000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nSEL SEL_D085_BODY D085_BODY_I AH D085_BODY_CORRECTED 0 =\nSEL SEL_D091_BODY D091_BODY_I AL D091_BODY_CORRECTED 0 =\nSEL SEL_D105_BODY D105_BODY_I BH D105_BODY_CORRECTED 0 =\nSEL SEL_D111_BODY D111_BODY_I BL D111_BODY_CORRECTED 0 =\nSENSOR SENSOR_CH001 CH001_RAW I V_D001 =\nSENSOR SENSOR_CH002 CH002 V REF1_N000 0 =\nSENSOR SENSOR_CH003 CH003 I R_D004 =\nSENSOR SENSOR_CH004 CH004 V REF1_N004 REF1_N005 =\nSENSOR SENSOR_CH005 CH005 I V_D103 =\nSENSOR SENSOR_CH006 CH006 V REF1_N006 REF1_N008 =\nSENSOR SENSOR_CH007 CH007 I V_D083 =\nSENSOR SENSOR_CTRL_IL CTRL_IL I V_D008 =\nSENSOR SENSOR_CTRL_VAC CTRL_VAC V REF1_N000 0 =\nSENSOR SENSOR_CTRL_VOUT CTRL_VOUT V REF1_N004 REF1_N005 =\nSENSOR SENSOR_D085_BODY D085_BODY_RAW I R_D085_BODY_PROXY =\nSENSOR SENSOR_D085_VDS D085_VDS V REF1_N007 REF1_N006 =\nSENSOR SENSOR_D091_BODY D091_BODY_RAW I R_D091_BODY_PROXY =\nSENSOR SENSOR_D091_VDS D091_VDS V REF1_N006 REF1_N008 =\nSENSOR SENSOR_D105_BODY D105_BODY_RAW I R_D105_BODY_PROXY =\nSENSOR SENSOR_D105_VDS D105_VDS V REF1_N009 0 =\nSENSOR SENSOR_D111_BODY D111_BODY_RAW I R_D111_BODY_PROXY =\nSENSOR SENSOR_D111_VDS D111_VDS V 0 REF1_N010 =\nSW SW_D085 REF1_N007 REF1_N006 AH ROFF=1G RON=0.0080000000000000002 =\nSW SW_D091 REF1_N006 REF1_N008 AL ROFF=1G RON=0.0080000000000000002 =\nSW SW_D105 REF1_N009 0 BH ROFF=1G RON=0.0040000000000000001 =\nSW SW_D111 0 REF1_N010 BL ROFF=1G RON=0.0040000000000000001 =\nV V_D001 REF1_N000 0 D001_WAVE =\nV V_D008 REF1_N000 REF1_N002 DC=0 =\nV V_D082 REF1_N004 REF1_N007 DC=0 =\nV V_D083 REF1_N008 REF1_N005 DC=0 =\nV V_D085_BODY_PROXY D085_BODY_PROXY 0 D085_VDS =\nV V_D091_BODY_PROXY D091_BODY_PROXY 0 D091_VDS =\nV V_D102 REF1_N004 REF1_N009 DC=0 =\nV V_D103 REF1_N010 REF1_N005 DC=0 =\nV V_D105_BODY_PROXY D105_BODY_PROXY 0 D105_VDS =\nV V_D111_BODY_PROXY D111_BODY_PROXY 0 D111_VDS =\nT 0.001\nD 9.9999999999999995e-08\nSAVE CH001 CH002 CH003 CH004 CH005 CH006 CH007 AH AL BH BL CTRL_VOUT CTRL_IL CTRL_VAC PI_OUT PR_OUT MODULATION\nMCU_DECL MCU MCU0 PROGRAM=CTRL\nMCU_DECL TIMER SAMPLE_CLOCK MCU=MCU0 PERIOD=0.000016666666666666667 START=0\nMCU_DECL TASK CONTROL MCU=MCU0 TRIGGER=SAMPLE_CLOCK ENTRY=control_step INPUTS=[CTRL_VOUT,CTRL_IL,CTRL_VAC] OUTPUTS=[BOOL::AH,BOOL::AL,BOOL::BH,BOOL::BL,REAL::PI_OUT,REAL::PR_OUT,REAL::MODULATION] INIT_OUTPUTS=[0,0,0,0,0,0,0] PARAMS=[]\nCODE_DECL PROGRAM CTRL SOURCES=[\"controller.c\"]\n",
+          "deadline_inputs": {
+            "EVENT_PRE_TIMER_SAMPLE_CLOCK": {
+              "PERIOD": "1.6666666666666667e-05",
+              "START": "0"
+            },
+            "EVENT_PRE_WAKE_CONTROL": {
+              "AT": "0"
+            }
+          },
+          "encoding": "canonical pulse-netlist-1.1",
+          "parameter_inputs": {
+            "ROFF": "1G"
+          }
+        },
+        "netlist_format": "1.2pre",
+        "original_equation_cache": {
+          "cache_hits": 7170,
+          "certified_builds": 9,
+          "checks": 7179,
+          "equation_builds": 9,
+          "rebound_hits": 7170
+        },
+        "output_format": "trajectory",
+        "parse_and_compile_seconds": 0.008309219,
+        "parse_seconds": 0.000428985,
+        "performance_phases": {
+          "enabled": false
+        },
+        "persistent_chart": {
+          "T": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "cross_event_policy": "Same fixed chart: RunState vector copied directly; no physical-view roundtrip.",
+          "difference_slot": -1,
+          "enabled": false,
+          "initial_encodes": 1,
+          "internal_coordinate_ids": [
+            "affine[0:C_D003/q:0x1p+0;]+0",
+            "affine[1:INT_D001_C/eta:0x1p+0;]+0",
+            "affine[2:INT_D001_S/eta:0x1p+0;]+0",
+            "affine[3:L_D002/phi:0x1p+0;]+0"
+          ],
+          "physical_state_ids": [
+            "C_D003/q",
+            "INT_D001_C/eta",
+            "INT_D001_S/eta",
+            "L_D002/phi"
+          ],
+          "physical_view_L": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "physical_views_for_diagnostics": 8670,
+          "reason": "No independent multi-storage incidence row; identity.",
+          "scope": "Linear scalar storage; graph-derived fixed KCL difference, not arbitrary chart selection."
+        },
+        "physical_state_ids": [
+          "C_D003/q",
+          "INT_D001_C/eta",
+          "INT_D001_S/eta",
+          "L_D002/phi"
+        ],
+        "physical_state_view": [
+          0.4691811459669034,
+          -1.6401557678965515e-15,
+          0.9999999999999981,
+          0.0003687070559405554,
+          1.0
+        ],
+        "projection_count": 0,
+        "queue_peak": 2,
+        "registry": [
+          "AH",
+          "AL",
+          "BH",
+          "BL",
+          "CH001",
+          "CH001_RAW",
+          "CH002",
+          "CH003",
+          "CH004",
+          "CH005",
+          "CH006",
+          "CH007",
+          "CTRL_IL",
+          "CTRL_VAC",
+          "CTRL_VOUT",
+          "D001_COS",
+          "D001_DC",
+          "D001_DS",
+          "D001_SIN",
+          "D001_WAVE",
+          "D085_BODY_CORRECTED",
+          "D085_BODY_I",
+          "D085_BODY_RAW",
+          "D085_VDS",
+          "D091_BODY_CORRECTED",
+          "D091_BODY_I",
+          "D091_BODY_RAW",
+          "D091_VDS",
+          "D105_BODY_CORRECTED",
+          "D105_BODY_I",
+          "D105_BODY_RAW",
+          "D105_VDS",
+          "D111_BODY_CORRECTED",
+          "D111_BODY_I",
+          "D111_BODY_RAW",
+          "D111_VDS",
+          "I(C_D003)",
+          "I(I_D085_BODY)",
+          "I(I_D091_BODY)",
+          "I(I_D105_BODY)",
+          "I(I_D111_BODY)",
+          "I(L_D002)",
+          "I(R_D004)",
+          "I(R_D006)",
+          "I(R_D085_BODY_PROXY)",
+          "I(R_D091_BODY_PROXY)",
+          "I(R_D105_BODY_PROXY)",
+          "I(R_D111_BODY_PROXY)",
+          "I(SW_D085)",
+          "I(SW_D091)",
+          "I(SW_D105)",
+          "I(SW_D111)",
+          "I(V_D001)",
+          "I(V_D008)",
+          "I(V_D082)",
+          "I(V_D083)",
+          "I(V_D085_BODY_PROXY)",
+          "I(V_D091_BODY_PROXY)",
+          "I(V_D102)",
+          "I(V_D103)",
+          "I(V_D105_BODY_PROXY)",
+          "I(V_D111_BODY_PROXY)",
+          "MODULATION",
+          "PI_OUT",
+          "PR_OUT",
+          "V(D085_BODY_PROXY)",
+          "V(D091_BODY_PROXY)",
+          "V(D105_BODY_PROXY)",
+          "V(D111_BODY_PROXY)",
+          "V(REF1_N000)",
+          "V(REF1_N002)",
+          "V(REF1_N003)",
+          "V(REF1_N004)",
+          "V(REF1_N005)",
+          "V(REF1_N006)",
+          "V(REF1_N007)",
+          "V(REF1_N008)",
+          "V(REF1_N009)",
+          "V(REF1_N010)"
+        ],
+        "rollbacks": 0,
+        "root_failures": 0,
+        "root_queries": 2392,
+        "run_seconds": 0.86406315,
+        "simulated_seconds": 0.005,
+        "software_final_outputs": {
+          "AH": 0.0,
+          "AL": 1.0,
+          "BH": 0.0,
+          "BL": 1.0,
+          "MODULATION": 0.3256644983739458,
+          "PI_OUT": 0.7905613867869731,
+          "PR_OUT": 0.07406113355050524
+        },
+        "software_modules": [
+          {
+            "binary_sha256": "987d6302c03b844e003769ab631b6abdaba555646f427260dc10e24fa9849771",
+            "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+            "dependencies": [
+              {
+                "path": "/root/pulse-stage-a-20261103/include/pulse/software.h",
+                "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+              },
+              {
+                "path": "/root/stage-a-regression-20261103/model/controller.c",
+                "sha256": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53"
+              },
+              {
+                "path": "/root/stage-a-regression-20261103/model/transition.h",
+                "sha256": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472"
+              }
+            ],
+            "program": "CTRL",
+            "sources": [
+              "controller.c"
+            ]
+          }
+        ],
+        "software_states": {
+          "CONTROL": {
+            "invocations": 1496,
+            "state_bytes": 272
+          }
+        },
+        "source_sha256": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae",
+        "spice_policy": "NOT_IMPLEMENTED: event propagation only",
+        "state_storage": "internal coordinates are authoritative; public physical q/phi/INT snapshots are read-only views",
+        "status": "COMPLETED",
+        "strategy_consistency": {
+          "committed_strategy": 0,
+          "enforced": true,
+          "policy": "One explicit numerical strategy for prediction, propagation, all closure microsteps and commit; failed attempts roll back and recompute all candidates from the immutable checkpoint."
+        },
+        "time_backend": "T128: signed seconds plus 128 fractional bits",
+        "transaction_limit": 0,
+        "transaction_limit_policy": "UNLIMITED_TOTAL; BOUNDED_SAME_TIME_CLOSURE",
+        "transactions": 2393,
+        "version": "1.2.0-pre",
+        "waveform_validation": "DEFERRED_TO_REPLAY"
+      }
+    },
+    "full_new": {
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/root/stage-b-cow-regression-20261103/benchmark/500ms-cow/resource.txt",
+        "/root/pulse-stage-b-cow-20261103/build-linux/pulse-solver",
+        "/root/stage-a-regression-20261103/model/netlist.md",
+        "--t-end",
+        "0.5",
+        "--output-format",
+        "trajectory",
+        "--out",
+        "/root/stage-b-cow-regression-20261103/benchmark/500ms-cow"
+      ],
+      "started_utc": "2026-11-03T13:33:33.973229+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "completion_wall_seconds": 61.601001628000006,
+      "exit_wall_seconds": 61.657130698,
+      "cpu_user_seconds": 60.71,
+      "cpu_system_seconds": 1.48,
+      "peak_rss_kib": 1162312,
+      "cpu_seconds": 62.19
+    },
+    "full_comparison": {
+      "payload_sha256_equal": true,
+      "whole_file_sha256_equal": false,
+      "whole_files": [
+        {
+          "path": "/root/stage-b-regression-20261103/B_0/out.pevt",
+          "bytes": 162836775,
+          "sha256": "41f8b5ff09eccb42a3c3e278daf0d856c1a2fa6191286ea84e9f03f689209633"
+        },
+        {
+          "path": "/root/stage-b-cow-regression-20261103/benchmark/500ms-cow/out.pevt",
+          "bytes": 162836777,
+          "sha256": "c414df13572985c0dadce67695902bce171bf1d04a160489561d6e2c893c8f20"
+        }
+      ],
+      "baseline_sections": [
+        [
+          1,
+          1,
+          "ffb0fef96be6679ff3e4e2f3e70910151aed964516cd19cdd8ebe36af2a01add"
+        ],
+        [
+          2,
+          229,
+          "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f"
+        ],
+        [
+          3,
+          1,
+          "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1"
+        ],
+        [
+          4,
+          89243,
+          "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98"
+        ],
+        [
+          5,
+          92893,
+          "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992"
+        ],
+        [
+          6,
+          159038,
+          "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07"
+        ],
+        [
+          7,
+          159039,
+          "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8"
+        ],
+        [
+          8,
+          196639,
+          "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5"
+        ],
+        [
+          9,
+          1,
+          "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965"
+        ],
+        [
+          10,
+          159036,
+          "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314"
+        ]
+      ],
+      "candidate_sections": [
+        [
+          1,
+          1,
+          "338979c50f07334172bf4a621cb30515dadfcb8a303b77ecb2fed0bb0a83f6ff"
+        ],
+        [
+          2,
+          229,
+          "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f"
+        ],
+        [
+          3,
+          1,
+          "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1"
+        ],
+        [
+          4,
+          89243,
+          "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98"
+        ],
+        [
+          5,
+          92893,
+          "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992"
+        ],
+        [
+          6,
+          159038,
+          "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07"
+        ],
+        [
+          7,
+          159039,
+          "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8"
+        ],
+        [
+          8,
+          196639,
+          "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5"
+        ],
+        [
+          9,
+          1,
+          "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965"
+        ],
+        [
+          10,
+          159036,
+          "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314"
+        ]
+      ],
+      "counters": {
+        "transactions": 159037,
+        "root_queries": 159036,
+        "mode_compilations": 26,
+        "original_equation_cache": {
+          "cache_hits": 477092,
+          "certified_builds": 19,
+          "checks": 477111,
+          "equation_builds": 19,
+          "rebound_hits": 477092
+        },
+        "analog_channels": [
+          "CH001",
+          "CH002",
+          "CH003",
+          "CH004",
+          "CH005",
+          "CH006",
+          "CH007",
+          "CTRL_IL",
+          "CTRL_VAC",
+          "CTRL_VOUT",
+          "MODULATION",
+          "PI_OUT",
+          "PR_OUT"
+        ],
+        "digital_channels": [
+          "AH",
+          "AL",
+          "BH",
+          "BL"
+        ],
+        "T_atom": 1e-14,
+        "effective_SAVE_DT": 1e-07,
+        "effective_T_END": 0.5
+      },
+      "report": {
+        "Q_repr": 5.421010862427522e-20,
+        "T_atom": 1e-14,
+        "algorithm": "EVENT_CHECKPOINT_STRATEGY_RETRY",
+        "algorithm_portfolio": {
+          "checkpoint_policy": "Same immutable post-event RunState for every attempt; canonical difference state retained. MCU writes, invocation counters and queued events are staged in each candidate and only committed once; failed event closure also restores the checkpoint.",
+          "checkpoint_restores": 0,
+          "exhaustion_policy": "Stop at last committed event; no SPICE fallback, no 1 ns rounding, no tolerance relaxation.",
+          "failures": [],
+          "journal_records": 0,
+          "methods": [
+            {
+              "algorithm": 0,
+              "attempts": 159037,
+              "committed": 159037,
+              "executed_paths": {
+                "ALGEBRAIC_LU": 157851,
+                "ALGEBRAIC_WIDE_LU": 1186
+              },
+              "failed": 0,
+              "name": "RAW_QPHI_ELIMINATION_LU"
+            },
+            {
+              "algorithm": 1,
+              "attempts": 0,
+              "committed": 0,
+              "executed_paths": {},
+              "failed": 0,
+              "name": "RAW_QPHI_ELIMINATION_QR"
+            },
+            {
+              "algorithm": 2,
+              "attempts": 0,
+              "committed": 0,
+              "executed_paths": {},
+              "failed": 0,
+              "name": "PERSISTENT_DIFFERENCE_LU"
+            }
+          ],
+          "scope": "Three registered candidates only; raw equation elimination operators evaluated in canonical checkpoint coordinates, not an exact replay of the historical raw-state solver.",
+          "validation": "Inherited entry/endpoint checks plus original unstatically-eliminated algebraic equations and physical q/phi derivatives at start, midpoint, endpoint; engineering sampled checks, not a continuous-time certificate."
+        },
+        "analog_channels": [
+          "CH001",
+          "CH002",
+          "CH003",
+          "CH004",
+          "CH005",
+          "CH006",
+          "CH007",
+          "CTRL_IL",
+          "CTRL_VAC",
+          "CTRL_VOUT",
+          "MODULATION",
+          "PI_OUT",
+          "PR_OUT"
+        ],
+        "atomic_time_policy": "FIXED_INDEPENDENT_OF_OUTPUT_GRID",
+        "breakpoint_policy": "FIRST_PLUS_ATOM; execute at latest member; verify each knot at its own prediction",
+        "certificate_scope": "engineering numerical point trajectory; no all-history or global mathematical certificate",
+        "committed_prefix_end": "T128:0:8000000000000000:0000000000000000",
+        "compile_seconds": 0.00711948,
+        "dependency_roles": {
+          "AH": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "AL": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "BH": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "BL": [
+            "continuous_equation",
+            "electrical_excitation",
+            "topology"
+          ],
+          "CH001": [
+            "continuous_equation"
+          ],
+          "CH001_RAW": [
+            "continuous_equation"
+          ],
+          "CH002": [
+            "continuous_equation"
+          ],
+          "CH003": [
+            "continuous_equation"
+          ],
+          "CH004": [
+            "continuous_equation"
+          ],
+          "CH005": [
+            "continuous_equation"
+          ],
+          "CH006": [
+            "continuous_equation"
+          ],
+          "CH007": [
+            "continuous_equation"
+          ],
+          "CTRL_IL": [
+            "continuous_equation",
+            "software_input"
+          ],
+          "CTRL_VAC": [
+            "continuous_equation",
+            "software_input"
+          ],
+          "CTRL_VOUT": [
+            "continuous_equation",
+            "software_input"
+          ],
+          "D001_COS": [
+            "continuous_equation",
+            "dynamics"
+          ],
+          "D001_DC": [
+            "continuous_equation",
+            "dynamics"
+          ],
+          "D001_DS": [
+            "continuous_equation",
+            "dynamics"
+          ],
+          "D001_SIN": [
+            "continuous_equation",
+            "dynamics",
+            "electrical_excitation"
+          ],
+          "D001_WAVE": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D085_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D091_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D105_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_BODY_CORRECTED": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_BODY_I": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_BODY_RAW": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "D111_VDS": [
+            "continuous_equation",
+            "electrical_excitation"
+          ],
+          "MODULATION": [
+            "observation_only"
+          ],
+          "PI_OUT": [
+            "observation_only"
+          ],
+          "PR_OUT": [
+            "observation_only"
+          ],
+          "SAMPLE_CLOCK": [
+            "event_control",
+            "state_update"
+          ]
+        },
+        "diagnostic": {},
+        "digital_channels": [
+          "AH",
+          "AL",
+          "BH",
+          "BL"
+        ],
+        "effective_SAVE_DT": 1e-07,
+        "effective_T_END": 0.5,
+        "event_records_total": 315096,
+        "event_timing_policy": "First+T_atom fixed window, execute at latest member, validate every PWA at own prediction; no absolute time-error veto; exact software deadlines unchanged",
+        "evidence": "ENGINEERING_POINT_TRAJECTORY",
+        "flow_statistics": {
+          "basis_hits": 483014,
+          "basis_misses": 10,
+          "constructions": 478908,
+          "continuations": 234237,
+          "reprojected_continuations": 0,
+          "shared_continuations": 234237
+        },
+        "history_retained": false,
+        "internal_state": [
+          0.49940080628434025,
+          0.9999999999999953,
+          9.892124249453235e-15,
+          1.6480226602840814e-10,
+          1.0
+        ],
+        "matrix_exponentials": 159036,
+        "max_algebraic_residual": 0.0,
+        "max_transactions": 0,
+        "microsteps": 159036,
+        "mode_cache_capacity": 128,
+        "mode_cache_evictions": 0,
+        "mode_cache_hits": 377391,
+        "mode_cache_misses": 26,
+        "mode_cache_peak_entries": 26,
+        "mode_cache_policy": "RUN_SCOPED_ELECTRICAL_KEY_WITH_CERTIFIED_OBSERVER_BINDINGS_FIFO",
+        "mode_compilations": 26,
+        "model_contract": "piecewise-affine modes; explicit transition dynamics where needed; nonzero crossing derivatives; unsupported degeneracy stops safely",
+        "model_version": {
+          "canonical": "P ROFF=1000000000\nC C_D003 REF1_N004 REF1_N005 C=0.001 IC_V=500 =\nEVENT EVENT_PRE_TIMER_SAMPLE_CLOCK SAMPLE_CLOCK MODE=PERIODIC PERIOD=1.6666666666666667e-05 START=0 =\nEVENT EVENT_PRE_WAKE_CONTROL PRE_WAKE_CONTROL AT=0 MODE=AT =\nINT INT_D001_C D001_COS D001_DC IC=1 =\nINT INT_D001_S D001_SIN D001_DS IC=0 =\nI I_D085_BODY REF1_N007 REF1_N006 D085_BODY_I =\nI I_D091_BODY REF1_N006 REF1_N008 D091_BODY_I =\nI I_D105_BODY REF1_N009 0 D105_BODY_I =\nI I_D111_BODY 0 REF1_N010 D111_BODY_I =\nL L_D002 REF1_N002 REF1_N003 IC_I=0 L=0.00033 =\nMATH MATH_CH001_SIGN CH001 =-CH001_RAW\nMATH MATH_D001_DC D001_DC =-314.15926535897933*D001_SIN\nMATH MATH_D001_DS D001_DS =314.15926535897933*D001_COS\nMATH MATH_D001_WAVE D001_WAVE =311.12698372208092*D001_SIN\nMATH MATH_D085_BODY_CORRECTION D085_BODY_CORRECTED =D085_BODY_RAW - 1e-9*D085_VDS\nMATH MATH_D091_BODY_CORRECTION D091_BODY_CORRECTED =D091_BODY_RAW - 1e-9*D091_VDS\nMATH MATH_D105_BODY_CORRECTION D105_BODY_CORRECTED =D105_BODY_RAW - 1e-9*D105_VDS\nMATH MATH_D111_BODY_CORRECTION D111_BODY_CORRECTED =D111_BODY_RAW - 1e-9*D111_VDS\nREG REG_PRE_SOFTWARE_CONTROL_0 BOOL::AH BOOL::AH SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_1 BOOL::AL BOOL::AL SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_2 BOOL::BH BOOL::BH SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_3 BOOL::BL BOOL::BL SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_4 REAL::PI_OUT REAL::PI_OUT SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_5 REAL::PR_OUT REAL::PR_OUT SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_6 REAL::MODULATION REAL::MODULATION SAMPLE_CLOCK IC=0 =\nR R_D004 REF1_N004 REF1_N005 R=75.757575757575751 =\nR R_D006 REF1_N003 REF1_N006 R=0.0050000000000000001 =\nR R_D085_BODY_PROXY D085_BODY_PROXY 0 IV_TABLE=[(-1000000,-125000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D091_BODY_PROXY D091_BODY_PROXY 0 IV_TABLE=[(-1000000,-125000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D105_BODY_PROXY D105_BODY_PROXY 0 IV_TABLE=[(-1000000,-250000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D111_BODY_PROXY D111_BODY_PROXY 0 IV_TABLE=[(-1000000,-250000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nSEL SEL_D085_BODY D085_BODY_I AH D085_BODY_CORRECTED 0 =\nSEL SEL_D091_BODY D091_BODY_I AL D091_BODY_CORRECTED 0 =\nSEL SEL_D105_BODY D105_BODY_I BH D105_BODY_CORRECTED 0 =\nSEL SEL_D111_BODY D111_BODY_I BL D111_BODY_CORRECTED 0 =\nSENSOR SENSOR_CH001 CH001_RAW I V_D001 =\nSENSOR SENSOR_CH002 CH002 V REF1_N000 0 =\nSENSOR SENSOR_CH003 CH003 I R_D004 =\nSENSOR SENSOR_CH004 CH004 V REF1_N004 REF1_N005 =\nSENSOR SENSOR_CH005 CH005 I V_D103 =\nSENSOR SENSOR_CH006 CH006 V REF1_N006 REF1_N008 =\nSENSOR SENSOR_CH007 CH007 I V_D083 =\nSENSOR SENSOR_CTRL_IL CTRL_IL I V_D008 =\nSENSOR SENSOR_CTRL_VAC CTRL_VAC V REF1_N000 0 =\nSENSOR SENSOR_CTRL_VOUT CTRL_VOUT V REF1_N004 REF1_N005 =\nSENSOR SENSOR_D085_BODY D085_BODY_RAW I R_D085_BODY_PROXY =\nSENSOR SENSOR_D085_VDS D085_VDS V REF1_N007 REF1_N006 =\nSENSOR SENSOR_D091_BODY D091_BODY_RAW I R_D091_BODY_PROXY =\nSENSOR SENSOR_D091_VDS D091_VDS V REF1_N006 REF1_N008 =\nSENSOR SENSOR_D105_BODY D105_BODY_RAW I R_D105_BODY_PROXY =\nSENSOR SENSOR_D105_VDS D105_VDS V REF1_N009 0 =\nSENSOR SENSOR_D111_BODY D111_BODY_RAW I R_D111_BODY_PROXY =\nSENSOR SENSOR_D111_VDS D111_VDS V 0 REF1_N010 =\nSW SW_D085 REF1_N007 REF1_N006 AH ROFF=1G RON=0.0080000000000000002 =\nSW SW_D091 REF1_N006 REF1_N008 AL ROFF=1G RON=0.0080000000000000002 =\nSW SW_D105 REF1_N009 0 BH ROFF=1G RON=0.0040000000000000001 =\nSW SW_D111 0 REF1_N010 BL ROFF=1G RON=0.0040000000000000001 =\nV V_D001 REF1_N000 0 D001_WAVE =\nV V_D008 REF1_N000 REF1_N002 DC=0 =\nV V_D082 REF1_N004 REF1_N007 DC=0 =\nV V_D083 REF1_N008 REF1_N005 DC=0 =\nV V_D085_BODY_PROXY D085_BODY_PROXY 0 D085_VDS =\nV V_D091_BODY_PROXY D091_BODY_PROXY 0 D091_VDS =\nV V_D102 REF1_N004 REF1_N009 DC=0 =\nV V_D103 REF1_N010 REF1_N005 DC=0 =\nV V_D105_BODY_PROXY D105_BODY_PROXY 0 D105_VDS =\nV V_D111_BODY_PROXY D111_BODY_PROXY 0 D111_VDS =\nT 0.001\nD 9.9999999999999995e-08\nSAVE CH001 CH002 CH003 CH004 CH005 CH006 CH007 AH AL BH BL CTRL_VOUT CTRL_IL CTRL_VAC PI_OUT PR_OUT MODULATION\nMCU_DECL MCU MCU0 PROGRAM=CTRL\nMCU_DECL TIMER SAMPLE_CLOCK MCU=MCU0 PERIOD=0.000016666666666666667 START=0\nMCU_DECL TASK CONTROL MCU=MCU0 TRIGGER=SAMPLE_CLOCK ENTRY=control_step INPUTS=[CTRL_VOUT,CTRL_IL,CTRL_VAC] OUTPUTS=[BOOL::AH,BOOL::AL,BOOL::BH,BOOL::BL,REAL::PI_OUT,REAL::PR_OUT,REAL::MODULATION] INIT_OUTPUTS=[0,0,0,0,0,0,0] PARAMS=[]\nCODE_DECL PROGRAM CTRL SOURCES=[\"controller.c\"]\n",
+          "deadline_inputs": {
+            "EVENT_PRE_TIMER_SAMPLE_CLOCK": {
+              "PERIOD": "1.6666666666666667e-05",
+              "START": "0"
+            },
+            "EVENT_PRE_WAKE_CONTROL": {
+              "AT": "0"
+            }
+          },
+          "encoding": "canonical pulse-netlist-1.1",
+          "parameter_inputs": {
+            "ROFF": "1G"
+          }
+        },
+        "netlist_format": "1.2pre",
+        "original_equation_cache": {
+          "cache_hits": 477092,
+          "certified_builds": 19,
+          "checks": 477111,
+          "equation_builds": 19,
+          "rebound_hits": 477092
+        },
+        "output_format": "trajectory",
+        "parse_and_compile_seconds": 0.007613068,
+        "parse_seconds": 0.000254413,
+        "performance_phases": {
+          "enabled": false
+        },
+        "persistent_chart": {
+          "T": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "cross_event_policy": "Same fixed chart: RunState vector copied directly; no physical-view roundtrip.",
+          "difference_slot": -1,
+          "enabled": false,
+          "initial_encodes": 1,
+          "internal_coordinate_ids": [
+            "affine[0:C_D003/q:0x1p+0;]+0",
+            "affine[1:INT_D001_C/eta:0x1p+0;]+0",
+            "affine[2:INT_D001_S/eta:0x1p+0;]+0",
+            "affine[3:L_D002/phi:0x1p+0;]+0"
+          ],
+          "physical_state_ids": [
+            "C_D003/q",
+            "INT_D001_C/eta",
+            "INT_D001_S/eta",
+            "L_D002/phi"
+          ],
+          "physical_view_L": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "physical_views_for_diagnostics": 539426,
+          "reason": "No independent multi-storage incidence row; identity.",
+          "scope": "Linear scalar storage; graph-derived fixed KCL difference, not arbitrary chart selection."
+        },
+        "physical_state_ids": [
+          "C_D003/q",
+          "INT_D001_C/eta",
+          "INT_D001_S/eta",
+          "L_D002/phi"
+        ],
+        "physical_state_view": [
+          0.49940080628434025,
+          0.9999999999999953,
+          9.892124249453235e-15,
+          1.6480226602840814e-10,
+          1.0
+        ],
+        "projection_count": 0,
+        "queue_peak": 13,
+        "registry": [
+          "AH",
+          "AL",
+          "BH",
+          "BL",
+          "CH001",
+          "CH001_RAW",
+          "CH002",
+          "CH003",
+          "CH004",
+          "CH005",
+          "CH006",
+          "CH007",
+          "CTRL_IL",
+          "CTRL_VAC",
+          "CTRL_VOUT",
+          "D001_COS",
+          "D001_DC",
+          "D001_DS",
+          "D001_SIN",
+          "D001_WAVE",
+          "D085_BODY_CORRECTED",
+          "D085_BODY_I",
+          "D085_BODY_RAW",
+          "D085_VDS",
+          "D091_BODY_CORRECTED",
+          "D091_BODY_I",
+          "D091_BODY_RAW",
+          "D091_VDS",
+          "D105_BODY_CORRECTED",
+          "D105_BODY_I",
+          "D105_BODY_RAW",
+          "D105_VDS",
+          "D111_BODY_CORRECTED",
+          "D111_BODY_I",
+          "D111_BODY_RAW",
+          "D111_VDS",
+          "I(C_D003)",
+          "I(I_D085_BODY)",
+          "I(I_D091_BODY)",
+          "I(I_D105_BODY)",
+          "I(I_D111_BODY)",
+          "I(L_D002)",
+          "I(R_D004)",
+          "I(R_D006)",
+          "I(R_D085_BODY_PROXY)",
+          "I(R_D091_BODY_PROXY)",
+          "I(R_D105_BODY_PROXY)",
+          "I(R_D111_BODY_PROXY)",
+          "I(SW_D085)",
+          "I(SW_D091)",
+          "I(SW_D105)",
+          "I(SW_D111)",
+          "I(V_D001)",
+          "I(V_D008)",
+          "I(V_D082)",
+          "I(V_D083)",
+          "I(V_D085_BODY_PROXY)",
+          "I(V_D091_BODY_PROXY)",
+          "I(V_D102)",
+          "I(V_D103)",
+          "I(V_D105_BODY_PROXY)",
+          "I(V_D111_BODY_PROXY)",
+          "MODULATION",
+          "PI_OUT",
+          "PR_OUT",
+          "V(D085_BODY_PROXY)",
+          "V(D091_BODY_PROXY)",
+          "V(D105_BODY_PROXY)",
+          "V(D111_BODY_PROXY)",
+          "V(REF1_N000)",
+          "V(REF1_N002)",
+          "V(REF1_N003)",
+          "V(REF1_N004)",
+          "V(REF1_N005)",
+          "V(REF1_N006)",
+          "V(REF1_N007)",
+          "V(REF1_N008)",
+          "V(REF1_N009)",
+          "V(REF1_N010)"
+        ],
+        "rollbacks": 0,
+        "root_failures": 0,
+        "root_queries": 159036,
+        "run_seconds": 57.559145741,
+        "simulated_seconds": 0.5,
+        "software_final_outputs": {
+          "AH": 0.0,
+          "AL": 0.0,
+          "BH": 1.0,
+          "BL": 0.0,
+          "MODULATION": 0.9900450805564083,
+          "PI_OUT": 14.775995091507795,
+          "PR_OUT": 0.8572446838186716
+        },
+        "software_modules": [
+          {
+            "binary_sha256": "987d6302c03b844e003769ab631b6abdaba555646f427260dc10e24fa9849771",
+            "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+            "dependencies": [
+              {
+                "path": "/root/pulse-stage-a-20261103/include/pulse/software.h",
+                "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+              },
+              {
+                "path": "/root/stage-a-regression-20261103/model/controller.c",
+                "sha256": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53"
+              },
+              {
+                "path": "/root/stage-a-regression-20261103/model/transition.h",
+                "sha256": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472"
+              }
+            ],
+            "program": "CTRL",
+            "sources": [
+              "controller.c"
+            ]
+          }
+        ],
+        "software_states": {
+          "CONTROL": {
+            "invocations": 156060,
+            "state_bytes": 272
+          }
+        },
+        "source_sha256": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae",
+        "spice_policy": "NOT_IMPLEMENTED: event propagation only",
+        "state_storage": "internal coordinates are authoritative; public physical q/phi/INT snapshots are read-only views",
+        "status": "COMPLETED",
+        "strategy_consistency": {
+          "committed_strategy": 0,
+          "enforced": true,
+          "policy": "One explicit numerical strategy for prediction, propagation, all closure microsteps and commit; failed attempts roll back and recompute all candidates from the immutable checkpoint."
+        },
+        "time_backend": "T128: signed seconds plus 128 fractional bits",
+        "transaction_limit": 0,
+        "transaction_limit_policy": "UNLIMITED_TOTAL; BOUNDED_SAME_TIME_CLOSURE",
+        "transactions": 159037,
+        "version": "1.2.0-pre",
+        "waveform_validation": "DEFERRED_TO_REPLAY"
+      }
+    },
+    "wall_reduction_percent": 9.523136160559513,
+    "baseline_over_candidate": 1.1052549321057281,
+    "baseline_reused": true,
+    "repetitions": 1
+  },
+  "waveforms": {
+    "baseline": "/root/stage-b-regression-20261103/replay/out.pewave.npz",
+    "candidate": "/root/stage-b-cow-regression-20261103/replay/out.pewave.npz",
+    "bitwise_equal": true,
+    "baseline_members": {
+      "time.npy": {
+        "uncompressed_bytes": 40000136,
+        "sha256": "665eb5e0bd5be7dfc5af58c8e2dca0db93f7ed1969904bd85b95744e136f6ece"
+      },
+      "s0000.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "b2d7775d527ff9000e12f4810d90a66456865a4921b1b646171259285bad8593"
+      },
+      "s0001.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "a8cc545d97d50eb490caca544302ad7c1086a236d2dc49dfffa1ca7e1db5b7fc"
+      },
+      "s0002.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "78f64dc572a8c04d137b13af863c1117fc7dfd350ca960a1c8f70469abff50f7"
+      },
+      "s0003.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4106c3647e0d98d39a394bbec46bfcdcdb2d9ebfd686e0cc91726fd6237e7a68"
+      },
+      "s0004.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "7b66c14ca6e1be203eb57672f1eed56d6b18cb6a725bafe3995066ffcaaa1e62"
+      },
+      "s0005.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "875d3513959eff6ffaf742d9c2b970682352d1ea594ac2394de3c9f580178890"
+      },
+      "s0006.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4f6899676c44d0157fa2e87d59320f31082f8e35a3225d80edfb802ae90f6acb"
+      },
+      "s0007.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "b2d7775d527ff9000e12f4810d90a66456865a4921b1b646171259285bad8593"
+      },
+      "s0008.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "a8cc545d97d50eb490caca544302ad7c1086a236d2dc49dfffa1ca7e1db5b7fc"
+      },
+      "s0009.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4106c3647e0d98d39a394bbec46bfcdcdb2d9ebfd686e0cc91726fd6237e7a68"
+      },
+      "s0010.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "c0c728a3ad603c3b6f229f56f08a4a906df48ff98b2ea1eff0a4c02a1f39b743"
+      },
+      "s0011.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4002f25838b1ddb61dd3ca4e1d970bf42258147449c856cca2d680b31d71d6cc"
+      },
+      "s0012.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "0779cc8cac4697f957e957c91dca72af906a610ab411dea4ed2c462d583e3c24"
+      },
+      "s0013.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "8f293a5ed542547e935bfd43819135acc451e9b5a99acad689dae8c8295fa08a"
+      },
+      "s0014.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "bd1248d2f7285725d5b8633b12342723b1f9f9331cdb672bcc25840b6a1ea1c5"
+      },
+      "s0015.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "33b83ba561abf6917dec078ff75e34a2418c872e524e75c052913eb5cf18dfbe"
+      },
+      "s0016.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "c3fb713e2f029bf7418339f7785c69f074a9b851e258a7c6d63756383314b4c8"
+      },
+      "metadata_json.npy": {
+        "uncompressed_bytes": 7748,
+        "sha256": "84c12d5b36cf90ceb63c32796c468adae9c84435f5a6a13a782d1028066bcbc0"
+      }
+    },
+    "candidate_members": {
+      "time.npy": {
+        "uncompressed_bytes": 40000136,
+        "sha256": "665eb5e0bd5be7dfc5af58c8e2dca0db93f7ed1969904bd85b95744e136f6ece"
+      },
+      "s0000.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "b2d7775d527ff9000e12f4810d90a66456865a4921b1b646171259285bad8593"
+      },
+      "s0001.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "a8cc545d97d50eb490caca544302ad7c1086a236d2dc49dfffa1ca7e1db5b7fc"
+      },
+      "s0002.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "78f64dc572a8c04d137b13af863c1117fc7dfd350ca960a1c8f70469abff50f7"
+      },
+      "s0003.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4106c3647e0d98d39a394bbec46bfcdcdb2d9ebfd686e0cc91726fd6237e7a68"
+      },
+      "s0004.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "7b66c14ca6e1be203eb57672f1eed56d6b18cb6a725bafe3995066ffcaaa1e62"
+      },
+      "s0005.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "875d3513959eff6ffaf742d9c2b970682352d1ea594ac2394de3c9f580178890"
+      },
+      "s0006.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4f6899676c44d0157fa2e87d59320f31082f8e35a3225d80edfb802ae90f6acb"
+      },
+      "s0007.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "b2d7775d527ff9000e12f4810d90a66456865a4921b1b646171259285bad8593"
+      },
+      "s0008.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "a8cc545d97d50eb490caca544302ad7c1086a236d2dc49dfffa1ca7e1db5b7fc"
+      },
+      "s0009.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4106c3647e0d98d39a394bbec46bfcdcdb2d9ebfd686e0cc91726fd6237e7a68"
+      },
+      "s0010.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "c0c728a3ad603c3b6f229f56f08a4a906df48ff98b2ea1eff0a4c02a1f39b743"
+      },
+      "s0011.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "4002f25838b1ddb61dd3ca4e1d970bf42258147449c856cca2d680b31d71d6cc"
+      },
+      "s0012.npy": {
+        "uncompressed_bytes": 20000132,
+        "sha256": "0779cc8cac4697f957e957c91dca72af906a610ab411dea4ed2c462d583e3c24"
+      },
+      "s0013.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "8f293a5ed542547e935bfd43819135acc451e9b5a99acad689dae8c8295fa08a"
+      },
+      "s0014.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "bd1248d2f7285725d5b8633b12342723b1f9f9331cdb672bcc25840b6a1ea1c5"
+      },
+      "s0015.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "33b83ba561abf6917dec078ff75e34a2418c872e524e75c052913eb5cf18dfbe"
+      },
+      "s0016.npy": {
+        "uncompressed_bytes": 5000129,
+        "sha256": "c3fb713e2f029bf7418339f7785c69f074a9b851e258a7c6d63756383314b4c8"
+      },
+      "metadata_json.npy": {
+        "uncompressed_bytes": 7748,
+        "sha256": "84c12d5b36cf90ceb63c32796c468adae9c84435f5a6a13a782d1028066bcbc0"
+      }
+    }
+  },
+  "replay_report": {
+    "replay_and_write_seconds": 66.340401228,
+    "samples": 5000001,
+    "status": "COMPLETED",
+    "waveform_validation": "PASSED"
+  },
+  "rollback_linux": {
+    "all_equal": true,
+    "fault_points": [
+      "after_mode",
+      "after_propagation",
+      "after_queue",
+      "after_reg",
+      "before_output",
+      "retry_after_closure"
+    ],
+    "checks": "full committed bits, MCU bytes and invocation, REG, agenda, generations, events, diagnostics and retries"
+  },
+  "rollback_windows": {
+    "all_equal": true,
+    "reference": "Linux pinned old-B and COW six-fault snapshots",
+    "points": {
+      "after_mode": {
+        "equal": true,
+        "different_fields": []
+      },
+      "after_propagation": {
+        "equal": true,
+        "different_fields": []
+      },
+      "after_queue": {
+        "equal": true,
+        "different_fields": []
+      },
+      "after_reg": {
+        "equal": true,
+        "different_fields": []
+      },
+      "before_output": {
+        "equal": true,
+        "different_fields": []
+      },
+      "retry_after_closure": {
+        "equal": true,
+        "different_fields": []
+      }
+    }
+  },
+  "rollback_commands": [
+    "c++ -std=c++20 -O3 -DNDEBUG -ffp-contract=off -fno-fast-math -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE -I/root/pulse-stage-b-20261103/include -isystem /root/pulse-stage-b-20261103/third_party -isystem /root/pulse-stage-b-20261103/third_party/eigen-3.4.0 /root/pulse-stage-b-cow-20261103/tests/rollback_snapshot_probe.cpp /root/pulse-stage-b-20261103/build-linux/libpulse_core.a -lcrypto -ldl -o /root/stage-b-cow-regression-20261103/rollback/probe-old",
+    "/root/stage-b-cow-regression-20261103/rollback/probe-old /root/stage-a-regression-20261103/model/netlist.md",
+    "c++ -std=c++20 -O3 -DNDEBUG -ffp-contract=off -fno-fast-math -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE -I/root/pulse-stage-b-cow-20261103/include -isystem /root/pulse-stage-b-cow-20261103/third_party -isystem /root/pulse-stage-b-cow-20261103/third_party/eigen-3.4.0 /root/pulse-stage-b-cow-20261103/tests/rollback_snapshot_probe.cpp /root/pulse-stage-b-cow-20261103/build-linux/libpulse_core.a -lcrypto -ldl -o /root/stage-b-cow-regression-20261103/rollback/probe-cow",
+    "/root/stage-b-cow-regression-20261103/rollback/probe-cow /root/stage-a-regression-20261103/model/netlist.md",
+    "g++ -std=c++20 -O3 -DNDEBUG -ffp-contract=off -fno-fast-math -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE -Iinclude -isystem third_party -isystem third_party/eigen-3.4.0 tests/rollback_snapshot_probe.cpp build-event-opt-windows/libpulse_core.a -lbcrypt -o reports/remaining-b-20261103/windows-rollback/probe.exe",
+    "reports/remaining-b-20261103/windows-rollback/probe.exe reports/five-core-a010-6e5dea9/rohm-a010-dot-totem-pole-pfc-sync/model-win/netlist.md"
+  ],
+  "environment": {
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "architecture": "x86_64",
+    "commands": [
+      {
+        "command": [
+          "uname",
+          "-a"
+        ],
+        "returncode": 0,
+        "stdout": "Linux tuzki-lenovo 6.18.54.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "lscpu"
+        ],
+        "returncode": 0,
+        "stdout": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  12\nOn-line CPU(s) list:                     0-11\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 5 6600H with Radeon Graphics\nCPU family:                              25\nModel:                                   68\nThread(s) per core:                      2\nCore(s) per socket:                      6\nSocket(s):                               1\nStepping:                                1\nBogoMIPS:                                6587.46\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               192 KiB (6 instances)\nL1i cache:                               192 KiB (6 instances)\nL2 cache:                                3 MiB (6 instances)\nL3 cache:                                16 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-11\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Vulnerable: No microcode\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "gcc",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "cmake version 3.28.3\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "ninja",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "1.11.1\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "python3",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "Python 3.12.3\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "ldd",
+          "/root/pulse-stage-b-cow-20261103/build-linux/pulse-solver"
+        ],
+        "returncode": 0,
+        "stdout": "\tlinux-vdso.so.1 (0x00007be9ce27d000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007be9cd800000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007be9cd400000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007be9ce186000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007be9ce158000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007be9cd000000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007be9ce27f000)\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "free",
+          "-b"
+        ],
+        "returncode": 0,
+        "stdout": "               total        used        free      shared  buff/cache   available\nMem:      7900807168   674410496  5971447808     4296704  1413292032  7226396672\nSwap:     2147483648           0  2147483648\n",
+        "stderr": ""
+      }
+    ],
+    "binaries": {
+      "old": {
+        "path": "/root/pulse-stage-b-20261103/build-linux/pulse-solver",
+        "bytes": 3107368,
+        "sha256": "9a9dc73d582f63bfe3a7e517e31b7b4c927bd3858f15869c93a2f713ccd13ac7"
+      },
+      "cow": {
+        "path": "/root/pulse-stage-b-cow-20261103/build-linux/pulse-solver",
+        "bytes": 3094104,
+        "sha256": "734bc2405757bff7f690a266bb35994dab9b78f0c4d3924be22380d5543e0343"
+      },
+      "replay": {
+        "path": "/root/pulse-stage-b-cow-20261103/build-linux/pulse-replay",
+        "bytes": 3085088,
+        "sha256": "669fe71b3e97d33210972a42d2db85d32b4402aec4043f07b4809864935308e1"
+      }
+    },
+    "source_files": {
+      "src/abi.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/abi.cpp",
+        "bytes": 5445,
+        "sha256": "85c5e1cf923c5797ca613d186c1e5f3dec27b5e6491a8502a4cbd53775f9d919"
+      },
+      "src/common.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/common.cpp",
+        "bytes": 6173,
+        "sha256": "8981d3991aea273e0c6b2ee584fa445a6884e2498bb2f4b050e218692ddd6939"
+      },
+      "src/constitutive.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/constitutive.cpp",
+        "bytes": 1866,
+        "sha256": "d8bbffa6aa7347a2ab9ddea7b1abd652ffb0581fa795b40be90392aead09a52a"
+      },
+      "src/descriptor.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/descriptor.cpp",
+        "bytes": 61560,
+        "sha256": "147fa06332c745762dd7ea4831399505d9e35c1e165a44ea3a572fc5789af1bb"
+      },
+      "src/engineering_flow.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/engineering_flow.cpp",
+        "bytes": 46386,
+        "sha256": "7dea49989312683fa2acd96e0c66e5515a1f6eed21133e31cb58cc86c49c8bb1"
+      },
+      "src/engineering_mode.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/engineering_mode.cpp",
+        "bytes": 12903,
+        "sha256": "6586affbbb5b3b62fe6adf9124cb3340d00df6c744b9dab09a07f1c9f53c0968"
+      },
+      "src/first_root/exclusion.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/first_root/exclusion.cpp",
+        "bytes": 13445,
+        "sha256": "6221dafc8c484d6235aafcbb31f292065aab2b00a77fa14a7b6b044284f1aa48"
+      },
+      "src/first_root/first_root.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/first_root/first_root.cpp",
+        "bytes": 34012,
+        "sha256": "7fab24eec79eee638228a3bf58590ab4eace6ab34cc5b793382499b0f20faa59"
+      },
+      "src/first_root/interval_math.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/first_root/interval_math.cpp",
+        "bytes": 5829,
+        "sha256": "a96cf4eeb1ed5ac7e38f746f824d6449da9f0199847d83ae4538a5948f4108c0"
+      },
+      "src/netlist.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/netlist.cpp",
+        "bytes": 28234,
+        "sha256": "8b2f68b81135da91f25bc498261e0b84631fdb815eb9b1d1b349110d26023a8b"
+      },
+      "src/npz.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/npz.cpp",
+        "bytes": 7521,
+        "sha256": "4aaac1d344f613d6802eedd1c6a81fa4a250abf02ec6a4cee17c342255b23122"
+      },
+      "src/output.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/output.cpp",
+        "bytes": 7590,
+        "sha256": "f683e0c709203c9dddc41e585884085767e344f5e1303432297c7ad314458209"
+      },
+      "src/pevt.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/pevt.cpp",
+        "bytes": 37250,
+        "sha256": "c697a440e224eb47bedf48edb8c63322eda2e9394d64c92d3649277c2a43e0a3"
+      },
+      "src/pre_netlist.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/pre_netlist.cpp",
+        "bytes": 13349,
+        "sha256": "adc65eeb91b8d61cb81d73bbf3a9b619ef82c99045bfc0730b22c26e21780433"
+      },
+      "src/propagate.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/propagate.cpp",
+        "bytes": 4910,
+        "sha256": "f0741ffc9b7d9aa60e615d40e85787c4333f5c24346f573ee3f5e42219219999"
+      },
+      "src/runtime.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/runtime.cpp",
+        "bytes": 40215,
+        "sha256": "0022c810f486611fb6ab85c7154faf4ec0d10fbd6f96af3b17e43e9f8cc6afc7"
+      },
+      "src/semantics.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/semantics.cpp",
+        "bytes": 43241,
+        "sha256": "2f12b608879bc96e350f6cd4afe5291daa2ab8c533b8ef2f429a1ee635e045d7"
+      },
+      "src/software.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/software.cpp",
+        "bytes": 12209,
+        "sha256": "80a5b06de3b6b90437d59da1d8eda0cd0e9c225ba18019cf91287e88fdbac247"
+      },
+      "src/solver_strategy.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/solver_strategy.cpp",
+        "bytes": 5365,
+        "sha256": "d634f764c3333e9bdeebd135322b653f87e567327f84357fce0adf46f8571b64"
+      },
+      "src/state_coordinates.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/state_coordinates.cpp",
+        "bytes": 10511,
+        "sha256": "847ee1a4b749b7e4841a2c6764e6d1ebf0eaf69c0c9a8b10a32adff2b8732349"
+      },
+      "src/time_origin.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/time_origin.cpp",
+        "bytes": 11277,
+        "sha256": "da8a8dc8cbafe77c0c0be36963ac9104495ca02730ec8c55ee07ae6f70905cfe"
+      },
+      "src/trajectory.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/src/trajectory.cpp",
+        "bytes": 11994,
+        "sha256": "cb48d1692db6e15322ecf6a6aa2bae419bdf3e3ed5fd7385f1d73acbc0f12a13"
+      },
+      "include/pulse/constitutive.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/constitutive.hpp",
+        "bytes": 460,
+        "sha256": "f22a373978d7edfa1a8db0b0010981f5d28d652c9d3d51c2b95e0e1e43c1cc94"
+      },
+      "include/pulse/core.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/core.hpp",
+        "bytes": 9011,
+        "sha256": "a99879402f408e6d243ebe7d3c084f8d633144d0887da67423b08df63e11abaa"
+      },
+      "include/pulse/cow_value.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/cow_value.hpp",
+        "bytes": 1336,
+        "sha256": "0a6f9aec7f94920fde505ef6dd9994f79d6b631a61f7185ec2323235067bfa54"
+      },
+      "include/pulse/engineering.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/engineering.hpp",
+        "bytes": 2934,
+        "sha256": "19b810e35c05028c7f20997032694664eaa3b8940463931ab49237f2afcd15e6"
+      },
+      "include/pulse/first_root/dataset.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/first_root/dataset.hpp",
+        "bytes": 422,
+        "sha256": "cc7491f6492381d889c07b356c24c665e1fca01add7b08c873ccec35cf43246b"
+      },
+      "include/pulse/first_root/exclusion.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/first_root/exclusion.hpp",
+        "bytes": 4462,
+        "sha256": "dffae9f26dc9fdaf9c5c19d51e23de88480a65e7ddeb782e032421c642ede89c"
+      },
+      "include/pulse/first_root/first_root.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/first_root/first_root.hpp",
+        "bytes": 2698,
+        "sha256": "8ede7544e6a0edcc998295bdc1c2110c748d303914ce437e7e226af87873d38a"
+      },
+      "include/pulse/netlist.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/netlist.hpp",
+        "bytes": 1954,
+        "sha256": "3b7853c0475dffa8bfa3be9990ee44b2944feeecbf69dfd7d2be937060a227c9"
+      },
+      "include/pulse/npz.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/npz.hpp",
+        "bytes": 635,
+        "sha256": "63ca5f0d331c3e1eb524712b662d410f26d60e0b0edfc0e6f481f0295ea80040"
+      },
+      "include/pulse/pevt.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/pevt.hpp",
+        "bytes": 574,
+        "sha256": "3eaaac52607f7fca03a1f0a90c87e77a2761001d3bb2a3fe9dc1c8970caa0837"
+      },
+      "include/pulse/pulse.h": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/pulse.h",
+        "bytes": 2406,
+        "sha256": "5de179889af86716b0ce013b35c87b9febbfed4b3ae0c02e5c88233f657d4fc8"
+      },
+      "include/pulse/software.h": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/software.h",
+        "bytes": 1760,
+        "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+      },
+      "include/pulse/software.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/software.hpp",
+        "bytes": 809,
+        "sha256": "74086b3e49303e111082286ef8bfe2660e09eac06000ac33aad823ee1d5a40fe"
+      },
+      "include/pulse/solver_strategy.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/solver_strategy.hpp",
+        "bytes": 1021,
+        "sha256": "efa78f08c4bd341ab718ccce4915ec929b5cf151ecb210154b5055f22c758d39"
+      },
+      "include/pulse/state_coordinates.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/state_coordinates.hpp",
+        "bytes": 1266,
+        "sha256": "4a4e67671668c715ef3b54b92423a76765a1cbae0cdf568ec3a0025dc1c3a38c"
+      },
+      "include/pulse/time_origin.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/time_origin.hpp",
+        "bytes": 1873,
+        "sha256": "2d6baea9ab362d2c0721f389d23f793eebbc87b4663da96c7da07cd0697d2f14"
+      },
+      "include/pulse/trajectory.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/trajectory.hpp",
+        "bytes": 1038,
+        "sha256": "5598ae01ad4a0a74f70b4090be7c40de930105823570590a9565c7f95e4afc9a"
+      },
+      "include/pulse/trajectory_pool.hpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/include/pulse/trajectory_pool.hpp",
+        "bytes": 7374,
+        "sha256": "c84dc869b78b6948485ad717ce6af7f7479d24e6864a49f66673ca572ade83b2"
+      },
+      "apps/cli.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/apps/cli.cpp",
+        "bytes": 4351,
+        "sha256": "f55dc026abe4452265c5320a741ca0dc60fb8669477d06bf5bfd0771eb53d3b0"
+      },
+      "apps/replay.cpp": {
+        "path": "/root/pulse-stage-b-cow-20261103/apps/replay.cpp",
+        "bytes": 1202,
+        "sha256": "3819841085edb1eb886a9e9b8caaa92f50729ac7a28322661d7795f2490cd148"
+      },
+      "CMakeLists.txt": {
+        "path": "/root/pulse-stage-b-cow-20261103/CMakeLists.txt",
+        "bytes": 11006,
+        "sha256": "b09741039e24cddb004b9da3992f1be1a80ac9f8eb11382198d1f556b1b0bf7b"
+      }
+    },
+    "model": {
+      ".pulse_modules/CTRL.so": {
+        "path": "/root/stage-a-regression-20261103/model/.pulse_modules/CTRL.so",
+        "bytes": 15880,
+        "sha256": "987d6302c03b844e003769ab631b6abdaba555646f427260dc10e24fa9849771"
+      },
+      ".pulse_modules/CTRL.so.json": {
+        "path": "/root/stage-a-regression-20261103/model/.pulse_modules/CTRL.so.json",
+        "bytes": 1193,
+        "sha256": "389ddba2288eb0ec43b5fe45bd0a222832b4750eb7ec805363dc4294e26d648a"
+      },
+      ".pulse_modules/CTRL_deps.d": {
+        "path": "/root/stage-a-regression-20261103/model/.pulse_modules/CTRL_deps.d",
+        "bytes": 174,
+        "sha256": "9ec2425fbe4c42d38873263c94b23cbde4ccfbd95da5e36a42d1fb1520a83dd5"
+      },
+      "controller.c": {
+        "path": "/root/stage-a-regression-20261103/model/controller.c",
+        "bytes": 2874,
+        "sha256": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53"
+      },
+      "netlist.md": {
+        "path": "/root/stage-a-regression-20261103/model/netlist.md",
+        "bytes": 3627,
+        "sha256": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a"
+      },
+      "transition.h": {
+        "path": "/root/stage-a-regression-20261103/model/transition.h",
+        "bytes": 445,
+        "sha256": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472"
+      }
+    }
+  },
+  "windows_linux_production_source_hashes_equal": true,
+  "metadata_differences": [
+    {
+      "key": ".provenance.simulation_report.compile_seconds",
+      "baseline": 0.007091666,
+      "candidate": 0.00711948
+    },
+    {
+      "key": ".provenance.simulation_report.parse_and_compile_seconds",
+      "baseline": 0.00761052,
+      "candidate": 0.007613068
+    },
+    {
+      "key": ".provenance.simulation_report.parse_seconds",
+      "baseline": 0.000290091,
+      "candidate": 0.000254413
+    },
+    {
+      "key": ".provenance.simulation_report.run_seconds",
+      "baseline": 64.2064495,
+      "candidate": 57.559145741
+    },
+    {
+      "key": ".provenance.simulation_report.source_sha256",
+      "baseline": "846bb00786b2c46a47edbb629dfb38a0c3f37348e7ea0dc8601a1014794c6f9e",
+      "candidate": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae"
+    },
+    {
+      "key": ".provenance.solver_source_sha256",
+      "baseline": "846bb00786b2c46a47edbb629dfb38a0c3f37348e7ea0dc8601a1014794c6f9e",
+      "candidate": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae"
+    }
+  ],
+  "integration_repairs": {
+    "CMakeLists.txt": {
+      "generated_sha256": "99f3bdd2cf366a6b380527e25247be94e39b55e37e7296f5d2662fa7d8ca40c4",
+      "integrated_sha256": "b09741039e24cddb004b9da3992f1be1a80ac9f8eb11382198d1f556b1b0bf7b"
+    },
+    "src/descriptor.cpp": {
+      "generated_sha256": "19b31496ea38a1758fd470895f6909cd9062c1ce3824312e0ebf98ac610cb940",
+      "integrated_sha256": "147fa06332c745762dd7ea4831399505d9e35c1e165a44ea3a572fc5789af1bb"
+    },
+    "src/engineering_flow.cpp": {
+      "generated_sha256": "d69fb4fa73651922dfa4280528b13dd834d97481c8fc1d0afd1c637be9f3b307",
+      "integrated_sha256": "7dea49989312683fa2acd96e0c66e5515a1f6eed21133e31cb58cc86c49c8bb1"
+    },
+    "src/pevt.cpp": {
+      "generated_sha256": "5fbe3fc27fc95973edfbe9d0f45c4711514311cbe9666f2f759d9d6a3c37c07c",
+      "integrated_sha256": "c697a440e224eb47bedf48edb8c63322eda2e9394d64c92d3649277c2a43e0a3"
+    },
+    "src/runtime.cpp": {
+      "generated_sha256": "1f1a561883160ea3863804876ee653a024fcd5726548f3a7c4cf5d40b0bcb78a",
+      "integrated_sha256": "0022c810f486611fb6ab85c7154faf4ec0d10fbd6f96af3b17e43e9f8cc6afc7"
+    },
+    "src/software.cpp": {
+      "generated_sha256": "49856e903219f8949703a0513293392136d7e458b8bab407fc96c96f8abc552c",
+      "integrated_sha256": "80a5b06de3b6b90437d59da1d8eda0cd0e9c225ba18019cf91287e88fdbac247"
+    },
+    "src/trajectory.cpp": {
+      "generated_sha256": "41f77aa28bfe7df9d5196403ea5e324856d50db574bdf475c2d38ec6ee650bd9",
+      "integrated_sha256": "cb48d1692db6e15322ecf6a6aa2bae419bdf3e3ed5fd7385f1d73acbc0f12a13"
+    },
+    "tests/engineering_events.cpp": {
+      "generated_sha256": "19c343b2cc25c92a883431f3bd1f30057482729fc5819d8a967a0e3218b73663",
+      "integrated_sha256": "890428414f480eee35d9a5d99aa0d67c2f333d0c57192fac5014d0af7768a606"
+    },
+    "tests/event_retry_merge.cpp": {
+      "generated_sha256": "c77d092f720e8d54ca07aafbb509cbd87918ebfc7bb893ab8c0893fbd508e915",
+      "integrated_sha256": "8f82565e6effadf477a8c87c46bdddab4e0918463621a9b1d71aa7b20d9cbb68"
+    },
+    "tests/general_strategies.cpp": {
+      "generated_sha256": "392951634da440f56545c6f39de29f6bba1ba523ab28feaae89a52de5b389361",
+      "integrated_sha256": "ccba45e428365edec4850601cdd8e3848a626b6da2d0c881ad8c9c40f15d4f39"
+    },
+    "tests/stage_b_cow_transaction.cpp": {
+      "generated_sha256": "cf0ab95d148f1aa0a515e45e00e691d6e50af719944fa25084ed1633ef93b8f4",
+      "integrated_sha256": "f7300e95f5654e019010ede601d7fa0c2ae20f7d2ba5bccf1e1490337d6f80c4"
+    },
+    "tests/strategy_transaction.cpp": {
+      "generated_sha256": "7d59c5de3e3fafdefddd5f82342c81ff5c18e33178cd217cfe7956b2a8a7ea00",
+      "integrated_sha256": "705945785ec41c52cb41bd40c6186982afffc44fb1c6533c7d054b0294d8cdac"
+    },
+    "tests/trace_simulation.cpp": {
+      "generated_sha256": "075ef340771ef7369d8252e7f6cda64571416f82c17a006bf94a188e4d1cc3cf",
+      "integrated_sha256": "f31ead50a3e1fc37cdbedfe99a2df2471bf49db81c92d997dbfca3ab1727652b"
+    },
+    "tests/trajectory.cpp": {
+      "generated_sha256": "1ac08aecc80d91c3c01cd3e533688963934e06a1090073fa39823bedb205d18f",
+      "integrated_sha256": "63c53d1f78889b525902e205c7d950b6e1a4d8c92bf21d49303f0e3dbe327290"
+    },
+    "src/first_root/exclusion.cpp": {
+      "generated_sha256": "1ffa848b9111c72362d304beaf0ec6617cbca773e4a811319e0858bc51459b69",
+      "integrated_sha256": "6221dafc8c484d6235aafcbb31f292065aab2b00a77fa14a7b6b044284f1aa48"
+    },
+    "src/first_root/first_root.cpp": {
+      "generated_sha256": "d2d4a5f75d2475d99e4099ff6f779f34490a7b3e92ebeced8c1af63e0e988084",
+      "integrated_sha256": "7fab24eec79eee638228a3bf58590ab4eace6ab34cc5b793382499b0f20faa59"
+    }
+  },
+  "source_cpp_access_only_audit": {
+    "src/constitutive.cpp": true,
+    "src/descriptor.cpp": true,
+    "src/engineering_flow.cpp": true,
+    "src/engineering_mode.cpp": true,
+    "src/pevt.cpp": true,
+    "src/propagate.cpp": true,
+    "src/runtime.cpp": true,
+    "src/software.cpp": true,
+    "src/solver_strategy.cpp": true,
+    "src/state_coordinates.cpp": true,
+    "src/trajectory.cpp": true
+  },
+  "not_measured": [
+    "solver-run COW detach/copy totals",
+    "new function CPU hotspots",
+    "fresh PLECS run",
+    "old Stage B peak RSS"
+  ],
+  "precision_limit": "Regression to previous B is bitwise equal; existing PLECS CH006/CH007 18-point failures are not fixed or hidden.",
+  "raw_artifacts": {
+    "assemble_evidence.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\assemble_evidence.py",
+      "bytes": 5848,
+      "sha256": "49514c2933b5ef8bcef0ee3ee43ae8dbd591535fa8e557ab8f63075230b1fefd"
+    },
+    "benchmark.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\benchmark.log",
+      "bytes": 99,
+      "sha256": "a084cb3c9b74e10ba6ff3d629875b7d182b2cc5fe3d6cc42509d5ad8f8fa0d55"
+    },
+    "collect_environment.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\collect_environment.py",
+      "bytes": 1537,
+      "sha256": "0fe85681e91ca1322b3cbda9e0e293637319b8423ca7f715a880acb6eac045f7"
+    },
+    "generated/CMakeLists.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\CMakeLists.txt",
+      "bytes": 10800,
+      "sha256": "99f3bdd2cf366a6b380527e25247be94e39b55e37e7296f5d2662fa7d8ca40c4"
+    },
+    "generated/include/pulse/core.hpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\include\\pulse\\core.hpp",
+      "bytes": 9011,
+      "sha256": "a99879402f408e6d243ebe7d3c084f8d633144d0887da67423b08df63e11abaa"
+    },
+    "generated/include/pulse/cow_value.hpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\include\\pulse\\cow_value.hpp",
+      "bytes": 1336,
+      "sha256": "0a6f9aec7f94920fde505ef6dd9994f79d6b631a61f7185ec2323235067bfa54"
+    },
+    "generated/src/constitutive.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\constitutive.cpp",
+      "bytes": 1866,
+      "sha256": "d8bbffa6aa7347a2ab9ddea7b1abd652ffb0581fa795b40be90392aead09a52a"
+    },
+    "generated/src/descriptor.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\descriptor.cpp",
+      "bytes": 61560,
+      "sha256": "19b31496ea38a1758fd470895f6909cd9062c1ce3824312e0ebf98ac610cb940"
+    },
+    "generated/src/engineering_flow.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\engineering_flow.cpp",
+      "bytes": 46455,
+      "sha256": "d69fb4fa73651922dfa4280528b13dd834d97481c8fc1d0afd1c637be9f3b307"
+    },
+    "generated/src/engineering_mode.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\engineering_mode.cpp",
+      "bytes": 12903,
+      "sha256": "6586affbbb5b3b62fe6adf9124cb3340d00df6c744b9dab09a07f1c9f53c0968"
+    },
+    "generated/src/first_root/exclusion.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\first_root\\exclusion.cpp",
+      "bytes": 13580,
+      "sha256": "1ffa848b9111c72362d304beaf0ec6617cbca773e4a811319e0858bc51459b69"
+    },
+    "generated/src/first_root/first_root.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\first_root\\first_root.cpp",
+      "bytes": 34027,
+      "sha256": "d2d4a5f75d2475d99e4099ff6f779f34490a7b3e92ebeced8c1af63e0e988084"
+    },
+    "generated/src/pevt.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\pevt.cpp",
+      "bytes": 37244,
+      "sha256": "5fbe3fc27fc95973edfbe9d0f45c4711514311cbe9666f2f759d9d6a3c37c07c"
+    },
+    "generated/src/propagate.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\propagate.cpp",
+      "bytes": 4910,
+      "sha256": "f0741ffc9b7d9aa60e615d40e85787c4333f5c24346f573ee3f5e42219219999"
+    },
+    "generated/src/runtime.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\runtime.cpp",
+      "bytes": 40203,
+      "sha256": "1f1a561883160ea3863804876ee653a024fcd5726548f3a7c4cf5d40b0bcb78a"
+    },
+    "generated/src/software.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\software.cpp",
+      "bytes": 12209,
+      "sha256": "49856e903219f8949703a0513293392136d7e458b8bab407fc96c96f8abc552c"
+    },
+    "generated/src/solver_strategy.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\solver_strategy.cpp",
+      "bytes": 5365,
+      "sha256": "d634f764c3333e9bdeebd135322b653f87e567327f84357fce0adf46f8571b64"
+    },
+    "generated/src/state_coordinates.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\state_coordinates.cpp",
+      "bytes": 10511,
+      "sha256": "847ee1a4b749b7e4841a2c6764e6d1ebf0eaf69c0c9a8b10a32adff2b8732349"
+    },
+    "generated/src/trajectory.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\src\\trajectory.cpp",
+      "bytes": 11970,
+      "sha256": "41f77aa28bfe7df9d5196403ea5e324856d50db574bdf475c2d38ec6ee650bd9"
+    },
+    "generated/tests/a011_boundary.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\a011_boundary.cpp",
+      "bytes": 2359,
+      "sha256": "63922a4aae635e3628631e0c514c2b9c264fbb93271ddbf25390e72cf6488c97"
+    },
+    "generated/tests/a011_closure.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\a011_closure.cpp",
+      "bytes": 2807,
+      "sha256": "720c302408f42ffcdd08aacf9381feaf6a2f18de7fa4ec8cae7b2ac767a2b57d"
+    },
+    "generated/tests/electrical_references.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\electrical_references.cpp",
+      "bytes": 3735,
+      "sha256": "dab600a623be58d607d7b08db828d7d1294abd225a4d90975c94446d0b437761"
+    },
+    "generated/tests/engineering_additional.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\engineering_additional.cpp",
+      "bytes": 9544,
+      "sha256": "61b40ed1bc5315710d8d9bf9a11c7afb613a3626ed6d0203249017c9321c44da"
+    },
+    "generated/tests/engineering_events.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\engineering_events.cpp",
+      "bytes": 13441,
+      "sha256": "19c343b2cc25c92a883431f3bd1f30057482729fc5819d8a967a0e3218b73663"
+    },
+    "generated/tests/event_invariance.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\event_invariance.cpp",
+      "bytes": 18804,
+      "sha256": "b905b02d32dbb4bb1fa4d208903297184efd9e43bed7aab04c3858c8c18c7257"
+    },
+    "generated/tests/event_retry_merge.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\event_retry_merge.cpp",
+      "bytes": 3996,
+      "sha256": "c77d092f720e8d54ca07aafbb509cbd87918ebfc7bb893ab8c0893fbd508e915"
+    },
+    "generated/tests/general_strategies.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\general_strategies.cpp",
+      "bytes": 3523,
+      "sha256": "392951634da440f56545c6f39de29f6bba1ba523ab28feaae89a52de5b389361"
+    },
+    "generated/tests/mode_cache.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\mode_cache.cpp",
+      "bytes": 8782,
+      "sha256": "fa6bb6c666625ba7b6e806955060cc02da145303729f81b0b108dc6dadefc45a"
+    },
+    "generated/tests/observer_dependencies.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\observer_dependencies.cpp",
+      "bytes": 5123,
+      "sha256": "4bf9fa80626b146a48b8b6c06ae9a6cee07b8c7f9391ca20a430d4513e6fc29f"
+    },
+    "generated/tests/phi_affine.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\phi_affine.cpp",
+      "bytes": 5072,
+      "sha256": "2ec08785dab0bda1f7f74e723614021deb84f1c5ec2aa81a0a402816253d6aba"
+    },
+    "generated/tests/stage_a_batch.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\stage_a_batch.cpp",
+      "bytes": 2551,
+      "sha256": "f293502ec1b5a6547fb540dc3b528cb7f6ea3ed5c9bd6df774df7eae38c58cf1"
+    },
+    "generated/tests/stage_b_cow_transaction.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\stage_b_cow_transaction.cpp",
+      "bytes": 2462,
+      "sha256": "cf0ab95d148f1aa0a515e45e00e691d6e50af719944fa25084ed1633ef93b8f4"
+    },
+    "generated/tests/stage_b_shared_flow.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\stage_b_shared_flow.cpp",
+      "bytes": 2696,
+      "sha256": "b23b482bff9a89f262c251b149a872f49872c9d074e8b25353792ec09095cd48"
+    },
+    "generated/tests/strategy_transaction.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\strategy_transaction.cpp",
+      "bytes": 5990,
+      "sha256": "7d59c5de3e3fafdefddd5f82342c81ff5c18e33178cd217cfe7956b2a8a7ea00"
+    },
+    "generated/tests/trace_simulation.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\trace_simulation.cpp",
+      "bytes": 2242,
+      "sha256": "075ef340771ef7369d8252e7f6cda64571416f82c17a006bf94a188e4d1cc3cf"
+    },
+    "generated/tests/trajectory.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\trajectory.cpp",
+      "bytes": 3189,
+      "sha256": "1ac08aecc80d91c3c01cd3e533688963934e06a1090073fa39823bedb205d18f"
+    },
+    "generated/tests/trajectory_output.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\generated\\tests\\trajectory_output.cpp",
+      "bytes": 7021,
+      "sha256": "5eb486ebe20e6a9784daa072010d78433a6461b9ce8c5a196648e251239574f3"
+    },
+    "initial_codegen_source_manifest.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\initial_codegen_source_manifest.json",
+      "bytes": 287225,
+      "sha256": "b70ce83ee556bb7033aa4b9ef5ccc7e5737840129085ea77e0924dc82235c40f"
+    },
+    "integration_repairs.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\integration_repairs.json",
+      "bytes": 3587,
+      "sha256": "8637e8a26ae5dc30d65058156a8aa5d52cb2862c2f220075ca0a8ee6386426f6"
+    },
+    "linux-build-1.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\linux-build-1.log",
+      "bytes": 5178,
+      "sha256": "a13d61e214be8b25b3faf23672fd689f40b71fa546bda95dc1d1ece1d6d4930d"
+    },
+    "linux-build-2.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\linux-build-2.log",
+      "bytes": 9538,
+      "sha256": "2a1170aabfb2102c64c1c0dc8c8197be56ceb3e125214879aa2ad73a9ed409d4"
+    },
+    "linux-build-3.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\linux-build-3.log",
+      "bytes": 1233,
+      "sha256": "e168cd42227f4f90dadf182c7ee7c5f714b3eb0c36d879efc9f18753fa5bace4"
+    },
+    "linux-configure.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\linux-configure.log",
+      "bytes": 839,
+      "sha256": "8413ba80da6e2fe817db52014dccdc744445efbf90f9f5bddcff3d188b66376c"
+    },
+    "linux-ctest.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\linux-ctest.log",
+      "bytes": 3562,
+      "sha256": "37ad865fb26cfd57577863e2240e686c884fef4031a44c1054769048e0fdc61f"
+    },
+    "linux-ctest.xml": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\linux-ctest.xml",
+      "bytes": 8876,
+      "sha256": "75564f1031986ded6d53cb8243e1c2c9152e02e98c36eade9f68937b61dff93a"
+    },
+    "metadata_differences.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\metadata_differences.json",
+      "bytes": 1004,
+      "sha256": "4f80abbd766106be9de64cd589c67b025ff687c0de7e23f5d573b21580ab7ba4"
+    },
+    "native/benchmark/500ms-cow/measurement.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\500ms-cow\\measurement.json",
+      "bytes": 699,
+      "sha256": "51cc6460f7cc3e0931b44ffea1e9f088c2421eab44860a0ab2e4728ff458e31f"
+    },
+    "native/benchmark/500ms-cow/out.pevt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\500ms-cow\\out.pevt",
+      "bytes": 162836777,
+      "sha256": "c414df13572985c0dadce67695902bce171bf1d04a160489561d6e2c893c8f20"
+    },
+    "native/benchmark/500ms-cow/resource.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\500ms-cow\\resource.txt",
+      "bytes": 934,
+      "sha256": "9bc74099f0f5372d7b5882b89b7e939487f823a5d1702af44a9c6cea0985bec2"
+    },
+    "native/benchmark/500ms-cow/simulation_report.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\500ms-cow\\simulation_report.json",
+      "bytes": 17483,
+      "sha256": "d4d6515947c5f0e5aa2be9f8ad828ff6a7f7dade5e07ce8ffd0798dfd53ba58b"
+    },
+    "native/benchmark/500ms-cow/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\500ms-cow\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/benchmark/500ms-cow/stdout.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\500ms-cow\\stdout.txt",
+      "bytes": 17483,
+      "sha256": "d4d6515947c5f0e5aa2be9f8ad828ff6a7f7dade5e07ce8ffd0798dfd53ba58b"
+    },
+    "native/benchmark/5ms-cow/measurement.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-cow\\measurement.json",
+      "bytes": 697,
+      "sha256": "852381cf88c890d5a99dcd190d2814bcae37b729131f728aa855e428dc78e6b5"
+    },
+    "native/benchmark/5ms-cow/out.pevt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-cow\\out.pevt",
+      "bytes": 3931266,
+      "sha256": "9e0332ef1d54579c504da9eea0069dbe125f431558b2d0b8f132823b091646d7"
+    },
+    "native/benchmark/5ms-cow/resource.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-cow\\resource.txt",
+      "bytes": 927,
+      "sha256": "6560eb09b0493d97cac8a8f4162e094719cc3620f9821f29de52b022d645dd2d"
+    },
+    "native/benchmark/5ms-cow/simulation_report.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-cow\\simulation_report.json",
+      "bytes": 17445,
+      "sha256": "9b328afbe633bf46cddcf105d98377f8ba5551e3f3594a55ec68634550c86169"
+    },
+    "native/benchmark/5ms-cow/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-cow\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/benchmark/5ms-cow/stdout.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-cow\\stdout.txt",
+      "bytes": 17445,
+      "sha256": "9b328afbe633bf46cddcf105d98377f8ba5551e3f3594a55ec68634550c86169"
+    },
+    "native/benchmark/5ms-old/measurement.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-old\\measurement.json",
+      "bytes": 709,
+      "sha256": "5d65b7986276916d6a565438fff868093bead11534c5035c84e4450982b27cad"
+    },
+    "native/benchmark/5ms-old/out.pevt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-old\\out.pevt",
+      "bytes": 3931267,
+      "sha256": "2af3b30e1b02c1119b040c8b3401e48bb5307187fc76e0841c36b8731ade6380"
+    },
+    "native/benchmark/5ms-old/resource.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-old\\resource.txt",
+      "bytes": 923,
+      "sha256": "9af31e5327a7592c06a853cb57d1ea18b3c3690a281fa68ed92f2b78f8e66a37"
+    },
+    "native/benchmark/5ms-old/simulation_report.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-old\\simulation_report.json",
+      "bytes": 17446,
+      "sha256": "90882c093755323ed5964d4fc9f2dac054302c3d24f58da1955839d6dd6bbdd4"
+    },
+    "native/benchmark/5ms-old/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-old\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/benchmark/5ms-old/stdout.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\5ms-old\\stdout.txt",
+      "bytes": 17446,
+      "sha256": "90882c093755323ed5964d4fc9f2dac054302c3d24f58da1955839d6dd6bbdd4"
+    },
+    "native/benchmark/evidence.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\benchmark\\evidence.json",
+      "bytes": 50404,
+      "sha256": "a5eea184647a3679adc0953e8450ac98c840c5556657d34930d109767aec8bd1"
+    },
+    "native/CMakeCache.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\CMakeCache.txt",
+      "bytes": 18694,
+      "sha256": "0282d86fe27ca246ba80ac551c33ced2bc052d498f4767888b4bfde014beff3c"
+    },
+    "native/compile_commands.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\compile_commands.json",
+      "bytes": 36620,
+      "sha256": "69daf7f03c68513714fc6b13112eadd6a601000530987da8458dc359abc9c8f1"
+    },
+    "native/environment.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\environment.json",
+      "bytes": 16940,
+      "sha256": "54b995d4dc53458e91673572e4c5827f6708947f3350b34c1badc07249087ceb"
+    },
+    "native/replay/event_log.jsonl": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\event_log.jsonl",
+      "bytes": 109066308,
+      "sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314"
+    },
+    "native/replay/out.pewave.npz": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\out.pewave.npz",
+      "bytes": 320011938,
+      "sha256": "ade7f1c580cd69ce35fcc8aaecc2004c8cfe6ab12c4a65936f6d3f01e10b7a74"
+    },
+    "native/replay/resource.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\resource.txt",
+      "bytes": 898,
+      "sha256": "b93085d9e75016f0f91871dab43dffe609521d37f3601fc2a964a993ff9ffe70"
+    },
+    "native/replay/simulation_report.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\simulation_report.json",
+      "bytes": 17503,
+      "sha256": "433e52d7e17714df866af43873ea7508a8d7fc1414c2c002f53b526efc4342e4"
+    },
+    "native/replay/simulation_report.md": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\simulation_report.md",
+      "bytes": 363,
+      "sha256": "f72f272b06590b9e3f8dcfbaa0869d0d8e67c31dc8c9b80a4dcaeea161cf7719"
+    },
+    "native/replay/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/replay/stdout.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\replay\\stdout.txt",
+      "bytes": 129,
+      "sha256": "32c1469570ed3fd89a4a53aa085b9ddc964d55ef4c3972dcbdf0d6229c5e2bfc"
+    },
+    "native/rollback/comparison.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\comparison.json",
+      "bytes": 295,
+      "sha256": "b0dc61a51e829ee283eedfcf5029ddded166d7213760db2ab4725e625a8e451c"
+    },
+    "native/rollback/cow.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\cow.json",
+      "bytes": 34920,
+      "sha256": "1dbc3455eada9bd83874e8f83377f94447e57bb815e33faef24e08c8e63aee0a"
+    },
+    "native/rollback/cow.stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\cow.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/rollback/old.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\old.json",
+      "bytes": 34920,
+      "sha256": "1dbc3455eada9bd83874e8f83377f94447e57bb815e33faef24e08c8e63aee0a"
+    },
+    "native/rollback/old.stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\old.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/rollback/probe-cow": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\probe-cow",
+      "bytes": 3021664,
+      "sha256": "6ee0ec797512203fe722400fde552a7d5e5b931c5b9ad48c5dd884ea7a05ca2f"
+    },
+    "native/rollback/probe-old": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\rollback\\probe-old",
+      "bytes": 3035048,
+      "sha256": "8c1be37d16a4ff77767377b42b8f024feeba79d98842db8cb289783f3e615905"
+    },
+    "native/waveforms.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\native\\waveforms.json",
+      "bytes": 5820,
+      "sha256": "37717cb02fcb5bbba06a9dd9c4a8b3eab82fadba6310dc20c794d9909b0b664d"
+    },
+    "package/pulse_stage_b_complete_candidate/CODEX_HANDOFF.md": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\CODEX_HANDOFF.md",
+      "bytes": 2460,
+      "sha256": "3c01ab9affdd0cfad561e31bc9827b63bcbb23ae2bdca2174efa93f5159570f5"
+    },
+    "package/pulse_stage_b_complete_candidate/docs/CHANGE_SCOPE.md": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\docs\\CHANGE_SCOPE.md",
+      "bytes": 1919,
+      "sha256": "bca540e8edfda391b0a6b69900e146de4e8dad3e4f9fc48379528cb05da01935"
+    },
+    "package/pulse_stage_b_complete_candidate/docs/LOCAL_VALIDATION.md": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\docs\\LOCAL_VALIDATION.md",
+      "bytes": 785,
+      "sha256": "5094c05976a08eca301f00b6f67c2fe949689bd02d8cbc036d64d1e665103fbc"
+    },
+    "package/pulse_stage_b_complete_candidate/include/pulse/cow_value.hpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\include\\pulse\\cow_value.hpp",
+      "bytes": 1336,
+      "sha256": "0a6f9aec7f94920fde505ef6dd9994f79d6b631a61f7185ec2323235067bfa54"
+    },
+    "package/pulse_stage_b_complete_candidate/README.md": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\README.md",
+      "bytes": 4541,
+      "sha256": "bf656ecd695fe82834f3e0c829503eba9632b21d349a12919408594d81563b3f"
+    },
+    "package/pulse_stage_b_complete_candidate/scripts/apply_remaining_b.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\scripts\\apply_remaining_b.py",
+      "bytes": 11732,
+      "sha256": "4ea13cd1cec431057b5bc0ee492e2efb15a90777752cf11d719fd1a4633a9936"
+    },
+    "package/pulse_stage_b_complete_candidate/scripts/stage_b_regression.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\scripts\\stage_b_regression.py",
+      "bytes": 4524,
+      "sha256": "5823d7906edc78f78bd38c79ecff567e7cc6b6a566de33bc7d02527e25e41702"
+    },
+    "package/pulse_stage_b_complete_candidate/tests/stage_b_cow_transaction.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\tests\\stage_b_cow_transaction.cpp",
+      "bytes": 2462,
+      "sha256": "cf0ab95d148f1aa0a515e45e00e691d6e50af719944fa25084ed1633ef93b8f4"
+    },
+    "package/pulse_stage_b_complete_candidate/tests/test_cow_value.cpp": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\package\\pulse_stage_b_complete_candidate\\tests\\test_cow_value.cpp",
+      "bytes": 1577,
+      "sha256": "9b9895e890c59b24fcdc7520d4dfbae97d5e6d71865ffdddba91eff6da15e5e4"
+    },
+    "repair_generated.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\repair_generated.py",
+      "bytes": 4022,
+      "sha256": "7f1e0d447fd80931b0b30e0e8f518e749bc777782400f0430f99927337ab6664"
+    },
+    "replay.sh": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\replay.sh",
+      "bytes": 592,
+      "sha256": "acc8872fce348c515c218eea5028a299c50f756970e204c7a3451d9e1e2c7b53"
+    },
+    "rollback.sh": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\rollback.sh",
+      "bytes": 1331,
+      "sha256": "979c4d9f32a0fb36f35cc873db0a3374695c16eccb78dd951b934538431788cc"
+    },
+    "source.tar": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\source.tar",
+      "bytes": 21831680,
+      "sha256": "3d24c2610008b4b008f137cf54fdc5b1a70d9e002c2085b5c9ca0a3c8121c516"
+    },
+    "structural-diff.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\structural-diff.txt",
+      "bytes": 46843,
+      "sha256": "f9059a809413e958b0c240bd61ee72909787924b983c9321207f7a829ad10bc0"
+    },
+    "structural_audit.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\structural_audit.json",
+      "bytes": 360,
+      "sha256": "6e555276f74136897584ac126692dfea51a7b8f27535a0bc1db3216de4843568"
+    },
+    "windows-build-1.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-build-1.log",
+      "bytes": 4455,
+      "sha256": "9db98eae6cf818b6e28677a57b5d5443f786f6ae699075ca56545ac4eabd770d"
+    },
+    "windows-build-2.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-build-2.log",
+      "bytes": 5367,
+      "sha256": "9d5e195ba7756ea8ce8c21bdbbf0d29d36f6c378430123104eb7d73315077fe0"
+    },
+    "windows-build-3.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-build-3.log",
+      "bytes": 7215,
+      "sha256": "0ebb131716df4fd9048bf0880d2bd90eb28b151571e9b676905dbeb94ca2b426"
+    },
+    "windows-build-4.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-build-4.log",
+      "bytes": 2439,
+      "sha256": "15dd2ab85b28e9db2fd629a82a28141e290393c9e042f8720cf02151c3f81ea0"
+    },
+    "windows-CMakeCache.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-CMakeCache.txt",
+      "bytes": 22093,
+      "sha256": "da9aba996a01a55ebf60a669b61c7bdad9aae3ae3fa300c11d461b6f2be2f375"
+    },
+    "windows-compile_commands.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-compile_commands.json",
+      "bytes": 46463,
+      "sha256": "6db5a2c07938c3b7e2c60ac80b572d23ff879c601ad1f16cdfc725f5f02bbbe2"
+    },
+    "windows-configure.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-configure.log",
+      "bytes": 155,
+      "sha256": "68089e4c88168eb06aca0978bca25b8316f1b8e8fb70cf339b8f5e24f345967d"
+    },
+    "windows-ctest.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-ctest.log",
+      "bytes": 3547,
+      "sha256": "ffedeb6991647c3c4ae79cffb6d45ec2799cf73bb8a626e3e5295e3e6d80e04a"
+    },
+    "windows-ctest.xml": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-ctest.xml",
+      "bytes": 9071,
+      "sha256": "2901f9b30c8dc66632c2054c1d2db0b5f597ab40712400f23f8ef35288d028fa"
+    },
+    "windows-rollback/comparison.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-rollback\\comparison.json",
+      "bytes": 618,
+      "sha256": "1a0dac5c74cc313ba8e08dfa7528e8059ec1eaf6dee643dfa2a1a60bfd786bda"
+    },
+    "windows-rollback/compile.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-rollback\\compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "windows-rollback/cow.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-rollback\\cow.json",
+      "bytes": 37131,
+      "sha256": "440fbd00f6e732a584a0547da3c88239ffc252ec9e026ecd8dc9eac2da93d5e7"
+    },
+    "windows-rollback/probe.exe": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-rollback\\probe.exe",
+      "bytes": 6498832,
+      "sha256": "6f86b9e173056b7c0c1b4113a6edadabcbbda30f68c547a053ad8a591608a09b"
+    },
+    "windows-rollback/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\remaining-b-20261103\\windows-rollback\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

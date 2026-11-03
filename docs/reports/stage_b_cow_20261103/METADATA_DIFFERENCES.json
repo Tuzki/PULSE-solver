@@ -1,0 +1,32 @@
+[
+  {
+    "key": ".provenance.simulation_report.compile_seconds",
+    "baseline": 0.007091666,
+    "candidate": 0.00711948
+  },
+  {
+    "key": ".provenance.simulation_report.parse_and_compile_seconds",
+    "baseline": 0.00761052,
+    "candidate": 0.007613068
+  },
+  {
+    "key": ".provenance.simulation_report.parse_seconds",
+    "baseline": 0.000290091,
+    "candidate": 0.000254413
+  },
+  {
+    "key": ".provenance.simulation_report.run_seconds",
+    "baseline": 64.2064495,
+    "candidate": 57.559145741
+  },
+  {
+    "key": ".provenance.simulation_report.source_sha256",
+    "baseline": "846bb00786b2c46a47edbb629dfb38a0c3f37348e7ea0dc8601a1014794c6f9e",
+    "candidate": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae"
+  },
+  {
+    "key": ".provenance.solver_source_sha256",
+    "baseline": "846bb00786b2c46a47edbb629dfb38a0c3f37348e7ea0dc8601a1014794c6f9e",
+    "candidate": "19711696564f81923ba6102658b2403e274a3fcdb8a4141926d81e0589e0d3ae"
+  }
+]

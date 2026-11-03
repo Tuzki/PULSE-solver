@@ -7,8 +7,8 @@ Vector coordinate(const Model &m, const Mode &mode, int part) {
   if(p.raw.kind!="R") row[p.state]=1;
   else {
     auto [a,b]=p.ports[0];
-    if(a!="0") row+=mode.maps.at("V("+a+")");
-    if(b!="0") row-=mode.maps.at("V("+b+")");
+    if(a!="0") row+=mode.binding.read().maps.at("V("+a+")");
+    if(b!="0") row-=mode.binding.read().maps.at("V("+b+")");
   }
   return row;
 }
@@ -37,7 +37,7 @@ Json transition(const Model &m,const Mode &before,const Mode &after,
     {"from_segment",from},{"to_segment",to},
     {"coordinate_at_event",l.dot(x)},
     {"boundary_residual",g.row.dot(x)},{"arrival_evaluation_bound",g.arrival_error},
-    {"left_derivative",l.dot(before.M*x)},
-    {"right_derivative",r.dot(after.M*x)}};
+    {"left_derivative",l.dot(before.definition.read().M*x)},
+    {"right_derivative",r.dot(after.definition.read().M*x)}};
 }
 }

@@ -19,9 +19,9 @@ void observation_binding(){
         auto hit=compile_specified(model,model.initial,regs,stats,{},{});
         Stats fresh_stats;Mode fresh;
         {ScopedModeCache disabled(model,0);fresh=compile_specified(model,model.initial,regs,fresh_stats,{},{});}
-        check(exact(hit.M,fresh.M)&&exact(hit.residual_map,fresh.residual_map)&&exact(hit.residual_reference,fresh.residual_reference),"rebound equations differ from original complete compilation");
-        for(const auto &[name,row]:fresh.maps)check(exact(hit.maps.at(name),row),"rebound observation differs: "+name);
-        near(hit.maps.at("VIEW").dot(model.initial),2*regs["Q"],0,"derived observation");
+        check(exact(hit.definition.read().M,fresh.definition.read().M)&&exact(hit.binding.read().residual_map,fresh.binding.read().residual_map)&&exact(hit.binding.read().residual_reference,fresh.binding.read().residual_reference),"rebound equations differ from original complete compilation");
+        for(const auto &[name,row]:fresh.binding.read().maps)check(exact(hit.binding.read().maps.at(name),row),"rebound observation differs: "+name);
+        near(hit.binding.read().maps.at("VIEW").dot(model.initial),2*regs["Q"],0,"derived observation");
     }
     check(stats.modes==1&&stats.cache_hits==100,"pure observation caused electrical recompilation");
     auto last=compile_specified(model,model.initial,regs,stats,{},{});
@@ -29,9 +29,9 @@ void observation_binding(){
     check(flow.compatible(last),"pure observation invalidated dynamics");
     auto next=flow.continued(last,.125);
     check(exact(flow.state(.25),next.state(.125)),"continuation changed anchored state");
-    near(next.observe(last.maps.at("VIEW"),0),25,0,"continued observation view");
-    check(next.archive_mode().maps.at("Q")[model.ns]==12.5,"archive lost new observation binding");
-    auto wrong=last;wrong.M(0,model.ns)+=1;check(!flow.compatible(wrong),"changed affine forcing reused flow");
+    near(next.observe(last.binding.read().maps.at("VIEW"),0),25,0,"continued observation view");
+    check(next.archive_mode().binding.read().maps.at("Q")[model.ns]==12.5,"archive lost new observation binding");
+    auto wrong=last;wrong.definition.edit().M(0,model.ns)+=1;check(!flow.compatible(wrong),"changed affine forcing reused flow");
     wrong=last;++wrong.numerical_strategy;check(!flow.compatible(wrong),"different strategy reused flow");
 }
 void critical_dependencies(){
@@ -46,7 +46,7 @@ void critical_dependencies(){
     Stats stats;ScopedModeCache cache(model,8);
     auto a=compile_specified(model,model.initial,{{"Q",1}},stats,{},{});
     auto b=compile_specified(model,model.initial,{{"Q",2}},stats,{},{});
-    check(stats.modes==2&&!exact(a.M,b.M),"dynamic electrical forcing was frozen");
+    check(stats.modes==2&&!exact(a.definition.read().M,b.definition.read().M),"dynamic electrical forcing was frozen");
 }
 void complete_observation_archive(){
     auto model=compile(parse_markdown(document(

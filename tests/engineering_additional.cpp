@@ -86,7 +86,7 @@ void continuous_boolean_closure() {
               "Boolean cascade waited for a later physical time");
         for (const auto &segment : r.segments) {
             auto eval=[&](const std::string &name) {
-                return segment.state.mode.maps.at(name).dot(segment.state.physical);
+                return segment.state.mode.binding.read().maps.at(name).dot(segment.state.physical);
             };
             near(eval("B"),eval("A")==0 ? 1 : 0,0,"stale first Boolean decode");
             near(eval("C"),eval("A"),0,"stale second Boolean decode");
@@ -141,7 +141,7 @@ void leaky_bridge_algebraic_precision() {
     for(int i=0;i<m.ns;++i){if(m.state_ids[i]=="C_BUS/q")bus=i;if(m.state_ids[i]=="L_IN/phi")flux=i;}
     check(bus>=0 && flux>=0,"bridge state identifiers");
     int checked=0;
-    for(const auto &g:mode.guards)
+    for(const auto &g:mode.binding.read().guards)
         if(m.parts[g.part].raw.id=="R_D002" || m.parts[g.part].raw.id=="R_D005") {
             near(g.row[bus],0.,1e-13,"off-bridge spurious bus coupling");
             near(g.row[flux],0.,1e-10,"off-bridge spurious flux coupling");

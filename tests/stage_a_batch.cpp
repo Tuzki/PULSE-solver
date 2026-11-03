@@ -15,7 +15,7 @@ int main(){try{
     for(int condition=0;condition<8;++condition){
         state.mode=original;state.internal_mode.reset();state.electrical_flow.reset();
         if(condition&1)state.electrical_flow=std::make_shared<engineering::Flow>(original,state.internal);
-        if(condition&2)state.mode.M(0,model.ns)+=1; // Incompatible views must use original fallback.
+        if(condition&2)state.mode.definition.edit().M(0,model.ns)+=1; // Incompatible views must use original fallback.
         if(condition&4)state.internal_mode=std::make_shared<const Mode>(state.mode);
         std::vector<double> scalar;for(auto &name:names)scalar.push_back(state_signal(state,name));
         auto batch=state_signals(state,names);

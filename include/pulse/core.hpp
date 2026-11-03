@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <memory>
+#include "pulse/cow_value.hpp"
 #include <set>
 #include <stdexcept>
 namespace pulse {
@@ -99,23 +100,15 @@ struct ObserverBinding {
   Matrix A, N, B;
   std::map<std::string,int> rows;
 };
+struct ModeDefinition;
+struct ModeBinding;
 struct Mode {
-  // A region-classification candidate is never an accepted physical flow.
   bool classification_only = false;
-  // Strategy provenance is part of an accepted electrical trajectory.
   int numerical_strategy = 2;
-  // Shared by compiled definitions; released from accepted trajectory states.
   std::shared_ptr<const Matrix> candidate_roundoff_scale;
   std::shared_ptr<const ObserverBinding> observer_binding;
   std::set<std::string> observer_maps;
   std::vector<int> observer_rows;
-  Matrix M, observations, constraints, residual_map,
-      residual_reference; // homogeneous physical coordinate [q,phi,eta,1]
-  // Descriptor tangent flow is retained in factored coordinates. The exact
-  // product lift*generator*reduce avoids independently rounding dependent
-  // physical derivative rows and preserves the compiled constraint subspace.
-  Matrix invariant_lift, invariant_generator, invariant_reduce;
-  std::map<std::string, Vector> maps;
   std::map<std::string, bool> bools;
   std::map<int, int> segments;
   struct Guard {
@@ -126,12 +119,31 @@ struct Mode {
     int knot = -1, segment = -1, step = 0;
     double arrival_error = 0;
   };
-  std::vector<Guard> guards;
+  // Immutable static matrix definition (COW detached only during compilation
+  // or an explicitly requested state-coordinate transformation).
+  CowValue<ModeDefinition> definition;
+  // Dynamic observer binding, guards and mode-dependent signal maps.
+  CowValue<ModeBinding> binding;
   std::string id;
-  std::string elimination_path; // actual factorization branch, not requested strategy
+  std::string elimination_path;
   uint64_t version = 0;
   double residual = 0;
+  Mode();
+  Mode(const Mode&) = default;
+  Mode(Mode&&) noexcept = default;
+  Mode& operator=(const Mode&) = default;
+  Mode& operator=(Mode&&) noexcept = default;
 };
+struct ModeDefinition {
+  Matrix M, constraints;
+  Matrix invariant_lift, invariant_generator, invariant_reduce;
+};
+struct ModeBinding {
+  Matrix observations, residual_map, residual_reference;
+  std::map<std::string, Vector> maps;
+  std::vector<Mode::Guard> guards;
+};
+inline Mode::Mode() = default;
 struct Stats {
   uint64_t modes = 0, exponentials = 0, root_queries = 0, root_failures = 0,
            microsteps = 0, transactions = 0, rollbacks = 0, queue_peak = 0,
@@ -199,15 +211,15 @@ struct RunState {
   std::shared_ptr<const Mode> internal_mode; // retained for accurate observation of published snapshots
   std::shared_ptr<const validated::State> validated_state;
   bool validated_chain = false;
-  std::map<std::string, double> regs;
+  CowValue<std::map<std::string, double>> regs;
   struct SoftwareState {
     std::vector<unsigned char> bytes;
     uint64_t invocation = 0;
   };
-  std::map<std::string, SoftwareState> software;
+  CowValue<std::map<std::string, SoftwareState>> software;
   Mode mode;
-  std::vector<Agenda> agenda;
-  std::map<int, uint64_t> generations;
+  CowValue<std::vector<Agenda>> agenda;
+  CowValue<std::map<int, uint64_t>> generations;
   uint64_t version = 0;
 };
 struct Segment {

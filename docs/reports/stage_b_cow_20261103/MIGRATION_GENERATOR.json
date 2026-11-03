@@ -1,0 +1,147 @@
+{
+  "baseline": "0cb30419575f9254901882c14aa88d6e01e78f3f",
+  "modified": {
+    "include/pulse/core.hpp": {
+      "old_bytes": 8902,
+      "new_bytes": 9011
+    },
+    "src/constitutive.cpp": {
+      "old_bytes": 1800,
+      "new_bytes": 1866
+    },
+    "src/descriptor.cpp": {
+      "old_bytes": 60378,
+      "new_bytes": 61560
+    },
+    "src/engineering_flow.cpp": {
+      "old_bytes": 45477,
+      "new_bytes": 46455
+    },
+    "src/engineering_mode.cpp": {
+      "old_bytes": 12734,
+      "new_bytes": 12903
+    },
+    "src/pevt.cpp": {
+      "old_bytes": 36548,
+      "new_bytes": 37244
+    },
+    "src/propagate.cpp": {
+      "old_bytes": 4625,
+      "new_bytes": 4910
+    },
+    "src/runtime.cpp": {
+      "old_bytes": 39960,
+      "new_bytes": 40203
+    },
+    "src/software.cpp": {
+      "old_bytes": 12174,
+      "new_bytes": 12209
+    },
+    "src/solver_strategy.cpp": {
+      "old_bytes": 5013,
+      "new_bytes": 5365
+    },
+    "src/state_coordinates.cpp": {
+      "old_bytes": 10151,
+      "new_bytes": 10511
+    },
+    "src/trajectory.cpp": {
+      "old_bytes": 11574,
+      "new_bytes": 11970
+    },
+    "src/first_root/exclusion.cpp": {
+      "old_bytes": 13445,
+      "new_bytes": 13580
+    },
+    "src/first_root/first_root.cpp": {
+      "old_bytes": 34012,
+      "new_bytes": 34027
+    },
+    "tests/a011_boundary.cpp": {
+      "old_bytes": 2224,
+      "new_bytes": 2359
+    },
+    "tests/a011_closure.cpp": {
+      "old_bytes": 2747,
+      "new_bytes": 2807
+    },
+    "tests/electrical_references.cpp": {
+      "old_bytes": 3720,
+      "new_bytes": 3735
+    },
+    "tests/engineering_additional.cpp": {
+      "old_bytes": 9514,
+      "new_bytes": 9544
+    },
+    "tests/engineering_events.cpp": {
+      "old_bytes": 13353,
+      "new_bytes": 13441
+    },
+    "tests/event_invariance.cpp": {
+      "old_bytes": 18789,
+      "new_bytes": 18804
+    },
+    "tests/event_retry_merge.cpp": {
+      "old_bytes": 3927,
+      "new_bytes": 3996
+    },
+    "tests/general_strategies.cpp": {
+      "old_bytes": 3456,
+      "new_bytes": 3523
+    },
+    "tests/mode_cache.cpp": {
+      "old_bytes": 8487,
+      "new_bytes": 8782
+    },
+    "tests/observer_dependencies.cpp": {
+      "old_bytes": 4898,
+      "new_bytes": 5123
+    },
+    "tests/phi_affine.cpp": {
+      "old_bytes": 4583,
+      "new_bytes": 5072
+    },
+    "tests/stage_a_batch.cpp": {
+      "old_bytes": 2533,
+      "new_bytes": 2551
+    },
+    "tests/stage_b_shared_flow.cpp": {
+      "old_bytes": 2678,
+      "new_bytes": 2696
+    },
+    "tests/strategy_transaction.cpp": {
+      "old_bytes": 5823,
+      "new_bytes": 5990
+    },
+    "tests/trace_simulation.cpp": {
+      "old_bytes": 2118,
+      "new_bytes": 2242
+    },
+    "tests/trajectory.cpp": {
+      "old_bytes": 3024,
+      "new_bytes": 3189
+    },
+    "tests/trajectory_output.cpp": {
+      "old_bytes": 6988,
+      "new_bytes": 7021
+    },
+    "include/pulse/cow_value.hpp": {
+      "added": true
+    },
+    "tests/stage_b_cow_transaction.cpp": {
+      "added": true
+    },
+    "CMakeLists.txt": {
+      "updated": true
+    }
+  },
+  "status": "CODEGEN_NOT_COMPILE_VALIDATED",
+  "validation_needed": [
+    "Windows/Linux Release",
+    "all CTest",
+    "5ms bitwise PEVT",
+    "500ms A010 17 channels",
+    "six rollback injection points",
+    "re-profile 68.08s baseline"
+  ]
+}

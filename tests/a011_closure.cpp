@@ -23,10 +23,10 @@ int main(int argc,char **argv){try{
   auto final=engineering::update_mode(m,old,x,regs,{}, {},stats);
   check(!final.classification_only&&final.residual<1e-8,"consistent result did not pass unchanged entry budget");
   for(const auto &reference:m.floating_references)
-   check(final.maps.at("V("+reference+")").isZero(0),"exact zero algebraic reference retained a numerical tail");
+   check(final.binding.read().maps.at("V("+reference+")").isZero(0),"exact zero algebraic reference retained a numerical tail");
   check((x-original).isZero(0),"charge or flux changed during algebraic closure");
-  for(int i:m.pwas){const auto&p=m.parts[i];auto [a,b]=p.ports[0];double v=0;if(a!="0")v+=final.maps.at("V("+a+")").dot(x);if(b!="0")v-=final.maps.at("V("+b+")").dot(x);check(final.segments.at(i)==p.curve.locate(v),"final constitutive region is inconsistent");}
-  check(final.maps.at("D117_VDS").dot(x)<0,"upper body diode did not take the freewheel current");
+  for(int i:m.pwas){const auto&p=m.parts[i];auto [a,b]=p.ports[0];double v=0;if(a!="0")v+=final.binding.read().maps.at("V("+a+")").dot(x);if(b!="0")v-=final.binding.read().maps.at("V("+b+")").dot(x);check(final.segments.at(i)==p.curve.locate(v),"final constitutive region is inconsistent");}
+  check(final.binding.read().maps.at("D117_VDS").dot(x)<0,"upper body diode did not take the freewheel current");
  }
  check(stats.cache_hits>0,"cache path was not exercised");
  std::cout<<"PASS A011 deadtime closure, strict final acceptance, provisional-flow rejection, storage preservation and cache parity\n";return 0;

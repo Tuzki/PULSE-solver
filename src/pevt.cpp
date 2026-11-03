@@ -78,23 +78,23 @@ struct PevtArchive::Data {
   bool same_archive_definition(const Mode&a,const Mode&b) const {
     if(a.observer_maps!=b.observer_maps || a.observer_rows!=b.observer_rows ||
        a.numerical_strategy!=b.numerical_strategy || a.bools!=b.bools ||
-       a.segments!=b.segments || a.maps.size()!=b.maps.size() ||
-       a.guards.size()!=b.guards.size())return false;
-    if(!identical(a.M,b.M) || !identical(a.observations,b.observations) ||
-       !identical(a.constraints,b.constraints) ||
-       !identical(a.residual_map,b.residual_map) ||
+       a.segments!=b.segments || a.binding.read().maps.size()!=b.binding.read().maps.size() ||
+       a.binding.read().guards.size()!=b.binding.read().guards.size())return false;
+    if(!identical(a.definition.read().M,b.definition.read().M) || !identical(a.binding.read().observations,b.binding.read().observations) ||
+       !identical(a.definition.read().constraints,b.definition.read().constraints) ||
+       !identical(a.binding.read().residual_map,b.binding.read().residual_map) ||
        !same_reference(a,b) ||
-       !identical(a.invariant_lift,b.invariant_lift) ||
-       !identical(a.invariant_generator,b.invariant_generator) ||
-       !identical(a.invariant_reduce,b.invariant_reduce))return false;
-    auto x=a.maps.begin(), y=b.maps.begin();
-    for(;x!=a.maps.end();++x,++y)
+       !identical(a.definition.read().invariant_lift,b.definition.read().invariant_lift) ||
+       !identical(a.definition.read().invariant_generator,b.definition.read().invariant_generator) ||
+       !identical(a.definition.read().invariant_reduce,b.definition.read().invariant_reduce))return false;
+    auto x=a.binding.read().maps.begin(), y=b.binding.read().maps.begin();
+    for(;x!=a.binding.read().maps.end();++x,++y)
       if(x->first!=y->first)return false;
       else if(a.observer_maps.count(x->first)){
         if(x->second.size()!=y->second.size()||!x->second.size()||std::memcmp(x->second.data(),y->second.data(),size_t(x->second.size()-1)*sizeof(double))!=0)return false;
       }else if(!identical(x->second,y->second))return false;
-    for(size_t i=0;i<a.guards.size();++i){
-      const auto&g=a.guards[i];const auto&h=b.guards[i];
+    for(size_t i=0;i<a.binding.read().guards.size();++i){
+      const auto&g=a.binding.read().guards[i];const auto&h=b.binding.read().guards[i];
       if(g.part!=h.part || g.direction!=h.direction || g.kind!=h.kind ||
          g.knot!=h.knot || g.segment!=h.segment || g.step!=h.step ||
          !identical(g.row,h.row))return false;
@@ -102,12 +102,12 @@ struct PevtArchive::Data {
     return true;
   }
   bool same_reference(const Mode&a,const Mode&b) const {
-    const auto &x=a.residual_reference,&y=b.residual_reference;
+    const auto &x=a.binding.read().residual_reference,&y=b.binding.read().residual_reference;
     if(x.rows()!=y.rows()||x.cols()!=y.cols())return false;
     std::vector<size_t> dynamic;
     for(const auto &name:a.observer_maps){
-      auto row=real_rows.find(name);auto left=a.maps.find(name),right=b.maps.find(name);
-      if(row==real_rows.end()||left==a.maps.end()||right==b.maps.end()||x.cols()!=Eigen::Index(nx)||row->second>=x.rows()||left->second.size()!=Eigen::Index(nx)||right->second.size()!=Eigen::Index(nx))return false;
+      auto row=real_rows.find(name);auto left=a.binding.read().maps.find(name),right=b.binding.read().maps.find(name);
+      if(row==real_rows.end()||left==a.binding.read().maps.end()||right==b.binding.read().maps.end()||x.cols()!=Eigen::Index(nx)||row->second>=x.rows()||left->second.size()!=Eigen::Index(nx)||right->second.size()!=Eigen::Index(nx))return false;
       if(!left->second.head(nx-1).isZero(0)||!right->second.head(nx-1).isZero(0)||
          !bits(x(row->second,nx-1),left->second[nx-1])||!bits(y(row->second,nx-1),right->second[nx-1]))return false;
       dynamic.push_back(size_t(row->second)+size_t(x.rows())*(nx-1));
@@ -143,7 +143,7 @@ struct PevtArchive::Data {
     if(!m.parts.empty()){auto chart=persistent_description(m);meta["provenance"]["persistent_chart"]=chart;for(size_t i=0;i<chart["internal_coordinate_ids"].size();++i)meta["state_layout"][i]["name"]=chart["internal_coordinate_ids"][i];}
     int row=int(m.nodes.size());for(auto&[name,index]:m.branches)row+=int(m.parts.at(index).ports.size());
     for(auto&[name,signal]:m.signals)if(signal.type==Signal::REAL)real_rows[name]=row++;
-    for(auto&[name,v]:s.mode.maps) {
+    for(auto&[name,v]:s.mode.binding.read().maps) {
       uint32_t owner=none;std::string unit="unspecified";
       if(auto i=m.signals.find(name);i!=m.signals.end())if(auto c=component_ids.find(i->second.driver);c!=component_ids.end())owner=c->second;
       if(name.starts_with("V("))unit="V";
@@ -188,7 +188,7 @@ struct PevtArchive::Data {
   }
   uint32_t value_set(const Mode&m) {
     std::vector<double> v;Bytes b;
-    for(auto&name:slots){auto&row=m.maps.at(name);require(row.size()==Eigen::Index(nx),11,"PEVT_SHAPE","held value row differs");double value=row[row.size()-1];v.push_back(value);real(b,value);}
+    for(auto&name:slots){const auto&row=m.binding.read().maps.at(name);require(row.size()==Eigen::Index(nx),11,"PEVT_SHAPE","held value row differs");double value=row[row.size()-1];v.push_back(value);real(b,value);}
     auto k=key(b);if(auto it=value_ids.find(k);it!=value_ids.end())return it->second;auto id=uint32_t(values.size());value_ids[k]=id;values.push_back(std::move(v));return id;
   }
   uint32_t block(const Matrix&m,const std::vector<std::pair<uint32_t,uint32_t>>&bindings) {
@@ -340,11 +340,11 @@ Result PevtArchive::read(const std::filesystem::path&path,const std::function<vo
     require(id<instances.size(),11,"PEVT_REFERENCE","invalid equation ID");auto instance=instances[id];const auto&d=defs.at(instance.definition);require(d.at("definition_id")==instance.definition,11,"PEVT_ID","definition ID order differs");std::map<uint32_t,Matrix> copies;
     auto get=[&](uint32_t block)->Matrix {require(block<blocks.size(),11,"PEVT_REFERENCE","invalid coefficient block");if(auto i=copies.find(block);i!=copies.end())return i->second;return blocks[block];};
     for(auto&binding:d.at("dynamic_bindings")){uint32_t block=binding.at("target_block_id"),slot=binding.at("slot_id"),row=binding.at("row"),col=binding.at("col");require(block<blocks.size()&&slot<np&&row<uint32_t(blocks[block].rows())&&col<uint32_t(blocks[block].cols()),11,"PEVT_REFERENCE","invalid coefficient binding");if(!copies.count(block))copies[block]=blocks[block];copies[block](row,col)=values[instance.values][slot];}
-    Mode m;m.M=get(d.at("state_matrix"));m.invariant_lift=get(d.at("invariant_lift"));m.invariant_generator=get(d.at("invariant_generator"));m.invariant_reduce=get(d.at("invariant_reduce"));m.constraints=get(d.at("constraints"));m.residual_map=get(d.at("residual_map"));m.residual_reference=get(d.at("residual_reference"));m.numerical_strategy=d.at("numerical_strategy");m.observer_maps=d.value("observer_maps",std::set<std::string>{});m.observer_rows=d.value("observer_rows",std::vector<int>{});
-    require(size_t(m.M.rows())==nx&&size_t(m.M.cols())==nx,11,"PEVT_SHAPE","state matrix dimension differs");
-    for(auto&entry:d.at("observation_rows")){uint32_t signal=entry.at("signal_id");require(signal<meta["signals"].size(),11,"PEVT_REFERENCE","invalid observation signal");auto row=get(entry.at("row_block_id"));require(size_t(row.rows())==nx&&row.cols()==1,11,"PEVT_SHAPE","observation shape differs");m.maps[meta["signals"][signal].at("name").get<std::string>()]=row;}
+    Mode m;m.definition.edit().M=get(d.at("state_matrix"));m.definition.edit().invariant_lift=get(d.at("invariant_lift"));m.definition.edit().invariant_generator=get(d.at("invariant_generator"));m.definition.edit().invariant_reduce=get(d.at("invariant_reduce"));m.definition.edit().constraints=get(d.at("constraints"));m.binding.edit().residual_map=get(d.at("residual_map"));m.binding.edit().residual_reference=get(d.at("residual_reference"));m.numerical_strategy=d.at("numerical_strategy");m.observer_maps=d.value("observer_maps",std::set<std::string>{});m.observer_rows=d.value("observer_rows",std::vector<int>{});
+    require(size_t(m.definition.read().M.rows())==nx&&size_t(m.definition.read().M.cols())==nx,11,"PEVT_SHAPE","state matrix dimension differs");
+    for(auto&entry:d.at("observation_rows")){uint32_t signal=entry.at("signal_id");require(signal<meta["signals"].size(),11,"PEVT_REFERENCE","invalid observation signal");auto row=get(entry.at("row_block_id"));require(size_t(row.rows())==nx&&row.cols()==1,11,"PEVT_SHAPE","observation shape differs");m.binding.edit().maps[meta["signals"][signal].at("name").get<std::string>()]=row;}
     for(auto mode_id:d.at("component_mode_ids")){uint32_t cm=mode_id;require(cm<cms.size(),11,"PEVT_REFERENCE","invalid equation component mode");auto def=cms[cm].at("definition");if(def.at("kind")=="REGION")m.segments[def.at("source_part_index").get<int>()]=def.at("value");else if(!def.at("signal").get<std::string>().empty()&&!is_literal(def.at("signal").get<std::string>()))m.bools[def.at("signal").get<std::string>()]=def.at("value").get<int>()!=0;}
-    for(auto&g:d.at("guards")){Mode::Guard guard;guard.row=get(g.at("row_block_id"));uint32_t cid=g.at("component_id");require(cid<meta["components"].size(),11,"PEVT_REFERENCE","invalid guard component");guard.part=meta["components"][cid].at("source_part_index");guard.direction=g.at("direction");guard.kind=g.at("kind").get<std::string>();guard.knot=g.at("knot");guard.segment=g.at("segment");guard.step=g.at("step");m.guards.push_back(std::move(guard));}
+    for(auto&g:d.at("guards")){Mode::Guard guard;guard.row=get(g.at("row_block_id"));uint32_t cid=g.at("component_id");require(cid<meta["components"].size(),11,"PEVT_REFERENCE","invalid guard component");guard.part=meta["components"][cid].at("source_part_index");guard.direction=g.at("direction");guard.kind=g.at("kind").get<std::string>();guard.knot=g.at("knot");guard.segment=g.at("segment");guard.step=g.at("step");m.binding.edit().guards.push_back(std::move(guard));}
     return m;
   };
   // Bounded reconstruction cache: instances carry their full dynamic bindings.

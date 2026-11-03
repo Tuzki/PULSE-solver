@@ -133,12 +133,12 @@ void fault(const Options &o, const std::string &point) {
           "fault injection at " + point);
 }
 bool valid(const RunState &s, const Agenda &a) {
-  auto i = s.generations.find(a.part);
-  return a.generation == (i == s.generations.end() ? 0 : i->second);
+  auto i = s.generations.read().find(a.part);
+  return a.generation == (i == s.generations.read().end() ? 0 : i->second);
 }
 void check_agenda_origins(const Model &m, const RunState &s) {
   std::map<Time, const Agenda *> ordered;
-  for (auto &a : s.agenda) {
+  for (const auto &a : s.agenda.read()) {
     if (!valid(s, a))
       continue;
     auto [it, inserted] = ordered.emplace(a.at, &a);
@@ -165,19 +165,19 @@ void check_agenda_origins(const Model &m, const RunState &s) {
   }
 }
 void prune(RunState &s) {
-  std::erase_if(s.agenda, [&](auto &a) { return !valid(s, a); });
+  std::erase_if(s.agenda.edit(), [&](auto &a) { return !valid(s, a); });
 }
 std::string fingerprint(const RunState &s, const std::set<std::string> &trig) {
   std::ostringstream x;
   x << std::setprecision(17) << s.mode.id;
   for (auto &t : trig)
     x << "!" << t;
-  for (const auto &[name, state] : s.software) {
+  for (const auto &[name, state] : s.software.read()) {
     x << "$" << name << ":" << state.invocation << ":";
     for (auto byte : state.bytes) x << unsigned(byte) << ",";
   }
   std::vector<std::string> pending;
-  for (auto &a : s.agenda)
+  for (const auto &a : s.agenda.read())
     if (valid(s, a))
       pending.push_back(a.at.canonical() + ":" + a.trigger + ":" + a.origin);
   std::sort(pending.begin(), pending.end());
@@ -220,7 +220,7 @@ void closure(const Model &m, RunState &candidate,
             "ZERO_TIME_CYCLE", "same-time configuration repeated", true);
     ++out.stats.microsteps;
     RunState snap = candidate;
-    auto newregs = snap.regs;
+    auto newregs = snap.regs.read();
     std::set<std::string> next;
     for (const auto &t : triggers)
       logs.push_back({{"time_canonical", candidate.at.canonical()},
@@ -249,7 +249,7 @@ void closure(const Model &m, RunState &candidate,
       const auto &p = m.parts[i].raw;
       if (op(p, "MODE") == "DELAY" && p.options.count("CANCEL") &&
           triggers.count(net_name(op(p, "CANCEL"))))
-        ++candidate.generations[i];
+        ++candidate.generations.edit()[i];
     }
     for (int i : m.events) {
       const auto &p = m.parts[i].raw;
@@ -262,13 +262,13 @@ void closure(const Model &m, RunState &candidate,
       require(delay >= 0 && std::isfinite(delay), 7, "INVALID_DELAY",
               "latched delay is negative or nonfinite", false, p.source);
       if (op(p, "POLICY", "TRANSPORT") == "REPLACE")
-        ++candidate.generations[i];
+        ++candidate.generations.edit()[i];
       auto trigger = net_name(p.args[0]);
       if (delay == 0)
         next.insert(trigger);
       else
-        candidate.agenda.push_back(
-            {candidate.at + Time::from(delay), i, 0, candidate.generations[i],
+        candidate.agenda.edit().push_back(
+            {candidate.at + Time::from(delay), i, 0, candidate.generations.edit()[i],
              trigger,
              sum_origin(
                  candidate.time_origin,
@@ -282,7 +282,7 @@ void closure(const Model &m, RunState &candidate,
         Time delay = Time::from(wake.delay);
         require(candidate.at + delay > candidate.at, 7, "SOFTWARE_WAKEUP_RESOLUTION",
                 "software wakeup does not advance simulated time", true);
-        candidate.agenda.push_back({candidate.at + delay, wake.part, 0, 0, wake.trigger,
+        candidate.agenda.edit().push_back({candidate.at + delay, wake.part, 0, 0, wake.trigger,
                                     sum_origin(candidate.time_origin, exact_time_origin(delay))});
       }
     }
@@ -292,7 +292,7 @@ void closure(const Model &m, RunState &candidate,
     fault(o, "after_reg");
     Json delta_details;
     candidate.mode = engineering::update_mode(
-        m, snap, candidate.internal, candidate.regs,
+        m, snap, candidate.internal, candidate.regs.read(),
         first ? crossings : std::vector<Mode::Guard>{},
         first ? seeds : std::set<int>{}, out.stats, &delta_details, algorithm);
     require(candidate.mode.numerical_strategy==algorithm,12,"STRATEGY_MISMATCH",
@@ -317,7 +317,7 @@ void closure(const Model &m, RunState &candidate,
     triggers = std::move(next);
     prune(candidate);
     out.stats.queue_peak =
-        std::max(out.stats.queue_peak, uint64_t(candidate.agenda.size()));
+        std::max(out.stats.queue_peak, uint64_t(candidate.agenda.read().size()));
     first = false;
   }
 }
@@ -338,7 +338,7 @@ void stream_emit(const Model&,Result&out,const RunState&old,const RunState&next,
   out.times.push_back(at.seconds());
   const RunState &anchor=at==next.at?next:old;
   const bool flow_compatible=compatible_hint.value_or(false) || (!compatible_hint.has_value() && !out.analog_names.empty() && anchor.electrical_flow && anchor.electrical_flow->compatible(*mode));
-  for(const auto&name:out.analog_names){const auto &row=mode->maps.at(name);
+  for(const auto&name:out.analog_names){const auto &row=mode->binding.read().maps.at(name);
     double v=flow_compatible?anchor.electrical_flow->observe(row,(at-anchor.at).seconds()):row.dot(x);
     require(std::isfinite(v)&&std::abs(v)<=std::numeric_limits<float>::max(),11,"OUTPUT_NONFINITE","streamed output cannot be represented");out.analog.push_back(float(v));}
   for(const auto&name:out.digital_names)out.digital.push_back(mode->bools.at(name));
@@ -382,14 +382,14 @@ Result simulate(const Model &original, const Options &o) {
     // Physical q/phi views are never fed back across an event.
     state.internal = persistent_encode(m,m.initial);state.physical=m.initial;
     for (int i : m.registers)
-      state.regs[net_name(m.parts[i].raw.args[0])] =
+      state.regs.edit()[net_name(m.parts[i].raw.args[0])] =
           number(op(m.parts[i].raw, "IC", "0"));
     state.mode =
-        engineering::initial_mode(m, state.internal, state.regs, out.stats);
+        engineering::initial_mode(m, state.internal, state.regs.read(), out.stats);
     if (!m.netlist.tasks.empty()) {
       software_session = std::make_unique<software::Session>(m);
       software_session->initialize(state, out.stats);
-      state.mode = engineering::initial_mode(m, state.internal, state.regs, out.stats);
+      state.mode = engineering::initial_mode(m, state.internal, state.regs.read(), out.stats);
     }
     state.version = 1;
     for (int i : m.events) {
@@ -400,14 +400,14 @@ Result simulate(const Model &original, const Options &o) {
       if (private_wakeup) continue;
       if (mode == "AT" || mode == "PERIODIC") {
         auto key = mode == "AT" ? "AT" : "START";
-        state.agenda.push_back(
+        state.agenda.edit().push_back(
             {Time::from(number(op(p, key, "0"))), i, 0, 0, net_name(p.args[0]),
              time_input(p.option_text.count(key) ? p.option_text.at(key) : "0",
                         m.netlist)});
       }
     }
     check_agenda_origins(m, state);
-    out.stats.queue_peak = state.agenda.size();
+    out.stats.queue_peak = state.agenda.read().size();
     out.committed = state;
     out.segments.push_back({state});stream_setup(m,out,o);
     if(o.trajectory_output){out.trajectory=std::make_shared<Trajectory>();out.trajectory->initial(m,state);}
@@ -422,7 +422,7 @@ Result simulate(const Model &original, const Options &o) {
       const RunState &old = out.committed;
       Time target = end;
       bool due = false;
-      for (const auto &a : old.agenda)
+      for (const auto &a : old.agenda.read())
         if (valid(old, a) && a.at <= target) {
           target = a.at;
           due = true;
@@ -456,7 +456,7 @@ Result simulate(const Model &original, const Options &o) {
           return engineering::Flow(algorithm_mode,checkpoint.internal);
         }();
       engineering::SearchResult roots;
-      if (target > old.at && !algorithm_mode.guards.empty()) {
+      if (target > old.at && !algorithm_mode.binding.read().guards.empty()) {
         ++out.stats.root_queries;
         try {
           {six_perf::Scope timer(six_perf::ROOTS);
@@ -482,7 +482,7 @@ Result simulate(const Model &original, const Options &o) {
         due = due && root_at == target;
         target = root_at;
         for (const auto &r : roots.candidates) {
-          auto g = algorithm_mode.guards.at(r.guard);
+          auto g = algorithm_mode.binding.read().guards.at(r.guard);
           if (g.kind == "PWA" || g.kind == "RANGE" || g.kind == "CMP") {
             // The scalar modal guard and reconstructed state use different
             // cancellation paths. Use the existing guard evaluation scale,
@@ -502,7 +502,7 @@ Result simulate(const Model &original, const Options &o) {
           }
           crossings.push_back(g);
         }
-        seeds.insert(algorithm_mode.guards.at(root.guard).part);
+        seeds.insert(algorithm_mode.binding.read().guards.at(root.guard).part);
         root_log = {
             {"kind", "ROOT"},
             {"time_canonical", target.canonical()},
@@ -525,7 +525,7 @@ Result simulate(const Model &original, const Options &o) {
             {"candidate_members", Json::array()},
             {"predicted_events", Json::array()}};
         for (const auto &r : roots.candidates) {
-          auto &id = m.parts[algorithm_mode.guards[r.guard].part].raw.id;
+          auto &id = m.parts[algorithm_mode.binding.read().guards[r.guard].part].raw.id;
           root_log["candidate_members"].push_back(id);
           root_log["predicted_events"].push_back(
               {{"part", id},
@@ -562,7 +562,7 @@ Result simulate(const Model &original, const Options &o) {
       std::set<std::string> triggers;
       if (due) {
         std::vector<Agenda> remaining;
-        for (const auto &a : candidate.agenda) {
+        for (const auto &a : candidate.agenda.read()) {
           if (!valid(candidate, a))
             continue;
           if (a.at != target) {
@@ -670,10 +670,10 @@ Result simulate(const Model &original, const Options &o) {
       std::chrono::duration<double>(std::chrono::steady_clock::now() - begin)
           .count();
   Json software_states = Json::object(), software_outputs = Json::object();
-  for (const auto &[name, state] : out.committed.software)
+  for (const auto &[name, state] : out.committed.software.read())
     software_states[name] = {{"invocations",state.invocation},{"state_bytes",state.bytes.size()}};
   for (const auto &name : m.software_outputs)
-    if (out.committed.regs.count(name)) software_outputs[name] = out.committed.regs.at(name);
+    if (out.committed.regs.read().count(name)) software_outputs[name] = out.committed.regs.read().at(name);
   out.report = {
       {"software_states", software_states},
       {"software_final_outputs", software_outputs},

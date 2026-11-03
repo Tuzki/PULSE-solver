@@ -10,7 +10,7 @@ std::string document(const std::string &network){return
 Model model(const std::string &s){return compile(parse_markdown(document(s),"electrical-references.md"));}
 Result run(const Model &m, bool cache=true){Options o;if(!cache)o.mode_cache_capacity=0;return simulate(m,o);}
 void complete(const Result &r){check(r.status=="COMPLETED",r.status+" "+r.diagnostic.dump());}
-double value(const Result&r,const std::string&n){return r.committed.mode.maps.at(n).dot(r.committed.physical);}
+double value(const Result&r,const std::string&n){return r.committed.mode.binding.read().maps.at(n).dot(r.committed.physical);}
 void near(double a,double b){check(std::abs(a-b)<=1e-10*std::max(1.,std::abs(b)),"value mismatch");}
 }
 int main(){try{

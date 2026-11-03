@@ -6,14 +6,14 @@ void validate_physical(const Mode &mode, const Vector &out) {
     require(!mode.classification_only, 12, "UNACCEPTED_CANDIDATE",
             "region-classification candidate cannot be used as a physical solution");
     require(out.allFinite(), 7, "NONFINITE_PROPAGATION", "nonfinite validated state");
-    if (mode.constraints.rows()) {
-        const double scale = mode.constraints.lpNorm<Eigen::Infinity>() * out.lpNorm<Eigen::Infinity>() + 1.;
-        require((mode.constraints * out).norm() <= 1e-9 * scale, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
+    if (mode.definition.read().constraints.rows()) {
+        const double scale = mode.definition.read().constraints.lpNorm<Eigen::Infinity>() * out.lpNorm<Eigen::Infinity>() + 1.;
+        require((mode.definition.read().constraints * out).norm() <= 1e-9 * scale, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
                 "validated descriptor constraint drift");
     }
-    if (mode.residual_map.rows()) {
-        double scale = std::max(1., (mode.residual_reference * out).norm());
-        require((mode.residual_map * out).norm() <= 1e-8 * scale, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
+    if (mode.binding.read().residual_map.rows()) {
+        double scale = std::max(1., (mode.binding.read().residual_reference * out).norm());
+        require((mode.binding.read().residual_map * out).norm() <= 1e-8 * scale, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
                 "validated propagated algebraic residual exceeds budget");
     }
 }
@@ -22,23 +22,23 @@ Vector propagate(const Mode &mode, const Vector &s, double h, Stats &stats) {
     if (h == 0)
         return s;
     ++stats.exponentials;
-    Matrix e = (mode.M * h).exp();
+    Matrix e = (mode.definition.read().M * h).exp();
     Vector out = e * s;
     out[out.size() - 1] = 1;
     require(out.allFinite(), 7, "NONFINITE_PROPAGATION", "matrix exponential produced nonfinite state");
-    if (mode.constraints.rows()) {
+    if (mode.definition.read().constraints.rows()) {
         // Absolute 2e-9 is scale-blind: the LLC constraint row has norm ~1.56e9
         // and a valid state at 1.75us has |C s| ~1.13e-6 (relative 2.1e-12).
         // Use a scale-aware numerical residual; a genuine C s=1 inconsistency
         // still fails because ||C|| ||out|| is then O(1), not 1e9.
-        const double scale = mode.constraints.lpNorm<Eigen::Infinity>() * out.lpNorm<Eigen::Infinity>() + 1.;
-        require((mode.constraints * out).norm() <= 1e-9 * scale, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
+        const double scale = mode.definition.read().constraints.lpNorm<Eigen::Infinity>() * out.lpNorm<Eigen::Infinity>() + 1.;
+        require((mode.definition.read().constraints * out).norm() <= 1e-9 * scale, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
                 "descriptor constraint drift");
     }
-    if (mode.residual_map.rows()) {
-        Matrix R = mode.residual_map;
+    if (mode.binding.read().residual_map.rows()) {
+        Matrix R = mode.binding.read().residual_map;
         Vector residual = R * out;
-        double scale = std::max(1., (mode.residual_reference * out).norm());
+        double scale = std::max(1., (mode.binding.read().residual_reference * out).norm());
         if (residual.norm() > 1e-8 * scale) {
             // A single bounded algebraic projection is used only for
             // roundoff-scale drift in the descriptor residual map.  A genuine
@@ -67,13 +67,13 @@ Vector propagate(const Mode &mode, const Vector &s, double h, Stats &stats) {
             stats.max_projection_correction = std::max(stats.max_projection_correction, correction.norm());
             residual = R * out;
             stats.max_projected_residual = std::max(stats.max_projected_residual, residual.norm());
-            if (mode.constraints.rows()) {
+            if (mode.definition.read().constraints.rows()) {
                 const double cs =
-                    mode.constraints.lpNorm<Eigen::Infinity>() * out.lpNorm<Eigen::Infinity>() + 1.;
-                require((mode.constraints * out).norm() <= 1e-9 * cs, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
+                    mode.definition.read().constraints.lpNorm<Eigen::Infinity>() * out.lpNorm<Eigen::Infinity>() + 1.;
+                require((mode.definition.read().constraints * out).norm() <= 1e-9 * cs, 10, "PHYSICAL_CONSTRAINT_VIOLATION",
                         "projection broke descriptor constraint");
             }
-            require(residual.norm() <= 1e-8 * std::max(1., (mode.residual_reference * out).norm()), 10,
+            require(residual.norm() <= 1e-8 * std::max(1., (mode.binding.read().residual_reference * out).norm()), 10,
                     "PHYSICAL_CONSTRAINT_VIOLATION", "propagated algebraic residual exceeds budget");
         }
     }

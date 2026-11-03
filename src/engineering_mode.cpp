@@ -12,7 +12,7 @@ std::string option(const Primitive &p, const std::string &key,
 }
 Vector input(const Model &m, const Mode &mode, const std::string &name) {
   if (!is_literal(name))
-    return mode.maps.at(net_name(name));
+    return mode.binding.read().maps.at(net_name(name));
   Vector row = Vector::Zero(m.ns + 1);
   row[m.ns] = number(name);
   return row;
@@ -72,7 +72,7 @@ Mode initial_mode(const Model &m, const Vector &x,
       double value = row.dot(x);
       bool actual = predicate(m.parts[i].raw, value);
       if (value == 0 && !isheld(m, m.parts[i])) {
-        double slope = row.dot(mode.M * x);
+        double slope = row.dot(mode.definition.read().M * x);
         if (slope != 0)
           actual = (option(m.parts[i].raw, "OP") == "GT" ||
                     option(m.parts[i].raw, "OP") == "GE") == (slope > 0);
@@ -84,9 +84,9 @@ Mode initial_mode(const Model &m, const Vector &x,
         auto [a, b] = m.parts[i].ports[0];
         double v = 0;
         if (a != "0")
-          v += mode.maps.at("V(" + a + ")").dot(x);
+          v += mode.binding.read().maps.at("V(" + a + ")").dot(x);
         if (b != "0")
-          v -= mode.maps.at("V(" + b + ")").dot(x);
+          v -= mode.binding.read().maps.at("V(" + b + ")").dot(x);
         segnext[i] = m.parts[i].curve.locate(v);
       }
     if (next == bits && segnext == segments) {
@@ -145,7 +145,7 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
     auto next = bits;
     auto segnext = segments;
     for (int i : m.cmps)
-      if (isheld(m, m.parts[i]) || regs != old.regs)
+      if (isheld(m, m.parts[i]) || regs != old.regs.read())
         next[i] = predicate(m.parts[i].raw, threshold(m, mode, i).dot(x));
     // A continuous comparator can change a switch without changing a REG.
     // At fixed q/phi/INT, the resulting algebraic voltage jump may invalidate
@@ -153,7 +153,7 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
     // bounded iteration, rather than delaying the gate or accepting a bad IV
     // segment. State-bearing C/L segments retain the directed-root policy.
     bool switch_changed = false;
-    if (regs == old.regs)
+    if (regs == old.regs.read())
       for (const auto &part : m.parts)
         if (part.raw.kind == "SW") {
           const auto gate = net_name(part.raw.args[2]);
@@ -165,12 +165,12 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
     // A constitutive breakpoint can also change algebraic maps of coupled
     // nonlinear resistors. Close every event's invalid algebraic IV regions,
     // rather than restricting this operation to external gate/REG changes.
-    if (regs != old.regs || switch_changed || !candidates.empty())
+    if (regs != old.regs.read() || switch_changed || !candidates.empty())
       for (int i : m.pwas)
         if (m.parts[i].raw.kind == "R") {
-          bool invalid = regs != old.regs;
+          bool invalid = regs != old.regs.read();
           if (!invalid)
-            for (const auto &guard : mode.guards)
+            for (const auto &guard : mode.binding.read().guards)
               if (guard.part == i) {
                 const double tolerance =
                     64 * std::numeric_limits<double>::epsilon() *
@@ -186,7 +186,7 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
       if (g.kind == "CMP") {
         Vector left = threshold(m, old.mode, g.part),
                right = threshold(m, mode, g.part);
-        double dl = old.electrical_flow ? old.electrical_flow->observe(left,0,1) : left.dot(old.mode.M*x);
+        double dl = old.electrical_flow ? old.electrical_flow->observe(left,0,1) : left.dot(old.mode.definition.read().M*x);
         // A classification candidate cannot itself be propagated. Reuse the
         // incoming representation only if all electrical data are compatible;
         // otherwise independently evaluate the candidate's right tangent.
@@ -232,12 +232,12 @@ Mode update_mode(const Model &m, const RunState &old, const Vector &x,
       // A discrete source may jump algebraic quantities. Handle supported
       // causal REG/switch-driven algebraic closure above; reject any remaining invalid
       // noncandidate before committing, without searching mode families.
-      for (const auto &g : mode.guards) {
+      for (const auto &g : mode.binding.read().guards) {
         bool member =
             std::any_of(candidates.begin(), candidates.end(),
                         [&](const auto &c) { return c.part == g.part; });
         bool unchanged =
-            std::any_of(old.mode.guards.begin(), old.mode.guards.end(),
+            std::any_of(old.mode.binding.read().guards.begin(), old.mode.binding.read().guards.end(),
                         [&](const auto &before) {
                           return before.part == g.part &&
                                  before.kind == g.kind &&

@@ -24,8 +24,8 @@ void identical(const Result &a, const Result &b) {
         check(x.at == y.at && x.mode.id == y.mode.id, "cache changed segment time/mode");
         check(same_bytes(x.physical.data(), y.physical.data(), size_t(x.physical.size())),
               "cache changed physical state bits");
-        check(x.mode.M.rows() == y.mode.M.rows() &&
-                  same_bytes(x.mode.M.data(), y.mode.M.data(), size_t(x.mode.M.size())),
+        check(x.mode.definition.read().M.rows() == y.mode.definition.read().M.rows() &&
+                  same_bytes(x.mode.definition.read().M.data(), y.mode.definition.read().M.data(), size_t(x.mode.definition.read().M.size())),
               "cache changed matrix bits");
         check(std::bit_cast<uint64_t>(x.mode.residual) == std::bit_cast<uint64_t>(y.mode.residual),
               "cache did not recompute entry residual identically");
@@ -57,7 +57,7 @@ void reg_values_are_in_key() {
     auto a = simulate(model, off), b = simulate(model);
     identical(a, b);
     check(b.stats.mode_cache_peak_entries > 3, "changing REG values aliased");
-    near(value(b, "V(N)"), b.committed.regs.at("Q"), 0, "REG-controlled voltage");
+    near(value(b, "V(N)"), b.committed.regs.read().at("Q"), 0, "REG-controlled voltage");
 }
 void pwa_segments_are_in_key() {
     auto model = compile(parse_markdown(document(
@@ -72,10 +72,10 @@ void pwa_segments_are_in_key() {
     segment.begin()->second = 0; x = model.initial;
     auto again = compile_specified(model, x, {}, stats, {}, segment);
     check(stats.modes == 2 && stats.cache_hits == 1, "PWA segment cache identity");
-    near(first.maps.at("V(N)").dot(x), .5, 0, "first PWA segment");
+    near(first.binding.read().maps.at("V(N)").dot(x), .5, 0, "first PWA segment");
     auto y = x; y[model.parts[model.pwas.at(0)].state] = 2;
-    near(second.maps.at("V(N)").dot(y), 1.5, 0, "second PWA segment");
-    check(same_bytes(first.M.data(), again.M.data(), size_t(first.M.size())), "PWA reuse changed matrix");
+    near(second.binding.read().maps.at("V(N)").dot(y), 1.5, 0, "second PWA segment");
+    check(same_bytes(first.definition.read().M.data(), again.definition.read().M.data(), size_t(first.definition.read().M.size())), "PWA reuse changed matrix");
 }
 void recheck_storage_constraints() {
     auto model = compile(parse_markdown(document(
@@ -83,7 +83,7 @@ void recheck_storage_constraints() {
         "cache-constraint.md"));
     Stats stats; ScopedModeCache scope(model, 8);
     auto first = compile_specified(model, model.initial, {}, stats, {}, {});
-    check(first.constraints.rows() > 0, "fixture has no physical constraint");
+    check(first.definition.read().constraints.rows() > 0, "fixture has no physical constraint");
     auto bad = model.initial; bad[0] = 1;
     std::string cached_error, fresh_error;
     try { compile_specified(model, bad, {}, stats, {}, {}); }
@@ -102,10 +102,10 @@ void returned_modes_are_independent() {
     auto model = compile(parse_markdown(document("V1 N 0 DC=2\nR1 N 0 R=4"), "cache-copy.md"));
     Stats stats; ScopedModeCache scope(model, 8);
     auto a = compile_specified(model, model.initial, {}, stats, {}, {});
-    a.maps.at("V(N)").setZero(); a.version = 99; a.M.setConstant(42);
+    a.binding.edit().maps.at("V(N)").setZero(); a.version = 99; a.definition.edit().M.setConstant(42);
     auto b = compile_specified(model, model.initial, {}, stats, {}, {});
-    near(b.maps.at("V(N)").dot(model.initial), 2, 0, "caller mutated cached observation");
-    check(b.version != 99 && b.M.maxCoeff() != 42, "caller mutated cached mode");
+    near(b.binding.read().maps.at("V(N)").dot(model.initial), 2, 0, "caller mutated cached observation");
+    check(b.version != 99 && b.definition.read().M.maxCoeff() != 42, "caller mutated cached mode");
 }
 void model_and_run_isolation() {
     auto a = run("V1 N 0 DC=2\nR1 N 0 R=4"), b = run("V1 N 0 DC=6\nR1 N 0 R=2");
@@ -130,8 +130,8 @@ void exact_reg_bit_values() {
     auto a=compile_specified(model, model.initial, regs, stats, {}, {});
     regs["Q"]=std::nextafter(1.,2.);
     auto b=compile_specified(model, model.initial, regs, stats, {}, {});
-    check(std::bit_cast<uint64_t>(a.maps.at("V(N)").dot(model.initial)) !=
-              std::bit_cast<uint64_t>(b.maps.at("V(N)").dot(model.initial)),
+    check(std::bit_cast<uint64_t>(a.binding.read().maps.at("V(N)").dot(model.initial)) !=
+              std::bit_cast<uint64_t>(b.binding.read().maps.at("V(N)").dot(model.initial)),
           "adjacent binary64 REG values aliased");
     check(stats.modes == 2, "adjacent REG values reused incorrect template");
 }

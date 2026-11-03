@@ -6,10 +6,10 @@ using namespace pulse;
 int main(int argc,char **argv) {
  try {
   std::ifstream in(argv[1]);Json fixture;in>>fixture;
-  const int n=int(fixture["state"].size());Mode mode;mode.M=Matrix(n,n);Vector x(n);
-  for(int i=0;i<n;i++){x[i]=fixture["state"][i];for(int j=0;j<n;j++)mode.M(i,j)=fixture["matrix"][i][j];}
+  const int n=int(fixture["state"].size());Mode mode;mode.definition.edit().M=Matrix(n,n);Vector x(n);
+  for(int i=0;i<n;i++){x[i]=fixture["state"][i];for(int j=0;j<n;j++)mode.definition.edit().M(i,j)=fixture["matrix"][i][j];}
   for(const auto &j:fixture["guards"])if(j["part"]=="R_D133"){
-   Mode::Guard g;g.row=Vector(n);for(int i=0;i<n;i++)g.row[i]=j["row"][i];g.kind="PWA";g.part=0;g.knot=1;g.segment=1;g.step=-1;mode.guards.push_back(g);
+   Mode::Guard g;g.row=Vector(n);for(int i=0;i<n;i++)g.row[i]=j["row"][i];g.kind="PWA";g.part=0;g.knot=1;g.segment=1;g.step=-1;mode.binding.edit().guards.push_back(g);
   }
   engineering::Flow flow(mode,x);
   auto check=[](bool ok,const char *text){if(!ok)throw std::runtime_error(text);};
@@ -20,11 +20,11 @@ int main(int argc,char **argv) {
   check(engineering::next_events(mode,flow,1e-7,1e-14).candidates.empty(),"arrived knot is spuriously crossed again");
   check((flow.state(0)-x).isZero(0),"entry state was projected");
   for(double h:{1e-12,1e-10,1e-8,1e-7})
-   check(std::abs(mode.guards[0].row.dot(flow.state(h))-flow.value(0,h))<1e-20,
+   check(std::abs(mode.binding.read().guards[0].row.dot(flow.state(h))-flow.value(0,h))<1e-20,
          "root prediction and propagated physical state use inconsistent flows");
   // A later genuine exit must survive the inward-at-entry pruning: g=t^2-t.
-  Mode later;later.M=Matrix::Zero(3,3);later.M(0,2)=1;later.M(1,0)=2;
-  Vector initial(3);initial<<0,0,1;Mode::Guard g;g.row=Vector(3);g.row<<-1,1,0;g.kind="PWA";g.part=0;later.guards.push_back(g);
+  Mode later;later.definition.edit().M=Matrix::Zero(3,3);later.definition.edit().M(0,2)=1;later.definition.edit().M(1,0)=2;
+  Vector initial(3);initial<<0,0,1;Mode::Guard g;g.row=Vector(3);g.row<<-1,1,0;g.kind="PWA";g.part=0;later.binding.edit().guards.push_back(g);
   engineering::Flow curve(later,initial);auto roots=engineering::next_events(later,curve,1.5,1e-14);
   check(roots.candidates.size()==1&&std::abs(roots.candidates[0].time-1)<1e-12,"real later exit was discarded");
   std::cout<<"PASS A011 boundary derivative, independent guard value, enclosure, no false re-entry, state preservation and later exit\n";return 0;

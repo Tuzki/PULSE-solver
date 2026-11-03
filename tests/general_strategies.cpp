@@ -26,7 +26,7 @@ void star(int n){
   auto mode=portfolio_mode(m,state,algorithm,stats);
   check(mode.elimination_path==(algorithm==1?"CONSTRAINED_QR":"CONSTRAINED_LU"),"wrong actual constrained factorization");
   portfolio_original_check(m,state,mode,state.internal);
-  Vector derivative=physical_increment(m,(mode.M*state.internal).head(m.ns));
+  Vector derivative=physical_increment(m,(mode.definition.read().M*state.internal).head(m.ns));
   for(const auto&p:m.parts)if(p.raw.kind=="L"){
    int i=std::stoi(p.raw.id.substr(1));double expected=i+1-numerator/denominator;
    check(std::abs(derivative[p.state]-expected)<1e-9,"derivative disagrees with analytical star solution");

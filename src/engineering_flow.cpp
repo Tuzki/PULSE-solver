@@ -30,7 +30,7 @@ struct Basis {
 std::string key(const Mode &m) {
   std::string s;
   for (const Matrix *a :
-       {&m.M, &m.invariant_lift, &m.invariant_generator, &m.invariant_reduce}) {
+       {&m.definition.read().M, &m.definition.read().invariant_lift, &m.definition.read().invariant_generator, &m.definition.read().invariant_reduce}) {
     auto rows = a->rows(), cols = a->cols();
     s.append(reinterpret_cast<const char *>(&rows), sizeof(rows));
     s.append(reinterpret_cast<const char *>(&cols), sizeof(cols));
@@ -88,14 +88,14 @@ std::shared_ptr<Basis> basis(const Mode &mode) {
   if (auto it = cache.find(id); it != cache.end()) { ++flow_counts.basis_hits; return it->second; }
   ++flow_counts.basis_misses;
   auto b = std::make_shared<Basis>();
-  const int physical = int(mode.M.rows()) - 1;
-  if (mode.invariant_generator.size()) {
-    b->generator = mode.invariant_generator;
+  const int physical = int(mode.definition.read().M.rows()) - 1;
+  if (mode.definition.read().invariant_generator.size()) {
+    b->generator = mode.definition.read().invariant_generator;
     const int free = int(b->generator.rows()) - 1;
-    b->lift = mode.invariant_lift.topLeftCorner(physical, free);
-    b->reduce = mode.invariant_reduce.topRows(free);
+    b->lift = mode.definition.read().invariant_lift.topLeftCorner(physical, free);
+    b->reduce = mode.definition.read().invariant_reduce.topRows(free);
   } else {
-    b->generator = mode.M;
+    b->generator = mode.definition.read().M;
     b->lift = Matrix::Identity(physical, physical);
     b->reduce = Matrix::Zero(physical, physical + 1);
     b->reduce.leftCols(physical).setIdentity();
@@ -258,13 +258,13 @@ void prepare_local(FlowData &d) {
   WMatrix a = b.balanced.cast<Wide>() / Wide(d.local_rate);
   WVector absolute_z = z.cwiseAbs();
   std::vector<WVector> projected;
-  d.local.resize(d.mode.guards.size());
+  d.local.resize(d.mode.binding.read().guards.size());
   d.local_state.resize(FlowData::local_degree + 1);
   d.local_state[0] = z;
-  d.local_absolute.resize(d.mode.guards.size());
-  d.local_scale.resize(d.mode.guards.size());
-  for (size_t k = 0; k < d.mode.guards.size(); ++k) {
-    const auto &g = d.mode.guards[k];
+  d.local_absolute.resize(d.mode.binding.read().guards.size());
+  d.local_scale.resize(d.mode.binding.read().guards.size());
+  for (size_t k = 0; k < d.mode.binding.read().guards.size(); ++k) {
+    const auto &g = d.mode.binding.read().guards[k];
     WVector p = WVector::Zero(n + 1);
     if (n) p.head(n) = (b.lift.cast<Wide>().transpose() * g.row.head(d.initial.size() - 1).cast<Wide>()).cwiseProduct(b.scaling.head(n).cast<Wide>());
     projected.push_back(p);
@@ -333,7 +333,7 @@ Flow::Flow(const Mode &mode, const Vector &initial)
       }
     }
   }
-  for (auto &guard : mode.guards) {
+  for (const auto &guard : mode.binding.read().guards) {
     Functional g;
     g.constant = guard.row.dot(initial);
     if (b.modal && n) {
@@ -463,7 +463,7 @@ double Flow::value(size_t k, double t, int order) const {
   t += offset_.seconds();
   auto &d = *data_;
   if (t == 0 && order == 0)
-    return d.mode.guards.at(k).row.dot(d.initial);
+    return d.mode.binding.read().guards.at(k).row.dot(d.initial);
   if (order <= 1 && t * d.local_rate <= .5) {
     const auto coefficients = local_coefficients(d, k, order);
     const long double q = static_cast<long double>(t) * d.local_rate;
@@ -473,9 +473,9 @@ double Flow::value(size_t k, double t, int order) const {
     return double(value);
   }
   if (!d.basis->modal) {
-    Vector row = d.mode.guards.at(k).row;
+    Vector row = d.mode.binding.read().guards.at(k).row;
     for (int j = 0; j < order; ++j)
-      row = (row.transpose() * d.mode.M).transpose();
+      row = (row.transpose() * d.mode.definition.read().M).transpose();
     return row.dot(state(t - offset_.seconds()));
   }
   const auto &g = d.guards.at(k);
@@ -549,9 +549,9 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
     // Nilpotent INT chains terminate exactly; other cases subdivide when
     // the scaled generator is too large. No output-grid integration occurs.
     double mid = (a + b) * .5, h = (b - a) * .5;
-    Vector row = d.mode.guards.at(k).row;
+    Vector row = d.mode.binding.read().guards.at(k).row;
     for (int j = 0; j < order; ++j)
-      row = (row.transpose() * d.mode.M).transpose();
+      row = (row.transpose() * d.mode.definition.read().M).transpose();
     Vector x = state(mid - offset_.seconds()), term = x;
     Range result{row.dot(x), row.dot(x)};
     double q = d.basis->balanced.cwiseAbs().rowwise().sum().maxCoeff() * h;
@@ -559,7 +559,7 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
       return {-INFINITY, INFINITY};
     bool terminated = false;
     for (int j = 1; j <= 64; ++j) {
-      term = d.mode.M * term * (h / j);
+      term = d.mode.definition.read().M * term * (h / j);
       if (term.isZero(0)) {
         terminated = true;
         break;
@@ -580,13 +580,13 @@ Range Flow::bounds(size_t k, double a, double b, int order) const {
     // scale as well as interval variation; a zero-width interval must not
     // pretend that a cancelling nilpotent polynomial was evaluated exactly.
     Vector absolute=d.initial.cwiseAbs(), absolute_term=absolute;
-    const Matrix absolute_generator=d.mode.M.cwiseAbs();
+    const Matrix absolute_generator=d.mode.definition.read().M.cwiseAbs();
     for(int j=1;j<=64;j++){
       absolute_term=absolute_generator*absolute_term*(mid/j);
       absolute+=absolute_term;
       if(absolute_term.isZero(0))break;
     }
-    const double evaluation_pad=64*(d.mode.M.rows()+1)*std::numeric_limits<double>::epsilon()*
+    const double evaluation_pad=64*(d.mode.definition.read().M.rows()+1)*std::numeric_limits<double>::epsilon()*
                                 row.cwiseAbs().dot(absolute);
     result.lo-=evaluation_pad;result.hi+=evaluation_pad;
     return result;
@@ -727,16 +727,16 @@ bool Flow::compatible(const Mode &m) const {
     return true;
   };
   if(m.numerical_strategy!=old.numerical_strategy||
-     !same_key_matrix(m.M,old.M)||
-     !same_key_matrix(m.invariant_lift,old.invariant_lift)||
-     !same_key_matrix(m.invariant_generator,old.invariant_generator)||
-     !same_key_matrix(m.invariant_reduce,old.invariant_reduce)||
+     !same_key_matrix(m.definition.read().M,old.definition.read().M)||
+     !same_key_matrix(m.definition.read().invariant_lift,old.definition.read().invariant_lift)||
+     !same_key_matrix(m.definition.read().invariant_generator,old.definition.read().invariant_generator)||
+     !same_key_matrix(m.definition.read().invariant_reduce,old.definition.read().invariant_reduce)||
      m.segments!=old.segments||
-     !same(m.constraints,old.constraints)||!same_electrical_rows(m.residual_map,old.residual_map)||
-     !same_electrical_rows(m.residual_reference,old.residual_reference)||m.maps.size()!=old.maps.size())return false;
-  for(const auto &[name,row]:old.maps){
-    auto it=m.maps.find(name);
-    if(it==m.maps.end())return false;
+     !same(m.definition.read().constraints,old.definition.read().constraints)||!same_electrical_rows(m.binding.read().residual_map,old.binding.read().residual_map)||
+     !same_electrical_rows(m.binding.read().residual_reference,old.binding.read().residual_reference)||m.binding.read().maps.size()!=old.binding.read().maps.size())return false;
+  for(const auto &[name,row]:old.binding.read().maps){
+    auto it=m.binding.read().maps.find(name);
+    if(it==m.binding.read().maps.end())return false;
     // BOOL projections are control snapshots, not electrical observations.
     // All real-valued maps (including source values) still require equality.
     if((old.bools.count(name)&&m.bools.count(name))||m.observer_maps.count(name))continue;
@@ -757,8 +757,8 @@ std::optional<Flow> Flow::continue_if_compatible(const Mode &m,double elapsed) c
 }
 Flow Flow::continued_after_check(const Mode &m,double elapsed) const {
   // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
-  const auto &guards=data_->mode.guards;bool same_guards=guards.size()==m.guards.size();
-  for(size_t i=0;i<guards.size()&&same_guards;++i){const auto&a=guards[i];const auto&b=m.guards[i];
+  const auto &guards=data_->mode.binding.read().guards;bool same_guards=guards.size()==m.binding.read().guards.size();
+  for(size_t i=0;i<guards.size()&&same_guards;++i){const auto&a=guards[i];const auto&b=m.binding.read().guards[i];
     same_guards=a.part==b.part&&a.direction==b.direction&&a.kind==b.kind&&a.knot==b.knot&&a.segment==b.segment&&a.step==b.step&&a.row.size()==b.row.size()&&
       (!a.row.size()||std::memcmp(a.row.data(),b.row.data(),size_t(a.row.size())*sizeof(double))==0);
   }
@@ -767,16 +767,16 @@ Flow Flow::continued_after_check(const Mode &m,double elapsed) const {
 }
 double Flow::observe(const Vector &row,double t,int derivative) const {
   // Project an arbitrary observable on this same continuous trajectory.
-  for(size_t k=0;k<data_->mode.guards.size();k++){
-    const auto &g=data_->mode.guards[k].row;
+  for(size_t k=0;k<data_->mode.binding.read().guards.size();k++){
+    const auto &g=data_->mode.binding.read().guards[k].row;
     if(g.size()==row.size()&&(g.array()==row.array()).all())return value(k,t,derivative);
     if(g.size()==row.size()&&(g.array()==-row.array()).all())return -value(k,t,derivative);
   }
   std::string id(reinterpret_cast<const char*>(row.data()),size_t(row.size())*sizeof(double));
   auto found=data_->observable_cache.find(id);
   if(found==data_->observable_cache.end()){
-    Mode view=data_->mode;view.maps.clear();view.bools.clear();
-    view.guards.clear();view.guards.push_back({row,0,1,"OBSERVE"});
+    Mode view=data_->mode;view.binding.edit().maps.clear();view.bools.clear();
+    view.binding.edit().guards.clear();view.binding.edit().guards.push_back({row,0,1,"OBSERVE"});
     Flow projection(view,data_->initial);
     found=data_->observable_cache.emplace(std::move(id),projection.data_).first;
   }
@@ -799,7 +799,7 @@ double Flow::scale(size_t k) const {
 }
 bool Flow::stationary(size_t k) const {
   Vector row =
-      (data_->mode.guards.at(k).row.transpose() * data_->mode.M).transpose();
+      (data_->mode.binding.read().guards.at(k).row.transpose() * data_->mode.definition.read().M).transpose();
   return row.isZero(0);
 }
 bool Flow::modal() const { return data_->basis->modal; }
@@ -837,7 +837,7 @@ SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
   SearchResult result;
   const double tolerance =
       std::max(atom / 64, std::numeric_limits<double>::denorm_min());
-  for (size_t k = 0; k < mode.guards.size(); ++k) {
+  for (size_t k = 0; k < mode.binding.read().guards.size(); ++k) {
     double initial = flow.value(k, 0), slope = flow.value(k, 0, 1);
     const double initial_roundoff =
         64 * std::numeric_limits<double>::epsilon() * flow.scale(k);
@@ -871,7 +871,7 @@ SearchResult next_events(const Mode &mode, const Flow &flow, double horizon,
       if (derivative.lo > 0 && ga <= 0 && gb >= 0) {
         double lo = a, hi = b;
         for (int iter = 0; iter < 100 && hi - lo >
-             (mode.guards[k].kind == "PWA" ?
+             (mode.binding.read().guards[k].kind == "PWA" ?
               std::max(std::numeric_limits<double>::denorm_min(),
                        2 * std::numeric_limits<double>::epsilon() * std::max(std::abs(lo), std::abs(hi))) : tolerance); ++iter) {
           double mid = lo + (hi - lo) * .5;

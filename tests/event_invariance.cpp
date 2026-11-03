@@ -33,7 +33,7 @@ void completed(const Result &result) {
     check(result.status == "COMPLETED", result.status + ": " + result.diagnostic.dump());
 }
 double observation(const RunState &state, const std::string &name) {
-    return state.mode.maps.at(name).dot(state.physical);
+    return state.mode.binding.read().maps.at(name).dot(state.physical);
 }
 std::string logical_name(const std::string &name, const std::map<std::string, std::string> &inverse) {
     auto found = inverse.find(name);

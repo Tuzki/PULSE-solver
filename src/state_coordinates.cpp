@@ -110,8 +110,8 @@ double state_signal(const RunState&s,const std::string&name){
  const auto n=net_name(name);auto b=mode.bools.find(n);
  if(b!=mode.bools.end())return double(b->second);
  if(s.electrical_flow && s.electrical_flow->compatible(mode))
-   return s.electrical_flow->observe(mode.maps.at(n),0);
- return mode.maps.at(n).dot(x);
+   return s.electrical_flow->observe(mode.binding.read().maps.at(n),0);
+ return mode.binding.read().maps.at(n).dot(x);
 }
 // Identical per-signal semantics, but the input snapshot and modal view stay
 // immutable throughout the batch. Flow::observe only changes derived caches.
@@ -130,7 +130,7 @@ std::vector<double> state_signals(const RunState&s,const std::vector<std::string
    can_observe=s.electrical_flow && s.electrical_flow->compatible(mode);
    checked=true;
   }
-  const auto &row=mode.maps.at(n);
+  const auto &row=mode.binding.read().maps.at(n);
   result.push_back(can_observe?s.electrical_flow->observe(row,0):row.dot(x));
  }
  return result;
@@ -161,7 +161,7 @@ std::vector<double> state_signals_prepared(const RunState&s,const std::vector<Pr
    can_observe=s.electrical_flow && s.electrical_flow->compatible(mode);
    checked=true;
   }
-  const auto &row=mode.maps.at(item.key);
+  const auto &row=mode.binding.read().maps.at(item.key);
   result.push_back(can_observe?s.electrical_flow->observe(row,0):row.dot(x));
  }
  return result;
@@ -171,12 +171,12 @@ void publish_physical_state(const Model&m,RunState&s){
  s.physical=physical_view(m,s.internal);const auto&c=persistent_chart(m);
  if(!c.active)return;
  s.internal_mode=std::make_shared<const Mode>(s.mode);
- s.mode.M=c.L*s.mode.M*c.T;
- for(auto&[name,row]:s.mode.maps)row=c.T.transpose()*row;
- for(auto&guard:s.mode.guards)guard.row=c.T.transpose()*guard.row;
- if(s.mode.constraints.rows())s.mode.constraints=s.mode.constraints*c.T;
- if(s.mode.residual_map.rows())s.mode.residual_map=s.mode.residual_map*c.T;
- if(s.mode.residual_reference.rows())s.mode.residual_reference=s.mode.residual_reference*c.T;
- if(s.mode.invariant_lift.rows()){s.mode.invariant_lift=c.L*s.mode.invariant_lift;s.mode.invariant_reduce=s.mode.invariant_reduce*c.T;}
+ s.mode.definition.edit().M=c.L*s.mode.definition.read().M*c.T;
+ for(auto&[name,row]:s.mode.binding.edit().maps)row=c.T.transpose()*row;
+ for(auto&guard:s.mode.binding.edit().guards)guard.row=c.T.transpose()*guard.row;
+ if(s.mode.definition.read().constraints.rows())s.mode.definition.edit().constraints=s.mode.definition.read().constraints*c.T;
+ if(s.mode.binding.read().residual_map.rows())s.mode.binding.edit().residual_map=s.mode.binding.read().residual_map*c.T;
+ if(s.mode.binding.read().residual_reference.rows())s.mode.binding.edit().residual_reference=s.mode.binding.read().residual_reference*c.T;
+ if(s.mode.definition.read().invariant_lift.rows()){s.mode.definition.edit().invariant_lift=c.L*s.mode.definition.read().invariant_lift;s.mode.definition.edit().invariant_reduce=s.mode.definition.read().invariant_reduce*c.T;}
 }
 }

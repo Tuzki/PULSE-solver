@@ -46,7 +46,7 @@ void explicit_closure(){
  check(persistent_chart(m).active,"test failed to exercise a nontrivial storage chart");
  Stats stats;ScopedModeCache cache(m,128);RunState initial;
  initial.internal=persistent_encode(m,m.initial);initial.physical=m.initial;initial.regs={{"G",0}};
- initial.mode=engineering::initial_mode(m,initial.internal,initial.regs,stats);
+ initial.mode=engineering::initial_mode(m,initial.internal,initial.regs.read(),stats);
  for(int algorithm=0;algorithm<3;algorithm++){
   auto mode=portfolio_mode(m,initial,algorithm,stats);
   check(mode.numerical_strategy==algorithm,"prediction provenance wrong");
@@ -61,27 +61,27 @@ void explicit_closure(){
   snap.electrical_strategy=algorithm;
   snap.electrical_flow=std::make_shared<engineering::Flow>(flow.continued(mode,at));
   std::vector<Mode::Guard> candidates;std::set<int>seeds;
-  for(auto&root:roots.candidates){candidates.push_back(mode.guards[root.guard]);seeds.insert(mode.guards[root.guard].part);}
+  for(auto&root:roots.candidates){candidates.push_back(mode.binding.read().guards[root.guard]);seeds.insert(mode.binding.read().guards[root.guard].part);}
   Json details;auto before=snap.internal;
-  auto next=engineering::update_mode(m,snap,snap.internal,snap.regs,candidates,seeds,stats,&details,algorithm);
+  auto next=engineering::update_mode(m,snap,snap.internal,snap.regs.read(),candidates,seeds,stats,&details,algorithm);
   check(next.numerical_strategy==algorithm&&details["numerical_strategy"]==algorithm,"closure silently changed strategy");
   check(next.elimination_path==mode.elimination_path,"comparator closure changed factorization");
   check(next.bools.at("POS")&&!next.bools.at("NEG"),"joint complementary comparator update wrong");
   check(snap.electrical_flow->compatible(next),"no-op electrical event lost trajectory");
   auto continued=snap.electrical_flow->continued(next,0);
-  check(continued.observe(next.maps.at("X"),1e-8)==flow.observe(mode.maps.at("X"),at+1e-8),"original anchor lost at comparator event");
+  check(continued.observe(next.binding.read().maps.at("X"),1e-8)==flow.observe(mode.binding.read().maps.at("X"),at+1e-8),"original anchor lost at comparator event");
   // A real gate transition must retain strategy but replace the electrical flow.
   RunState switched=snap;switched.mode=next;switched.internal=continued.state(.1e-6);
   switched.electrical_flow=std::make_shared<engineering::Flow>(continued.continued(next,.1e-6));
-  auto regs=switched.regs;regs["G"]=1;auto untouched=switched.internal;
+  auto regs=switched.regs.read();regs["G"]=1;auto untouched=switched.internal;
   auto right=engineering::update_mode(m,switched,switched.internal,regs,{}, {},stats,&details,algorithm);
   check(right.numerical_strategy==algorithm,"gate closure silently changed strategy");
-  check((right.M-next.M).norm()>0,"test gate did not alter electrical equations");
+  check((right.definition.read().M-next.definition.read().M).norm()>0,"test gate did not alter electrical equations");
   check(!switched.electrical_flow->compatible(right),"true topology change reused incoming flow");
   check((untouched-switched.internal).isZero(0),"mode closure changed storage state");
   // Exercise hot template entries as well as cold construction.
   auto hot=engineering::update_mode(m,switched,switched.internal,regs,{}, {},stats,&details,algorithm);
-  check((hot.M-right.M).isZero(0)&&hot.numerical_strategy==algorithm,"hot cache changed strategy or equation chart");
+  check((hot.definition.read().M-right.definition.read().M).isZero(0)&&hot.numerical_strategy==algorithm,"hot cache changed strategy or equation chart");
   check((before-snap.internal).isZero(0),"closure mutated the checkpoint");
  }
 }
@@ -99,7 +99,7 @@ void whole_attempt_rollback(){
   check(e["diagnostic"]["subcode"]=="INJECTED_EVENT_CLOSURE_REJECTION","attempt did not complete consistent closure before test rejection");
  }
  check(!r.committed.mode.bools.at("POS")&&r.committed.mode.bools.at("NEG"),"failed closure leaked comparator bits");
- check(r.committed.regs.at("G")==0&&r.committed.agenda.size()==2,"failed closure leaked gate/queue changes");
+ check(r.committed.regs.read().at("G")==0&&r.committed.agenda.read().size()==2,"failed closure leaked gate/queue changes");
  check(std::abs(state_signal(r.committed,"X")+.5)<1e-12,"failed retry changed integrator storage");
 }
 int main(){try{explicit_closure();whole_attempt_rollback();std::cout<<"PASS three strategies, nontrivial chart, simultaneous comparators, preserved flow, true gate change, cache and whole-attempt rollback\n";return 0;}catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

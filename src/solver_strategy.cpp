@@ -23,14 +23,14 @@ Mode portfolio_compile(const Model&m,const Vector&internal,
   // mode-construction iteration on the attempt's explicitly selected strategy.
   {Scope scope(algorithm);mode=compile_specified(m,physical_view(m,internal),regs,stats,bits,segments,CompilePurpose::RegionClassification);}
   const auto&chart=persistent_chart(m);const auto&T=chart.T;const auto&L=chart.L;
-  mode.M=T*mode.M*L;
-  if(mode.observations.cols()==L.rows())mode.observations=mode.observations*L;
-  if(mode.constraints.rows())mode.constraints=mode.constraints*L;
-  if(mode.residual_map.rows())mode.residual_map=mode.residual_map*L;
-  if(mode.residual_reference.rows())mode.residual_reference=mode.residual_reference*L;
-  if(mode.invariant_lift.rows()){mode.invariant_lift=T*mode.invariant_lift;mode.invariant_reduce=mode.invariant_reduce*L;}
-  for(auto&[name,row]:mode.maps)row=L.transpose()*row;
-  for(auto&guard:mode.guards)guard.row=L.transpose()*guard.row;
+  mode.definition.edit().M=T*mode.definition.read().M*L;
+  if(mode.binding.read().observations.cols()==L.rows())mode.binding.edit().observations=mode.binding.read().observations*L;
+  if(mode.definition.read().constraints.rows())mode.definition.edit().constraints=mode.definition.read().constraints*L;
+  if(mode.binding.read().residual_map.rows())mode.binding.edit().residual_map=mode.binding.read().residual_map*L;
+  if(mode.binding.read().residual_reference.rows())mode.binding.edit().residual_reference=mode.binding.read().residual_reference*L;
+  if(mode.definition.read().invariant_lift.rows()){mode.definition.edit().invariant_lift=T*mode.definition.read().invariant_lift;mode.definition.edit().invariant_reduce=mode.definition.read().invariant_reduce*L;}
+  for(auto&[name,row]:mode.binding.edit().maps)row=L.transpose()*row;
+  for(auto&guard:mode.binding.edit().guards)guard.row=L.transpose()*guard.row;
   if(mode.candidate_roundoff_scale)
    mode.candidate_roundoff_scale=std::make_shared<const Matrix>((*mode.candidate_roundoff_scale)*L.cwiseAbs());
   if(purpose==CompilePurpose::AcceptedEntry)accept_mode_entry(m,mode,internal);
@@ -42,7 +42,7 @@ Mode portfolio_compile(const Model&m,const Vector&internal,
 // portfolio_mode() rather than weakening the canonical verification contract.
 Mode portfolio_mode(const Model&m,const RunState&checkpoint,int algorithm,Stats&stats){
  std::map<int,bool>bits;for(int i:m.cmps)bits[i]=checkpoint.mode.bools.at(net_name(m.parts[i].raw.args[0]));
- return portfolio_compile(m,checkpoint.internal,checkpoint.regs,stats,bits,checkpoint.mode.segments,algorithm);
+ return portfolio_compile(m,checkpoint.internal,checkpoint.regs.read(),stats,bits,checkpoint.mode.segments,algorithm);
 }
 bool portfolio_retryable(const Error&e){
  static const std::set<std::string>retryable={"PHYSICAL_CONSTRAINT_VIOLATION","DESCRIPTOR_RESIDUAL","CANDIDATE_LINEAR_RESIDUAL","NONFINITE_CANDIDATE","NONFINITE_DESCRIPTOR","UNPREDICTED_GUARD_JUMP","ZERO_EVENT_DERIVATIVE","ENGINEERING_ROOT_BUDGET","ENGINEERING_ROOT_UNRESOLVED","PORTFOLIO_QR_RANK","PORTFOLIO_ORIGINAL_RESIDUAL","PORTFOLIO_DYNAMIC_RESIDUAL","INJECTED_PORTFOLIO_REJECTION","MODE_DIRECTION_CYCLE","MODE_CYCLE","INCONSISTENT_MODE_TRANSITION","ROOT_DIRECTION_UNRESOLVED","BREAKPOINT_LEFT_DIRECTION","BREAKPOINT_NOT_REACHED","BREAKPOINT_PREDICTION_MISMATCH","NO_FORWARD_ADMISSIBLE_MODE","MODE_DIRECTION_BUDGET","INJECTED_EVENT_CLOSURE_REJECTION","TIME_ORDER_UNRESOLVED"};

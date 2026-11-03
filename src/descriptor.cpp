@@ -56,12 +56,12 @@ void check_candidate_reconstruction(const Mode &mode, const Vector &s, Source so
     // stronger, new per-equation relative test (e.g. on tiny leakage currents).
     // The alternate rounding check is only for large provisional algebraic
     // values while their constitutive regions are still being closed.
-    const double physical = (mode.residual_map * s).norm() /
-                            std::max(1., (mode.residual_reference * s).norm());
+    const double physical = (mode.binding.read().residual_map * s).norm() /
+                            std::max(1., (mode.binding.read().residual_reference * s).norm());
     if (physical < 1e-8) return;
     require(bool(mode.candidate_roundoff_scale), 12, "MISSING_CANDIDATE_SCALE",
             "candidate equations lack a reconstruction check");
-    Vector error = (mode.residual_map * s).cwiseAbs();
+    Vector error = (mode.binding.read().residual_map * s).cwiseAbs();
     Vector scale = *mode.candidate_roundoff_scale * s.cwiseAbs();
     double backward = 0;
     int worst = 0;
@@ -86,19 +86,19 @@ Mode instantiate_cached(const Model &m, Mode mode, const Vector &s,
     // Repeat the original state-dependent entry checks, with identical matrix
     // expressions, order, tolerances and diagnostics. No previous accepted
     // state/residual is reused as evidence for this entry.
-    if (mode.constraints.rows()) {
-        require((mode.constraints * s).norm() <=
-                    2e-10 * std::max(1., (mode.residual_reference * s).norm()),
+    if (mode.definition.read().constraints.rows()) {
+        require((mode.definition.read().constraints * s).norm() <=
+                    2e-10 * std::max(1., (mode.binding.read().residual_reference * s).norm()),
                 10, "INCONSISTENT_MODE_TRANSITION",
                 "new algebraic constraints conflict with preserved charge/flux/INT");
-        require((mode.invariant_lift * mode.invariant_reduce * s - s).norm() <=
+        require((mode.definition.read().invariant_lift * mode.definition.read().invariant_reduce * s - s).norm() <=
                     1e-10 * std::max(1., s.norm()),
                 10, "INCONSISTENT_MODE_TRANSITION",
                 "physical state cannot be reconstructed in new descriptor coordinates");
     }
-    if (mode.residual_map.rows()) {
-        mode.residual = (mode.residual_map * s).norm() /
-                        std::max(1., (mode.residual_reference * s).norm());
+    if (mode.binding.read().residual_map.rows()) {
+        mode.residual = (mode.binding.read().residual_map * s).norm() /
+                        std::max(1., (mode.binding.read().residual_reference * s).norm());
         Source matrix_source;
         if (!m.parts.empty())
             matrix_source = {m.parts.front().raw.source.file, "Network", "@descriptor", 0, 0};
@@ -369,8 +369,8 @@ struct Assembler {
         mode.classification_only = classification_only;
         mode.segments = segments;
         Matrix N = Matrix::Zero(na, m.ns + 1);
-        mode.M = Matrix::Zero(m.ns + 1, m.ns + 1);
-        mode.constraints.resize(0, m.ns + 1);
+        mode.definition.edit().M = Matrix::Zero(m.ns + 1, m.ns + 1);
+        mode.definition.edit().constraints.resize(0, m.ns + 1);
         if (na) {
             Vector ar = Vector::Ones(na), ac = Vector::Ones(na);
             for (int j = 0; j < na; ++j) {
@@ -477,8 +477,8 @@ struct Assembler {
                         for (int j = 0; j < r; ++j)
                             left_null.col(j) = topology.col(topology_lu.permutationQ().indices()[j]);
                 }
-                mode.constraints = left_null.transpose() * B;
-                require((mode.constraints * s).norm() <= 2e-10 * std::max(1., (B * s).norm()), 10,
+                mode.definition.edit().constraints = left_null.transpose() * B;
+                require((mode.definition.read().constraints * s).norm() <= 2e-10 * std::max(1., (B * s).norm()), 10,
                         "INCONSISTENT_MODE_TRANSITION",
                         "new algebraic constraints conflict with preserved charge/flux/INT");
                 Matrix K = Matrix::Zero(m.ns + na, m.ns + na), R = Matrix::Zero(m.ns + na, m.ns + 1);
@@ -490,7 +490,7 @@ struct Assembler {
                     K.block(m.ns + j, m.ns, 1, na) = A.row(original);
                     R.row(m.ns + j) = B.row(original);
                 }
-                K.bottomLeftCorner(r, m.ns) = mode.constraints.leftCols(m.ns);
+                K.bottomLeftCorner(r, m.ns) = mode.definition.read().constraints.leftCols(m.ns);
                 Vector rs = Vector::Ones(K.rows()), cs = Vector::Ones(K.cols());
                 for (int j = 0; j < K.rows(); ++j) {
                     double v = K.row(j).cwiseAbs().maxCoeff();
@@ -512,11 +512,11 @@ struct Assembler {
                 // Compile only the admissible affine physical subspace. Solving
                 // arbitrary off-manifold storage columns amplifies unphysical directions.
                 // This reduction changes coordinates, never the authoritative physical state.
-                Eigen::FullPivLU<Matrix> state_lu(mode.constraints.leftCols(m.ns));
+                Eigen::FullPivLU<Matrix> state_lu(mode.definition.read().constraints.leftCols(m.ns));
                 state_lu.setThreshold(128 * std::numeric_limits<double>::epsilon() * std::max(1, m.ns));
                 int state_rank = int(state_lu.rank()), free = m.ns - state_rank;
                 Matrix basis = free ? Matrix(state_lu.kernel()) : Matrix(m.ns, 0);
-                Vector offset = state_lu.solve(-mode.constraints.col(m.ns));
+                Vector offset = state_lu.solve(-mode.definition.read().constraints.col(m.ns));
                 Matrix lift = Matrix::Zero(m.ns + 1, free + 1), reduce = Matrix::Zero(free + 1, m.ns + 1);
                 lift.topLeftCorner(m.ns, free) = basis;
                 lift.topRightCorner(m.ns, 1) = offset;
@@ -625,12 +625,12 @@ struct Assembler {
                 require(backward <= 128 * std::numeric_limits<double>::epsilon() * std::max(1, int(K.rows())),
                         7, "DESCRIPTOR_RESIDUAL", backward_detail.str(), true, matrix_source);
                 Matrix X = local * reduce;
-                mode.M.topRows(m.ns) = X.topRows(m.ns);
-                mode.invariant_lift = lift;
-                mode.invariant_reduce = reduce;
+                mode.definition.edit().M.topRows(m.ns) = X.topRows(m.ns);
+                mode.definition.edit().invariant_lift = lift;
+                mode.definition.edit().invariant_reduce = reduce;
                 Matrix physical_derivative = Matrix::Zero(m.ns + 1, free + 1);
                 physical_derivative.topRows(m.ns) = local.topRows(m.ns);
-                mode.invariant_generator = reduce * physical_derivative;
+                mode.definition.edit().invariant_generator = reduce * physical_derivative;
                 N = X.bottomRows(na);
             }
             // These are exact algebraic coordinate assignments (Vref=0), not
@@ -639,21 +639,21 @@ struct Assembler {
             // relative error one during provisional reconstruction checks.
             for (const auto &reference : m.floating_references)
                 N.row(m.nodes.at(reference)).setZero();
-            require(N.allFinite() && mode.M.allFinite(), 7, "NONFINITE_CANDIDATE",
+            require(N.allFinite() && mode.definition.read().M.allFinite(), 7, "NONFINITE_CANDIDATE",
                     "compiled candidate equations are nonfinite", true, matrix_source);
             if (m.floating_references.empty()) {
-                mode.residual_map = A * N - B;
-                mode.residual_reference = B;
+                mode.binding.edit().residual_map = A * N - B;
+                mode.binding.edit().residual_reference = B;
             } else {
                 // Check every original physical equation, including each KCL
                 // row replaced by a coordinate equation, plus local references.
                 int extra = int(m.floating_references.size());
-                mode.residual_map = Matrix::Zero(na + extra, m.ns + 1);
-                mode.residual_reference = Matrix::Zero(na + extra, m.ns + 1);
-                mode.residual_map.topRows(na) = physical_A * N - physical_B;
-                mode.residual_reference.topRows(na) = physical_B;
+                mode.binding.edit().residual_map = Matrix::Zero(na + extra, m.ns + 1);
+                mode.binding.edit().residual_reference = Matrix::Zero(na + extra, m.ns + 1);
+                mode.binding.edit().residual_map.topRows(na) = physical_A * N - physical_B;
+                mode.binding.edit().residual_reference.topRows(na) = physical_B;
                 for (int j = 0; j < extra; ++j)
-                    mode.residual_map.row(na + j) = N.row(m.nodes.at(m.floating_references[j]));
+                    mode.binding.edit().residual_map.row(na + j) = N.row(m.nodes.at(m.floating_references[j]));
             }
             // Retain the original descriptor shape and factorization ordering.
             // Only structurally isolated held observations may be rebound.
@@ -677,7 +677,7 @@ struct Assembler {
             // a previous point's validation result; recheck every cache hit.
             const Matrix &check_A = m.floating_references.empty() ? A : physical_A;
             const Matrix &check_B = m.floating_references.empty() ? B : physical_B;
-            Matrix scale = Matrix::Zero(mode.residual_map.rows(), m.ns + 1);
+            Matrix scale = Matrix::Zero(mode.binding.read().residual_map.rows(), m.ns + 1);
             scale.topRows(na) = check_A.cwiseAbs() * N.cwiseAbs() + check_B.cwiseAbs();
             for (int i = 0; i < na; ++i)
                 for (int j = 0; j <= m.ns; ++j) {
@@ -689,38 +689,38 @@ struct Assembler {
                 scale.row(na + j) = N.row(m.nodes.at(m.floating_references[j])).cwiseAbs();
             mode.candidate_roundoff_scale = std::make_shared<const Matrix>(std::move(scale));
             if (classification_only) check_candidate_reconstruction(mode, s, matrix_source);
-            mode.residual = (mode.residual_map * s).norm() /
-                            std::max(1., (mode.residual_reference * s).norm());
+            mode.residual = (mode.binding.read().residual_map * s).norm() /
+                            std::max(1., (mode.binding.read().residual_reference * s).norm());
             require(
                 classification_only || mode.residual < 1e-8, 7, "DESCRIPTOR_RESIDUAL",
                 "physical entry algebraic residual exceeds budget", true,
                 matrix_source); // constrained maps only satisfy algebraic equations on constraint manifold
 
-            if (!mode.constraints.rows())
-                mode.M.topRows(m.ns) = F * N + D;
+            if (!mode.definition.read().constraints.rows())
+                mode.definition.edit().M.topRows(m.ns) = F * N + D;
         }
-        require(mode.M.allFinite() && N.allFinite(), 7, "NONFINITE_DESCRIPTOR",
+        require(mode.definition.read().M.allFinite() && N.allFinite(), 7, "NONFINITE_DESCRIPTOR",
                 "descriptor elimination is nonfinite");
         for (auto &[n, i] : m.nodes)
-            mode.maps["V(" + n + ")"] = N.row(i).transpose();
+            mode.binding.edit().maps["V(" + n + ")"] = N.row(i).transpose();
         for (auto &[n, cols] : branchcol)
             for (size_t j = 0; j < cols.size(); ++j)
-                mode.maps["I(" + n + (cols.size() > 1 ? "," + std::to_string(j + 1) : "") + ")"] =
+                mode.binding.edit().maps["I(" + n + (cols.size() > 1 ? "," + std::to_string(j + 1) : "") + ")"] =
                     N.row(cols[j]).transpose();
         for (auto &[n, sig] : m.signals)
             if (sig.type == Signal::REAL) {
                 if (sig.held) {
                     Vector x = Vector::Zero(m.ns + 1);
                     x[m.ns] = held(n);
-                    mode.maps[n] = x;
+                    mode.binding.edit().maps[n] = x;
                 } else
-                    mode.maps[n] = N.row(realcol.at(n)).transpose();
+                    mode.binding.edit().maps[n] = N.row(realcol.at(n)).transpose();
             } else if (sig.type == Signal::BOOL) {
                 double v = held(n);
                 mode.bools[n] = v != 0;
                 Vector x = Vector::Zero(m.ns + 1);
                 x[m.ns] = v;
-                mode.maps[n] = x;
+                mode.binding.edit().maps[n] = x;
             }
         std::ostringstream id;
         id << std::setprecision(17);
@@ -741,11 +741,11 @@ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::strin
     Assembler values(m,regs,bits,segments,false);
     for(const auto &[name,row]:binding.rows){
         double value=values.held(name);N(row,m.ns)=value;B(row,m.ns)=value;
-        mode.maps.at(name).setZero();mode.maps.at(name)[m.ns]=value;
+        mode.binding.edit().maps.at(name).setZero();mode.binding.edit().maps.at(name)[m.ns]=value;
     }
-    int na=int(N.rows());mode.residual_map.topRows(na)=binding.A*N-B;
-    mode.residual_reference.topRows(na)=B;
-    Matrix scale=Matrix::Zero(mode.residual_map.rows(),m.ns+1);
+    int na=int(N.rows());mode.binding.edit().residual_map.topRows(na)=binding.A*N-B;
+    mode.binding.edit().residual_reference.topRows(na)=B;
+    Matrix scale=Matrix::Zero(mode.binding.read().residual_map.rows(),m.ns+1);
     scale.topRows(na)=binding.A.cwiseAbs()*N.cwiseAbs()+B.cwiseAbs();
     // Norms depend on only one loop index. Evaluate each only once per bind;
     // keep the original expression and floating-point reduction order intact.
@@ -762,7 +762,7 @@ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::strin
         scale(i,j)=std::max(scale(i,j),floor);
     }
     for(size_t j=0;j<m.floating_references.size();++j){
-        mode.residual_map.row(na+j)=N.row(m.nodes.at(m.floating_references[j]));
+        mode.binding.edit().residual_map.row(na+j)=N.row(m.nodes.at(m.floating_references[j]));
         scale.row(na+j)=N.row(m.nodes.at(m.floating_references[j])).cwiseAbs();
     }
     mode.candidate_roundoff_scale=std::make_shared<const Matrix>(std::move(scale));
@@ -779,7 +779,7 @@ Vector input_map(const Model &m, const Mode &mode, const std::string &name) {
         v[m.ns] = number(name);
         return v;
     }
-    return mode.maps.at(net_name(name));
+    return mode.binding.read().maps.at(net_name(name));
 }
 // Right-side Taylor jet at a boundary. Exact zero tests avoid turning a small
 // derivative into an identity proof. This remains a numerical compiler check.
@@ -791,7 +791,7 @@ int right_sign(const Mode &mode, Vector row, const Vector &s) {
         std::vector<rfr::I> next(jet.size());
         for (int j = 0; j < row.size(); ++j)
             for (int i = 0; i < row.size(); ++i)
-                next[j] = next[j] + jet[i] * rfr::I(mode.M(i, j));
+                next[j] = next[j] + jet[i] * rfr::I(mode.definition.read().M(i, j));
         jet = std::move(next);
         rfr::I value;
         bool zero = true;
@@ -879,7 +879,7 @@ Mode settle(const Model &m, const Vector &s, const std::map<std::string, double>
                     double oriented = (bits[i] == greater) ? -1 : 1;
                     g *= oriented;
                     if (!(g.head(m.ns).isZero(0))) {
-                        mode.guards.push_back({g, i, 1, "CMP"});
+                        mode.binding.edit().guards.push_back({g, i, 1, "CMP"});
                     }
                 }
             }
@@ -895,9 +895,9 @@ Mode settle(const Model &m, const Vector &s, const std::map<std::string, double>
                 else {
                     auto [v, w] = p.ports[0];
                     if (v != "0")
-                        x += mode.maps.at("V(" + v + ")");
+                        x += mode.binding.read().maps.at("V(" + v + ")");
                     if (w != "0")
-                        x -= mode.maps.at("V(" + w + ")");
+                        x -= mode.binding.read().maps.at("V(" + w + ")");
                 }
                 const auto &bounds = physical ? curve.y : curve.x;
                 double value = x.dot(s), tol = 0;
@@ -917,7 +917,7 @@ Mode settle(const Model &m, const Vector &s, const std::map<std::string, double>
                         if (logic_valid && seg == 0 && !curve.extend)
                             range_conflict = true;
                     }
-                    mode.guards.push_back({g, i, 1, seg == 0 ? "RANGE" : "PWA", seg, seg, -1});
+                    mode.binding.edit().guards.push_back({g, i, 1, seg == 0 ? "RANGE" : "PWA", seg, seg, -1});
                 }
                 if (upper) {
                     Vector g = x;
@@ -932,7 +932,7 @@ Mode settle(const Model &m, const Vector &s, const std::map<std::string, double>
                         } else if (sign == 0 && seg + 2 < int(bounds.size()))
                             valid = false;
                     }
-                    mode.guards.push_back({g, i, 1, seg + 2 == int(bounds.size()) ? "RANGE" : "PWA", seg + 1, seg, 1});
+                    mode.binding.edit().guards.push_back({g, i, 1, seg + 2 == int(bounds.size()) ? "RANGE" : "PWA", seg + 1, seg, 1});
                 }
             }
             if (valid) {
@@ -979,14 +979,14 @@ void accept_mode_entry(const Model &m, Mode &mode, const Vector &s) {
     // No storage projection or tolerance change is part of candidate closure.
     Source source;
     if (!m.parts.empty()) source = {m.parts.front().raw.source.file, "Network", "@descriptor", 0, 0};
-    if (mode.constraints.rows()) {
-        require((mode.constraints * s).norm() <= 2e-10 * std::max(1., (mode.residual_reference * s).norm()),
+    if (mode.definition.read().constraints.rows()) {
+        require((mode.definition.read().constraints * s).norm() <= 2e-10 * std::max(1., (mode.binding.read().residual_reference * s).norm()),
                 10, "INCONSISTENT_MODE_TRANSITION", "new algebraic constraints conflict with preserved charge/flux/INT");
-        require((mode.invariant_lift * mode.invariant_reduce * s - s).norm() <= 1e-10 * std::max(1., s.norm()),
+        require((mode.definition.read().invariant_lift * mode.definition.read().invariant_reduce * s - s).norm() <= 1e-10 * std::max(1., s.norm()),
                 10, "INCONSISTENT_MODE_TRANSITION", "physical state cannot be reconstructed in new descriptor coordinates");
     }
-    if (mode.residual_map.rows()) {
-        mode.residual = (mode.residual_map * s).norm() / std::max(1., (mode.residual_reference * s).norm());
+    if (mode.binding.read().residual_map.rows()) {
+        mode.residual = (mode.binding.read().residual_map * s).norm() / std::max(1., (mode.binding.read().residual_reference * s).norm());
         require(mode.residual < 1e-8, 7, "DESCRIPTOR_RESIDUAL",
                 "physical entry algebraic residual exceeds budget after region closure", true, source);
     }
@@ -1027,7 +1027,7 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
             double oriented = (bits.at(i) == greater) ? -1 : 1;
             g *= oriented;
             if (!(g.head(m.ns).isZero(0)))
-                mode.guards.push_back({g, i, 1, "CMP"});
+                mode.binding.edit().guards.push_back({g, i, 1, "CMP"});
         }
     }
     for (int i : m.pwas) {
@@ -1041,21 +1041,21 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
         else {
             auto [v, w] = p.ports[0];
             if (v != "0")
-                x += mode.maps.at("V(" + v + ")");
+                x += mode.binding.read().maps.at("V(" + v + ")");
             if (w != "0")
-                x -= mode.maps.at("V(" + w + ")");
+                x -= mode.binding.read().maps.at("V(" + w + ")");
         }
         const auto &bounds = physical ? curve.y : curve.x;
         bool lower = seg > 0 || !curve.extend, upper = seg + 2 < int(bounds.size()) || !curve.extend;
         if (lower) {
             Vector g = -x;
             g[m.ns] += bounds[seg];
-            mode.guards.push_back({g, i, 1, seg == 0 ? "RANGE" : "PWA", seg, seg, -1});
+            mode.binding.edit().guards.push_back({g, i, 1, seg == 0 ? "RANGE" : "PWA", seg, seg, -1});
         }
         if (upper) {
             Vector g = x;
             g[m.ns] -= bounds[seg + 1];
-            mode.guards.push_back({g, i, 1, seg + 2 == int(bounds.size()) ? "RANGE" : "PWA", seg + 1, seg, 1});
+            mode.binding.edit().guards.push_back({g, i, 1, seg + 2 == int(bounds.size()) ? "RANGE" : "PWA", seg + 1, seg, 1});
         }
     }
     if (cache) {
@@ -1087,7 +1087,7 @@ struct OriginalEquations {
  mutable Matrix current_rhs_matrix;
  OriginalEquations(const Model&m,const RunState&s){
   std::map<int,bool>bits;for(int i:m.cmps)bits[i]=s.mode.bools.at(net_name(m.parts[i].raw.args[0]));
-  Assembler stamp(m,s.regs,bits,s.mode.segments);stamp.stamp();
+  Assembler stamp(m,s.regs.read(),bits,s.mode.segments);stamp.stamp();
   A=stamp.A;B=stamp.B;F=stamp.F;D=stamp.D;branches=stamp.branchcol;reals=stamp.realcol;
   current_rhs_matrix=B;
   // A reduced key is permitted only for an independent held-REG subsystem.
@@ -1096,8 +1096,8 @@ struct OriginalEquations {
   bool safe=!m.observer_regs.empty() &&
             m.observer_signals.size()==m.observer_regs.size();
   for(const auto &name:m.observer_regs){
-   auto col=reals.find(name);auto value=s.regs.find(name);
-   if(!safe||col==reals.end()||value==s.regs.end()){safe=false;break;}
+   auto col=reals.find(name);auto value=s.regs.read().find(name);
+   if(!safe||col==reals.end()||value==s.regs.read().end()){safe=false;break;}
    const int row=col->second;
    if(row<0||row>=A.rows()||row>=B.rows()||A(row,row)!=1.){safe=false;break;}
    for(int i=0;i<A.rows();++i){
@@ -1118,7 +1118,7 @@ struct OriginalEquations {
   // Rebind certified held observations only, preserving full B*xi arithmetic.
   // This cache is thread-local; its equation objects are not shared across threads.
   for(const auto &o:observer_values)
-   current_rhs_matrix(o.row,current_rhs_matrix.cols()-1)=s.regs.at(o.name);
+   current_rhs_matrix(o.row,current_rhs_matrix.cols()-1)=s.regs.read().at(o.name);
   return current_rhs_matrix*xi;
  }
 };
@@ -1140,8 +1140,8 @@ void portfolio_original_check(const Model&m,const RunState&entry,const Mode&mode
  require(portfolio_variant()==2,12,"STRATEGY_SCOPE","original-equation check requires canonical stamp");
  std::map<int,bool>bits;for(int i:m.cmps)bits[i]=entry.mode.bools.at(net_name(m.parts[i].raw.args[0]));
  ++original_verifications;
- auto full_key=candidate_key(bits,entry.mode.segments,entry.regs);
- auto reduced_key=candidate_key(bits,entry.mode.segments,entry.regs,&m.observer_regs);
+ auto full_key=candidate_key(bits,entry.mode.segments,entry.regs.read());
+ auto reduced_key=candidate_key(bits,entry.mode.segments,entry.regs.read(),&m.observer_regs);
  auto found=original_cache.find(reduced_key);
  if(found==original_cache.end())found=original_cache.find(full_key);
  std::shared_ptr<OriginalEquations>system;
@@ -1156,15 +1156,15 @@ void portfolio_original_check(const Model&m,const RunState&entry,const Mode&mode
   original_cache[key]=system;original_order.push_back(key);
  }
  Vector u=Vector::Zero(system->A.cols());
- for(auto&[name,i]:m.nodes)u[i]=mode.maps.at("V("+name+")").dot(xi);
- for(auto&[name,cols]:system->branches)for(size_t j=0;j<cols.size();j++)u[cols[j]]=mode.maps.at("I("+name+(cols.size()>1?","+std::to_string(j+1):"")+")").dot(xi);
- for(auto&[name,col]:system->reals)u[col]=mode.maps.at(name).dot(xi);
+ for(auto&[name,i]:m.nodes)u[i]=mode.binding.read().maps.at("V("+name+")").dot(xi);
+ for(auto&[name,cols]:system->branches)for(size_t j=0;j<cols.size();j++)u[cols[j]]=mode.binding.read().maps.at("I("+name+(cols.size()>1?","+std::to_string(j+1):"")+")").dot(xi);
+ for(auto&[name,col]:system->reals)u[col]=mode.binding.read().maps.at(name).dot(xi);
  Vector rhs=system->anchored_rhs(entry,xi);
  Vector r=system->A*u-rhs;
  double residual=r.norm()/std::max(1.,rhs.norm());
  require(u.allFinite()&&std::isfinite(residual)&&residual<=1e-8,7,"PORTFOLIO_ORIGINAL_RESIDUAL","original circuit equations exceed unchanged residual budget",true);
  Vector expected=system->F*u+system->D*xi;
- Vector error=physical_increment(m,(mode.M*xi).head(m.ns)-expected),scale=physical_increment(m,expected);
+ Vector error=physical_increment(m,(mode.definition.read().M*xi).head(m.ns)-expected),scale=physical_increment(m,expected);
  require(error.allFinite()&&error.norm()<=1e-10*std::max(1.,scale.norm()),7,"PORTFOLIO_DYNAMIC_RESIDUAL","original physical derivatives exceed residual budget",true);
 }
 }
