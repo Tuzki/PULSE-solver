@@ -30,3 +30,5 @@ Both native Release builds include the solver, replay utility, shared library an
 Full Boost 0.3 s and A010 0.5 s PLECS comparisons, performance measurements and historical power-case campaigns were not rerun for this integration/push request. No measured speedup or full accuracy acceptance is claimed.
 
 Previous-version issues remain open: Boost CH003 peak fails its statistics tolerance; A010 CH006 and CH007 each have 18 pointwise discrepancies, with CH006 reaching about 528.30 V absolute error. See the prior [Boost](../six_core_replacement_20261102/BOOST_VALIDATION.md) and [A010](../six_core_replacement_20261102/A010_VALIDATION.md) reports for their original evidence. Those results are not validation of this new revision.
+
+Subsequent verification: full original Boost 0.3 s completed on both platforms; statistics 20/21 with CH003 peak and pointwise discrepancies retained. See [Boost validation](BOOST_VALIDATION.md). A010 has not been rerun for this revision.

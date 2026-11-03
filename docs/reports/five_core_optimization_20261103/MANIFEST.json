@@ -344,9 +344,16 @@
       "log_sha256": "73270e7d13cf0c7afbcb6bdf7ee7c579fcfdd33f8929cac3f3ad6d6d548966ee",
       "junit_sha256": "d39ab129b77b20fc81d2ceba81eca01aaf1b6fc3b49f64dae31a6ccb8bb41cd6"
     },
-    "full_boost_plecs": "NOT_RUN",
+    "full_boost_plecs": {
+      "execution": "COMPLETED on Windows/Linux to 0.3 s",
+      "statistics": "20/21 on each platform; CH003 max fails",
+      "pointwise": "CH001/CH002/CH003 each 5854 failing reference-grid points",
+      "cross_platform_reconstruction": "bitwise equal",
+      "report": "BOOST_VALIDATION.md",
+      "evidence": "BOOST_EVIDENCE.json"
+    },
     "full_a010_plecs": "NOT_RUN",
-    "performance": "NOT_MEASURED",
+    "performance": "Boost single repetition measured; A010 not rerun",
     "diff_whitespace_check": "PASS (cr-at-eol: existing CRLF convention preserved)"
   }
 }
