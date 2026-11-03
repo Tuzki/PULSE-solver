@@ -27,8 +27,10 @@ Original files, extracted package, generated files, build logs and CTest XML/log
 
 Both native Release builds include the solver, replay utility, shared library and all test targets. The manifest records actual CTest results for this revision, including every test name, status and duration.
 
-Full Boost 0.3 s and A010 0.5 s PLECS comparisons, performance measurements and historical power-case campaigns were not rerun for this integration/push request. No measured speedup or full accuracy acceptance is claimed.
+At the original integration commit, full Boost 0.3 s and A010 0.5 s PLECS comparisons and performance measurements had not been rerun. Subsequent single-case results are linked below. Historical power-case campaigns and full accuracy acceptance remain incomplete.
 
 Previous-version issues remain open: Boost CH003 peak fails its statistics tolerance; A010 CH006 and CH007 each have 18 pointwise discrepancies, with CH006 reaching about 528.30 V absolute error. See the prior [Boost](../six_core_replacement_20261102/BOOST_VALIDATION.md) and [A010](../six_core_replacement_20261102/A010_VALIDATION.md) reports for their original evidence. Those results are not validation of this new revision.
 
-Subsequent verification: full original Boost 0.3 s completed on both platforms; statistics 20/21 with CH003 peak and pointwise discrepancies retained. See [Boost validation](BOOST_VALIDATION.md). A010 has not been rerun for this revision.
+Subsequent verification: full original Boost 0.3 s completed on both platforms; statistics 20/21 with CH003 peak and pointwise discrepancies retained. See [Boost validation](BOOST_VALIDATION.md).
+
+Subsequent A010 verification: both platforms completed full 0.5 s; see [A010 validation](A010_VALIDATION.md) for timings, file sizes, statistics and unresolved pointwise/cross-platform differences.

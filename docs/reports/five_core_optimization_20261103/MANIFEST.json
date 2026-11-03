@@ -352,8 +352,24 @@
       "report": "BOOST_VALIDATION.md",
       "evidence": "BOOST_EVIDENCE.json"
     },
-    "full_a010_plecs": "NOT_RUN",
-    "performance": "Boost single repetition measured; A010 not rerun",
+    "full_a010_plecs": {
+      "execution": "COMPLETED on Windows/Linux to 0.5 s",
+      "statistics": {
+        "linux": {
+          "passed": 21,
+          "total": 21
+        },
+        "win": {
+          "passed": 21,
+          "total": 21
+        }
+      },
+      "pointwise": "See A010_EVIDENCE.json; pointwise discrepancies retained",
+      "cross_platform_reconstruction_bitwise_equal": false,
+      "report": "A010_VALIDATION.md",
+      "evidence": "A010_EVIDENCE.json"
+    },
+    "performance": "Boost and A010 single sequential repetitions measured; no stable median claim",
     "diff_whitespace_check": "PASS (cr-at-eol: existing CRLF convention preserved)"
   }
 }
