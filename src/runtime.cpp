@@ -302,9 +302,11 @@ void closure(const Model &m, RunState &candidate,
     else
       mode_details["subsequent_delta_updates"].push_back(
           {{"delta", delta}, {"update", delta_details}});
-    if(snap.electrical_flow && snap.electrical_flow->compatible(candidate.mode))
-      candidate.electrical_flow=std::make_shared<engineering::Flow>(snap.electrical_flow->continued(candidate.mode,0));
-    else { candidate.electrical_flow.reset(); candidate.electrical_strategy=-1; }
+    if(snap.electrical_flow){
+      if(auto next=snap.electrical_flow->continue_if_compatible(candidate.mode,0))
+        candidate.electrical_flow=std::make_shared<engineering::Flow>(std::move(*next));
+      else { candidate.electrical_flow.reset(); candidate.electrical_strategy=-1; }
+    }else { candidate.electrical_flow.reset(); candidate.electrical_strategy=-1; }
     candidate.mode.version = ++candidate.version;
     fault(o, "after_mode");
     auto newedges = edges(m, snap.mode, candidate.mode);
@@ -431,7 +433,9 @@ Result simulate(const Model &original, const Options &o) {
       const Time scheduled_target=target;const bool scheduled_due=due;
       RunState candidate=old;std::vector<Mode::Guard> crossings;std::set<int> seeds;Json root_log;bool found=false;
 
-      const RunState checkpoint=old;
+      // out.committed is unchanged until all candidate checks and archive
+      // preparation are finished; re-use it as the immutable checkpoint.
+      const RunState &checkpoint=old;
 
       RunState propagation_old=old;
       bool accepted_algorithm=false;Json failures=Json::array();std::vector<Json> logs;
@@ -446,9 +450,10 @@ Result simulate(const Model &original, const Options &o) {
         ++portfolio.executed_paths[algorithm][algorithm_mode.elimination_path];
         engineering::Flow flow=[&](){
           six_perf::Scope timer(six_perf::FLOW);
-          return checkpoint.electrical_flow && checkpoint.electrical_strategy==algorithm && checkpoint.electrical_flow->compatible(algorithm_mode)
-            ? checkpoint.electrical_flow->continued(algorithm_mode,0)
-            : engineering::Flow(algorithm_mode,checkpoint.internal);
+          if(checkpoint.electrical_flow && checkpoint.electrical_strategy==algorithm)
+            if(auto next=checkpoint.electrical_flow->continue_if_compatible(algorithm_mode,0))
+              return std::move(*next);
+          return engineering::Flow(algorithm_mode,checkpoint.internal);
         }();
       engineering::SearchResult roots;
       if (target > old.at && !algorithm_mode.guards.empty()) {

@@ -1,0 +1,3 @@
+program,completion_wall_seconds,cpu_seconds,scope
+Stage A,72.83065404499999,72.850649,saved single Stage A run
+Stage B,68.08481087199999,69.25180000000002,new single Linux full500ms run; replay/sampling excluded

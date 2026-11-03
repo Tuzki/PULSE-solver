@@ -747,6 +747,15 @@ bool Flow::compatible(const Mode &m) const {
 Flow Flow::continued(const Mode &m,double elapsed) const {
   ++flow_counts.continuations;
   require(compatible(m)&&elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
+  return continued_after_check(m,elapsed);
+}
+std::optional<Flow> Flow::continue_if_compatible(const Mode &m,double elapsed) const {
+  if (!compatible(m)) return std::nullopt;
+  ++flow_counts.continuations;
+  require(elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
+  return continued_after_check(m,elapsed);
+}
+Flow Flow::continued_after_check(const Mode &m,double elapsed) const {
   // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
   const auto &guards=data_->mode.guards;bool same_guards=guards.size()==m.guards.size();
   for(size_t i=0;i<guards.size()&&same_guards;++i){const auto&a=guards[i];const auto&b=m.guards[i];

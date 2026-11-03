@@ -1,6 +1,7 @@
 #pragma once
 #include "pulse/core.hpp"
 #include <memory>
+#include <optional>
 namespace pulse::engineering {
 // Point-trajectory engineering evaluator. Bounds describe the computed modal
 // approximation, not an inherited enclosure of every physical trajectory.
@@ -14,6 +15,8 @@ class Flow {
   std::shared_ptr<FlowData> data_;
   Time offset_;
   std::shared_ptr<const Mode> archive_view_;
+  // Precondition: caller has certified compatibility. Never called publicly.
+  Flow continued_after_check(const Mode &, double elapsed) const;
 
 public:
   Flow(const Mode &, const Vector &);
@@ -30,6 +33,9 @@ public:
   // reprojected; unchanged guards share the original anchored evaluator.
   bool compatible(const Mode &) const;
   Flow continued(const Mode &, double elapsed) const;
+  // One atomic compatibility decision: nullopt leaves the caller's fallback
+  // constructor path unchanged. Equivalent to compatible()+continued().
+  std::optional<Flow> continue_if_compatible(const Mode &, double elapsed) const;
   double observe(const Vector &, double time, int derivative = 0) const;
   double value(size_t guard, double time, int derivative = 0) const;
   Range bounds(size_t guard, double lower, double upper,

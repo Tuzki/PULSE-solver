@@ -135,6 +135,37 @@ std::vector<double> state_signals(const RunState&s,const std::vector<std::string
  }
  return result;
 }
+std::vector<PreparedSignal> prepare_signals(const std::vector<std::string>&names){
+ std::vector<PreparedSignal> result;
+ result.reserve(names.size());
+ for(const auto&name:names){
+  PreparedSignal item;
+  item.literal=is_literal(name);
+  if(item.literal) item.value=number(name);
+  else item.key=net_name(name);
+  result.push_back(std::move(item));
+ }
+ return result;
+}
+std::vector<double> state_signals_prepared(const RunState&s,const std::vector<PreparedSignal>&selectors){
+ std::vector<double> result;
+ result.reserve(selectors.size());
+ const Mode&mode=s.internal_mode?*s.internal_mode:s.mode;
+ const Vector&x=s.internal.size()?s.internal:s.physical;
+ bool checked=false,can_observe=false;
+ for(const auto&item:selectors){
+  if(item.literal){result.push_back(item.value);continue;}
+  const auto b=mode.bools.find(item.key);
+  if(b!=mode.bools.end()){result.push_back(double(b->second));continue;}
+  if(!checked){
+   can_observe=s.electrical_flow && s.electrical_flow->compatible(mode);
+   checked=true;
+  }
+  const auto &row=mode.maps.at(item.key);
+  result.push_back(can_observe?s.electrical_flow->observe(row,0):row.dot(x));
+ }
+ return result;
+}
 void publish_physical_state(const Model&m,RunState&s){
  if(s.internal.size()!=m.ns+1)return;
  s.physical=physical_view(m,s.internal);const auto&c=persistent_chart(m);

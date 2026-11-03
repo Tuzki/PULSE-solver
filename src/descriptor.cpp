@@ -12,7 +12,9 @@ namespace pulse {
 struct ModeCacheData {
     const Model *model;
     size_t capacity;
-    std::map<std::string, Mode> entries;
+    // Compiled template is immutable for the entire simulation. Dynamic
+    // observer bindings are always materialized on a fresh instance.
+    std::map<std::string, std::shared_ptr<const Mode>> entries;
     std::deque<std::string> insertion_order;
 };
 namespace {
@@ -1005,7 +1007,7 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
         auto it=cache->entries.find(key);
         if(it==cache->entries.end())it=cache->entries.find(candidate_key(bits,segments,regs));
         if (it != cache->entries.end()) {
-            Mode bound=bind_observations(m,it->second,regs,bits,segments);
+            Mode bound=bind_observations(m,*it->second,regs,bits,segments);
             Mode mode = instantiate_cached(m, std::move(bound), s, classification_only);
             ++stats.cache_hits;
             return mode;
@@ -1063,7 +1065,7 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
             cache->insertion_order.pop_front();
             ++stats.mode_cache_evictions;
         }
-        cache->entries.emplace(key, mode);
+        cache->entries.emplace(key, std::make_shared<const Mode>(mode));
         cache->insertion_order.push_back(std::move(key));
         stats.mode_cache_peak_entries =
             std::max(stats.mode_cache_peak_entries, uint64_t(cache->entries.size()));

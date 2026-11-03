@@ -96,7 +96,12 @@ struct Loaded {
 struct Data {
   const Model&m;
   std::map<std::string,std::unique_ptr<Loaded>> modules;
-  struct Task {const Netlist::Task *spec;Loaded *module;pulse_software_entry_fn init,step;int self_part=-1;};
+  struct Task {
+    const Netlist::Task *spec;Loaded *module;pulse_software_entry_fn init,step;
+    int self_part=-1;
+    std::vector<PreparedSignal> input_plan;
+    std::vector<std::string> output_keys;
+  };
   std::vector<Task> tasks;
   Json identity=Json::array();
   explicit Data(const Model&model):m(model){}
@@ -105,8 +110,9 @@ struct Data {
             std::vector<Wakeup>&wakeups,std::vector<Json>*logs,uint64_t tx,size_t delta,
             uint32_t trigger_flags=0) {
     auto &spec=*t.spec;auto old=snapshot.software.at(spec.name);
-    auto next=old;std::vector<double> inputs=state_signals(snapshot,spec.inputs),outputs;
-    for(auto &name:spec.outputs)outputs.push_back(snapshot.regs.at(net_name(name)));
+    auto next=old;std::vector<double> inputs=state_signals_prepared(snapshot,t.input_plan),outputs;
+    outputs.reserve(t.output_keys.size());
+    for(const auto &name:t.output_keys)outputs.push_back(snapshot.regs.at(name));
     pulse_software_call c{PULSE_SOFTWARE_ABI,sizeof(pulse_software_call),snapshot.at.seconds(),
       old.invocation,inputs.data(),inputs.size(),spec.parameters.data(),spec.parameters.size(),
       old.bytes.data(),next.bytes.data(),next.bytes.size(),outputs.data(),outputs.size(),
@@ -117,7 +123,7 @@ struct Data {
       c.input_count==inputs.size()&&c.output_count==outputs.size()&&c.state_bytes==next.bytes.size(),
       7,"SOFTWARE_ABI_MUTATION","task modified immutable call metadata",false,spec.source);
     for(size_t j=0;j<outputs.size();++j) {
-      auto name=net_name(spec.outputs[j]);double v=outputs[j];
+      const auto &name=t.output_keys[j];double v=outputs[j];
       require(std::isfinite(v),7,"SOFTWARE_OUTPUT","nonfinite C output",false,spec.source);
       require(m.signals.at(name).type!=Signal::BOOL||v==0||v==1,7,"SOFTWARE_OUTPUT","BOOL output must be 0 or 1",false,spec.source);
       writes[name]=v;
@@ -167,7 +173,11 @@ Session::Session(const Model&m):data_(std::make_unique<Data>(m)) {
       info.parameter_count==task.parameters.size(),2,"SOFTWARE_PORTS","C descriptor does not match task bindings",false,task.source);
     int part=-1;
     for(int i:m.events)if(net_name(m.parts[i].raw.args[0])==task.wake_trigger)part=i;
-    data_->tasks.push_back({&task,module,module->entry(task.init),module->entry(task.entry),part});
+    std::vector<std::string> output_keys;
+    output_keys.reserve(task.outputs.size());
+    for(const auto &name:task.outputs)output_keys.push_back(net_name(name));
+    data_->tasks.push_back({&task,module,module->entry(task.init),module->entry(task.entry),
+                            part,prepare_signals(task.inputs),std::move(output_keys)});
   }
 }
 Session::~Session()=default;
