@@ -1,0 +1,50 @@
+{
+  "portfolio": {
+    "file": "src/solver_strategy.cpp",
+    "line": 12
+  },
+  "flow_compat": {
+    "file": "src/engineering_flow.cpp",
+    "line": 766
+  },
+  "flow_constructor": {
+    "file": "src/engineering_flow.cpp",
+    "line": 358
+  },
+  "flow_observe": {
+    "file": "src/engineering_flow.cpp",
+    "line": 828
+  },
+  "bind": {
+    "file": "src/descriptor.cpp",
+    "line": 742
+  },
+  "bind_row_norm": {
+    "file": "src/descriptor.cpp",
+    "line": 769
+  },
+  "pevt_definition": {
+    "file": "src/pevt.cpp",
+    "line": 84
+  },
+  "pevt_signature": {
+    "file": "src/pevt.cpp",
+    "line": 230
+  },
+  "mode_key": {
+    "file": "src/descriptor.cpp",
+    "line": 28
+  },
+  "pevt_values": {
+    "file": "src/pevt.cpp",
+    "line": 208
+  },
+  "pevt_states": {
+    "file": "src/pevt.cpp",
+    "line": 266
+  },
+  "basis": {
+    "file": "src/engineering_flow.cpp",
+    "line": 87
+  }
+}

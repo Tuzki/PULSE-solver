@@ -1,0 +1,142 @@
+[
+  {
+    "rank": 1,
+    "overhead": "坐标转换使缓存 Binding 再次深复制",
+    "source": {
+      "file": "src/solver_strategy.cpp",
+      "line": 12
+    },
+    "C_count": 24,
+    "D_count": 41234,
+    "repeat_count": 41210,
+    "evidence": "已测深复制增量；7,504,588 次分配/678,051,896 B 属于 D 的该完整路径",
+    "architecture": "缓存策略及坐标系对应的最终不可变 Binding；保留所有进入检查",
+    "boundary": "可消除重复复制；新输入的坐标变换仍必要"
+  },
+  {
+    "rank": 2,
+    "overhead": "Flow::compatible 的隐式 Vector→Matrix 临时对象",
+    "source": {
+      "file": "src/engineering_flow.cpp",
+      "line": 766
+    },
+    "C_count": 5779584,
+    "D_count": 5779584,
+    "repeat_count": 5779584,
+    "evidence": "该路径分配均为 40 B；共 231,183,360 B；same(Matrix,Matrix) 执行 2,935,135 次",
+    "architecture": "使用不物化临时 Matrix 的通用只读矩阵/向量比较接口",
+    "boundary": "可消除隐式转换分配；比较及验证仍保留"
+  },
+  {
+    "rank": 3,
+    "overhead": "每个观察投影重复构造锚点公共 Flow 部分",
+    "source": {
+      "file": "src/engineering_flow.cpp",
+      "line": 358
+    },
+    "C_count": 36174,
+    "D_count": 36174,
+    "repeat_count": 36174,
+    "evidence": "50,301 次构造仅 14,127 组 Basis+原始初始状态；公共前缀重复 71.9151%",
+    "architecture": "共享不可变 TrajectoryCore；观察器只持投影及时间视图",
+    "boundary": "可消除公共前缀重复；不同观察行系数仍必要"
+  },
+  {
+    "rank": 4,
+    "overhead": "Basis+观察行静态投影重复准备",
+    "source": {
+      "file": "src/engineering_flow.cpp",
+      "line": 828
+    },
+    "C_count": 36147,
+    "D_count": 36147,
+    "repeat_count": 36147,
+    "evidence": "36,174 次投影请求只有 27 组完整 Basis+row 输入，99.9254% 重复",
+    "architecture": "Basis 内按完整 row 位缓存 lift/scaling 和谱投影；逐锚点幅值仍重算",
+    "boundary": "可消除静态投影重复，不能复用旧锚点输出"
+  },
+  {
+    "rank": 5,
+    "overhead": "静态 A 行范数在每次绑定重算",
+    "source": {
+      "file": "src/descriptor.cpp",
+      "line": 769
+    },
+    "C_count": 3090900,
+    "D_count": 1333800,
+    "repeat_count": 1331925,
+    "evidence": "D 只有 25 份 A；75 行/次；重复次数为完整 A 重复数×75 的保守推导",
+    "architecture": "将 abs(A) 和逐行原归约顺序范数存入不可变 ObserverBinding",
+    "boundary": "可消除本测量中相同 A 的全部重复范数"
+  },
+  {
+    "rank": 6,
+    "overhead": "PEVT 成功定义比较反复扫描矩阵及观察映射",
+    "source": {
+      "file": "src/pevt.cpp",
+      "line": 84
+    },
+    "C_count": 4908690,
+    "D_count": 4908690,
+    "repeat_count": null,
+    "evidence": "56,463 次完整候选比较全部命中；实际仅 20 个新增定义；memcmp 为原显式调用数",
+    "architecture": "完整定义、绑定布局、observer mask、策略及坐标系的版本证书；必要动态字段照常核对",
+    "boundary": "可消除已认证不可变结构重比，不能去掉动态检查"
+  },
+  {
+    "rank": 7,
+    "overhead": "PEVT deque 逐项跳过不匹配签名",
+    "source": {
+      "file": "src/pevt.cpp",
+      "line": 230
+    },
+    "C_count": 502464,
+    "D_count": 502464,
+    "repeat_count": 502464,
+    "evidence": "原归档计数器 definition_signature_skips；每事务 28.465 次",
+    "architecture": "签名到候选列表的索引；哈希碰撞仍做完整比较，保持首次插入 ID",
+    "boundary": "可消除无关候选扫描"
+  },
+  {
+    "rank": 8,
+    "overhead": "重复 value_set 请求重新提取并查找 held 值集合",
+    "source": {
+      "file": "src/pevt.cpp",
+      "line": 208
+    },
+    "C_count": 47526,
+    "D_count": 47526,
+    "repeat_count": 47526,
+    "evidence": "56,483 请求仅 8,957 个新增值集合；复用率 84.1421%",
+    "architecture": "不可变 Binding 附带经过完整键校验的值集合句柄；按归档实例映射 ID",
+    "boundary": "可消除同一值集合重提取，首次归档和值变化仍必要"
+  },
+  {
+    "rank": 9,
+    "overhead": "B 行范数重复计算",
+    "source": {
+      "file": "src/descriptor.cpp",
+      "line": 769
+    },
+    "C_count": 3090900,
+    "D_count": 1333800,
+    "repeat_count": 1108650,
+    "evidence": "D 的 B 只有 3,002 个完整输入；14,782 次重复×75 行，属于保守推导",
+    "architecture": "B 值版本或局部更新驱动逐行范数复用，保留原表达式顺序",
+    "boundary": "可消除相同 B 的重复范数；新 B 必须计算"
+  },
+  {
+    "rank": 10,
+    "overhead": "高频完整候选键构造",
+    "source": {
+      "file": "src/descriptor.cpp",
+      "line": 28
+    },
+    "C_count": 147176,
+    "D_count": 188388,
+    "repeat_count": null,
+    "evidence": "D 比 C 多 41,212 次 key 构造；全键是否在每个调用点重复未直接测量",
+    "architecture": "用 Model/策略/REG generation 维护不可变键及静态前缀，按依赖失效",
+    "boundary": "部分可复用；没有实测重复率，不将全部调用列为无意义"
+  }
+]

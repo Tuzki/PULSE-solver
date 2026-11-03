@@ -1,0 +1,611 @@
+--- pinned/CMakeLists.txt
++++ count-only/CMakeLists.txt
+@@ -218,3 +218,8 @@
+   target_link_libraries(stage_d_integration_tests PRIVATE pulse_core)
+   add_test(NAME stage_d_integration COMMAND stage_d_integration_tests)
+ endif()
++
++add_library(count_runtime SHARED IMPORTED)
++set_target_properties(count_runtime PROPERTIES IMPORTED_LOCATION "/root/cd-repeat-audit-20261104/D/libcounts.so")
++target_include_directories(pulse_core PUBLIC "/root/cd-repeat-audit-20261104/D")
++target_link_libraries(pulse_core PUBLIC count_runtime)
+--- pinned/apps/cli.cpp
++++ count-only/apps/cli.cpp
+@@ -5,6 +5,7 @@
+ #include <limits>
+ #include <sstream>
+ int main(int argc, char **argv) {
++audit::Scope audit_scope_6(audit::cli);
+   try {
+     pulse::Options options;options.retain_history=false;
+     std::string input, dest = "out";
+--- pinned/include/pulse/core.hpp
++++ count-only/include/pulse/core.hpp
+@@ -1,4 +1,5 @@
+ #pragma once
++#include "audit.hpp"
+ #include "json.hpp"
+ #include "netlist.hpp"
+ #include <Eigen/Dense>
+--- pinned/include/pulse/cow_value.hpp
++++ count-only/include/pulse/cow_value.hpp
+@@ -1,4 +1,7 @@
+ #pragma once
++#include "audit.hpp"
++#include <type_traits>
++namespace pulse { struct ModeBinding; struct ModeDefinition; }
+ #include <memory>
+ #include <utility>
+ 
+@@ -12,9 +15,9 @@
+   CowValue() : value_(std::make_shared<T>()) {}
+   CowValue(const T& value) : value_(std::make_shared<T>(value)) {}
+   CowValue(T&& value) : value_(std::make_shared<T>(std::move(value))) {}
+-  CowValue(const CowValue&) noexcept = default;
++  CowValue(const CowValue& x) noexcept :value_(x.value_) {pa_count((std::is_same_v<T,pulse::ModeBinding>?audit::cow_binding_copy:audit::cow_other_copy),1);}
+   CowValue(CowValue&&) noexcept = default;
+-  CowValue& operator=(const CowValue&) noexcept = default;
++  CowValue& operator=(const CowValue& x) noexcept {value_=x.value_;pa_count((std::is_same_v<T,pulse::ModeBinding>?audit::cow_binding_copy:audit::cow_other_copy),1);return *this;}
+   CowValue& operator=(CowValue&&) noexcept = default;
+   CowValue& operator=(const T& value) {
+     value_ = std::make_shared<T>(value);
+@@ -25,8 +28,8 @@
+     return *this;
+   }
+   const T& read() const noexcept { return *value_; }
+-  T& edit() {
+-    if (!value_.unique()) value_ = std::make_shared<T>(*value_);
++  T& edit() { audit::Scope audit_edit((std::is_same_v<T,pulse::ModeBinding>?audit::cow_binding_edit:audit::cow_other_edit));
++    if (!value_.unique()) {audit::Scope audit_detach((std::is_same_v<T,pulse::ModeBinding>?audit::cow_binding_detach:audit::cow_other_detach));value_ = std::make_shared<T>(*value_);}
+     return *value_;
+   }
+   bool shares_storage_with(const CowValue& other) const noexcept {
+--- pinned/include/pulse/stage_d_runtime.hpp
++++ count-only/include/pulse/stage_d_runtime.hpp
+@@ -11,7 +11,8 @@
+ constexpr std::uint64_t fnv_offset = 14695981039346656037ULL;
+ constexpr std::uint64_t fnv_prime = 1099511628211ULL;
+ inline std::uint64_t hash_bytes(const void* data, std::size_t size) noexcept {
+-  std::uint64_t hash = fnv_offset;
++audit::Scope audit_scope_63(audit::hash_fnv);
++pa_count(audit::hash_fnv_bytes,size);  std::uint64_t hash = fnv_offset;
+   const auto* bytes = static_cast<const unsigned char*>(data);
+   for (std::size_t i = 0; i < size; ++i) {
+     hash ^= bytes[i];
+--- pinned/src/descriptor.cpp
++++ count-only/src/descriptor.cpp
+@@ -29,6 +29,7 @@
+                           const std::map<int, int> &segments,
+                           const std::map<std::string, double> &regs,
+                           const std::set<std::string>* observation_regs=nullptr) {
++audit::Scope audit_scope_8(audit::mode_key);
+     // Exact binary values and length-prefixed fields avoid textual ambiguities.
+     // Model topology/parameters are isolated by the per-simulation cache scope.
+     std::string key(1,char(portfolio_variant()));
+@@ -87,6 +88,7 @@
+ }
+ Mode instantiate_cached(const Model &m, Mode mode, const Vector &s,
+                         bool classification_only) {
++audit::Scope audit_scope_9(audit::mode_instantiate);
+     mode.classification_only = classification_only;
+     // Repeat the original state-dependent entry checks, with identical matrix
+     // expressions, order, tolerances and diagnostics. No previous accepted
+@@ -168,6 +170,7 @@
+               std::map<int, int> ss, bool equations=true)
+         : m(mm), regs(rr), bits(std::move(bb)), segments(std::move(ss)),
+           partidx(mm.compiled_part_index) {
++audit::Scope audit_scope_13(audit::assembler);
+         if (!equations) return;
+         na = int(m.nodes.size());
+         for (auto &[n, i] : m.branches) {
+@@ -742,6 +745,7 @@
+ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::string,double>&regs,
+                        const std::map<int,bool>&bits,const std::map<int,int>&segments,
+                        bool classification_only){
++audit::Scope audit_scope_11(audit::bind);
+     Mode mode=stored;if(!stored.observer_binding)return mode;
+     const auto &binding=*stored.observer_binding;
+     // D: Per-thread scratch is entirely overwritten before every use.
+@@ -755,23 +759,25 @@
+         double value=values.held(name);N(row,m.ns)=value;B(row,m.ns)=value;
+         mode.binding.edit().maps.at(name).setZero();mode.binding.edit().maps.at(name)[m.ns]=value;
+     }
+-    int na=int(N.rows());mode.binding.edit().residual_map.topRows(na)=binding.A*N-B;
++    
++ auto audit_A=audit::matrix(audit::bind_input_A,binding.A);auto audit_N=audit::matrix(audit::bind_input_N,N);auto audit_B=audit::matrix(audit::bind_input_B,B);unsigned long long audit_inputs[]={audit_A,audit_N,audit_B};
++int na=int(N.rows());{audit::Scope audit_scope_16(audit::bind_matrix_residual);pa_blob(audit::bind_matrix_residual_inputs,audit_inputs,sizeof(audit_inputs),nullptr,0,nullptr,0);mode.binding.edit().residual_map.topRows(na)=binding.A*N-B;}
+     mode.binding.edit().residual_reference.topRows(na)=B;
+     if(classification_only) {
+     Matrix &scale=scratch.scale;
+     scale=Matrix::Zero(mode.binding.read().residual_map.rows(),m.ns+1);
+-    scale.topRows(na)=binding.A.cwiseAbs()*N.cwiseAbs()+B.cwiseAbs();
++    {audit::Scope audit_scope_17(audit::bind_matrix_scale);pa_blob(audit::bind_matrix_scale_inputs,audit_inputs,sizeof(audit_inputs),nullptr,0,nullptr,0);scale.topRows(na)=binding.A.cwiseAbs()*N.cwiseAbs()+B.cwiseAbs();}
+     // Norms depend on only one loop index. Evaluate each only once per bind;
+     // keep the original expression and floating-point reduction order intact.
+     std::vector<double> a_row_norm(static_cast<size_t>(na)), b_row_norm(static_cast<size_t>(na));
+     std::vector<double> n_col_norm(static_cast<size_t>(m.ns + 1));
+-    for(int i=0;i<na;++i){
++pa_count(audit::bind_norm_rows,na);    for(int i=0;i<na;++i){
+         a_row_norm[size_t(i)]=binding.A.row(i).lpNorm<1>();
+         b_row_norm[size_t(i)]=B.row(i).lpNorm<1>();
+     }
+-    for(int j=0;j<=m.ns;++j)
++pa_count(audit::bind_norm_columns,m.ns+1);    for(int j=0;j<=m.ns;++j)
+         n_col_norm[size_t(j)]=N.col(j).lpNorm<Eigen::Infinity>();
+-    for(int i=0;i<na;++i)for(int j=0;j<=m.ns;++j){
++pa_count(audit::bind_scale_cells,na*(m.ns+1));    for(int i=0;i<na;++i)for(int j=0;j<=m.ns;++j){
+         double floor=std::numeric_limits<double>::epsilon()*(a_row_norm[size_t(i)]*n_col_norm[size_t(j)]+b_row_norm[size_t(i)]);
+         scale(i,j)=std::max(scale(i,j),floor);
+     }
+@@ -1017,6 +1023,7 @@
+ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::string, double> &regs,
+                        Stats &stats, const std::map<int, bool> &bits, const std::map<int, int> &segments,
+                        CompilePurpose purpose) {
++audit::Scope audit_scope_10(audit::mode_compile);
+     const bool classification_only = purpose == CompilePurpose::RegionClassification;
+     ModeCacheData *cache = active_mode_cache && active_mode_cache->model == &m &&
+                                   active_mode_cache->capacity
+@@ -1180,6 +1187,7 @@
+          {"rebound_hits",original_rebound_hits}};
+ }
+ void portfolio_original_check(const Model&m,const RunState&entry,const Mode&mode,const Vector&xi){
++audit::Scope audit_scope_12(audit::original_check);
+  require(portfolio_variant()==2,12,"STRATEGY_SCOPE","original-equation check requires canonical stamp");
+  std::map<int,bool>bits;for(int i:m.cmps)bits[i]=entry.mode.bools.at(net_name(m.parts[i].raw.args[0]));
+  ++original_verifications;
+--- pinned/src/engineering_flow.cpp
++++ count-only/src/engineering_flow.cpp
+@@ -1,3 +1,4 @@
++extern "C" unsigned pa_named_id(const char*);
+ #include "pulse/engineering.hpp"
+ #include "pulse/stage_d_runtime.hpp"
+ #include <Eigen/Eigenvalues>
+@@ -85,6 +86,7 @@
+  }
+ }
+ std::shared_ptr<Basis> basis(const Mode &mode) {
++audit::Scope audit_scope_21(audit::basis_lookup);
+   static thread_local std::unordered_map<std::string, std::shared_ptr<Basis>> cache;
+   // Pointer identity is safe only while the exact COW storage is retained.
+   // Pin at most 128 definitions; any subsequent Mode::definition.edit()
+@@ -97,7 +99,7 @@
+   static thread_local std::deque<const ModeDefinition*> identity_order;
+   const auto* identity=std::addressof(mode.definition.read());
+   if(auto it=by_identity.find(identity);it!=by_identity.end()) {
+-    ++flow_counts.basis_hits;
++    ++flow_counts.basis_hits;pa_count(audit::basis_reuse,1);
+     return it->second.prepared;
+   }
+   const auto remember_identity=[&](const std::shared_ptr<Basis>& b) {
+@@ -110,11 +112,11 @@
+   };
+   auto id = key(mode);
+   if (auto it = cache.find(id); it != cache.end()) {
+-    ++flow_counts.basis_hits;
++    ++flow_counts.basis_hits;pa_count(audit::basis_reuse,1);
+     remember_identity(it->second);
+     return it->second;
+   }
+-  ++flow_counts.basis_misses;
++  ++flow_counts.basis_misses;pa_count(audit::basis_build,1);
+   auto b = std::make_shared<Basis>();
+   const int physical = int(mode.definition.read().M.rows()) - 1;
+   if (mode.definition.read().invariant_generator.size()) {
+@@ -282,7 +284,8 @@
+ };
+ namespace {
+ void prepare_local(FlowData &d) {
+-  if (d.local_ready) return;
++audit::Scope audit_scope_22(audit::taylor_prepare);
++  if (d.local_ready) {pa_count(audit::taylor_ready_hit,1);return;}pa_count(audit::taylor_projection_build,1);
+   using Wide = long double;
+   using WMatrix = Eigen::Matrix<Wide, Eigen::Dynamic, Eigen::Dynamic>;
+   using WVector = Eigen::Matrix<Wide, Eigen::Dynamic, 1>;
+@@ -290,7 +293,9 @@
+   auto &anchor=*d.shared_local;
+   const auto &b=*d.basis;
+   const int n=int(b.generator.rows())-1;
+-  if(!anchor.ready) {
++  if(!anchor.ready) {pa_count(audit::taylor_recurrence_build,1);
++ const void* audit_basis=d.basis.get();double audit_rate=d.local_rate;pa_blob(audit::taylor_recurrence_inputs,&audit_basis,sizeof(audit_basis),d.initial.data(),size_t(d.initial.size())*sizeof(double),&audit_rate,sizeof(audit_rate));
++
+     WVector z=WVector::Ones(n+1);
+     if(n)z.head(n)=(b.reduce.cast<Wide>()*d.initial.cast<Wide>())
+         .cwiseQuotient(b.scaling.head(n).cast<Wide>());
+@@ -300,7 +305,7 @@
+     anchor.absolute_states.resize(FlowData::local_degree+1);
+     anchor.states[0]=z;
+     anchor.absolute_states[0]=absolute_z;
+-    for (int j=1;j<=FlowData::local_degree;++j) {
++    for (int j=1;j<=FlowData::local_degree;++j) {pa_count(audit::taylor_recurrence_steps,1);
+       z=(a*z/Wide(j)).eval();
+       absolute_z=(a.cwiseAbs()*absolute_z/Wide(j)).eval();
+       anchor.states[j]=z;
+@@ -357,6 +362,7 @@
+ Json flow_statistics(){return {{"constructions",flow_counts.constructions},{"continuations",flow_counts.continuations},{"shared_continuations",flow_counts.reused},{"reprojected_continuations",flow_counts.reprojected},{"basis_hits",flow_counts.basis_hits},{"basis_misses",flow_counts.basis_misses}};}
+ Flow::Flow(const Mode &mode, const Vector &initial)
+     : data_(std::make_shared<FlowData>()) {
++audit::Scope audit_scope_23(audit::flow_construct);
+   ++flow_counts.constructions;
+   require(!mode.classification_only, 12, "UNACCEPTED_CANDIDATE",
+           "region-classification candidate cannot be propagated");
+@@ -365,7 +371,7 @@
+   d.archive_origin_id=++archive_serial;
+   d.mode = mode;
+   d.initial = initial;
+-  d.basis = basis(mode);
++  d.basis = basis(mode); const void* audit_common_basis=d.basis.get();pa_blob(pa_named_id("flow_common_anchor_inputs"),&audit_common_basis,sizeof(audit_common_basis),initial.data(),size_t(initial.size())*sizeof(double),nullptr,0);
+   auto &b = *d.basis;
+   double rate = b.balanced.cwiseAbs().rowwise().sum().maxCoeff();
+   if (rate > 0 && std::isfinite(rate))
+@@ -447,6 +453,7 @@
+   Flow flow(m,anchor);flow.offset_=offset;return flow;
+ }
+ Vector Flow::state(double t) const {
++audit::Scope audit_scope_29(audit::flow_state);
+   t += offset_.seconds();
+   require(t >= 0 && std::isfinite(t), 7, "TIME_ORDER",
+           "invalid engineering propagation time", true);
+@@ -512,6 +519,7 @@
+   return out;
+ }
+ double Flow::value(size_t k, double t, int order) const {
++audit::Scope audit_scope_30(audit::flow_value);
+   t += offset_.seconds();
+   auto &d = *data_;
+   if (t == 0 && order == 0)
+@@ -764,13 +772,14 @@
+   return double(projected.dot(dz.head(n)));
+ }
+ bool Flow::compatible(const Mode &m) const {
++audit::Scope audit_scope_24(audit::flow_compatible);
+   const auto &old=archive_mode();
+   if (&m == &old) return true; // A Mode is always compatible with itself.
+-  auto same=[](const Matrix&a,const Matrix&b){return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
++  auto same=[](const Matrix&a,const Matrix&b){audit::Scope audit_named_scope_flow_same_matrix(pa_named_id("flow_same_matrix"));return a.rows()==b.rows()&&a.cols()==b.cols()&&(a.array()==b.array()).all();};
+   // Equivalent to the four byte-exact matrices packed by key(), without allocation.
+   auto same_key_matrix=[](const Matrix&a,const Matrix&b){
+     return a.rows()==b.rows()&&a.cols()==b.cols()&&
+-      (a.size()==0||std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
++      (a.size()==0||audit::memcmp(audit::flow_memcmp,a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
+   };
+   if(m.observer_maps!=old.observer_maps||m.observer_rows!=old.observer_rows)return false;
+   auto same_electrical_rows=[&](const Matrix&a,const Matrix&b){
+@@ -801,36 +810,40 @@
+   return true;
+ }
+ Flow Flow::continued(const Mode &m,double elapsed) const {
++audit::Scope audit_scope_25(audit::flow_continued);
+   ++flow_counts.continuations;
+   require(compatible(m)&&elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
+   return continued_after_check(m,elapsed);
+ }
+ std::optional<Flow> Flow::continue_if_compatible(const Mode &m,double elapsed) const {
++audit::Scope audit_scope_26(audit::flow_continue_if);
+   if (!compatible(m)) return std::nullopt;
+   ++flow_counts.continuations;
+   require(elapsed>=0,12,"FLOW_INCOMPATIBLE","electrical trajectory cannot continue across incompatible equations or maps");
+   return continued_after_check(m,elapsed);
+ }
+ Flow Flow::continued_after_check(const Mode &m,double elapsed) const {
++audit::Scope audit_scope_27(audit::flow_continue_after);
+   // Reproject guards from the ORIGINAL anchor, never from a public snapshot.
+   const auto &guards=data_->mode.binding.read().guards;bool same_guards=guards.size()==m.binding.read().guards.size();
+   for(size_t i=0;i<guards.size()&&same_guards;++i){const auto&a=guards[i];const auto&b=m.binding.read().guards[i];
+     same_guards=a.part==b.part&&a.direction==b.direction&&a.kind==b.kind&&a.knot==b.knot&&a.segment==b.segment&&a.step==b.step&&a.row.size()==b.row.size()&&
+-      (!a.row.size()||std::memcmp(a.row.data(),b.row.data(),size_t(a.row.size())*sizeof(double))==0);
+-  }
+-  if(same_guards){++flow_counts.reused;Flow next=*this;next.archive_view_=std::make_shared<const Mode>(m);next.offset_=offset_+Time::from(elapsed);return next;}
+-  ++flow_counts.reprojected;Flow next(m,data_->initial);
++      (!a.row.size()||audit::memcmp(audit::flow_memcmp,a.row.data(),b.row.data(),size_t(a.row.size())*sizeof(double))==0);
++  }
++  if(same_guards){pa_count(audit::flow_continue_shared,1);++flow_counts.reused;Flow next=*this;next.archive_view_=std::make_shared<const Mode>(m);next.offset_=offset_+Time::from(elapsed);return next;}
++pa_count(audit::flow_continue_reprojected,1);  ++flow_counts.reprojected;Flow next(m,data_->initial);
+   if(next.data_->basis==data_->basis && next.data_->local_rate==data_->local_rate)
+     next.data_->shared_local=data_->shared_local;
+   next.offset_=offset_+Time::from(elapsed);
+   next.data_->archive_origin_id=data_->archive_origin_id;return next;
+ }
+ double Flow::observe(const Vector &row,double t,int derivative) const {
++audit::Scope audit_scope_28(audit::flow_observe);
+   // Project an arbitrary observable on this same continuous trajectory.
+   for(size_t k=0;k<data_->mode.binding.read().guards.size();k++){
+     const auto &g=data_->mode.binding.read().guards[k].row;
+-    if(g.size()==row.size()&&(g.array()==row.array()).all())return value(k,t,derivative);
+-    if(g.size()==row.size()&&(g.array()==-row.array()).all())return -value(k,t,derivative);
++    if(g.size()==row.size()&&(g.array()==row.array()).all()){pa_count(audit::flow_observe_guard_hit,1);return value(k,t,derivative);}
++    if(g.size()==row.size()&&(g.array()==-row.array()).all()){pa_count(audit::flow_observe_guard_negative_hit,1);return -value(k,t,derivative);}
+   }
+   const auto id=stage_d::hash_bytes(row.data(),size_t(row.size())*sizeof(double));
+   std::shared_ptr<FlowData> projected;
+@@ -846,7 +859,7 @@
+     view.definition=data_->mode.definition;
+     view.numerical_strategy=data_->mode.numerical_strategy;
+     view.binding.edit().guards.push_back({row,0,1,"OBSERVE"});
+-    Flow projection(view,data_->initial);
++pa_count(audit::flow_observe_projection_miss,1);const void* audit_row_basis=data_->basis.get();pa_blob(pa_named_id("observe_basis_row_inputs"),&audit_row_basis,sizeof(audit_row_basis),row.data(),size_t(row.size())*sizeof(double),nullptr,0);    Flow projection(view,data_->initial);
+     require(projection.data_->basis==data_->basis &&
+             projection.data_->local_rate==data_->local_rate,12,
+             "FLOW_SHARED_ANCHOR","observable projection has differing propagation basis");
+--- pinned/src/pevt.cpp
++++ count-only/src/pevt.cpp
+@@ -20,11 +20,15 @@
+ constexpr uint64_t noevent=UINT64_MAX;
+ constexpr size_t capacity=512*1024*1024;
+ using Bytes=std::vector<uint8_t>;
+-void put(Bytes&b,uint64_t v,size_t n){for(size_t i=0;i<n;++i)b.push_back(uint8_t(v>>(8*i)));}
+-void real(Bytes&b,double v){put(b,std::bit_cast<uint64_t>(v),8);}
+-void time(Bytes&b,Time t){put(b,std::bit_cast<uint64_t>(t.whole),8);put(b,t.tick,8);put(b,t.subtick,8);}
+-std::string key(const Bytes&b){return b.empty()?std::string{}:std::string(reinterpret_cast<const char*>(b.data()),b.size());}
+-bool same(const Vector&a,const Vector&b){return a.size()==b.size()&&(!a.size()||std::memcmp(a.data(),b.data(),size_t(a.size())*8)==0);}
++void put(Bytes&b,uint64_t v,size_t n){
++audit::Scope audit_scope_51(audit::pevt_serialize_word);for(size_t i=0;i<n;++i)b.push_back(uint8_t(v>>(8*i)));}
++void real(Bytes&b,double v){
++audit::Scope audit_scope_52(audit::pevt_serialize_real);put(b,std::bit_cast<uint64_t>(v),8);}
++void time(Bytes&b,Time t){
++audit::Scope audit_scope_53(audit::pevt_serialize_time);put(b,std::bit_cast<uint64_t>(t.whole),8);put(b,t.tick,8);put(b,t.subtick,8);}
++std::string key(const Bytes&b){
++audit::Scope audit_scope_55(audit::pevt_serialize_key);return b.empty()?std::string{}:std::string(reinterpret_cast<const char*>(b.data()),b.size());}
++bool same(const Vector&a,const Vector&b){return a.size()==b.size()&&(!a.size()||audit::memcmp(audit::pevt_memcmp,a.data(),b.data(),size_t(a.size())*8)==0);}
+ bool bits(double a,double b){return std::bit_cast<uint64_t>(a)==std::bit_cast<uint64_t>(b);}
+ struct Read {
+   const Bytes&b;size_t p=0;
+@@ -36,7 +40,8 @@
+   void end(){require(p==b.size(),11,"PEVT_TRAILING","trailing section bytes");}
+ };
+ Json parse(const Bytes&b){return Json::parse(b.begin(),b.end());}
+-Bytes text(const Json&j){auto s=j.dump();return Bytes(s.begin(),s.end());}
++Bytes text(const Json&j){
++audit::Scope audit_scope_54(audit::pevt_serialize_json);auto s=j.dump();return Bytes(s.begin(),s.end());}
+ struct State {Vector x;uint32_t values;};
+ struct Instance {uint32_t definition,values;};
+ struct FlowRecord {uint64_t reference,origin;uint32_t state,equation;Time offset;};
+@@ -66,6 +71,7 @@
+   std::deque<RecentEquation> recent_equations_;
+   uint64_t definition_candidate_checks=0,definition_signature_skips=0;
+   static uint64_t discrete_signature(const Mode&m){
++audit::Scope audit_scope_56(audit::pevt_signature);
+     uint64_t h=14695981039346656037ULL;
+     auto mix=[&](uint64_t v){for(int j=0;j<8;++j){h^=uint8_t(v>>(8*j));h*=1099511628211ULL;}};
+     mix(uint64_t(m.numerical_strategy));mix(m.bools.size());
+@@ -75,13 +81,14 @@
+   }
+   static bool identical(const Matrix&a,const Matrix&b) {
+     return a.rows()==b.rows() && a.cols()==b.cols() &&
+-           (a.size()==0 || std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
++           (a.size()==0 || audit::memcmp(audit::pevt_memcmp,a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
+   }
+   static bool identical(const Vector&a,const Vector&b) {
+     return a.size()==b.size() &&
+-           (a.size()==0 || std::memcmp(a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
++           (a.size()==0 || audit::memcmp(audit::pevt_memcmp,a.data(),b.data(),size_t(a.size())*sizeof(double))==0);
+   }
+   bool same_archive_definition(const Mode&a,const Mode&b) const {
++audit::Scope audit_scope_42(audit::pevt_definition_compare);
+     if(a.observer_maps!=b.observer_maps || a.observer_rows!=b.observer_rows ||
+        a.numerical_strategy!=b.numerical_strategy || a.bools!=b.bools ||
+        a.segments!=b.segments || a.binding.read().maps.size()!=b.binding.read().maps.size() ||
+@@ -105,7 +112,7 @@
+       for(;x!=a.binding.read().maps.end();++x,++y)
+         if(x->first!=y->first)return false;
+         else if(a.observer_maps.count(x->first)){
+-          if(x->second.size()!=y->second.size()||!x->second.size()||std::memcmp(x->second.data(),y->second.data(),size_t(x->second.size()-1)*sizeof(double))!=0)return false;
++          if(x->second.size()!=y->second.size()||!x->second.size()||audit::memcmp(audit::pevt_memcmp,x->second.data(),y->second.data(),size_t(x->second.size()-1)*sizeof(double))!=0)return false;
+         }else if(!identical(x->second,y->second))return false;
+       for(size_t i=0;i<a.binding.read().guards.size();++i){
+         const auto&g=a.binding.read().guards[i];const auto&h=b.binding.read().guards[i];
+@@ -117,6 +124,7 @@
+     return true;
+   }
+   bool same_reference(const Mode&a,const Mode&b) const {
++audit::Scope audit_scope_43(audit::pevt_reference_compare);
+     const auto &x=a.binding.read().residual_reference,&y=b.binding.read().residual_reference;
+     if(x.rows()!=y.rows()||x.cols()!=y.cols())return false;
+     std::vector<size_t> dynamic;
+@@ -128,15 +136,16 @@
+       dynamic.push_back(size_t(row->second)+size_t(x.rows())*(nx-1));
+     }
+     std::sort(dynamic.begin(),dynamic.end());size_t start=0;
+-    for(size_t skip:dynamic){if(skip>start&&std::memcmp(x.data()+start,y.data()+start,(skip-start)*sizeof(double)))return false;start=skip+1;}
+-    return size_t(x.size())==start||std::memcmp(x.data()+start,y.data()+start,(size_t(x.size())-start)*sizeof(double))==0;
++    for(size_t skip:dynamic){if(skip>start&&audit::memcmp(audit::pevt_memcmp,x.data()+start,y.data()+start,(skip-start)*sizeof(double)))return false;start=skip+1;}
++    return size_t(x.size())==start||audit::memcmp(audit::pevt_memcmp,x.data()+start,y.data()+start,(size_t(x.size())-start)*sizeof(double))==0;
+   }
+   uint32_t bind_instance(uint32_t definition,uint32_t values_id){
++audit::Scope audit_scope_47(audit::pevt_instance);
+     const uint64_t key=stage_d::pair_key(definition,values_id);
+     if(auto it=instance_pair_ids.find(key);it!=instance_pair_ids.end())return it->second;
+     auto index=uint32_t(instances.size());
+     instance_pair_ids.emplace(key,index);
+-    instances.push_back({definition,values_id});return index;
++    pa_count(audit::pevt_instance_new,1);instances.push_back({definition,values_id});return index;
+   }
+   uint32_t remember_equation(const Mode&m,uint32_t id) {
+     if(recent_equations_.size()>=64)recent_equations_.pop_front();
+@@ -206,6 +215,7 @@
+     }return result;
+   }
+   uint32_t value_set(const Mode&m) {
++audit::Scope audit_scope_44(audit::pevt_value_set);
+     value_lookup.clear();
+     for(const auto &name:slots){
+       const auto &row=m.binding.read().maps.at(name);
+@@ -217,15 +227,17 @@
+     std::vector<double> v;v.reserve(value_lookup.size());
+     for(uint64_t bits:value_lookup)v.push_back(std::bit_cast<double>(bits));
+     value_word_ids.emplace(value_lookup,id);
+-    values.push_back(std::move(v));return id;
++    pa_count(audit::pevt_value_new,1);values.push_back(std::move(v));return id;
+   }
+   uint32_t block(const Matrix&m,const std::vector<std::pair<uint32_t,uint32_t>>&bindings) {
++audit::Scope audit_scope_45(audit::pevt_block);
+     Bytes b;put(b,m.rows(),4);put(b,m.cols(),4);for(Eigen::Index i=0;i<m.size();++i)real(b,m.data()[i]);
+     for(auto[index,slot]:bindings){put(b,index,4);put(b,slot,4);}auto k=key(b);
+     if(block_ids.count(k))return block_ids.at(k);
+     auto id=uint32_t(blocks.size());block_ids[k]=id;blocks.push_back(m);return id;
+   }
+   uint32_t equation(const Mode&m) {
++audit::Scope audit_scope_41(audit::pevt_equation);
+     ++equation_calls;
+     const auto signature=discrete_signature(m);
+     for(const auto&entry:recent_equations_){
+@@ -235,7 +247,7 @@
+         ++definition_hits;return bind_instance(instances.at(entry.id).definition,value_set(m));
+       }
+     }
+-    ++definition_encodes;
++pa_count(audit::pevt_definition_encode,1);    ++definition_encodes;
+     auto vs=value_set(m);auto encoded=archive_encode_mode(m);Json definition={{"definition_id",0},{"observation_rows",Json::array()},{"guards",Json::array()},{"dynamic_bindings",Json::array()},{"numerical_strategy",m.numerical_strategy},{"component_mode_ids",modes(m)},{"observer_maps",m.observer_maps},{"observer_rows",m.observer_rows}};
+     std::map<std::string,std::vector<std::pair<uint32_t,uint32_t>>> binding;
+     for(size_t slot=0;slot<slots.size();++slot) {
+@@ -260,19 +272,21 @@
+     }
+     auto dkey=definition.dump();uint32_t id;
+     if(auto i=definition_ids.find(dkey);i!=definition_ids.end())id=i->second;
+-    else {require(definitions.size()<100000,11,"PEVT_LIMIT","too many equation definitions");id=uint32_t(definitions.size());definition_ids[dkey]=id;definition["definition_id"]=id;definitions.push_back(std::move(definition));}
++    else {require(definitions.size()<100000,11,"PEVT_LIMIT","too many equation definitions");id=uint32_t(definitions.size());definition_ids[dkey]=id;definition["definition_id"]=id;pa_count(audit::pevt_definition_new,1);definitions.push_back(std::move(definition));}
+     return remember_equation(m,bind_instance(id,vs));
+   }
+   uint32_t state(const Vector&x,uint32_t vs) {
++audit::Scope audit_scope_46(audit::pevt_state);
+     require(size_t(x.size())==nx&&x.allFinite(),11,"PEVT_SHAPE","invalid event state");
+     state_lookup.clear();state_lookup.push_back(vs);
+     for(Eigen::Index i=0;i<x.size();++i)state_lookup.push_back(stage_d::double_bits(x[i]));
+     if(auto it=state_word_ids.find(state_lookup);it!=state_word_ids.end())return it->second;
+     const auto id=uint32_t(states.size());
+     state_word_ids.emplace(state_lookup,id);
+-    states.push_back({x,vs});return id;
++    pa_count(audit::pevt_state_new,1);states.push_back({x,vs});return id;
+   }
+   uint32_t flow(const RunState&s,uint64_t reference) {
++audit::Scope audit_scope_48(audit::pevt_flow);
+     if(!s.electrical_flow)return none;
+     auto&f=*s.electrical_flow;auto token=f.archive_origin_id();auto origin=origins.find(token);
+     if(origin==origins.end()) {
+@@ -302,9 +316,11 @@
+ };
+ 
+ PevtArchive::PevtArchive(const Model&m,const RunState&s):data_(std::make_shared<Data>(m,s)){}
+-void PevtArchive::append(const RunState&a,const RunState&b,const std::vector<Json>&logs,uint64_t transaction){data_->append(a,b,logs,transaction);}
++void PevtArchive::append(const RunState&a,const RunState&b,const std::vector<Json>&logs,uint64_t transaction){
++audit::Scope audit_scope_49(audit::pevt_append);data_->append(a,b,logs,transaction);}
+ 
+ void PevtArchive::write(const std::filesystem::path&path,const Result&r)const {
++audit::Scope audit_scope_50(audit::pevt_write);
+   auto&d=*data_;auto events=d.events;auto flow_records=d.flows;Event end=events.back();end.id=events.size();end.kind=6;end.before=end.after;end.pre=end.post;end.members.clear();end.outgoing=none;++end.micro;
+   if(end.observer!=none){auto f=flow_records.at(end.observer);f.reference=end.id;end.observer=uint32_t(flow_records.size());flow_records.push_back(f);}
+   events.push_back(end);
+--- pinned/src/runtime.cpp
++++ count-only/src/runtime.cpp
+@@ -329,6 +329,7 @@
+ }
+ } // namespace
+ Result simulate(const Model &original, const Options &o) {
++audit::Scope audit_scope_7(audit::simulate);
+   Model owned_model=original;owned_model.numerical_coordinates=true;const Model&m=owned_model;
+   portfolio_reset_equations();engineering::reset_flow_statistics();six_perf::reset();
+   Result out;PortfolioStats portfolio;uint64_t output_index=1,total_event_records=0;
+--- pinned/src/semantics.cpp
++++ count-only/src/semantics.cpp
+@@ -864,8 +864,7 @@
+         }
+         std::sort(m.registry.begin(), m.registry.end());
+         // D: Resolve part identities once after validating the complete model.
+-        for (size_t i = 0; i < m.parts.size(); ++i)
+-            m.compiled_part_index.emplace(m.parts[i].raw.id, int(i));
++        pa_count(audit::index_frozen_build,1);for (size_t i = 0; i < m.parts.size(); ++i){pa_count(audit::index_frozen_insert,1);m.compiled_part_index.emplace(m.parts[i].raw.id, int(i));}
+         require(m.compiled_part_index.size() == m.parts.size(), 12,
+                 "INTERNAL_ERROR", "compiled part index not injective");
+         m.compile_seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+--- pinned/src/solver_strategy.cpp
++++ count-only/src/solver_strategy.cpp
+@@ -1,3 +1,4 @@
++extern "C" unsigned pa_named_id(const char*);
+ #include "pulse/solver_strategy.hpp"
+ #include "pulse/state_coordinates.hpp"
+ #include <fstream>
+@@ -12,7 +13,7 @@
+ Mode portfolio_compile(const Model&m,const Vector&internal,
+  const std::map<std::string,double>&regs,Stats&stats,
+  const std::map<int,bool>&bits,const std::map<int,int>&segments,
+- int algorithm,CompilePurpose purpose){
++ int algorithm,CompilePurpose purpose){audit::Scope audit_named_scope_portfolio_compile(pa_named_id("portfolio_compile"));
+  require(algorithm>=0&&algorithm<3,12,"STRATEGY_SCOPE","invalid numerical strategy");
+  Mode mode;
+  if(algorithm==2){
+--- pinned/src/state_coordinates.cpp
++++ count-only/src/state_coordinates.cpp
+@@ -1,3 +1,4 @@
++extern "C" unsigned pa_named_id(const char*);
+ #include "pulse/engineering.hpp"
+ #include "pulse/state_coordinates.hpp"
+ #include <sstream>
+@@ -147,7 +148,7 @@
+  }
+  return result;
+ }
+-std::vector<double> state_signals_prepared(const RunState&s,const std::vector<PreparedSignal>&selectors){
++std::vector<double> state_signals_prepared(const RunState&s,const std::vector<PreparedSignal>&selectors){audit::Scope audit_named_scope_state_signals_prepared(pa_named_id("state_signals_prepared"));
+  std::vector<double> result;
+  result.reserve(selectors.size());
+  const Mode&mode=s.internal_mode?*s.internal_mode:s.mode;
+@@ -166,7 +167,7 @@
+  }
+  return result;
+ }
+-void publish_physical_state(const Model&m,RunState&s){
++void publish_physical_state(const Model&m,RunState&s){audit::Scope audit_named_scope_publish_physical(pa_named_id("publish_physical"));
+  if(s.internal.size()!=m.ns+1)return;
+  s.physical=physical_view(m,s.internal);const auto&c=persistent_chart(m);
+  if(!c.active)return;
+--- pinned/src/trajectory.cpp
++++ count-only/src/trajectory.cpp
+@@ -66,7 +66,8 @@
+   }
+ };
+ }
+-Json archive_encode_mode(const Mode&m){return encode(m);}
++Json archive_encode_mode(const Mode&m){
++audit::Scope audit_scope_62(audit::pevt_encode_mode);return encode(m);}
+ Mode archive_decode_mode(const Json&j){return decode(j);}
+ uint32_t Trajectory::mode(const Mode&m){
+   auto root=pool_.encode(encode(m));auto found=ids_.find(root);if(found!=ids_.end())return found->second;
+--- pinned/third_party/eigen-3.4.0/Eigen/src/Core/util/Memory.h
++++ count-only/third_party/eigen-3.4.0/Eigen/src/Core/util/Memory.h
+@@ -1,3 +1,4 @@
++#include "audit.hpp"
+ // This file is part of Eigen, a lightweight C++ template library
+ // for linear algebra.
+ //
+@@ -173,6 +174,7 @@
+   */
+ EIGEN_DEVICE_FUNC inline void* aligned_malloc(std::size_t size)
+ {
++audit::Scope audit_scope_65(audit::eigen_allocate);
+   check_that_malloc_is_allowed();
+ 
+   void *result;
+@@ -214,6 +216,7 @@
+   */
+ inline void* aligned_realloc(void *ptr, std::size_t new_size, std::size_t old_size)
+ {
++audit::Scope audit_scope_67(audit::eigen_reallocate);
+   EIGEN_UNUSED_VARIABLE(old_size)
+ 
+   void *result;
+@@ -243,6 +246,7 @@
+ 
+ template<> EIGEN_DEVICE_FUNC inline void* conditional_aligned_malloc<false>(std::size_t size)
+ {
++audit::Scope audit_scope_66(audit::eigen_allocate_unaligned);
+   check_that_malloc_is_allowed();
+ 
+   EIGEN_USING_STD(malloc)
+@@ -272,6 +276,7 @@
+ 
+ template<> inline void* conditional_aligned_realloc<false>(void* ptr, std::size_t new_size, std::size_t)
+ {
++audit::Scope audit_scope_68(audit::eigen_reallocate_unaligned);
+   return std::realloc(ptr, new_size);
+ }
+ 
