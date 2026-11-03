@@ -1,0 +1,2211 @@
+{
+  "date": "2026-11-04",
+  "timezone": "Asia/Shanghai",
+  "base_commit": "fa2bc5ee4aab588ee91fb5b0513c692493799f7e",
+  "branch": "performance/stage-d-20261104",
+  "package": {
+    "path": "C:\\Users\\49605\\Downloads\\PULSE_StageD_complete_Codex_integration_20261104.zip",
+    "bytes": 28108,
+    "sha256": "99ba4a6604ea9ad329a5ca2fd8b945abea6102c0f30dd4a4e1957f798f9f000c"
+  },
+  "source_sha256": "459855195e09b82a5195392e55a9351a85ec5879baffab2e5ec843ab6fd74842",
+  "windows_linux_source_hashes_equal": true,
+  "windows_binary": {
+    "path": "D:\\codex\\using plecs\\pulse-linux-port\\.build-stage-d-windows\\pulse-solver.exe",
+    "bytes": 6680214,
+    "sha256": "9a72f1dae232c3670cdf51f2448297bbb9c5fad452e1cd5ee8363b7eadff82d2"
+  },
+  "ctest": {
+    "Windows": {
+      "total": 35,
+      "failed": 0,
+      "skipped": 0,
+      "disabled": 0,
+      "passed": 35,
+      "wall_seconds_log": 16.01,
+      "junit": {
+        "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-ctest.xml",
+        "bytes": 9736,
+        "sha256": "b59d1eeb3183229c3646186823bbe9a270f386b5a1e65ce4e207cdef047ecef8"
+      },
+      "cases": [
+        {
+          "name": "trajectory_output",
+          "seconds": 1.42136,
+          "status": "run"
+        },
+        {
+          "name": "platform_probe",
+          "seconds": 0.289271,
+          "status": "run"
+        },
+        {
+          "name": "parser",
+          "seconds": 0.198445,
+          "status": "run"
+        },
+        {
+          "name": "compiler_diagnostics",
+          "seconds": 0.354908,
+          "status": "run"
+        },
+        {
+          "name": "time_origin",
+          "seconds": 0.164478,
+          "status": "run"
+        },
+        {
+          "name": "electrical_references",
+          "seconds": 0.389704,
+          "status": "run"
+        },
+        {
+          "name": "C_ABI_compatibility",
+          "seconds": 0.050682,
+          "status": "run"
+        },
+        {
+          "name": "NPZ_compatibility",
+          "seconds": 0.205387,
+          "status": "run"
+        },
+        {
+          "name": "engineering_events",
+          "seconds": 0.417214,
+          "status": "run"
+        },
+        {
+          "name": "engineering_additional",
+          "seconds": 0.427691,
+          "status": "run"
+        },
+        {
+          "name": "mode_cache",
+          "seconds": 0.43711,
+          "status": "run"
+        },
+        {
+          "name": "observer_dependencies",
+          "seconds": 0.410671,
+          "status": "run"
+        },
+        {
+          "name": "pre_kernel",
+          "seconds": 0.390296,
+          "status": "run"
+        },
+        {
+          "name": "pevt_protocol",
+          "seconds": 0.563805,
+          "status": "run"
+        },
+        {
+          "name": "software_domain",
+          "seconds": 2.28243,
+          "status": "run"
+        },
+        {
+          "name": "transaction_budget",
+          "seconds": 3.6083,
+          "status": "run"
+        },
+        {
+          "name": "a011_boundary",
+          "seconds": 0.221139,
+          "status": "run"
+        },
+        {
+          "name": "a011_closure",
+          "seconds": 0.186667,
+          "status": "run"
+        },
+        {
+          "name": "event_retry_merge",
+          "seconds": 0.392403,
+          "status": "run"
+        },
+        {
+          "name": "a021_control_d",
+          "seconds": 0.037133,
+          "status": "run"
+        },
+        {
+          "name": "a021_control_dot",
+          "seconds": 0.038588,
+          "status": "run"
+        },
+        {
+          "name": "general_strategies",
+          "seconds": 0.303159,
+          "status": "run"
+        },
+        {
+          "name": "a021_sampling",
+          "seconds": 0.036465,
+          "status": "run"
+        },
+        {
+          "name": "trajectory",
+          "seconds": 0.187073,
+          "status": "run"
+        },
+        {
+          "name": "strategy_transaction",
+          "seconds": 0.425239,
+          "status": "run"
+        },
+        {
+          "name": "phi_affine",
+          "seconds": 0.24058,
+          "status": "run"
+        },
+        {
+          "name": "group_latest",
+          "seconds": 0.367807,
+          "status": "run"
+        },
+        {
+          "name": "stage_a_exact_time",
+          "seconds": 0.257991,
+          "status": "run"
+        },
+        {
+          "name": "stage_a_batch",
+          "seconds": 0.306803,
+          "status": "run"
+        },
+        {
+          "name": "stage_b_shared_flow",
+          "seconds": 0.30928,
+          "status": "run"
+        },
+        {
+          "name": "stage_b_cow_transaction",
+          "seconds": 0.139603,
+          "status": "run"
+        },
+        {
+          "name": "cow_value",
+          "seconds": 0.055583,
+          "status": "run"
+        },
+        {
+          "name": "stage_c_event_kernel",
+          "seconds": 0.408048,
+          "status": "run"
+        },
+        {
+          "name": "stage_d_runtime",
+          "seconds": 0.051957,
+          "status": "run"
+        },
+        {
+          "name": "stage_d_integration",
+          "seconds": 0.373326,
+          "status": "run"
+        }
+      ]
+    },
+    "Linux": {
+      "total": 35,
+      "failed": 0,
+      "skipped": 0,
+      "disabled": 0,
+      "passed": 35,
+      "wall_seconds_log": 4.44,
+      "junit": {
+        "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest-final.xml",
+        "bytes": 9538,
+        "sha256": "e92bff3b79db81260a82e655fae654281891e75e1a181900c53d3002c1fb5243"
+      },
+      "cases": [
+        {
+          "name": "trajectory_output",
+          "seconds": 0.598811,
+          "status": "run"
+        },
+        {
+          "name": "platform_probe",
+          "seconds": 0.0838867,
+          "status": "run"
+        },
+        {
+          "name": "parser",
+          "seconds": 0.0098165,
+          "status": "run"
+        },
+        {
+          "name": "compiler_diagnostics",
+          "seconds": 0.00673359,
+          "status": "run"
+        },
+        {
+          "name": "time_origin",
+          "seconds": 0.00300735,
+          "status": "run"
+        },
+        {
+          "name": "electrical_references",
+          "seconds": 0.0145266,
+          "status": "run"
+        },
+        {
+          "name": "C_ABI_compatibility",
+          "seconds": 0.00729832,
+          "status": "run"
+        },
+        {
+          "name": "NPZ_compatibility",
+          "seconds": 0.0102202,
+          "status": "run"
+        },
+        {
+          "name": "engineering_events",
+          "seconds": 0.0202353,
+          "status": "run"
+        },
+        {
+          "name": "engineering_additional",
+          "seconds": 0.0232046,
+          "status": "run"
+        },
+        {
+          "name": "mode_cache",
+          "seconds": 0.0165571,
+          "status": "run"
+        },
+        {
+          "name": "observer_dependencies",
+          "seconds": 0.0162676,
+          "status": "run"
+        },
+        {
+          "name": "pre_kernel",
+          "seconds": 0.0093448,
+          "status": "run"
+        },
+        {
+          "name": "pevt_protocol",
+          "seconds": 0.0591702,
+          "status": "run"
+        },
+        {
+          "name": "software_domain",
+          "seconds": 0.595753,
+          "status": "run"
+        },
+        {
+          "name": "transaction_budget",
+          "seconds": 2.79841,
+          "status": "run"
+        },
+        {
+          "name": "a011_boundary",
+          "seconds": 0.00542084,
+          "status": "run"
+        },
+        {
+          "name": "a011_closure",
+          "seconds": 0.0112934,
+          "status": "run"
+        },
+        {
+          "name": "event_retry_merge",
+          "seconds": 0.0077553,
+          "status": "run"
+        },
+        {
+          "name": "a021_control_d",
+          "seconds": 0.00167146,
+          "status": "run"
+        },
+        {
+          "name": "a021_control_dot",
+          "seconds": 0.00152018,
+          "status": "run"
+        },
+        {
+          "name": "general_strategies",
+          "seconds": 0.0157477,
+          "status": "run"
+        },
+        {
+          "name": "a021_sampling",
+          "seconds": 0.00209881,
+          "status": "run"
+        },
+        {
+          "name": "trajectory",
+          "seconds": 0.0061658,
+          "status": "run"
+        },
+        {
+          "name": "strategy_transaction",
+          "seconds": 0.00972075,
+          "status": "run"
+        },
+        {
+          "name": "phi_affine",
+          "seconds": 0.00497171,
+          "status": "run"
+        },
+        {
+          "name": "group_latest",
+          "seconds": 0.00691012,
+          "status": "run"
+        },
+        {
+          "name": "stage_a_exact_time",
+          "seconds": 0.0455286,
+          "status": "run"
+        },
+        {
+          "name": "stage_a_batch",
+          "seconds": 0.00655346,
+          "status": "run"
+        },
+        {
+          "name": "stage_b_shared_flow",
+          "seconds": 0.0057369,
+          "status": "run"
+        },
+        {
+          "name": "stage_b_cow_transaction",
+          "seconds": 0.00267228,
+          "status": "run"
+        },
+        {
+          "name": "cow_value",
+          "seconds": 0.00228662,
+          "status": "run"
+        },
+        {
+          "name": "stage_c_event_kernel",
+          "seconds": 0.0100441,
+          "status": "run"
+        },
+        {
+          "name": "stage_d_runtime",
+          "seconds": 0.00245513,
+          "status": "run"
+        },
+        {
+          "name": "stage_d_integration",
+          "seconds": 0.00596596,
+          "status": "run"
+        }
+      ]
+    }
+  },
+  "performance": {
+    "baseline_commit": "fa2bc5ee4aab588ee91fb5b0513c692493799f7e",
+    "repetitions": 1,
+    "baseline_reused": true,
+    "baseline_measurement": {
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/resource.txt",
+        "/root/pulse-stage-c-20261103/build-linux/pulse-solver",
+        "/root/stage-a-regression-20261103/model/netlist.md",
+        "--t-end",
+        "0.5",
+        "--output-format",
+        "trajectory",
+        "--out",
+        "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c"
+      ],
+      "started_utc": "2026-11-03T14:43:08.976039+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "completion_wall_seconds": 57.71677421199999,
+      "exit_wall_seconds": 57.76855031299999,
+      "cpu_user_seconds": 56.62,
+      "cpu_system_seconds": 1.55,
+      "peak_rss_kib": 1162484,
+      "cpu_seconds": 58.169999999999995
+    },
+    "baseline_archive": {
+      "path": "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/out.pevt",
+      "bytes": 162836778,
+      "sha256": "4430815d2bf95a1d9a6f86535b5de1371d0c54fd86d34ed086c810c959dc22cf"
+    },
+    "binary": {
+      "path": "/root/pulse-stage-d-20261104/build-linux/pulse-solver",
+      "bytes": 3175296,
+      "sha256": "8335ca4ab1c075ef6946dd81b7bedffbdf1b012dd36c2106479fae931a2a5f44"
+    },
+    "netlist": {
+      "path": "/root/stage-a-regression-20261103/model/netlist.md",
+      "bytes": 3627,
+      "sha256": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a"
+    },
+    "timing": "command start through archive write and COMPLETED; replay excluded",
+    "rollback": {
+      "baseline": {
+        "path": "/root/stage-c-regression-20261103/rollback-final/stage-c.json",
+        "bytes": 34920,
+        "sha256": "1dbc3455eada9bd83874e8f83377f94447e57bb815e33faef24e08c8e63aee0a"
+      },
+      "candidate": {
+        "path": "/root/stage-d-regression-20261104/benchmark/rollback/snapshot.json",
+        "bytes": 34920,
+        "sha256": "1dbc3455eada9bd83874e8f83377f94447e57bb815e33faef24e08c8e63aee0a"
+      },
+      "command": [
+        "c++",
+        "-std=c++20",
+        "-O3",
+        "-DNDEBUG",
+        "-ffp-contract=off",
+        "-fno-fast-math",
+        "-DEIGEN_MPL2_ONLY",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-I/root/pulse-stage-d-20261104/include",
+        "-isystem",
+        "/root/pulse-stage-d-20261104/third_party",
+        "-isystem",
+        "/root/pulse-stage-d-20261104/third_party/eigen-3.4.0",
+        "/root/pulse-stage-d-20261104/tests/rollback_snapshot_probe.cpp",
+        "/root/pulse-stage-d-20261104/build-linux/libpulse_core.a",
+        "-lcrypto",
+        "-ldl",
+        "-o",
+        "/root/stage-d-regression-20261104/benchmark/rollback/probe"
+      ],
+      "all_equal": true,
+      "points": {
+        "after_mode": true,
+        "after_propagation": true,
+        "after_queue": true,
+        "after_reg": true,
+        "before_output": true,
+        "retry_after_closure": true
+      }
+    },
+    "measurement": {
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/resource.txt",
+        "/root/pulse-stage-d-20261104/build-linux/pulse-solver",
+        "/root/stage-a-regression-20261103/model/netlist.md",
+        "--t-end",
+        "0.5",
+        "--output-format",
+        "trajectory",
+        "--out",
+        "/root/stage-d-regression-20261104/benchmark/500ms-stage-d"
+      ],
+      "started_utc": "2026-11-03T17:34:15.901873+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "completion_wall_seconds": 47.61784720200001,
+      "exit_wall_seconds": 47.67799920099998,
+      "cpu_user_seconds": 46.92,
+      "cpu_system_seconds": 1.4,
+      "peak_rss_kib": 1162056,
+      "cpu_seconds": 48.32
+    },
+    "comparison_command": [
+      "/usr/bin/python3",
+      "/root/pulse-stage-d-20261104/scripts/stage_c_verify.py",
+      "--baseline",
+      "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/out.pevt",
+      "--candidate",
+      "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/out.pevt",
+      "--baseline-report",
+      "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/simulation_report.json",
+      "--candidate-report",
+      "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/simulation_report.json",
+      "--out",
+      "/root/stage-d-regression-20261104/benchmark/strict-comparison.json"
+    ],
+    "comparison": {
+      "baseline_pevt": "/root/stage-c-regression-20261103/benchmark-final/500ms-stage-c/out.pevt",
+      "candidate_pevt": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/out.pevt",
+      "baseline_sections": {
+        "1": {
+          "records": 1,
+          "payload_sha256": "dfebe2f1fe937b6c9d8bbbcb935e8634af5718070fa3b1a5aecc1d9b29cc2f15",
+          "size": 41143
+        },
+        "2": {
+          "records": 229,
+          "payload_sha256": "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f",
+          "size": 75588
+        },
+        "3": {
+          "records": 1,
+          "payload_sha256": "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1",
+          "size": 76234
+        },
+        "4": {
+          "records": 89243,
+          "payload_sha256": "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98",
+          "size": 5354580
+        },
+        "5": {
+          "records": 92893,
+          "payload_sha256": "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992",
+          "size": 1114716
+        },
+        "6": {
+          "records": 159038,
+          "payload_sha256": "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07",
+          "size": 7633824
+        },
+        "7": {
+          "records": 159039,
+          "payload_sha256": "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8",
+          "size": 29248440
+        },
+        "8": {
+          "records": 196639,
+          "payload_sha256": "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5",
+          "size": 10225228
+        },
+        "9": {
+          "records": 1,
+          "payload_sha256": "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965",
+          "size": 61
+        },
+        "10": {
+          "records": 159036,
+          "payload_sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314",
+          "size": 109066308
+        }
+      },
+      "candidate_sections": {
+        "1": {
+          "records": 1,
+          "payload_sha256": "63d6ee7e04be61d308f0e360d543768b1cb419a46b41b7eea97a2d979f68887b",
+          "size": 41199
+        },
+        "2": {
+          "records": 229,
+          "payload_sha256": "cb8515c360001a858d315ec30f3814e08de54ad28bb976964f8d80b16180e78f",
+          "size": 75588
+        },
+        "3": {
+          "records": 1,
+          "payload_sha256": "a7ad77fcf94949e80c0f264abc6e725fd163f502452d4ae54146fa2a076809c1",
+          "size": 76234
+        },
+        "4": {
+          "records": 89243,
+          "payload_sha256": "0e2e821ff24bba3ff47700061876ba952b2ab499955e89c43587336516d0de98",
+          "size": 5354580
+        },
+        "5": {
+          "records": 92893,
+          "payload_sha256": "62427021cf5e48cc0c04405dffe96bd623bb9dd8ec7403358420ccae6d7ce992",
+          "size": 1114716
+        },
+        "6": {
+          "records": 159038,
+          "payload_sha256": "d711323d2ffd1d4931bf1cd34df38c68b5a27a00683b92221894dfa0798d1a07",
+          "size": 7633824
+        },
+        "7": {
+          "records": 159039,
+          "payload_sha256": "783a166d839422e4bcb9a6690ed531e3f65c400218a6c360143902ce9def48c8",
+          "size": 29248440
+        },
+        "8": {
+          "records": 196639,
+          "payload_sha256": "13db46da352c2e448c61976567f4d8372f613b91aa931a03efc56e0de51aa0b5",
+          "size": 10225228
+        },
+        "9": {
+          "records": 1,
+          "payload_sha256": "cf6c771d32859bc544c79bdabdec46405a44c6d06feceefbe16646b10c351965",
+          "size": 61
+        },
+        "10": {
+          "records": 159036,
+          "payload_sha256": "13702d0abdbe6917066409283f08105e304afcc07d71c7aedf3b99d03c936314",
+          "size": 109066308
+        }
+      },
+      "simulation_sections_identical": true,
+      "different_simulation_sections": [],
+      "metadata_section_1_identical": false,
+      "report_disagreements": [],
+      "report_required_fields": [
+        "transactions",
+        "root_queries",
+        "root_failures",
+        "mode_compilations",
+        "microsteps",
+        "matrix_exponentials",
+        "event_records_total",
+        "analog_channels",
+        "digital_channels",
+        "simulated_seconds",
+        "effective_SAVE_DT",
+        "effective_T_END",
+        "T_atom",
+        "software_final_outputs",
+        "software_states",
+        "original_equation_cache"
+      ],
+      "status": "PASS_SCOPED_COMPARISON"
+    },
+    "report": {
+      "Q_repr": 5.421010862427522e-20,
+      "T_atom": 1e-14,
+      "algorithm": "EVENT_CHECKPOINT_STRATEGY_RETRY",
+      "algorithm_portfolio": {
+        "checkpoint_policy": "Same immutable post-event RunState for every attempt; canonical difference state retained. MCU writes, invocation counters and queued events are staged in each candidate and only committed once; failed event closure also restores the checkpoint.",
+        "checkpoint_restores": 0,
+        "exhaustion_policy": "Stop at last committed event; no SPICE fallback, no 1 ns rounding, no tolerance relaxation.",
+        "failures": [],
+        "journal_records": 0,
+        "methods": [
+          {
+            "algorithm": 0,
+            "attempts": 159037,
+            "committed": 159037,
+            "executed_paths": {
+              "ALGEBRAIC_LU": 157851,
+              "ALGEBRAIC_WIDE_LU": 1186
+            },
+            "failed": 0,
+            "name": "RAW_QPHI_ELIMINATION_LU"
+          },
+          {
+            "algorithm": 1,
+            "attempts": 0,
+            "committed": 0,
+            "executed_paths": {},
+            "failed": 0,
+            "name": "RAW_QPHI_ELIMINATION_QR"
+          },
+          {
+            "algorithm": 2,
+            "attempts": 0,
+            "committed": 0,
+            "executed_paths": {},
+            "failed": 0,
+            "name": "PERSISTENT_DIFFERENCE_LU"
+          }
+        ],
+        "scope": "Three registered candidates only; raw equation elimination operators evaluated in canonical checkpoint coordinates, not an exact replay of the historical raw-state solver.",
+        "validation": "Inherited entry/endpoint checks plus original unstatically-eliminated algebraic equations and physical q/phi derivatives at start, midpoint, endpoint; engineering sampled checks, not a continuous-time certificate."
+      },
+      "analog_channels": [
+        "CH001",
+        "CH002",
+        "CH003",
+        "CH004",
+        "CH005",
+        "CH006",
+        "CH007",
+        "CTRL_IL",
+        "CTRL_VAC",
+        "CTRL_VOUT",
+        "MODULATION",
+        "PI_OUT",
+        "PR_OUT"
+      ],
+      "atomic_time_policy": "FIXED_INDEPENDENT_OF_OUTPUT_GRID",
+      "breakpoint_policy": "FIRST_PLUS_ATOM; execute at latest member; verify each knot at its own prediction",
+      "certificate_scope": "engineering numerical point trajectory; no all-history or global mathematical certificate",
+      "committed_prefix_end": "T128:0:8000000000000000:0000000000000000",
+      "compile_seconds": 0.006709391,
+      "dependency_roles": {
+        "AH": [
+          "continuous_equation",
+          "electrical_excitation",
+          "topology"
+        ],
+        "AL": [
+          "continuous_equation",
+          "electrical_excitation",
+          "topology"
+        ],
+        "BH": [
+          "continuous_equation",
+          "electrical_excitation",
+          "topology"
+        ],
+        "BL": [
+          "continuous_equation",
+          "electrical_excitation",
+          "topology"
+        ],
+        "CH001": [
+          "continuous_equation"
+        ],
+        "CH001_RAW": [
+          "continuous_equation"
+        ],
+        "CH002": [
+          "continuous_equation"
+        ],
+        "CH003": [
+          "continuous_equation"
+        ],
+        "CH004": [
+          "continuous_equation"
+        ],
+        "CH005": [
+          "continuous_equation"
+        ],
+        "CH006": [
+          "continuous_equation"
+        ],
+        "CH007": [
+          "continuous_equation"
+        ],
+        "CTRL_IL": [
+          "continuous_equation",
+          "software_input"
+        ],
+        "CTRL_VAC": [
+          "continuous_equation",
+          "software_input"
+        ],
+        "CTRL_VOUT": [
+          "continuous_equation",
+          "software_input"
+        ],
+        "D001_COS": [
+          "continuous_equation",
+          "dynamics"
+        ],
+        "D001_DC": [
+          "continuous_equation",
+          "dynamics"
+        ],
+        "D001_DS": [
+          "continuous_equation",
+          "dynamics"
+        ],
+        "D001_SIN": [
+          "continuous_equation",
+          "dynamics",
+          "electrical_excitation"
+        ],
+        "D001_WAVE": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D085_BODY_CORRECTED": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D085_BODY_I": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D085_BODY_RAW": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D085_VDS": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D091_BODY_CORRECTED": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D091_BODY_I": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D091_BODY_RAW": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D091_VDS": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D105_BODY_CORRECTED": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D105_BODY_I": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D105_BODY_RAW": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D105_VDS": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D111_BODY_CORRECTED": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D111_BODY_I": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D111_BODY_RAW": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "D111_VDS": [
+          "continuous_equation",
+          "electrical_excitation"
+        ],
+        "MODULATION": [
+          "observation_only"
+        ],
+        "PI_OUT": [
+          "observation_only"
+        ],
+        "PR_OUT": [
+          "observation_only"
+        ],
+        "SAMPLE_CLOCK": [
+          "event_control",
+          "state_update"
+        ]
+      },
+      "diagnostic": {},
+      "digital_channels": [
+        "AH",
+        "AL",
+        "BH",
+        "BL"
+      ],
+      "effective_SAVE_DT": 1e-07,
+      "effective_T_END": 0.5,
+      "event_records_total": 315096,
+      "event_timing_policy": "First+T_atom fixed window, execute at latest member, validate every PWA at own prediction; no absolute time-error veto; exact software deadlines unchanged",
+      "evidence": "ENGINEERING_POINT_TRAJECTORY",
+      "flow_statistics": {
+        "basis_hits": 483014,
+        "basis_misses": 10,
+        "constructions": 478908,
+        "continuations": 234237,
+        "reprojected_continuations": 0,
+        "shared_continuations": 234237
+      },
+      "history_retained": false,
+      "internal_state": [
+        0.49940080628434025,
+        0.9999999999999953,
+        9.892124249453235e-15,
+        1.6480226602840814e-10,
+        1.0
+      ],
+      "matrix_exponentials": 159036,
+      "max_algebraic_residual": 0.0,
+      "max_transactions": 0,
+      "microsteps": 159036,
+      "mode_cache_capacity": 128,
+      "mode_cache_evictions": 0,
+      "mode_cache_hits": 377391,
+      "mode_cache_misses": 26,
+      "mode_cache_peak_entries": 26,
+      "mode_cache_policy": "RUN_SCOPED_ELECTRICAL_KEY_WITH_CERTIFIED_OBSERVER_BINDINGS_FIFO",
+      "mode_compilations": 26,
+      "model_contract": "piecewise-affine modes; explicit transition dynamics where needed; nonzero crossing derivatives; unsupported degeneracy stops safely",
+      "model_version": {
+        "canonical": "P ROFF=1000000000\nC C_D003 REF1_N004 REF1_N005 C=0.001 IC_V=500 =\nEVENT EVENT_PRE_TIMER_SAMPLE_CLOCK SAMPLE_CLOCK MODE=PERIODIC PERIOD=1.6666666666666667e-05 START=0 =\nEVENT EVENT_PRE_WAKE_CONTROL PRE_WAKE_CONTROL AT=0 MODE=AT =\nINT INT_D001_C D001_COS D001_DC IC=1 =\nINT INT_D001_S D001_SIN D001_DS IC=0 =\nI I_D085_BODY REF1_N007 REF1_N006 D085_BODY_I =\nI I_D091_BODY REF1_N006 REF1_N008 D091_BODY_I =\nI I_D105_BODY REF1_N009 0 D105_BODY_I =\nI I_D111_BODY 0 REF1_N010 D111_BODY_I =\nL L_D002 REF1_N002 REF1_N003 IC_I=0 L=0.00033 =\nMATH MATH_CH001_SIGN CH001 =-CH001_RAW\nMATH MATH_D001_DC D001_DC =-314.15926535897933*D001_SIN\nMATH MATH_D001_DS D001_DS =314.15926535897933*D001_COS\nMATH MATH_D001_WAVE D001_WAVE =311.12698372208092*D001_SIN\nMATH MATH_D085_BODY_CORRECTION D085_BODY_CORRECTED =D085_BODY_RAW - 1e-9*D085_VDS\nMATH MATH_D091_BODY_CORRECTION D091_BODY_CORRECTED =D091_BODY_RAW - 1e-9*D091_VDS\nMATH MATH_D105_BODY_CORRECTION D105_BODY_CORRECTED =D105_BODY_RAW - 1e-9*D105_VDS\nMATH MATH_D111_BODY_CORRECTION D111_BODY_CORRECTED =D111_BODY_RAW - 1e-9*D111_VDS\nREG REG_PRE_SOFTWARE_CONTROL_0 BOOL::AH BOOL::AH SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_1 BOOL::AL BOOL::AL SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_2 BOOL::BH BOOL::BH SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_3 BOOL::BL BOOL::BL SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_4 REAL::PI_OUT REAL::PI_OUT SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_5 REAL::PR_OUT REAL::PR_OUT SAMPLE_CLOCK IC=0 =\nREG REG_PRE_SOFTWARE_CONTROL_6 REAL::MODULATION REAL::MODULATION SAMPLE_CLOCK IC=0 =\nR R_D004 REF1_N004 REF1_N005 R=75.757575757575751 =\nR R_D006 REF1_N003 REF1_N006 R=0.0050000000000000001 =\nR R_D085_BODY_PROXY D085_BODY_PROXY 0 IV_TABLE=[(-1000000,-125000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D091_BODY_PROXY D091_BODY_PROXY 0 IV_TABLE=[(-1000000,-125000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D105_BODY_PROXY D105_BODY_PROXY 0 IV_TABLE=[(-1000000,-250000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nR R_D111_BODY_PROXY D111_BODY_PROXY 0 IV_TABLE=[(-1000000,-250000000),(0,0),(1000000,.001)] RANGE=EXTEND =\nSEL SEL_D085_BODY D085_BODY_I AH D085_BODY_CORRECTED 0 =\nSEL SEL_D091_BODY D091_BODY_I AL D091_BODY_CORRECTED 0 =\nSEL SEL_D105_BODY D105_BODY_I BH D105_BODY_CORRECTED 0 =\nSEL SEL_D111_BODY D111_BODY_I BL D111_BODY_CORRECTED 0 =\nSENSOR SENSOR_CH001 CH001_RAW I V_D001 =\nSENSOR SENSOR_CH002 CH002 V REF1_N000 0 =\nSENSOR SENSOR_CH003 CH003 I R_D004 =\nSENSOR SENSOR_CH004 CH004 V REF1_N004 REF1_N005 =\nSENSOR SENSOR_CH005 CH005 I V_D103 =\nSENSOR SENSOR_CH006 CH006 V REF1_N006 REF1_N008 =\nSENSOR SENSOR_CH007 CH007 I V_D083 =\nSENSOR SENSOR_CTRL_IL CTRL_IL I V_D008 =\nSENSOR SENSOR_CTRL_VAC CTRL_VAC V REF1_N000 0 =\nSENSOR SENSOR_CTRL_VOUT CTRL_VOUT V REF1_N004 REF1_N005 =\nSENSOR SENSOR_D085_BODY D085_BODY_RAW I R_D085_BODY_PROXY =\nSENSOR SENSOR_D085_VDS D085_VDS V REF1_N007 REF1_N006 =\nSENSOR SENSOR_D091_BODY D091_BODY_RAW I R_D091_BODY_PROXY =\nSENSOR SENSOR_D091_VDS D091_VDS V REF1_N006 REF1_N008 =\nSENSOR SENSOR_D105_BODY D105_BODY_RAW I R_D105_BODY_PROXY =\nSENSOR SENSOR_D105_VDS D105_VDS V REF1_N009 0 =\nSENSOR SENSOR_D111_BODY D111_BODY_RAW I R_D111_BODY_PROXY =\nSENSOR SENSOR_D111_VDS D111_VDS V 0 REF1_N010 =\nSW SW_D085 REF1_N007 REF1_N006 AH ROFF=1G RON=0.0080000000000000002 =\nSW SW_D091 REF1_N006 REF1_N008 AL ROFF=1G RON=0.0080000000000000002 =\nSW SW_D105 REF1_N009 0 BH ROFF=1G RON=0.0040000000000000001 =\nSW SW_D111 0 REF1_N010 BL ROFF=1G RON=0.0040000000000000001 =\nV V_D001 REF1_N000 0 D001_WAVE =\nV V_D008 REF1_N000 REF1_N002 DC=0 =\nV V_D082 REF1_N004 REF1_N007 DC=0 =\nV V_D083 REF1_N008 REF1_N005 DC=0 =\nV V_D085_BODY_PROXY D085_BODY_PROXY 0 D085_VDS =\nV V_D091_BODY_PROXY D091_BODY_PROXY 0 D091_VDS =\nV V_D102 REF1_N004 REF1_N009 DC=0 =\nV V_D103 REF1_N010 REF1_N005 DC=0 =\nV V_D105_BODY_PROXY D105_BODY_PROXY 0 D105_VDS =\nV V_D111_BODY_PROXY D111_BODY_PROXY 0 D111_VDS =\nT 0.001\nD 9.9999999999999995e-08\nSAVE CH001 CH002 CH003 CH004 CH005 CH006 CH007 AH AL BH BL CTRL_VOUT CTRL_IL CTRL_VAC PI_OUT PR_OUT MODULATION\nMCU_DECL MCU MCU0 PROGRAM=CTRL\nMCU_DECL TIMER SAMPLE_CLOCK MCU=MCU0 PERIOD=0.000016666666666666667 START=0\nMCU_DECL TASK CONTROL MCU=MCU0 TRIGGER=SAMPLE_CLOCK ENTRY=control_step INPUTS=[CTRL_VOUT,CTRL_IL,CTRL_VAC] OUTPUTS=[BOOL::AH,BOOL::AL,BOOL::BH,BOOL::BL,REAL::PI_OUT,REAL::PR_OUT,REAL::MODULATION] INIT_OUTPUTS=[0,0,0,0,0,0,0] PARAMS=[]\nCODE_DECL PROGRAM CTRL SOURCES=[\"controller.c\"]\n",
+        "deadline_inputs": {
+          "EVENT_PRE_TIMER_SAMPLE_CLOCK": {
+            "PERIOD": "1.6666666666666667e-05",
+            "START": "0"
+          },
+          "EVENT_PRE_WAKE_CONTROL": {
+            "AT": "0"
+          }
+        },
+        "encoding": "canonical pulse-netlist-1.1",
+        "parameter_inputs": {
+          "ROFF": "1G"
+        }
+      },
+      "netlist_format": "1.2pre",
+      "original_equation_cache": {
+        "cache_hits": 477092,
+        "certified_builds": 19,
+        "checks": 477111,
+        "equation_builds": 19,
+        "rebound_hits": 477092
+      },
+      "output_format": "trajectory",
+      "parse_and_compile_seconds": 0.007156391,
+      "parse_seconds": 0.000274658,
+      "performance_phases": {
+        "enabled": false
+      },
+      "persistent_chart": {
+        "T": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "cross_event_policy": "Same fixed chart: RunState vector copied directly; no physical-view roundtrip.",
+        "difference_slot": -1,
+        "enabled": false,
+        "initial_encodes": 1,
+        "internal_coordinate_ids": [
+          "affine[0:C_D003/q:0x1p+0;]+0",
+          "affine[1:INT_D001_C/eta:0x1p+0;]+0",
+          "affine[2:INT_D001_S/eta:0x1p+0;]+0",
+          "affine[3:L_D002/phi:0x1p+0;]+0"
+        ],
+        "physical_state_ids": [
+          "C_D003/q",
+          "INT_D001_C/eta",
+          "INT_D001_S/eta",
+          "L_D002/phi"
+        ],
+        "physical_view_L": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "physical_views_for_diagnostics": 539426,
+        "reason": "No independent multi-storage incidence row; identity.",
+        "scope": "Linear scalar storage; graph-derived fixed KCL difference, not arbitrary chart selection."
+      },
+      "physical_state_ids": [
+        "C_D003/q",
+        "INT_D001_C/eta",
+        "INT_D001_S/eta",
+        "L_D002/phi"
+      ],
+      "physical_state_view": [
+        0.49940080628434025,
+        0.9999999999999953,
+        9.892124249453235e-15,
+        1.6480226602840814e-10,
+        1.0
+      ],
+      "projection_count": 0,
+      "queue_peak": 13,
+      "registry": [
+        "AH",
+        "AL",
+        "BH",
+        "BL",
+        "CH001",
+        "CH001_RAW",
+        "CH002",
+        "CH003",
+        "CH004",
+        "CH005",
+        "CH006",
+        "CH007",
+        "CTRL_IL",
+        "CTRL_VAC",
+        "CTRL_VOUT",
+        "D001_COS",
+        "D001_DC",
+        "D001_DS",
+        "D001_SIN",
+        "D001_WAVE",
+        "D085_BODY_CORRECTED",
+        "D085_BODY_I",
+        "D085_BODY_RAW",
+        "D085_VDS",
+        "D091_BODY_CORRECTED",
+        "D091_BODY_I",
+        "D091_BODY_RAW",
+        "D091_VDS",
+        "D105_BODY_CORRECTED",
+        "D105_BODY_I",
+        "D105_BODY_RAW",
+        "D105_VDS",
+        "D111_BODY_CORRECTED",
+        "D111_BODY_I",
+        "D111_BODY_RAW",
+        "D111_VDS",
+        "I(C_D003)",
+        "I(I_D085_BODY)",
+        "I(I_D091_BODY)",
+        "I(I_D105_BODY)",
+        "I(I_D111_BODY)",
+        "I(L_D002)",
+        "I(R_D004)",
+        "I(R_D006)",
+        "I(R_D085_BODY_PROXY)",
+        "I(R_D091_BODY_PROXY)",
+        "I(R_D105_BODY_PROXY)",
+        "I(R_D111_BODY_PROXY)",
+        "I(SW_D085)",
+        "I(SW_D091)",
+        "I(SW_D105)",
+        "I(SW_D111)",
+        "I(V_D001)",
+        "I(V_D008)",
+        "I(V_D082)",
+        "I(V_D083)",
+        "I(V_D085_BODY_PROXY)",
+        "I(V_D091_BODY_PROXY)",
+        "I(V_D102)",
+        "I(V_D103)",
+        "I(V_D105_BODY_PROXY)",
+        "I(V_D111_BODY_PROXY)",
+        "MODULATION",
+        "PI_OUT",
+        "PR_OUT",
+        "V(D085_BODY_PROXY)",
+        "V(D091_BODY_PROXY)",
+        "V(D105_BODY_PROXY)",
+        "V(D111_BODY_PROXY)",
+        "V(REF1_N000)",
+        "V(REF1_N002)",
+        "V(REF1_N003)",
+        "V(REF1_N004)",
+        "V(REF1_N005)",
+        "V(REF1_N006)",
+        "V(REF1_N007)",
+        "V(REF1_N008)",
+        "V(REF1_N009)",
+        "V(REF1_N010)"
+      ],
+      "rollbacks": 0,
+      "root_failures": 0,
+      "root_queries": 159036,
+      "run_seconds": 42.880180669,
+      "simulated_seconds": 0.5,
+      "software_final_outputs": {
+        "AH": 0.0,
+        "AL": 0.0,
+        "BH": 1.0,
+        "BL": 0.0,
+        "MODULATION": 0.9900450805564083,
+        "PI_OUT": 14.775995091507795,
+        "PR_OUT": 0.8572446838186716
+      },
+      "software_modules": [
+        {
+          "binary_sha256": "987d6302c03b844e003769ab631b6abdaba555646f427260dc10e24fa9849771",
+          "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+          "dependencies": [
+            {
+              "path": "/root/pulse-stage-a-20261103/include/pulse/software.h",
+              "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+            },
+            {
+              "path": "/root/stage-a-regression-20261103/model/controller.c",
+              "sha256": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53"
+            },
+            {
+              "path": "/root/stage-a-regression-20261103/model/transition.h",
+              "sha256": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472"
+            }
+          ],
+          "program": "CTRL",
+          "sources": [
+            "controller.c"
+          ]
+        }
+      ],
+      "software_states": {
+        "CONTROL": {
+          "invocations": 156060,
+          "state_bytes": 272
+        }
+      },
+      "source_sha256": "459855195e09b82a5195392e55a9351a85ec5879baffab2e5ec843ab6fd74842",
+      "spice_policy": "NOT_IMPLEMENTED: event propagation only",
+      "stage_d_rebound_cache": {
+        "hits": 225216,
+        "misses": 152175
+      },
+      "state_storage": "internal coordinates are authoritative; public physical q/phi/INT snapshots are read-only views",
+      "status": "COMPLETED",
+      "strategy_consistency": {
+        "committed_strategy": 0,
+        "enforced": true,
+        "policy": "One explicit numerical strategy for prediction, propagation, all closure microsteps and commit; failed attempts roll back and recompute all candidates from the immutable checkpoint."
+      },
+      "time_backend": "T128: signed seconds plus 128 fractional bits",
+      "transaction_limit": 0,
+      "transaction_limit_policy": "UNLIMITED_TOTAL; BOUNDED_SAME_TIME_CLOSURE",
+      "transactions": 159037,
+      "version": "1.2.0-pre",
+      "waveform_validation": "DEFERRED_TO_REPLAY"
+    },
+    "candidate_archive": {
+      "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/out.pevt",
+      "bytes": 162836834,
+      "sha256": "3d94981aea68ca2501ab6b1b4430ccb1b39b333febe280706dda0f5b1932c7ef"
+    },
+    "wall_reduction_percent": 17.497386414745787,
+    "speedup": 1.2120828135543225
+  },
+  "linux_environment": {
+    "commands": [
+      {
+        "command": [
+          "uname",
+          "-a"
+        ],
+        "returncode": 0,
+        "stdout": "Linux tuzki-lenovo 6.18.54.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "lscpu"
+        ],
+        "returncode": 0,
+        "stdout": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  12\nOn-line CPU(s) list:                     0-11\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 5 6600H with Radeon Graphics\nCPU family:                              25\nModel:                                   68\nThread(s) per core:                      2\nCore(s) per socket:                      6\nSocket(s):                               1\nStepping:                                1\nBogoMIPS:                                6587.46\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat umip vaes vpclmulqdq rdpid fsrm\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               192 KiB (6 instances)\nL1i cache:                               192 KiB (6 instances)\nL2 cache:                                3 MiB (6 instances)\nL3 cache:                                16 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-11\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Vulnerable: No microcode\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "gcc",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "cmake version 3.28.3\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "ninja",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "1.11.1\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "python3",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "Python 3.12.3\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "ldd",
+          "/root/pulse-stage-d-20261104/build-linux/pulse-solver"
+        ],
+        "returncode": 0,
+        "stdout": "\tlinux-vdso.so.1 (0x00007c9164d06000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007c9164400000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007c9164000000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007c9164917000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007c9164cca000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007c9163c00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007c9164d08000)\n",
+        "stderr": ""
+      }
+    ],
+    "source_files": {
+      "src/abi.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/abi.cpp",
+        "bytes": 5445,
+        "sha256": "85c5e1cf923c5797ca613d186c1e5f3dec27b5e6491a8502a4cbd53775f9d919"
+      },
+      "src/common.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/common.cpp",
+        "bytes": 6173,
+        "sha256": "8981d3991aea273e0c6b2ee584fa445a6884e2498bb2f4b050e218692ddd6939"
+      },
+      "src/constitutive.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/constitutive.cpp",
+        "bytes": 1866,
+        "sha256": "d8bbffa6aa7347a2ab9ddea7b1abd652ffb0581fa795b40be90392aead09a52a"
+      },
+      "src/descriptor.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/descriptor.cpp",
+        "bytes": 63661,
+        "sha256": "6ae7d46c38832d2b791bffa0dfbd172669a55fb9aa833fecc4be366d2455af39"
+      },
+      "src/engineering_flow.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/engineering_flow.cpp",
+        "bytes": 49209,
+        "sha256": "ef3b1e0eb306348e219a249c146870c4f4bfa0657bc734720b2824925d76cb04"
+      },
+      "src/engineering_mode.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/engineering_mode.cpp",
+        "bytes": 12903,
+        "sha256": "6586affbbb5b3b62fe6adf9124cb3340d00df6c744b9dab09a07f1c9f53c0968"
+      },
+      "src/event_kernel.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/event_kernel.cpp",
+        "bytes": 4732,
+        "sha256": "770dc15530bf4b407e2d25394fd39878ed2130ff6814b74ad3a1188c72d83f2e"
+      },
+      "src/first_root/exclusion.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/first_root/exclusion.cpp",
+        "bytes": 13445,
+        "sha256": "6221dafc8c484d6235aafcbb31f292065aab2b00a77fa14a7b6b044284f1aa48"
+      },
+      "src/first_root/first_root.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/first_root/first_root.cpp",
+        "bytes": 34012,
+        "sha256": "7fab24eec79eee638228a3bf58590ab4eace6ab34cc5b793382499b0f20faa59"
+      },
+      "src/first_root/interval_math.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/first_root/interval_math.cpp",
+        "bytes": 5829,
+        "sha256": "a96cf4eeb1ed5ac7e38f746f824d6449da9f0199847d83ae4538a5948f4108c0"
+      },
+      "src/netlist.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/netlist.cpp",
+        "bytes": 28234,
+        "sha256": "8b2f68b81135da91f25bc498261e0b84631fdb815eb9b1d1b349110d26023a8b"
+      },
+      "src/npz.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/npz.cpp",
+        "bytes": 7521,
+        "sha256": "4aaac1d344f613d6802eedd1c6a81fa4a250abf02ec6a4cee17c342255b23122"
+      },
+      "src/output.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/output.cpp",
+        "bytes": 7590,
+        "sha256": "f683e0c709203c9dddc41e585884085767e344f5e1303432297c7ad314458209"
+      },
+      "src/pevt.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/pevt.cpp",
+        "bytes": 38496,
+        "sha256": "062505d45720951fcc1e4c8857fe933789d53ee6ee1a17e5d7feb8189621764f"
+      },
+      "src/pre_netlist.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/pre_netlist.cpp",
+        "bytes": 13349,
+        "sha256": "adc65eeb91b8d61cb81d73bbf3a9b619ef82c99045bfc0730b22c26e21780433"
+      },
+      "src/propagate.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/propagate.cpp",
+        "bytes": 4910,
+        "sha256": "f0741ffc9b7d9aa60e615d40e85787c4333f5c24346f573ee3f5e42219219999"
+      },
+      "src/runtime.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/runtime.cpp",
+        "bytes": 40543,
+        "sha256": "d14ddedc83fc0ec00837447f8ff950f93c6c193292e6eb7d57601dae4bb2ce09"
+      },
+      "src/semantics.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/semantics.cpp",
+        "bytes": 43583,
+        "sha256": "7f983a2d8b8d099044f3f500f66638a5d576df14b8f252447a9f26d4306e87d6"
+      },
+      "src/software.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/software.cpp",
+        "bytes": 12780,
+        "sha256": "01863e142075dd850e254164ca2872a6fc707eeb3f3685d18a9fe68aa3e563e9"
+      },
+      "src/solver_strategy.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/solver_strategy.cpp",
+        "bytes": 5365,
+        "sha256": "d634f764c3333e9bdeebd135322b653f87e567327f84357fce0adf46f8571b64"
+      },
+      "src/state_coordinates.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/state_coordinates.cpp",
+        "bytes": 10511,
+        "sha256": "847ee1a4b749b7e4841a2c6764e6d1ebf0eaf69c0c9a8b10a32adff2b8732349"
+      },
+      "src/time_origin.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/time_origin.cpp",
+        "bytes": 11277,
+        "sha256": "da8a8dc8cbafe77c0c0be36963ac9104495ca02730ec8c55ee07ae6f70905cfe"
+      },
+      "src/trajectory.cpp": {
+        "path": "/root/pulse-stage-d-20261104/src/trajectory.cpp",
+        "bytes": 11994,
+        "sha256": "cb48d1692db6e15322ecf6a6aa2bae419bdf3e3ed5fd7385f1d73acbc0f12a13"
+      },
+      "include/pulse/constitutive.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/constitutive.hpp",
+        "bytes": 460,
+        "sha256": "f22a373978d7edfa1a8db0b0010981f5d28d652c9d3d51c2b95e0e1e43c1cc94"
+      },
+      "include/pulse/core.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/core.hpp",
+        "bytes": 9197,
+        "sha256": "f465ec8dc075838cd56b7b76747cdfada3949a47a9e1f3ecdee56e83cf1b7776"
+      },
+      "include/pulse/cow_value.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/cow_value.hpp",
+        "bytes": 1336,
+        "sha256": "0a6f9aec7f94920fde505ef6dd9994f79d6b631a61f7185ec2323235067bfa54"
+      },
+      "include/pulse/engineering.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/engineering.hpp",
+        "bytes": 2934,
+        "sha256": "19b810e35c05028c7f20997032694664eaa3b8940463931ab49237f2afcd15e6"
+      },
+      "include/pulse/event_kernel.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/event_kernel.hpp",
+        "bytes": 1800,
+        "sha256": "15ef1a52d5caaca991f477b4a2df21202e81661fa0b29cb82016f5b656a12aaf"
+      },
+      "include/pulse/first_root/dataset.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/first_root/dataset.hpp",
+        "bytes": 422,
+        "sha256": "cc7491f6492381d889c07b356c24c665e1fca01add7b08c873ccec35cf43246b"
+      },
+      "include/pulse/first_root/exclusion.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/first_root/exclusion.hpp",
+        "bytes": 4462,
+        "sha256": "dffae9f26dc9fdaf9c5c19d51e23de88480a65e7ddeb782e032421c642ede89c"
+      },
+      "include/pulse/first_root/first_root.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/first_root/first_root.hpp",
+        "bytes": 2698,
+        "sha256": "8ede7544e6a0edcc998295bdc1c2110c748d303914ce437e7e226af87873d38a"
+      },
+      "include/pulse/netlist.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/netlist.hpp",
+        "bytes": 1954,
+        "sha256": "3b7853c0475dffa8bfa3be9990ee44b2944feeecbf69dfd7d2be937060a227c9"
+      },
+      "include/pulse/npz.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/npz.hpp",
+        "bytes": 635,
+        "sha256": "63ca5f0d331c3e1eb524712b662d410f26d60e0b0edfc0e6f481f0295ea80040"
+      },
+      "include/pulse/pevt.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/pevt.hpp",
+        "bytes": 574,
+        "sha256": "3eaaac52607f7fca03a1f0a90c87e77a2761001d3bb2a3fe9dc1c8970caa0837"
+      },
+      "include/pulse/pulse.h": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/pulse.h",
+        "bytes": 2406,
+        "sha256": "5de179889af86716b0ce013b35c87b9febbfed4b3ae0c02e5c88233f657d4fc8"
+      },
+      "include/pulse/software.h": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/software.h",
+        "bytes": 1760,
+        "sha256": "84f18093629164cb2e3acbc1a5db7851f0bcc753aa6690193a403c018d0767c6"
+      },
+      "include/pulse/software.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/software.hpp",
+        "bytes": 1131,
+        "sha256": "418d1c2cdc8f361122635a8295380654a32c7b7b0bccd980dad29d871dc0141e"
+      },
+      "include/pulse/solver_strategy.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/solver_strategy.hpp",
+        "bytes": 1021,
+        "sha256": "efa78f08c4bd341ab718ccce4915ec929b5cf151ecb210154b5055f22c758d39"
+      },
+      "include/pulse/stage_d_runtime.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/stage_d_runtime.hpp",
+        "bytes": 1432,
+        "sha256": "7fefd74d1153a789c95ba2458e2e00f5e3359dee1c07641e53d1ff672cff9a53"
+      },
+      "include/pulse/state_coordinates.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/state_coordinates.hpp",
+        "bytes": 1266,
+        "sha256": "4a4e67671668c715ef3b54b92423a76765a1cbae0cdf568ec3a0025dc1c3a38c"
+      },
+      "include/pulse/time_origin.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/time_origin.hpp",
+        "bytes": 1873,
+        "sha256": "2d6baea9ab362d2c0721f389d23f793eebbc87b4663da96c7da07cd0697d2f14"
+      },
+      "include/pulse/trajectory.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/trajectory.hpp",
+        "bytes": 1038,
+        "sha256": "5598ae01ad4a0a74f70b4090be7c40de930105823570590a9565c7f95e4afc9a"
+      },
+      "include/pulse/trajectory_pool.hpp": {
+        "path": "/root/pulse-stage-d-20261104/include/pulse/trajectory_pool.hpp",
+        "bytes": 7374,
+        "sha256": "c84dc869b78b6948485ad717ce6af7f7479d24e6864a49f66673ca572ade83b2"
+      },
+      "apps/cli.cpp": {
+        "path": "/root/pulse-stage-d-20261104/apps/cli.cpp",
+        "bytes": 4351,
+        "sha256": "f55dc026abe4452265c5320a741ca0dc60fb8669477d06bf5bfd0771eb53d3b0"
+      },
+      "apps/replay.cpp": {
+        "path": "/root/pulse-stage-d-20261104/apps/replay.cpp",
+        "bytes": 1202,
+        "sha256": "3819841085edb1eb886a9e9b8caaa92f50729ac7a28322661d7795f2490cd148"
+      },
+      "CMakeLists.txt": {
+        "path": "/root/pulse-stage-d-20261104/CMakeLists.txt",
+        "bytes": 11723,
+        "sha256": "0863f10077181a9b49898ed5d588782de07d3f89f25a70da4a55d3b57119f666"
+      }
+    },
+    "model": {
+      ".pulse_modules/CTRL.so": {
+        "path": "/root/stage-a-regression-20261103/model/.pulse_modules/CTRL.so",
+        "bytes": 15880,
+        "sha256": "987d6302c03b844e003769ab631b6abdaba555646f427260dc10e24fa9849771"
+      },
+      ".pulse_modules/CTRL.so.json": {
+        "path": "/root/stage-a-regression-20261103/model/.pulse_modules/CTRL.so.json",
+        "bytes": 1193,
+        "sha256": "389ddba2288eb0ec43b5fe45bd0a222832b4750eb7ec805363dc4294e26d648a"
+      },
+      ".pulse_modules/CTRL_deps.d": {
+        "path": "/root/stage-a-regression-20261103/model/.pulse_modules/CTRL_deps.d",
+        "bytes": 174,
+        "sha256": "9ec2425fbe4c42d38873263c94b23cbde4ccfbd95da5e36a42d1fb1520a83dd5"
+      },
+      "controller.c": {
+        "path": "/root/stage-a-regression-20261103/model/controller.c",
+        "bytes": 2874,
+        "sha256": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53"
+      },
+      "netlist.md": {
+        "path": "/root/stage-a-regression-20261103/model/netlist.md",
+        "bytes": 3627,
+        "sha256": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a"
+      },
+      "transition.h": {
+        "path": "/root/stage-a-regression-20261103/model/transition.h",
+        "bytes": 445,
+        "sha256": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472"
+      }
+    },
+    "binaries": {
+      "pulse-solver": {
+        "path": "/root/pulse-stage-d-20261104/build-linux/pulse-solver",
+        "bytes": 3175296,
+        "sha256": "8335ca4ab1c075ef6946dd81b7bedffbdf1b012dd36c2106479fae931a2a5f44"
+      },
+      "pulse-replay": {
+        "path": "/root/pulse-stage-d-20261104/build-linux/pulse-replay",
+        "bytes": 3170376,
+        "sha256": "88b998d64f22d8f9fb7d93da1364bbc21cbe0b6778e6fb74384dbca18e482826"
+      },
+      "libpulse_core.a": {
+        "path": "/root/pulse-stage-d-20261104/build-linux/libpulse_core.a",
+        "bytes": 7956894,
+        "sha256": "2bbf0615231dbe027d2fc5b01de536174d9011e095fa251e4b7237b62b021eff"
+      }
+    },
+    "raw_artifacts": {
+      "benchmark/500ms-stage-d/measurement.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/measurement.json",
+        "bytes": 698,
+        "sha256": "55ce9736240f5a3d62e6bd2ddc4481125715a1ce9147bf8f0a6abe85a12076e4"
+      },
+      "benchmark/500ms-stage-d/out.pevt": {
+        "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/out.pevt",
+        "bytes": 162836834,
+        "sha256": "3d94981aea68ca2501ab6b1b4430ccb1b39b333febe280706dda0f5b1932c7ef"
+      },
+      "benchmark/500ms-stage-d/resource.txt": {
+        "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/resource.txt",
+        "bytes": 930,
+        "sha256": "fd4d365a6b5d24db2e361af3bf212d054597cfa957d1b51b5f7ec8cc4136488d"
+      },
+      "benchmark/500ms-stage-d/simulation_report.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/simulation_report.json",
+        "bytes": 17559,
+        "sha256": "24b1f309474d303707908a7efa95bcee8135956722980e9b1ea3241b4ee38842"
+      },
+      "benchmark/500ms-stage-d/stderr.txt": {
+        "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "benchmark/500ms-stage-d/stdout.txt": {
+        "path": "/root/stage-d-regression-20261104/benchmark/500ms-stage-d/stdout.txt",
+        "bytes": 17559,
+        "sha256": "24b1f309474d303707908a7efa95bcee8135956722980e9b1ea3241b4ee38842"
+      },
+      "benchmark/comparison-stdout.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/comparison-stdout.json",
+        "bytes": 3935,
+        "sha256": "9f1d4257a23e54e2974a4bbb81a49868fed090c593b4c6cc14fff246008c1835"
+      },
+      "benchmark/evidence.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/evidence.json",
+        "bytes": 27460,
+        "sha256": "2a361a75c3326bdd37cccfae1d5b6ffac71c8a4e14c219715e59e2bf4ace2db6"
+      },
+      "benchmark/rollback/build.log": {
+        "path": "/root/stage-d-regression-20261104/benchmark/rollback/build.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "benchmark/rollback/comparison.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/rollback/comparison.json",
+        "bytes": 1212,
+        "sha256": "b8e33d3dca6d61ab236da0edef2fe339b83e754522d7af7eb0d224dfdf619709"
+      },
+      "benchmark/rollback/probe": {
+        "path": "/root/stage-d-regression-20261104/benchmark/rollback/probe",
+        "bytes": 3103152,
+        "sha256": "9a2dd746abd2637f33c77873884c2fec74f19b4b43620cf5f56515df28124610"
+      },
+      "benchmark/rollback/snapshot.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/rollback/snapshot.json",
+        "bytes": 34920,
+        "sha256": "1dbc3455eada9bd83874e8f83377f94447e57bb815e33faef24e08c8e63aee0a"
+      },
+      "benchmark/rollback/stderr.txt": {
+        "path": "/root/stage-d-regression-20261104/benchmark/rollback/stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "benchmark/strict-comparison.json": {
+        "path": "/root/stage-d-regression-20261104/benchmark/strict-comparison.json",
+        "bytes": 3934,
+        "sha256": "94dec0e649ea931f053b38ef2414a486d1c70c4437c19b734567e60073c79b38"
+      },
+      "linux-build-final.log": {
+        "path": "/root/stage-d-regression-20261104/linux-build-final.log",
+        "bytes": 2265,
+        "sha256": "cc80c840cea626972f06c2718ae341a66c2f3577ba447a1a4c74118f6c5b1b46"
+      },
+      "linux-build-initial.log": {
+        "path": "/root/stage-d-regression-20261104/linux-build-initial.log",
+        "bytes": 7844,
+        "sha256": "fc633f7b12c55ff968d7994b72fec85e1bda8238ad98fb8cc97429ffc576e97a"
+      },
+      "linux-build-test-final.log": {
+        "path": "/root/stage-d-regression-20261104/linux-build-test-final.log",
+        "bytes": 195,
+        "sha256": "bf023823c27c651c42e6e41f6c455b1a96a9d58cd814b5df01138b0f49dfcceb"
+      },
+      "linux-build.log": {
+        "path": "/root/stage-d-regression-20261104/linux-build.log",
+        "bytes": 7844,
+        "sha256": "fc633f7b12c55ff968d7994b72fec85e1bda8238ad98fb8cc97429ffc576e97a"
+      },
+      "linux-configure-initial.log": {
+        "path": "/root/stage-d-regression-20261104/linux-configure-initial.log",
+        "bytes": 835,
+        "sha256": "f08800b55494a848547eae3f4359aee7c56664189f74926384b40143f8fbaa24"
+      },
+      "linux-configure.log": {
+        "path": "/root/stage-d-regression-20261104/linux-configure.log",
+        "bytes": 835,
+        "sha256": "f08800b55494a848547eae3f4359aee7c56664189f74926384b40143f8fbaa24"
+      },
+      "linux-ctest-final.log": {
+        "path": "/root/stage-d-regression-20261104/linux-ctest-final.log",
+        "bytes": 3875,
+        "sha256": "f8c28450c2a13187531a86f15c7c354d66453a3c5efb858cd65e29159fde4df9"
+      },
+      "linux-ctest-final.xml": {
+        "path": "/root/stage-d-regression-20261104/linux-ctest-final.xml",
+        "bytes": 9538,
+        "sha256": "e92bff3b79db81260a82e655fae654281891e75e1a181900c53d3002c1fb5243"
+      },
+      "linux-ctest-initial.log": {
+        "path": "/root/stage-d-regression-20261104/linux-ctest-initial.log",
+        "bytes": 3767,
+        "sha256": "1a319c50995344bcd16be7f2096d3ca5887ae14457fa2f69ba89eb182bb3cd4a"
+      },
+      "linux-ctest-initial.xml": {
+        "path": "/root/stage-d-regression-20261104/linux-ctest-initial.xml",
+        "bytes": 9303,
+        "sha256": "79e2eef3820e0faecf2e4ba4ceade7e6f9b67273f8bb3f1885fbf30d7aa36875"
+      },
+      "linux-ctest.log": {
+        "path": "/root/stage-d-regression-20261104/linux-ctest.log",
+        "bytes": 3767,
+        "sha256": "1a319c50995344bcd16be7f2096d3ca5887ae14457fa2f69ba89eb182bb3cd4a"
+      },
+      "linux-ctest.xml": {
+        "path": "/root/stage-d-regression-20261104/linux-ctest.xml",
+        "bytes": 9303,
+        "sha256": "79e2eef3820e0faecf2e4ba4ceade7e6f9b67273f8bb3f1885fbf30d7aa36875"
+      },
+      "validation/compatibility_ledger.json": {
+        "path": "/root/stage-d-regression-20261104/validation/compatibility_ledger.json",
+        "bytes": 414,
+        "sha256": "1ea44470b625457ba564a90c653d10b9247ba5659f3aa3fb3a365a357c8a2267"
+      },
+      "validation/ctest.log": {
+        "path": "/root/stage-d-regression-20261104/validation/ctest.log",
+        "bytes": 3875,
+        "sha256": "14b1408f950585eb112dcfc27ab22fa50b52b2c7c9aa405e1283956b52e858d1"
+      }
+    }
+  },
+  "windows_rollback": {
+    "all_equal": true,
+    "points": {
+      "after_mode": true,
+      "after_propagation": true,
+      "after_queue": true,
+      "after_reg": true,
+      "before_output": true,
+      "retry_after_closure": true
+    },
+    "commands": [
+      [
+        "g++",
+        "-std=c++20",
+        "-O3",
+        "-DNDEBUG",
+        "-ffp-contract=off",
+        "-fno-fast-math",
+        "-DEIGEN_MPL2_ONLY",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-Iinclude",
+        "-isystem",
+        "third_party",
+        "-isystem",
+        "third_party/eigen-3.4.0",
+        "tests/rollback_snapshot_probe.cpp",
+        ".build-stage-d-windows/libpulse_core.a",
+        "-lbcrypt",
+        "-o",
+        "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\probe.exe"
+      ],
+      [
+        "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\probe.exe",
+        "D:\\codex\\using plecs\\pulse-linux-port\\reports\\a010-cpu-profile-20261103\\windows-campaign\\model\\netlist.md"
+      ]
+    ],
+    "baseline": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-c-20261103\\windows-rollback-final\\candidate.json",
+    "model": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\a010-cpu-profile-20261103\\windows-campaign\\model\\netlist.md"
+  },
+  "apply_manifest": {
+    "base": "fa2bc5ee4aab588ee91fb5b0513c692493799f7e",
+    "status": "PATCH_WRITTEN_UNCOMPILED",
+    "modified_files": {
+      "include/pulse/core.hpp": {
+        "before_sha256": "61e0be0376f09f99e83b24511dfb6e76828d4cf7a5f8236a4e9ef772d9bcbbf0",
+        "after_sha256": "82e115fee7fd6cd592308dbabe5b664901a83bb40c937a02fa49c89bf86541c7",
+        "modified": true
+      },
+      "src/semantics.cpp": {
+        "before_sha256": "2f12b608879bc96e350f6cd4afe5291daa2ab8c533b8ef2f429a1ee635e045d7",
+        "after_sha256": "7f983a2d8b8d099044f3f500f66638a5d576df14b8f252447a9f26d4306e87d6",
+        "modified": true
+      },
+      "src/descriptor.cpp": {
+        "before_sha256": "8bd8429e665a0158ead9fb894c24a2d14405cd0bd9f08c6f1f7818302c4125b2",
+        "after_sha256": "d8adb2969b01d264b3b77d4e8ee684c044f70a9ed8248489355c0330df4dc3eb",
+        "modified": true
+      },
+      "src/engineering_flow.cpp": {
+        "before_sha256": "612ca21fd3a22c188329a510becd8bb891e6305b5c53b6cdddb4647d3f27c608",
+        "after_sha256": "b2b2d8b6c0808ceb4c132dea35e3e590be02c13011c8ebf4f67cbfcb344e7d08",
+        "modified": true
+      },
+      "src/pevt.cpp": {
+        "before_sha256": "5870c5831fe930d02f82b8541d6a27c3267facca5a45863b4b775eb1201b48bc",
+        "after_sha256": "062505d45720951fcc1e4c8857fe933789d53ee6ee1a17e5d7feb8189621764f",
+        "modified": true
+      },
+      "src/runtime.cpp": {
+        "before_sha256": "4fa08e831b0606969718436dbb9e3bb7cdf366cab82799177bbe026aac57d624",
+        "after_sha256": "4fab2c4abfa747683f247a18a3df022bb60139bd464c45487723f3de9cbdb90d",
+        "modified": true
+      },
+      "CMakeLists.txt": {
+        "before_sha256": "8dddec46a2fa035135d120fd3cd71d16bcc13e40467b3e9640b93a18b939513a",
+        "after_sha256": "d96568ef2a01ae7e450f1bee1560145f8d232c8981ea02fdc09f0ee04d90927a",
+        "modified": true
+      }
+    },
+    "added_files": [
+      "include/pulse/stage_d_runtime.hpp",
+      "tests/stage_d_runtime.cpp"
+    ],
+    "schema": "stage-d-full-source-20261104"
+  },
+  "generator_reproduction": {
+    "include/pulse/core.hpp": {
+      "normalized_equal": true,
+      "sha256": "f465ec8dc075838cd56b7b76747cdfada3949a47a9e1f3ecdee56e83cf1b7776"
+    },
+    "src/semantics.cpp": {
+      "normalized_equal": true,
+      "sha256": "7f983a2d8b8d099044f3f500f66638a5d576df14b8f252447a9f26d4306e87d6"
+    },
+    "src/descriptor.cpp": {
+      "normalized_equal": true,
+      "sha256": "6ae7d46c38832d2b791bffa0dfbd172669a55fb9aa833fecc4be366d2455af39"
+    },
+    "src/engineering_flow.cpp": {
+      "normalized_equal": true,
+      "sha256": "ef3b1e0eb306348e219a249c146870c4f4bfa0657bc734720b2824925d76cb04"
+    },
+    "src/pevt.cpp": {
+      "normalized_equal": true,
+      "sha256": "062505d45720951fcc1e4c8857fe933789d53ee6ee1a17e5d7feb8189621764f"
+    },
+    "src/runtime.cpp": {
+      "normalized_equal": true,
+      "sha256": "d14ddedc83fc0ec00837447f8ff950f93c6c193292e6eb7d57601dae4bb2ce09"
+    },
+    "CMakeLists.txt": {
+      "normalized_equal": true,
+      "sha256": "0863f10077181a9b49898ed5d588782de07d3f89f25a70da4a55d3b57119f666"
+    }
+  },
+  "unchanged_numeric_sources": {
+    "src/propagate.cpp": {
+      "byte_identical": true,
+      "sha256": "f0741ffc9b7d9aa60e615d40e85787c4333f5c24346f573ee3f5e42219219999"
+    },
+    "src/engineering_mode.cpp": {
+      "byte_identical": true,
+      "sha256": "6586affbbb5b3b62fe6adf9124cb3340d00df6c744b9dab09a07f1c9f53c0968"
+    },
+    "src/solver_strategy.cpp": {
+      "byte_identical": true,
+      "sha256": "d634f764c3333e9bdeebd135322b653f87e567327f84357fce0adf46f8571b64"
+    },
+    "src/time_origin.cpp": {
+      "byte_identical": true,
+      "sha256": "da8a8dc8cbafe77c0c0be36963ac9104495ca02730ec8c55ee07ae6f70905cfe"
+    },
+    "src/constitutive.cpp": {
+      "byte_identical": true,
+      "sha256": "d8bbffa6aa7347a2ab9ddea7b1abd652ffb0581fa795b40be90392aead09a52a"
+    },
+    "src/state_coordinates.cpp": {
+      "byte_identical": true,
+      "sha256": "847ee1a4b749b7e4841a2c6764e6d1ebf0eaf69c0c9a8b10a32adff2b8732349"
+    },
+    "src/event_kernel.cpp": {
+      "byte_identical": true,
+      "sha256": "770dc15530bf4b407e2d25394fd39878ed2130ff6814b74ad3a1188c72d83f2e"
+    },
+    "src/software.cpp": {
+      "byte_identical": true,
+      "sha256": "01863e142075dd850e254164ca2872a6fc707eeb3f3685d18a9fe68aa3e563e9"
+    },
+    "src/pre_netlist.cpp": {
+      "byte_identical": true,
+      "sha256": "adc65eeb91b8d61cb81d73bbf3a9b619ef82c99045bfc0730b22c26e21780433"
+    },
+    "src/netlist.cpp": {
+      "byte_identical": true,
+      "sha256": "8b2f68b81135da91f25bc498261e0b84631fdb815eb9b1d1b349110d26023a8b"
+    },
+    "src/first_root/exclusion.cpp": {
+      "byte_identical": true,
+      "sha256": "6221dafc8c484d6235aafcbb31f292065aab2b00a77fa14a7b6b044284f1aa48"
+    },
+    "src/first_root/first_root.cpp": {
+      "byte_identical": true,
+      "sha256": "7fab24eec79eee638228a3bf58590ab4eace6ab34cc5b793382499b0f20faa59"
+    },
+    "src/first_root/interval_math.cpp": {
+      "byte_identical": true,
+      "sha256": "a96cf4eeb1ed5ac7e38f746f824d6449da9f0199847d83ae4538a5948f4108c0"
+    }
+  },
+  "unchanged_checks_and_search": {
+    "src/descriptor.cpp": {
+      "scope": "void check_candidate_reconstruction ... std::string option(",
+      "normalized_identical": true,
+      "sha256": "3c392a185ef165f8c19a5343d230ebcf4afafa6aecf432bf38129527bfc88a01"
+    },
+    "src/engineering_flow.cpp": {
+      "scope": "SearchResult next_events( ... } // namespace pulse::engineering",
+      "normalized_identical": true,
+      "sha256": "47c010dc8a3dafeb8dc5bf3b39f156ef2f5f06825ab08e382129970815bbec26"
+    }
+  },
+  "runtime_only_added_cache_report": true,
+  "integration_repairs": [
+    {
+      "issue": "Windows FindPython3 could not find interpreter",
+      "repair": "Use existing installed Python3_EXECUTABLE; no solver/CMake check removed"
+    },
+    {
+      "issue": "Package helper unit test used assert disabled by Release NDEBUG",
+      "repair": "Undefine NDEBUG locally before cassert; checks execute in Release"
+    },
+    {
+      "issue": "Package lacks full integration boundary coverage",
+      "repair": "Add stage_d_integration and install it through apply_stage_d.py; preserve every supplied optimization"
+    }
+  ],
+  "acceptance": {
+    "full_linux_500ms_runs": 1,
+    "strict_pevt_sections_2_through_10": true,
+    "original_equation_checks": 477111,
+    "channels_analog": 13,
+    "channels_digital": 4,
+    "waveforms_rebuilt_this_round": false,
+    "fresh_PLECS_run": false,
+    "baseline_reused": true,
+    "profilers_or_allocation_observer_in_benchmark": false
+  },
+  "commands": {
+    "apply_dry_run": [
+      "python",
+      "D:\\codex\\using plecs\\stage-d-package-20261104\\PULSE_StageD_full_source_20261104\\scripts\\apply_stage_d.py",
+      "--repo",
+      "D:\\codex\\using plecs\\pulse-linux-port",
+      "--dry-run"
+    ],
+    "apply": [
+      "python",
+      "D:\\codex\\using plecs\\stage-d-package-20261104\\PULSE_StageD_full_source_20261104\\scripts\\apply_stage_d.py",
+      "--repo",
+      "D:\\codex\\using plecs\\pulse-linux-port",
+      "--manifest",
+      "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\apply-manifest.json"
+    ],
+    "linux_configure": [
+      "cmake",
+      "-S",
+      "/root/pulse-stage-d-20261104",
+      "-B",
+      "/root/pulse-stage-d-20261104/build-linux",
+      "-G",
+      "Ninja",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBUILD_TESTING=ON"
+    ],
+    "linux_build": [
+      "cmake",
+      "--build",
+      "/root/pulse-stage-d-20261104/build-linux",
+      "--parallel",
+      "2"
+    ],
+    "windows_configure": [
+      "cmake",
+      "-S",
+      ".",
+      "-B",
+      ".build-stage-d-windows",
+      "-G",
+      "Ninja",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBUILD_TESTING=ON",
+      "-DPython3_EXECUTABLE=C:/Users/49605/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe"
+    ],
+    "windows_build": [
+      "cmake",
+      "--build",
+      ".build-stage-d-windows",
+      "--parallel",
+      "2"
+    ],
+    "linux_CTest": [
+      "ctest",
+      "--test-dir",
+      "/root/pulse-stage-d-20261104/build-linux",
+      "--output-on-failure",
+      "--output-junit",
+      "/root/stage-d-regression-20261104/linux-ctest-final.xml"
+    ],
+    "windows_CTest": [
+      "ctest",
+      "--test-dir",
+      ".build-stage-d-windows",
+      "--output-on-failure",
+      "--output-junit",
+      "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-ctest.xml"
+    ]
+  },
+  "raw_windows_artifacts": {
+    "apply-dry-run.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\apply-dry-run.json",
+      "bytes": 1980,
+      "sha256": "5bc664786d563049705aecb27dfa1cb82dcc45a13f39ef2eb86f222efa5e320a"
+    },
+    "apply-manifest.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\apply-manifest.json",
+      "bytes": 1979,
+      "sha256": "030dae0e2976ff19ca68a418fdd474376f3562d95f1927347a6f4aa6f93bb9b2"
+    },
+    "assemble_evidence.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\assemble_evidence.py",
+      "bytes": 7739,
+      "sha256": "8a9154147fef335778bceb3cff95b7aff96550be29212f6b10d6fd0f91963870"
+    },
+    "build_linux.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\build_linux.py",
+      "bytes": 1127,
+      "sha256": "f87a966a51cce668e9f0129bd99af5f25320d71c77f37e2ba5f396a87d9dc4d7"
+    },
+    "collect_linux.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\collect_linux.py",
+      "bytes": 1933,
+      "sha256": "5c728feaff4a299726fafd638a18f1c40c8dadce3fe0dd57dda11e7edc8e0595"
+    },
+    "generator-reproduction.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\generator-reproduction.json",
+      "bytes": 1023,
+      "sha256": "aa092afa255e82ceb0e5d72906d8761d4d1e7b398c2b098d205d67b804957e55"
+    },
+    "native/benchmark/500ms-stage-d/measurement.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\500ms-stage-d\\measurement.json",
+      "bytes": 698,
+      "sha256": "55ce9736240f5a3d62e6bd2ddc4481125715a1ce9147bf8f0a6abe85a12076e4"
+    },
+    "native/benchmark/500ms-stage-d/resource.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\500ms-stage-d\\resource.txt",
+      "bytes": 930,
+      "sha256": "fd4d365a6b5d24db2e361af3bf212d054597cfa957d1b51b5f7ec8cc4136488d"
+    },
+    "native/benchmark/500ms-stage-d/simulation_report.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\500ms-stage-d\\simulation_report.json",
+      "bytes": 17559,
+      "sha256": "24b1f309474d303707908a7efa95bcee8135956722980e9b1ea3241b4ee38842"
+    },
+    "native/benchmark/500ms-stage-d/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\500ms-stage-d\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/benchmark/500ms-stage-d/stdout.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\500ms-stage-d\\stdout.txt",
+      "bytes": 17559,
+      "sha256": "24b1f309474d303707908a7efa95bcee8135956722980e9b1ea3241b4ee38842"
+    },
+    "native/benchmark/comparison-stdout.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\comparison-stdout.json",
+      "bytes": 3935,
+      "sha256": "9f1d4257a23e54e2974a4bbb81a49868fed090c593b4c6cc14fff246008c1835"
+    },
+    "native/benchmark/evidence.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\evidence.json",
+      "bytes": 27460,
+      "sha256": "2a361a75c3326bdd37cccfae1d5b6ffac71c8a4e14c219715e59e2bf4ace2db6"
+    },
+    "native/benchmark/rollback/build.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\rollback\\build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/benchmark/rollback/comparison.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\rollback\\comparison.json",
+      "bytes": 1212,
+      "sha256": "b8e33d3dca6d61ab236da0edef2fe339b83e754522d7af7eb0d224dfdf619709"
+    },
+    "native/benchmark/rollback/snapshot.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\rollback\\snapshot.json",
+      "bytes": 34920,
+      "sha256": "1dbc3455eada9bd83874e8f83377f94447e57bb815e33faef24e08c8e63aee0a"
+    },
+    "native/benchmark/rollback/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\rollback\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/benchmark/strict-comparison.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\benchmark\\strict-comparison.json",
+      "bytes": 3934,
+      "sha256": "94dec0e649ea931f053b38ef2414a486d1c70c4437c19b734567e60073c79b38"
+    },
+    "native/CMakeCache.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\CMakeCache.txt",
+      "bytes": 18670,
+      "sha256": "ef732b3b43914dfceb85f9cfab677de832263d0ad7e0af8142c07f46d086e39d"
+    },
+    "native/compile_commands.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\compile_commands.json",
+      "bytes": 37798,
+      "sha256": "36977f6c1a82764a03f3173c4f5123cb6e30ca3d067386e6c5f1e982884676f0"
+    },
+    "native/environment.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\environment.json",
+      "bytes": 23396,
+      "sha256": "182ae5143090d403319da0ae5b0f062556848d1e85cff7fb760219c3353df583"
+    },
+    "native/linux-build-final.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-build-final.log",
+      "bytes": 2265,
+      "sha256": "cc80c840cea626972f06c2718ae341a66c2f3577ba447a1a4c74118f6c5b1b46"
+    },
+    "native/linux-build-initial.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-build-initial.log",
+      "bytes": 7844,
+      "sha256": "fc633f7b12c55ff968d7994b72fec85e1bda8238ad98fb8cc97429ffc576e97a"
+    },
+    "native/linux-build-test-final.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-build-test-final.log",
+      "bytes": 195,
+      "sha256": "bf023823c27c651c42e6e41f6c455b1a96a9d58cd814b5df01138b0f49dfcceb"
+    },
+    "native/linux-build.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-build.log",
+      "bytes": 7844,
+      "sha256": "fc633f7b12c55ff968d7994b72fec85e1bda8238ad98fb8cc97429ffc576e97a"
+    },
+    "native/linux-configure-initial.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-configure-initial.log",
+      "bytes": 835,
+      "sha256": "f08800b55494a848547eae3f4359aee7c56664189f74926384b40143f8fbaa24"
+    },
+    "native/linux-configure.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-configure.log",
+      "bytes": 835,
+      "sha256": "f08800b55494a848547eae3f4359aee7c56664189f74926384b40143f8fbaa24"
+    },
+    "native/linux-ctest-final.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest-final.log",
+      "bytes": 3875,
+      "sha256": "f8c28450c2a13187531a86f15c7c354d66453a3c5efb858cd65e29159fde4df9"
+    },
+    "native/linux-ctest-final.xml": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest-final.xml",
+      "bytes": 9538,
+      "sha256": "e92bff3b79db81260a82e655fae654281891e75e1a181900c53d3002c1fb5243"
+    },
+    "native/linux-ctest-initial.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest-initial.log",
+      "bytes": 3767,
+      "sha256": "1a319c50995344bcd16be7f2096d3ca5887ae14457fa2f69ba89eb182bb3cd4a"
+    },
+    "native/linux-ctest-initial.xml": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest-initial.xml",
+      "bytes": 9303,
+      "sha256": "79e2eef3820e0faecf2e4ba4ceade7e6f9b67273f8bb3f1885fbf30d7aa36875"
+    },
+    "native/linux-ctest.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest.log",
+      "bytes": 3767,
+      "sha256": "1a319c50995344bcd16be7f2096d3ca5887ae14457fa2f69ba89eb182bb3cd4a"
+    },
+    "native/linux-ctest.xml": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\linux-ctest.xml",
+      "bytes": 9303,
+      "sha256": "79e2eef3820e0faecf2e4ba4ceade7e6f9b67273f8bb3f1885fbf30d7aa36875"
+    },
+    "native/validation/compatibility_ledger.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\validation\\compatibility_ledger.json",
+      "bytes": 414,
+      "sha256": "1ea44470b625457ba564a90c653d10b9247ba5659f3aa3fb3a365a357c8a2267"
+    },
+    "native/validation/ctest.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\native\\validation\\ctest.log",
+      "bytes": 3875,
+      "sha256": "14b1408f950585eb112dcfc27ab22fa50b52b2c7c9aa405e1283956b52e858d1"
+    },
+    "rollback_windows.py": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\rollback_windows.py",
+      "bytes": 1253,
+      "sha256": "358064cd6318b4523141b9e7da0e615942023a4080427f70bb8ab5a90df32c10"
+    },
+    "windows-build-final.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-build-final.log",
+      "bytes": 2367,
+      "sha256": "e70244a39e023869d3441525552d10c5a20293822e9b9a467b667bb9e2324927"
+    },
+    "windows-build.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-build.log",
+      "bytes": 11615,
+      "sha256": "04b1fdcc87b81be4331be1e9a1448977e7ca7868758a921f83713d41c80b76bf"
+    },
+    "windows-configure-fixed.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-configure-fixed.log",
+      "bytes": 319,
+      "sha256": "1b6796b24c52937ea7e02cf8023623b3bfd09adf73c4d9fcff3f6d8c6338ee25"
+    },
+    "windows-configure.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-configure.log",
+      "bytes": 1245,
+      "sha256": "399aaad148b53d2a7c0b08b33e88a98865f5643e85a96f0188e43ce1807ce45e"
+    },
+    "windows-ctest.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-ctest.log",
+      "bytes": 3873,
+      "sha256": "2b83a2ad862340130687ce4082186c8d422d014434aec0c8e904f4a058dbcfe2"
+    },
+    "windows-ctest.xml": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-ctest.xml",
+      "bytes": 9736,
+      "sha256": "b59d1eeb3183229c3646186823bbe9a270f386b5a1e65ce4e207cdef047ecef8"
+    },
+    "windows-rollback/build.log": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "windows-rollback/candidate.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\candidate.json",
+      "bytes": 37131,
+      "sha256": "440fbd00f6e732a584a0547da3c88239ffc252ec9e026ecd8dc9eac2da93d5e7"
+    },
+    "windows-rollback/comparison.json": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\comparison.json",
+      "bytes": 1282,
+      "sha256": "bdd9646cb168bccf27d54b2d9781f7dabb6952aca4b7249153560cda49e78132"
+    },
+    "windows-rollback/probe.exe": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\probe.exe",
+      "bytes": 6607864,
+      "sha256": "6f4530728259ce73eb64cfe1b6d045145dd8af65c64a0d102dbdff49ce35e555"
+    },
+    "windows-rollback/stderr.txt": {
+      "path": "D:\\codex\\using plecs\\pulse-linux-port\\reports\\stage-d-20261104\\windows-rollback\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

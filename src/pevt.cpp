@@ -1,4 +1,5 @@
 #include "pulse/pevt.hpp"
+#include "pulse/stage_d_runtime.hpp"
 #include "pulse/engineering.hpp"
 #include "pulse/software.hpp"
 #include "pulse/state_coordinates.hpp"
@@ -9,6 +10,7 @@
 #include <set>
 #include <cstring>
 #include <deque>
+#include <unordered_map>
 
 #include <cstdio>
 #include <cstdlib>
@@ -52,7 +54,11 @@ struct PevtArchive::Data {
   std::vector<Matrix> blocks;std::vector<std::vector<double>> values;std::vector<Instance> instances;
   std::vector<State> states;std::vector<FlowRecord> flows;std::vector<Event> events;
   std::vector<Modal> modals;std::vector<std::string> slots;std::map<std::string,int> real_rows;
-  std::map<std::string,uint32_t> component_ids,signal_ids,block_ids,value_ids,definition_ids,instance_ids,state_ids,component_mode_ids;
+  // D: O(1) average associative lookup; ID assignment remains append-ordered.
+  std::unordered_map<std::string,uint32_t> component_ids,signal_ids,block_ids,definition_ids;
+  std::unordered_map<std::vector<uint64_t>,uint32_t,stage_d::WordVectorHash> value_word_ids,state_word_ids;
+  std::unordered_map<uint64_t,uint32_t> instance_pair_ids,component_mode_pair_ids;
+  std::vector<uint64_t> value_lookup,state_lookup;
   std::map<uint64_t,std::pair<uint64_t,uint32_t>> origins;
   // Bounded stable-definition cache; dynamic observation slots bind separately.
   // This is merely a shortcut to the unchanged canonical PULSEES1 encoder.
@@ -126,9 +132,11 @@ struct PevtArchive::Data {
     return size_t(x.size())==start||std::memcmp(x.data()+start,y.data()+start,(size_t(x.size())-start)*sizeof(double))==0;
   }
   uint32_t bind_instance(uint32_t definition,uint32_t values_id){
-    Bytes b;put(b,definition,4);put(b,values_id,4);auto k=key(b);
-    if(auto it=instance_ids.find(k);it!=instance_ids.end())return it->second;
-    auto index=uint32_t(instances.size());instance_ids[k]=index;instances.push_back({definition,values_id});return index;
+    const uint64_t key=stage_d::pair_key(definition,values_id);
+    if(auto it=instance_pair_ids.find(key);it!=instance_pair_ids.end())return it->second;
+    auto index=uint32_t(instances.size());
+    instance_pair_ids.emplace(key,index);
+    instances.push_back({definition,values_id});return index;
   }
   uint32_t remember_equation(const Mode&m,uint32_t id) {
     if(recent_equations_.size()>=64)recent_equations_.pop_front();
@@ -176,6 +184,7 @@ struct PevtArchive::Data {
     }
     for(auto&modal:modals)meta["modal_components"].push_back(modal.component);
     meta["value_slot_count"]=slots.size();meta["modal_component_count"]=modals.size();
+    value_lookup.reserve(slots.size());state_lookup.reserve(nx+1);
     auto eq=equation(s.mode);Event first;first.at=s.at;first.state=state(s.internal,instances.at(eq).values);first.before=first.after=eq;first.pre=first.post=modes(s.mode);
     events.push_back(first);events.back().observer=flow(s,0);
   }
@@ -188,17 +197,27 @@ struct PevtArchive::Data {
     std::vector<uint32_t> result;
     for(auto&modal:modals) {
       int value=modal.region?m.segments.at(modal.part):m.bools.count(modal.signal)?int(m.bools.at(modal.signal)):is_literal(modal.signal)?int(number(modal.signal)!=0):0;
-      auto k=std::to_string(modal.component)+":"+std::to_string(value);auto it=component_mode_ids.find(k);
-      if(it==component_mode_ids.end()) {
-        auto id=uint32_t(component_modes.size());component_mode_ids[k]=id;
+      const uint64_t k=stage_d::pair_key(modal.component,uint32_t(value));
+      auto it=component_mode_pair_ids.find(k);
+      if(it==component_mode_pair_ids.end()) {
+        auto id=uint32_t(component_modes.size());component_mode_pair_ids.emplace(k,id);
         component_modes.push_back({{"component_id",modal.component},{"mode_id",id},{"definition",{{"kind",modal.region?"REGION":"BOOL"},{"source_part_index",modal.part},{"signal",modal.signal},{"value",value}}}});result.push_back(id);
       }else result.push_back(it->second);
     }return result;
   }
   uint32_t value_set(const Mode&m) {
-    std::vector<double> v;Bytes b;
-    for(auto&name:slots){const auto&row=m.binding.read().maps.at(name);require(row.size()==Eigen::Index(nx),11,"PEVT_SHAPE","held value row differs");double value=row[row.size()-1];v.push_back(value);real(b,value);}
-    auto k=key(b);if(auto it=value_ids.find(k);it!=value_ids.end())return it->second;auto id=uint32_t(values.size());value_ids[k]=id;values.push_back(std::move(v));return id;
+    value_lookup.clear();
+    for(const auto &name:slots){
+      const auto &row=m.binding.read().maps.at(name);
+      require(row.size()==Eigen::Index(nx),11,"PEVT_SHAPE","held value row differs");
+      value_lookup.push_back(stage_d::double_bits(row[row.size()-1]));
+    }
+    if(auto it=value_word_ids.find(value_lookup);it!=value_word_ids.end())return it->second;
+    const auto id=uint32_t(values.size());
+    std::vector<double> v;v.reserve(value_lookup.size());
+    for(uint64_t bits:value_lookup)v.push_back(std::bit_cast<double>(bits));
+    value_word_ids.emplace(value_lookup,id);
+    values.push_back(std::move(v));return id;
   }
   uint32_t block(const Matrix&m,const std::vector<std::pair<uint32_t,uint32_t>>&bindings) {
     Bytes b;put(b,m.rows(),4);put(b,m.cols(),4);for(Eigen::Index i=0;i<m.size();++i)real(b,m.data()[i]);
@@ -245,9 +264,13 @@ struct PevtArchive::Data {
     return remember_equation(m,bind_instance(id,vs));
   }
   uint32_t state(const Vector&x,uint32_t vs) {
-    require(size_t(x.size())==nx&&x.allFinite(),11,"PEVT_SHAPE","invalid event state");Bytes b;put(b,vs,4);for(Eigen::Index i=0;i<x.size();++i)real(b,x[i]);auto k=key(b);
-    if(auto it=state_ids.find(k);it!=state_ids.end())return it->second;
-    auto id=uint32_t(states.size());state_ids[k]=id;states.push_back({x,vs});return id;
+    require(size_t(x.size())==nx&&x.allFinite(),11,"PEVT_SHAPE","invalid event state");
+    state_lookup.clear();state_lookup.push_back(vs);
+    for(Eigen::Index i=0;i<x.size();++i)state_lookup.push_back(stage_d::double_bits(x[i]));
+    if(auto it=state_word_ids.find(state_lookup);it!=state_word_ids.end())return it->second;
+    const auto id=uint32_t(states.size());
+    state_word_ids.emplace(state_lookup,id);
+    states.push_back({x,vs});return id;
   }
   uint32_t flow(const RunState&s,uint64_t reference) {
     if(!s.electrical_flow)return none;

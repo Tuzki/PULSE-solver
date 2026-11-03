@@ -1,4 +1,5 @@
 #include "pulse/engineering.hpp"
+#include "pulse/stage_d_runtime.hpp"
 #include <Eigen/Eigenvalues>
 #include <algorithm>
 #include <array>
@@ -253,6 +254,11 @@ struct Functional {
   std::vector<Term> terms;
 };
 } // namespace
+struct SharedLocalTaylor {
+  using WideVector=Eigen::Matrix<long double,Eigen::Dynamic,1>;
+  std::vector<WideVector> states,absolute_states;
+  bool ready=false;
+};
 struct FlowData {
   uint64_t archive_origin_id=0;
   Mode mode;
@@ -260,7 +266,8 @@ struct FlowData {
   std::shared_ptr<Basis> basis;
   CVector y, forcing, center_shift;
   std::vector<Functional> guards;
-  mutable std::map<std::string,std::shared_ptr<FlowData>> observable_cache;
+  struct ObservableEntry { Vector row; std::shared_ptr<FlowData> flow; };
+  mutable std::unordered_map<std::uint64_t,std::vector<ObservableEntry>> observable_cache;
   // Local scalar Taylor evaluation is anchored at the committed physical
   // point. It avoids subtracting nearly cancelling spectral residues when
   // deciding the direction immediately after a constitutive knot.
@@ -270,7 +277,7 @@ struct FlowData {
   mutable std::vector<std::array<long double, local_degree + 1>> local;
   mutable std::vector<std::array<long double, local_degree + 1>> local_absolute;
   mutable std::vector<long double> local_scale;
-  mutable std::vector<Eigen::Matrix<long double, Eigen::Dynamic, 1>> local_state;
+  mutable std::shared_ptr<SharedLocalTaylor> shared_local;
   mutable std::map<double, Vector> points;
 };
 namespace {
@@ -279,37 +286,54 @@ void prepare_local(FlowData &d) {
   using Wide = long double;
   using WMatrix = Eigen::Matrix<Wide, Eigen::Dynamic, Eigen::Dynamic>;
   using WVector = Eigen::Matrix<Wide, Eigen::Dynamic, 1>;
-  const auto &b = *d.basis;
-  const int n = int(b.generator.rows()) - 1;
-  WVector z = WVector::Ones(n + 1);
-  if (n) z.head(n) = (b.reduce.cast<Wide>() * d.initial.cast<Wide>()).cwiseQuotient(b.scaling.head(n).cast<Wide>());
-  WMatrix a = b.balanced.cast<Wide>() / Wide(d.local_rate);
-  WVector absolute_z = z.cwiseAbs();
-  std::vector<WVector> projected;
-  d.local.resize(d.mode.binding.read().guards.size());
-  d.local_state.resize(FlowData::local_degree + 1);
-  d.local_state[0] = z;
-  d.local_absolute.resize(d.mode.binding.read().guards.size());
-  d.local_scale.resize(d.mode.binding.read().guards.size());
-  for (size_t k = 0; k < d.mode.binding.read().guards.size(); ++k) {
-    const auto &g = d.mode.binding.read().guards[k];
-    WVector p = WVector::Zero(n + 1);
-    if (n) p.head(n) = (b.lift.cast<Wide>().transpose() * g.row.head(d.initial.size() - 1).cast<Wide>()).cwiseProduct(b.scaling.head(n).cast<Wide>());
-    projected.push_back(p);
-    d.local[k][0] = Wide(g.row.dot(d.initial));
-    d.local_absolute[k][0] = g.row.cast<Wide>().cwiseAbs().dot(d.initial.cast<Wide>().cwiseAbs());
-    d.local_scale[k] = p.cwiseAbs().sum() * z.cwiseAbs().maxCoeff();
-  }
-  for (int j = 1; j <= FlowData::local_degree; ++j) {
-    z = (a * z / Wide(j)).eval();
-    d.local_state[j] = z;
-    absolute_z = (a.cwiseAbs() * absolute_z / Wide(j)).eval();
-    for (size_t k = 0; k < projected.size(); ++k) {
-      d.local[k][j] = projected[k].dot(z);
-      d.local_absolute[k][j] = projected[k].cwiseAbs().dot(absolute_z);
+  if (!d.shared_local) d.shared_local=std::make_shared<SharedLocalTaylor>();
+  auto &anchor=*d.shared_local;
+  const auto &b=*d.basis;
+  const int n=int(b.generator.rows())-1;
+  if(!anchor.ready) {
+    WVector z=WVector::Ones(n+1);
+    if(n)z.head(n)=(b.reduce.cast<Wide>()*d.initial.cast<Wide>())
+        .cwiseQuotient(b.scaling.head(n).cast<Wide>());
+    WMatrix a=b.balanced.cast<Wide>()/Wide(d.local_rate);
+    WVector absolute_z=z.cwiseAbs();
+    anchor.states.resize(FlowData::local_degree+1);
+    anchor.absolute_states.resize(FlowData::local_degree+1);
+    anchor.states[0]=z;
+    anchor.absolute_states[0]=absolute_z;
+    for (int j=1;j<=FlowData::local_degree;++j) {
+      z=(a*z/Wide(j)).eval();
+      absolute_z=(a.cwiseAbs()*absolute_z/Wide(j)).eval();
+      anchor.states[j]=z;
+      anchor.absolute_states[j]=absolute_z;
     }
+    anchor.ready=true;
   }
-  d.local_ready = true;
+  std::vector<WVector> projected;
+  const auto &guards=d.mode.binding.read().guards;
+  projected.reserve(guards.size());
+  d.local.resize(guards.size());
+  d.local_absolute.resize(guards.size());
+  d.local_scale.resize(guards.size());
+  const auto &z=anchor.states[0];
+  for(size_t k=0;k<guards.size();++k) {
+    const auto &g=guards[k];
+    WVector p=WVector::Zero(n+1);
+    if(n) p.head(n)=(b.lift.cast<Wide>().transpose()*
+       g.row.head(d.initial.size()-1).cast<Wide>())
+       .cwiseProduct(b.scaling.head(n).cast<Wide>());
+    projected.push_back(p);
+    d.local[k][0]=Wide(g.row.dot(d.initial));
+    d.local_absolute[k][0]=g.row.cast<Wide>().cwiseAbs()
+        .dot(d.initial.cast<Wide>().cwiseAbs());
+    d.local_scale[k]=p.cwiseAbs().sum()*z.cwiseAbs().maxCoeff();
+  }
+  for(int j=1;j<=FlowData::local_degree;++j)
+    for(size_t k=0;k<projected.size();++k) {
+      d.local[k][j]=projected[k].dot(anchor.states[j]);
+      d.local_absolute[k][j]=projected[k].cwiseAbs()
+          .dot(anchor.absolute_states[j]);
+    }
+  d.local_ready=true;
 }
 std::array<long double, FlowData::local_degree + 1>
 local_coefficients(FlowData &d, size_t k, int order) {
@@ -437,7 +461,7 @@ Vector Flow::state(double t) const {
     const long double q = static_cast<long double>(t) * d.local_rate;
     WVector increment = WVector::Zero(n);
     for (int j = FlowData::local_degree; j >= 1; --j)
-      increment = (increment * q + d.local_state[j].head(n)).eval();
+      increment = (increment * q + d.shared_local->states[j].head(n)).eval();
     increment *= q;
     WVector physical = b.lift.cast<long double>() * increment.cwiseProduct(b.scaling.head(n).cast<long double>());
     Vector out = d.initial;
@@ -795,7 +819,11 @@ Flow Flow::continued_after_check(const Mode &m,double elapsed) const {
       (!a.row.size()||std::memcmp(a.row.data(),b.row.data(),size_t(a.row.size())*sizeof(double))==0);
   }
   if(same_guards){++flow_counts.reused;Flow next=*this;next.archive_view_=std::make_shared<const Mode>(m);next.offset_=offset_+Time::from(elapsed);return next;}
-  ++flow_counts.reprojected;Flow next(m,data_->initial);next.offset_=offset_+Time::from(elapsed);next.data_->archive_origin_id=data_->archive_origin_id;return next;
+  ++flow_counts.reprojected;Flow next(m,data_->initial);
+  if(next.data_->basis==data_->basis && next.data_->local_rate==data_->local_rate)
+    next.data_->shared_local=data_->shared_local;
+  next.offset_=offset_+Time::from(elapsed);
+  next.data_->archive_origin_id=data_->archive_origin_id;return next;
 }
 double Flow::observe(const Vector &row,double t,int derivative) const {
   // Project an arbitrary observable on this same continuous trajectory.
@@ -804,15 +832,32 @@ double Flow::observe(const Vector &row,double t,int derivative) const {
     if(g.size()==row.size()&&(g.array()==row.array()).all())return value(k,t,derivative);
     if(g.size()==row.size()&&(g.array()==-row.array()).all())return -value(k,t,derivative);
   }
-  std::string id(reinterpret_cast<const char*>(row.data()),size_t(row.size())*sizeof(double));
-  auto found=data_->observable_cache.find(id);
-  if(found==data_->observable_cache.end()){
-    Mode view=data_->mode;view.binding.edit().maps.clear();view.bools.clear();
-    view.binding.edit().guards.clear();view.binding.edit().guards.push_back({row,0,1,"OBSERVE"});
+  const auto id=stage_d::hash_bytes(row.data(),size_t(row.size())*sizeof(double));
+  std::shared_ptr<FlowData> projected;
+  const auto hit=data_->observable_cache.find(id);
+  if(hit!=data_->observable_cache.end())
+    for(const auto &entry:hit->second)
+      if(entry.row.size()==row.size() &&
+         stage_d::bitwise_equal(entry.row.data(),row.data(),size_t(row.size()))) {
+        projected=entry.flow; break;
+      }
+  if(!projected) {
+    Mode view;
+    view.definition=data_->mode.definition;
+    view.numerical_strategy=data_->mode.numerical_strategy;
+    view.binding.edit().guards.push_back({row,0,1,"OBSERVE"});
     Flow projection(view,data_->initial);
-    found=data_->observable_cache.emplace(std::move(id),projection.data_).first;
+    require(projection.data_->basis==data_->basis &&
+            projection.data_->local_rate==data_->local_rate,12,
+            "FLOW_SHARED_ANCHOR","observable projection has differing propagation basis");
+    if(!data_->shared_local)
+      data_->shared_local=std::make_shared<SharedLocalTaylor>();
+    projection.data_->shared_local=data_->shared_local;
+    projected=projection.data_;
+    data_->observable_cache[id].push_back({row,projected});
   }
-  Flow projection=*this;projection.data_=found->second;
+  Flow projection=*this;
+  projection.data_=std::move(projected);
   return projection.value(0,t,derivative);
 }
 double Flow::scale(size_t k) const {

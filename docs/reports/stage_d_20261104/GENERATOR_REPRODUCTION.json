@@ -1,0 +1,30 @@
+{
+  "include/pulse/core.hpp": {
+    "normalized_equal": true,
+    "sha256": "f465ec8dc075838cd56b7b76747cdfada3949a47a9e1f3ecdee56e83cf1b7776"
+  },
+  "src/semantics.cpp": {
+    "normalized_equal": true,
+    "sha256": "7f983a2d8b8d099044f3f500f66638a5d576df14b8f252447a9f26d4306e87d6"
+  },
+  "src/descriptor.cpp": {
+    "normalized_equal": true,
+    "sha256": "6ae7d46c38832d2b791bffa0dfbd172669a55fb9aa833fecc4be366d2455af39"
+  },
+  "src/engineering_flow.cpp": {
+    "normalized_equal": true,
+    "sha256": "ef3b1e0eb306348e219a249c146870c4f4bfa0657bc734720b2824925d76cb04"
+  },
+  "src/pevt.cpp": {
+    "normalized_equal": true,
+    "sha256": "062505d45720951fcc1e4c8857fe933789d53ee6ee1a17e5d7feb8189621764f"
+  },
+  "src/runtime.cpp": {
+    "normalized_equal": true,
+    "sha256": "d14ddedc83fc0ec00837447f8ff950f93c6c193292e6eb7d57601dae4bb2ce09"
+  },
+  "CMakeLists.txt": {
+    "normalized_equal": true,
+    "sha256": "0863f10077181a9b49898ed5d588782de07d3f89f25a70da4a55d3b57119f666"
+  }
+}

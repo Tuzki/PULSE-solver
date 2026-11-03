@@ -863,6 +863,11 @@ Model compile(Netlist net) {
                         1, "SOFTWARE_OUTPUT", "duplicate software output", false, task.source);
         }
         std::sort(m.registry.begin(), m.registry.end());
+        // D: Resolve part identities once after validating the complete model.
+        for (size_t i = 0; i < m.parts.size(); ++i)
+            m.compiled_part_index.emplace(m.parts[i].raw.id, int(i));
+        require(m.compiled_part_index.size() == m.parts.size(), 12,
+                "INTERNAL_ERROR", "compiled part index not injective");
         m.compile_seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         return m;
     } catch (const Error &error) {

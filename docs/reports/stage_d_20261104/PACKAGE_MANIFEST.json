@@ -1,0 +1,17 @@
+{
+  "package": "PULSE_StageD_full_source_20261104",
+  "source_base": "fa2bc5ee4aab588ee91fb5b0513c692493799f7e",
+  "notes": "Full Stage D hot-path source overlay; requires Codex integration; no solver performance measured",
+  "sha256": {
+    "README.md": "60a9ad17ef3268e3d5c5dae309807cece3c9e2b9bc95970e4a4635d1472b2511",
+    "docs/CODEX_HANDOFF.md": "8239ec07a269c9d144c782ed0a4967705423a9b766d0bd61ec758e73d8c48d8b",
+    "include/pulse/stage_d_runtime.hpp": "7fefd74d1153a789c95ba2458e2e00f5e3359dee1c07641e53d1ff672cff9a53",
+    "scripts/apply_stage_d.py": "ccd32f6ed131351de586878aea8afd82426c45786f84eea0da47f8c08e4c18de",
+    "scripts/perf_three_factors.py": "9a8c687c9b3409a26966ee3635ec3f75d864197e6a15b39994420ba0c96d5f85",
+    "scripts/run_ab_50ms.py": "88fe5291515ff21b6a760ce74f4e17d74afacc8fc1689ccf5d6cb7630707a567",
+    "scripts/stage_d_baseline_transforms.py": "b007df61ea43ff8d4aff4e397cf596406524e64a7476d5ce11922e283a1bbb34",
+    "scripts/validate_exploratory.py": "9c972a22bebc5e4b6c96a2cfb62a7090a3f3c59ebb2045b33811644e2f68390c",
+    "scripts/verify_bundle.py": "069e01464cc6ab6249e02823e6fc2ca4ac2502cf6abab444b062cd54b91869f4",
+    "tests/stage_d_runtime.cpp": "e9429d4ce95b103394a3b90ac54b87267ccdd4d50bad06979cba6b1144c935df"
+  }
+}

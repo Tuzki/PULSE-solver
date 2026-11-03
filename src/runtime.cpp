@@ -734,6 +734,8 @@ Result simulate(const Model &original, const Options &o) {
   auto selected=o.channels?o.channels:m.netlist.channels;
   if(selected&&!(selected->size()==1&&selected->front()=="*"))std::erase_if(out.events,[&](const Json&e){return e.value("kind","")=="TRIG"&&std::find(selected->begin(),selected->end(),e.value("source",""))==selected->end();});
   out.report["flow_statistics"]=engineering::flow_statistics();
+    out.report["stage_d_rebound_cache"]={{"hits",out.stats.stage_d_rebound_hits},
+        {"misses",out.stats.stage_d_rebound_misses}};
   out.report["original_equation_cache"]=portfolio_original_diagnostics();
   out.report["performance_phases"]=six_perf::report();
   out.report["dependency_roles"]=m.dependency_roles;

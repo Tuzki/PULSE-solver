@@ -1,0 +1,46 @@
+{
+  "base": "fa2bc5ee4aab588ee91fb5b0513c692493799f7e",
+  "status": "PATCH_WRITTEN_UNCOMPILED",
+  "modified_files": {
+    "include/pulse/core.hpp": {
+      "before_sha256": "61e0be0376f09f99e83b24511dfb6e76828d4cf7a5f8236a4e9ef772d9bcbbf0",
+      "after_sha256": "82e115fee7fd6cd592308dbabe5b664901a83bb40c937a02fa49c89bf86541c7",
+      "modified": true
+    },
+    "src/semantics.cpp": {
+      "before_sha256": "2f12b608879bc96e350f6cd4afe5291daa2ab8c533b8ef2f429a1ee635e045d7",
+      "after_sha256": "7f983a2d8b8d099044f3f500f66638a5d576df14b8f252447a9f26d4306e87d6",
+      "modified": true
+    },
+    "src/descriptor.cpp": {
+      "before_sha256": "8bd8429e665a0158ead9fb894c24a2d14405cd0bd9f08c6f1f7818302c4125b2",
+      "after_sha256": "d8adb2969b01d264b3b77d4e8ee684c044f70a9ed8248489355c0330df4dc3eb",
+      "modified": true
+    },
+    "src/engineering_flow.cpp": {
+      "before_sha256": "612ca21fd3a22c188329a510becd8bb891e6305b5c53b6cdddb4647d3f27c608",
+      "after_sha256": "b2b2d8b6c0808ceb4c132dea35e3e590be02c13011c8ebf4f67cbfcb344e7d08",
+      "modified": true
+    },
+    "src/pevt.cpp": {
+      "before_sha256": "5870c5831fe930d02f82b8541d6a27c3267facca5a45863b4b775eb1201b48bc",
+      "after_sha256": "062505d45720951fcc1e4c8857fe933789d53ee6ee1a17e5d7feb8189621764f",
+      "modified": true
+    },
+    "src/runtime.cpp": {
+      "before_sha256": "4fa08e831b0606969718436dbb9e3bb7cdf366cab82799177bbe026aac57d624",
+      "after_sha256": "4fab2c4abfa747683f247a18a3df022bb60139bd464c45487723f3de9cbdb90d",
+      "modified": true
+    },
+    "CMakeLists.txt": {
+      "before_sha256": "8dddec46a2fa035135d120fd3cd71d16bcc13e40467b3e9640b93a18b939513a",
+      "after_sha256": "d96568ef2a01ae7e450f1bee1560145f8d232c8981ea02fdc09f0ee04d90927a",
+      "modified": true
+    }
+  },
+  "added_files": [
+    "include/pulse/stage_d_runtime.hpp",
+    "tests/stage_d_runtime.cpp"
+  ],
+  "schema": "stage-d-full-source-20261104"
+}

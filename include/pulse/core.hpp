@@ -77,6 +77,8 @@ struct Signal {
 struct Model {
   Netlist netlist;
   std::vector<Part> parts;
+  // D: Frozen once at Model compilation; reusable by every modal bind.
+  std::map<std::string, int> compiled_part_index;
   std::map<std::string, Signal> signals;
   std::map<std::string, int> nodes, branches;
   // Physical port connectivity, not signal/magnetic coupling. Reference nodes
@@ -150,6 +152,7 @@ struct Stats {
            cache_hits = 0;
   uint64_t mode_cache_misses = 0, mode_cache_evictions = 0,
            mode_cache_peak_entries = 0;
+  uint64_t stage_d_rebound_hits=0, stage_d_rebound_misses=0;
   uint64_t projections = 0;
   uint64_t cegs_calls = 0, cegs_certified = 0, cegs_not_certified = 0;
   double cegs_prep_seconds = 0, cegs_certify_seconds = 0;

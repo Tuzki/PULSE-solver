@@ -8,6 +8,8 @@
 #include <functional>
 #include <iomanip>
 #include <sstream>
+#include <unordered_map>
+#include <unordered_set>
 namespace pulse {
 struct ModeCacheData {
     const Model *model;
@@ -16,6 +18,9 @@ struct ModeCacheData {
     // observer bindings are always materialized on a fresh instance.
     std::map<std::string, std::shared_ptr<const Mode>> entries;
     std::deque<std::string> insertion_order;
+    std::map<std::string,std::shared_ptr<const Mode>> rebound_entries;
+    std::deque<std::string> rebound_order;
+    size_t rebound_capacity=512;
 };
 namespace {
 thread_local ModeCacheData *active_mode_cache = nullptr;
@@ -154,15 +159,16 @@ struct Assembler {
     std::map<std::string, int> realcol;
     std::map<std::string, std::vector<int>> branchcol;
     std::map<std::string, std::vector<int>> branchrow;
-    std::map<std::string, int> partidx;
-    std::map<std::string, double> memo;
-    std::set<std::string> visiting;
+    const std::map<std::string, int> &partidx;
+    std::unordered_map<std::string, double> memo;
+    std::unordered_set<std::string> visiting;
     Matrix A, B, F, D;
     int na = 0, row = 0;
     Assembler(const Model &mm, const std::map<std::string, double> &rr, std::map<int, bool> bb,
               std::map<int, int> ss, bool equations=true)
-        : m(mm), regs(rr), bits(std::move(bb)), segments(std::move(ss)) {
-        if(!equations){for(size_t i=0;i<m.parts.size();++i)partidx[m.parts[i].raw.id]=int(i);return;}
+        : m(mm), regs(rr), bits(std::move(bb)), segments(std::move(ss)),
+          partidx(mm.compiled_part_index) {
+        if (!equations) return;
         na = int(m.nodes.size());
         for (auto &[n, i] : m.branches) {
             auto &p = m.parts[i];
@@ -176,8 +182,7 @@ struct Assembler {
         B = Matrix::Zero(na, m.ns + 1);
         F = Matrix::Zero(m.ns, na);
         D = Matrix::Zero(m.ns, m.ns + 1);
-        for (size_t i = 0; i < m.parts.size(); ++i)
-            partidx[m.parts[i].raw.id] = int(i);
+        // partidx is already compiled into the frozen Model.
     }
     double held(const std::string &raw) {
         if (is_literal(raw))
@@ -735,9 +740,16 @@ struct Assembler {
     }
 };
 Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::string,double>&regs,
-                       const std::map<int,bool>&bits,const std::map<int,int>&segments){
+                       const std::map<int,bool>&bits,const std::map<int,int>&segments,
+                       bool classification_only){
     Mode mode=stored;if(!stored.observer_binding)return mode;
-    const auto &binding=*stored.observer_binding;Matrix N=binding.N,B=binding.B;
+    const auto &binding=*stored.observer_binding;
+    // D: Per-thread scratch is entirely overwritten before every use.
+    // It is not shared with a Mode, transaction or persistent cache.
+    struct BindingScratch { Matrix N, B, scale; };
+    static thread_local BindingScratch scratch;
+    Matrix &N=scratch.N, &B=scratch.B;
+    N=binding.N; B=binding.B;
     Assembler values(m,regs,bits,segments,false);
     for(const auto &[name,row]:binding.rows){
         double value=values.held(name);N(row,m.ns)=value;B(row,m.ns)=value;
@@ -745,7 +757,9 @@ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::strin
     }
     int na=int(N.rows());mode.binding.edit().residual_map.topRows(na)=binding.A*N-B;
     mode.binding.edit().residual_reference.topRows(na)=B;
-    Matrix scale=Matrix::Zero(mode.binding.read().residual_map.rows(),m.ns+1);
+    if(classification_only) {
+    Matrix &scale=scratch.scale;
+    scale=Matrix::Zero(mode.binding.read().residual_map.rows(),m.ns+1);
     scale.topRows(na)=binding.A.cwiseAbs()*N.cwiseAbs()+B.cwiseAbs();
     // Norms depend on only one loop index. Evaluate each only once per bind;
     // keep the original expression and floating-point reduction order intact.
@@ -765,7 +779,14 @@ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::strin
         mode.binding.edit().residual_map.row(na+j)=N.row(m.nodes.at(m.floating_references[j]));
         scale.row(na+j)=N.row(m.nodes.at(m.floating_references[j])).cwiseAbs();
     }
-    mode.candidate_roundoff_scale=std::make_shared<const Matrix>(std::move(scale));
+    mode.candidate_roundoff_scale=std::make_shared<const Matrix>(scale);
+    } else {
+      // Floating reference rows remain checked for accepted entries.
+      for(size_t j=0;j<m.floating_references.size();++j)
+        mode.binding.edit().residual_map.row(na+j)=
+            N.row(m.nodes.at(m.floating_references[j]));
+      mode.candidate_roundoff_scale.reset();
+    }
     std::ostringstream id;id<<std::setprecision(17);
     for(const auto &[i,b]:bits)id<<m.parts[i].raw.id<<'='<<b<<';';
     for(const auto &[i,seg]:segments)id<<m.parts[i].raw.id<<'='<<seg<<';';
@@ -1007,8 +1028,30 @@ Mode compile_specified(const Model &m, const Vector &s, const std::map<std::stri
         auto it=cache->entries.find(key);
         if(it==cache->entries.end())it=cache->entries.find(candidate_key(bits,segments,regs));
         if (it != cache->entries.end()) {
-            Mode bound=bind_observations(m,*it->second,regs,bits,segments);
-            Mode mode = instantiate_cached(m, std::move(bound), s, classification_only);
+            if(it->second->observer_binding) {
+                const std::string full_key=candidate_key(bits,segments,regs);
+                if(auto hit=cache->rebound_entries.find(full_key);
+                   hit!=cache->rebound_entries.end()) {
+                    ++stats.stage_d_rebound_hits;
+                    Mode mode=instantiate_cached(m,*hit->second,s,classification_only);
+                    ++stats.cache_hits;
+                    return mode;
+                }
+                ++stats.stage_d_rebound_misses;
+                // Construct a classification-capable template exactly once
+                // per full dynamic key. Accepted-entry checks still run below.
+                Mode bound=bind_observations(m,*it->second,regs,bits,segments,true);
+                if(cache->rebound_entries.size()>=cache->rebound_capacity) {
+                    cache->rebound_entries.erase(cache->rebound_order.front());
+                    cache->rebound_order.pop_front();
+                }
+                cache->rebound_entries.emplace(full_key,std::make_shared<const Mode>(bound));
+                cache->rebound_order.push_back(full_key);
+                Mode mode=instantiate_cached(m,std::move(bound),s,classification_only);
+                ++stats.cache_hits;
+                return mode;
+            }
+            Mode mode=instantiate_cached(m,*it->second,s,classification_only);
             ++stats.cache_hits;
             return mode;
         }
