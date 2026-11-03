@@ -92,9 +92,6 @@ struct Loaded {
   }
   pulse_software_info info{};
 };
-double read(const RunState&s,const std::string&name) {
-  return state_signal(s,name);
-}
 }
 struct Data {
   const Model&m;
@@ -108,8 +105,7 @@ struct Data {
             std::vector<Wakeup>&wakeups,std::vector<Json>*logs,uint64_t tx,size_t delta,
             uint32_t trigger_flags=0) {
     auto &spec=*t.spec;auto old=snapshot.software.at(spec.name);
-    auto next=old;std::vector<double> inputs,outputs;
-    for(auto &name:spec.inputs)inputs.push_back(read(snapshot,name));
+    auto next=old;std::vector<double> inputs=state_signals(snapshot,spec.inputs),outputs;
     for(auto &name:spec.outputs)outputs.push_back(snapshot.regs.at(net_name(name)));
     pulse_software_call c{PULSE_SOFTWARE_ABI,sizeof(pulse_software_call),snapshot.at.seconds(),
       old.invocation,inputs.data(),inputs.size(),spec.parameters.data(),spec.parameters.size(),

@@ -1,5 +1,7 @@
 #include "pulse/time_origin.hpp"
 #include <algorithm>
+#include <array>
+#include <cstdint>
 #include <cctype>
 #include <limits>
 #include <vector>
@@ -215,18 +217,63 @@ std::optional<std::string> canonical_decimal_origin(const DecimalOrigin &a) {
 OriginResult decimal_origin_from_binary_time(int64_t whole, uint64_t tick, uint64_t subtick) {
     if (whole < 0)
         return unknown(OriginIssue::Negative);
-    std::string integer = std::to_string(whole);
-    auto twice = [&]() { integer = *multiply_digits(integer, "2"); };
-    for (int i = 0; i < 64; ++i)
-        twice();
-    integer = *add_digits(integer, std::to_string(tick));
-    for (int i = 0; i < 64; ++i)
-        twice();
-    integer = *add_digits(integer, std::to_string(subtick));
-    for (int i = 0; i < 128; ++i)
-        integer = *multiply_digits(integer, "5");
-    // Max signed whole and 128 fractional bits need fewer than 150 decimal
-    // coefficient digits. The helpers' explicit working bound cannot be reached.
-    return normalize(std::move(integer), -128);
+    // Exact identity: (whole*2^128 + tick*2^64 + subtick)/2^128
+    // = (whole*2^128 + tick*2^64 + subtick)*5^128 * 10^-128.
+    // 192 bits + ceil(log2(5^128)) = at most 490 bits. Sixteen 32-bit
+    // limbs therefore hold every supported nonnegative T128 input exactly.
+    using Limbs = std::array<std::uint32_t, 16>;
+    static const Limbs five_to_128 = [] {
+        Limbs factor{};
+        factor[0] = 1;
+        for (int step = 0; step < 128; ++step) {
+            std::uint64_t carry = 0;
+            for (auto &limb : factor) {
+                const std::uint64_t product = std::uint64_t(limb) * 5 + carry;
+                limb = std::uint32_t(product);
+                carry = product >> 32;
+            }
+        }
+        return factor;
+    }();
+    const std::uint64_t w = std::uint64_t(whole);
+    const Limbs input = {
+        std::uint32_t(subtick), std::uint32_t(subtick >> 32),
+        std::uint32_t(tick), std::uint32_t(tick >> 32),
+        std::uint32_t(w), std::uint32_t(w >> 32)
+    };
+    Limbs integer{};
+    for (size_t i = 0; i < 6; ++i) {
+        std::uint64_t carry = 0;
+        for (size_t j = 0; j < integer.size() - i; ++j) {
+            const std::uint64_t product = std::uint64_t(input[i]) * five_to_128[j]
+                + integer[i + j] + carry;
+            integer[i + j] = std::uint32_t(product);
+            carry = product >> 32;
+        }
+        // The 490-bit bound proves that no nonzero carry can exit 512 bits.
+    }
+    // Convert the exact 512-bit integer to decimal in base-10^9 chunks.
+    std::vector<std::uint32_t> chunks;
+    chunks.reserve(18);
+    for (;;) {
+        bool nonzero = false;
+        for (const auto limb : integer) nonzero |= limb != 0;
+        if (!nonzero) break;
+        std::uint64_t remainder = 0;
+        for (size_t i = integer.size(); i-- > 0;) {
+            const std::uint64_t dividend = (remainder << 32) | integer[i];
+            integer[i] = std::uint32_t(dividend / 1000000000ULL);
+            remainder = dividend % 1000000000ULL;
+        }
+        chunks.push_back(std::uint32_t(remainder));
+    }
+    if (chunks.empty()) return {DecimalOrigin{}, OriginIssue::None};
+    std::string digits = std::to_string(chunks.back());
+    for (size_t i = chunks.size() - 1; i-- > 0;) {
+        auto part = std::to_string(chunks[i]);
+        digits.append(9 - part.size(), '0');
+        digits += part;
+    }
+    return normalize(std::move(digits), -128);
 }
 } // namespace pulse

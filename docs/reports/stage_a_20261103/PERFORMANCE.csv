@@ -1,0 +1,4 @@
+program,completion_wall_seconds,cpu_seconds,native_output_bytes,scope
+PLECS,13.282909899979131,,32000312,fresh 500ms MAT
+five_core_baseline,103.263607741,103.22599399999999,162854260,single full500ms trajectory; replay excluded
+stage_a,72.83065404499999,72.850649,162854262,single full500ms trajectory; replay excluded

@@ -113,6 +113,28 @@ double state_signal(const RunState&s,const std::string&name){
    return s.electrical_flow->observe(mode.maps.at(n),0);
  return mode.maps.at(n).dot(x);
 }
+// Identical per-signal semantics, but the input snapshot and modal view stay
+// immutable throughout the batch. Flow::observe only changes derived caches.
+std::vector<double> state_signals(const RunState&s,const std::vector<std::string>&names){
+ std::vector<double> result;
+ result.reserve(names.size());
+ const Mode&mode=s.internal_mode?*s.internal_mode:s.mode;
+ const Vector&x=s.internal.size()?s.internal:s.physical;
+ bool checked=false,can_observe=false;
+ for(const auto&name:names){
+  if(is_literal(name)){result.push_back(number(name));continue;}
+  const auto n=net_name(name);
+  const auto b=mode.bools.find(n);
+  if(b!=mode.bools.end()){result.push_back(double(b->second));continue;}
+  if(!checked){
+   can_observe=s.electrical_flow && s.electrical_flow->compatible(mode);
+   checked=true;
+  }
+  const auto &row=mode.maps.at(n);
+  result.push_back(can_observe?s.electrical_flow->observe(row,0):row.dot(x));
+ }
+ return result;
+}
 void publish_physical_state(const Model&m,RunState&s){
  if(s.internal.size()!=m.ns+1)return;
  s.physical=physical_view(m,s.internal);const auto&c=persistent_chart(m);

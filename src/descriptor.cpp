@@ -745,8 +745,18 @@ Mode bind_observations(const Model&m,const Mode&stored,const std::map<std::strin
     mode.residual_reference.topRows(na)=B;
     Matrix scale=Matrix::Zero(mode.residual_map.rows(),m.ns+1);
     scale.topRows(na)=binding.A.cwiseAbs()*N.cwiseAbs()+B.cwiseAbs();
+    // Norms depend on only one loop index. Evaluate each only once per bind;
+    // keep the original expression and floating-point reduction order intact.
+    std::vector<double> a_row_norm(static_cast<size_t>(na)), b_row_norm(static_cast<size_t>(na));
+    std::vector<double> n_col_norm(static_cast<size_t>(m.ns + 1));
+    for(int i=0;i<na;++i){
+        a_row_norm[size_t(i)]=binding.A.row(i).lpNorm<1>();
+        b_row_norm[size_t(i)]=B.row(i).lpNorm<1>();
+    }
+    for(int j=0;j<=m.ns;++j)
+        n_col_norm[size_t(j)]=N.col(j).lpNorm<Eigen::Infinity>();
     for(int i=0;i<na;++i)for(int j=0;j<=m.ns;++j){
-        double floor=std::numeric_limits<double>::epsilon()*(binding.A.row(i).lpNorm<1>()*N.col(j).lpNorm<Eigen::Infinity>()+B.row(i).lpNorm<1>());
+        double floor=std::numeric_limits<double>::epsilon()*(a_row_norm[size_t(i)]*n_col_norm[size_t(j)]+b_row_norm[size_t(i)]);
         scale(i,j)=std::max(scale(i,j),floor);
     }
     for(size_t j=0;j<m.floating_references.size();++j){

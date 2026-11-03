@@ -16,6 +16,8 @@ Vector physical_increment(const Model&,const Vector&);
 void persistent_stamp(const Model&,Matrix&,Matrix&,Matrix&);
 Json persistent_description(const Model&);
 double state_signal(const RunState&,const std::string&);
+// Batch read uses one Flow compatibility check per immutable snapshot.
+std::vector<double> state_signals(const RunState&,const std::vector<std::string>&);
 void publish_physical_state(const Model&,RunState&);
 }
 

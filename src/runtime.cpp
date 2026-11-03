@@ -438,7 +438,8 @@ Result simulate(const Model &original, const Options &o) {
       std::string attempt_phase;
       for(int algorithm=0;algorithm<3;algorithm++){
        ++portfolio.attempts[algorithm];
-       target=scheduled_target;due=scheduled_due;candidate=checkpoint;
+       target=scheduled_target;due=scheduled_due;
+       if(algorithm!=0)candidate=checkpoint; // initial candidate is already the checkpoint
        found=false;crossings.clear();seeds.clear();root_log=Json::object();logs.clear();attempt_phase="compile_or_propagate";
        try {
         Mode algorithm_mode=[&](){six_perf::Scope timer(six_perf::MODE);return portfolio_mode(m,checkpoint,algorithm,out.stats);}();
@@ -636,8 +637,7 @@ Result simulate(const Model &original, const Options &o) {
       if(out.trajectory){six_perf::Scope timer(six_perf::ARCHIVE);out.trajectory->append(propagation_old,candidate,logs,out.stats.transactions+1);}
       else stream_commit(m,out,propagation_old,candidate,false,output_index);
       out.committed = std::move(candidate);
-      if(!o.retain_history)out.segments.clear();
-      out.segments.push_back({out.committed});
+      if(o.retain_history)out.segments.push_back({out.committed});
 
       total_event_records+=logs.size();out.events.insert(out.events.end(),logs.begin(),logs.end());
       ++out.stats.transactions;
@@ -733,6 +733,10 @@ Result simulate(const Model &original, const Options &o) {
       {"model_contract",
        "piecewise-affine modes; explicit transition dynamics where needed; "
        "nonzero crossing derivatives; unsupported degeneracy stops safely"}};
+  if(!o.retain_history&&!out.segments.empty()){
+    out.segments.clear();
+    out.segments.push_back({out.committed});
+  }
   publish_physical_state(m,out.committed);
   for(auto&segment:out.segments)publish_physical_state(m,segment.state);
   auto selected=o.channels?o.channels:m.netlist.channels;
