@@ -1,5 +1,7 @@
 # Stage D.1 修复及严格回归
 
+后续完整 500 ms 实测已完成：完成通知 41.142489 s，详见 [BENCHMARK_500MS.md](BENCHMARK_500MS.md)。下文保留原 50 ms 验收的范围和记录。
+
 日期：2026-11-04。修复分支：fix/stage-d1-runtime-repair-20261104。父提交为审计分支的 bea2d59da6a450ea79e7dcff9bd3df4bd19e3e60；对照 Stage D 为 b3906c7713f057a763536629b5d7873cb21d34e9。
 
 ## 验收结果
