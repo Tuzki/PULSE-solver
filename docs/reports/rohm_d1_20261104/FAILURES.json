@@ -1,0 +1,364 @@
+[
+  {
+    "case": "rohm-a021-d-vienna-pfc",
+    "status": "OUTPUT_FAILED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 306.98418649999076,
+      "MAT": {
+        "bytes": 76000400,
+        "sha256": "998859488747b1f2583651d4231b693910fd87ec66ec6b3dcfdb6a63b904d34d"
+      },
+      "samples": 500001,
+      "channels": 18,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 11,
+      "message": "event stream exceeds 512 MiB",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "OUTPUT_ERROR",
+      "top_level_error": "OUTPUT_ERROR",
+      "unresolved": false
+    },
+    "reason": null,
+    "exit_diagnostic": {
+      "code": 11,
+      "message": "event stream exceeds 512 MiB",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "OUTPUT_ERROR",
+      "top_level_error": "OUTPUT_ERROR",
+      "unresolved": false
+    },
+    "harness_error": null,
+    "accuracy_status": "RECONSTRUCTION_FAILED",
+    "exit_wall_seconds": 178.183332522,
+    "hard_timeout": false,
+    "last_valid_time": 0.5,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-a021-d-vienna-pfc"
+  },
+  {
+    "case": "rohm-a021-dot-vienna-pfc",
+    "status": "STOPPED_UNRESOLVED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 31.571259999996983,
+      "MAT": {
+        "bytes": 60000368,
+        "sha256": "820f4dfb0a58e226f9d736c84286661a501c97b2054d72d7a8548d8684a5ec93"
+      },
+      "samples": 500001,
+      "channels": 14,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 7,
+      "message": "all registered methods failed from the same event checkpoint: [{\"algorithm\":0,\"diagnostic\":{\"code\":7,\"message\":\"candidate point reconstruction exceeds its rounding budget; backward=5.1797021080451807e-12, equation=79, residual=2.1765330361087521e-17, scale=4.2020428795087127e-06\",\"source\":{\"column\":0,\"file\":\"/root/rohm-d1-20261104/rohm-a021-dot-vienna-pfc/model/netlist.md\",\"line\":0,\"path\":\"@descriptor\"},\"subcode\":\"CANDIDATE_LINEAR_RESIDUAL\",\"top_level_error\":\"NUMERICAL_ERROR\",\"unresolved\":true},\"stage\":\"event_closure\"},{\"algorithm\":1,\"diagnostic\":{\"code\":8,\"message\":\"a noncandidate threshold is already beyond its legal side; explicit transition dynamics are required\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"UNPREDICTED_GUARD_JUMP\",\"top_level_error\":\"EVENT_ROOT_FAILURE\",\"unresolved\":true},\"stage\":\"compile_or_propagate\"},{\"algorithm\":2,\"diagnostic\":{\"code\":7,\"message\":\"candidate point reconstruction exceeds its rounding budget; backward=7.5872971513106646e-12, equation=79, residual=3.188215500621064e-17, scale=4.2020438069574188e-06\",\"source\":{\"column\":0,\"file\":\"/root/rohm-d1-20261104/rohm-a021-dot-vienna-pfc/model/netlist.md\",\"line\":0,\"path\":\"@descriptor\"},\"subcode\":\"CANDIDATE_LINEAR_RESIDUAL\",\"top_level_error\":\"NUMERICAL_ERROR\",\"unresolved\":true},\"stage\":\"event_closure\"}]",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "ALL_EVENT_ALGORITHMS_FAILED",
+      "top_level_error": "NUMERICAL_ERROR",
+      "unresolved": true
+    },
+    "reason": null,
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 58.97510816900001,
+    "hard_timeout": false,
+    "last_valid_time": 0.152583,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-a021-dot-vienna-pfc"
+  },
+  {
+    "case": "rohm-b009-d-motor-driver",
+    "status": "TIME_LIMIT_EXCEEDED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 14.256375600001775,
+      "MAT": {
+        "bytes": 52000352,
+        "sha256": "3fed759f8f61f308cdd2a5f7fef2fedbf9b066f57b8f921eb678e2190e907167"
+      },
+      "samples": 500001,
+      "channels": 12,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 9,
+      "message": "caller wall budget reached; committed prefix preserved",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "WALL_BUDGET",
+      "top_level_error": "MODE_STABILIZATION_FAILURE",
+      "unresolved": true
+    },
+    "reason": null,
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 144.232402832,
+    "hard_timeout": false,
+    "last_valid_time": 0.04009260406202532,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-b009-d-motor-driver"
+  },
+  {
+    "case": "rohm-b011-dot-npc-t-inverter",
+    "status": "STOPPED_UNRESOLVED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 22.563325799972517,
+      "MAT": {
+        "bytes": 72000392,
+        "sha256": "4612563dd09f7c96d1d21e812ba645a206d38d330542c7a1e9aa8b4dd4bb1db2"
+      },
+      "samples": 500001,
+      "channels": 17,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 9,
+      "message": "initial mode classification cycles; provide a physically regular initial model",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "INITIAL_MODE_CYCLE",
+      "top_level_error": "MODE_STABILIZATION_FAILURE",
+      "unresolved": true
+    },
+    "reason": null,
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 0.04855001299995365,
+    "hard_timeout": false,
+    "last_valid_time": 0.0,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-b011-dot-npc-t-inverter"
+  },
+  {
+    "case": "rohm-c012-d-llc-half-bridge",
+    "status": "TIME_LIMIT_EXCEEDED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 42.11316290000104,
+      "MAT": {
+        "bytes": 24000328,
+        "sha256": "981b384567d15b87b451462ff748ddb28116d6459c66b4d2954d2c7dbdea89b1"
+      },
+      "samples": 300001,
+      "channels": 9,
+      "fresh": true
+    },
+    "diagnostic": {
+      "stderr": ""
+    },
+    "reason": null,
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 451.69261802099993,
+    "hard_timeout": true,
+    "last_valid_time": null,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-c012-d-llc-half-bridge"
+  },
+  {
+    "case": "rohm-c012-dot-llc-half-bridge",
+    "status": "ENVIRONMENT_FAILURE",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 112.3586172000214,
+      "MAT": {
+        "bytes": 24000328,
+        "sha256": "00ddb4e6a72fc756f41c371793c1afb963e91f36d9d9c01db85ea55218e26466"
+      },
+      "samples": 300001,
+      "channels": 9,
+      "fresh": true
+    },
+    "diagnostic": null,
+    "reason": "Memory/swap pressure observed, WSL process query failed with WSAETIMEDOUT; Ubuntu-24.04 terminated to recover. No final CPU/time/state/archive evidence. OOM kill not confirmed.",
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": null,
+    "hard_timeout": null,
+    "last_valid_time": null,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-c012-dot-llc-half-bridge"
+  },
+  {
+    "case": "rohm-c014-d-llc-full-bridge",
+    "status": "TIME_LIMIT_EXCEEDED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 48.505698900000425,
+      "MAT": {
+        "bytes": 16000328,
+        "sha256": "ede0b00e1385ff96ad009af7307a40eb3455b5c9237675e2c8f3d3ffbcc3ab9e"
+      },
+      "samples": 200001,
+      "channels": 9,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 9,
+      "message": "caller wall budget reached; committed prefix preserved",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "WALL_BUDGET",
+      "top_level_error": "MODE_STABILIZATION_FAILURE",
+      "unresolved": true
+    },
+    "reason": null,
+    "exit_diagnostic": {
+      "code": 11,
+      "message": "event stream exceeds 512 MiB",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "OUTPUT_ERROR",
+      "top_level_error": "OUTPUT_ERROR",
+      "unresolved": false
+    },
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 499.264207283,
+    "hard_timeout": false,
+    "last_valid_time": 0.03687823945424704,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-c014-d-llc-full-bridge"
+  },
+  {
+    "case": "rohm-c014-dot-llc-full-bridge",
+    "status": "TIME_LIMIT_EXCEEDED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 48.19989619997796,
+      "MAT": {
+        "bytes": 16000328,
+        "sha256": "f6c9663aef3fdfc0ecc593d4a2936823af4c51957643b5e27a071403ccfd6359"
+      },
+      "samples": 200001,
+      "channels": 9,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 9,
+      "message": "caller wall budget reached; committed prefix preserved",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "WALL_BUDGET",
+      "top_level_error": "MODE_STABILIZATION_FAILURE",
+      "unresolved": true
+    },
+    "reason": null,
+    "exit_diagnostic": {
+      "code": 11,
+      "message": "event stream exceeds 512 MiB",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "OUTPUT_ERROR",
+      "top_level_error": "OUTPUT_ERROR",
+      "unresolved": false
+    },
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 495.231798108,
+    "hard_timeout": false,
+    "last_valid_time": 0.03378417620090184,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-c014-dot-llc-full-bridge"
+  },
+  {
+    "case": "rohm-c019-d-phase-shift-full-bridge",
+    "status": "STOPPED_UNRESOLVED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 117.43040140002267,
+      "MAT": {
+        "bytes": 24000368,
+        "sha256": "5b0d4cfef2437618f074839fbd991be652aa1b177f9e5f34694a84ab323b1945"
+      },
+      "samples": 200001,
+      "channels": 14,
+      "fresh": true
+    },
+    "diagnostic": {
+      "code": 7,
+      "message": "all registered methods failed from the same event checkpoint: [{\"algorithm\":0,\"diagnostic\":{\"code\":10,\"message\":\"validated propagated algebraic residual exceeds budget\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"top_level_error\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"unresolved\":false},\"stage\":\"compile_or_propagate\"},{\"algorithm\":1,\"diagnostic\":{\"code\":10,\"message\":\"validated propagated algebraic residual exceeds budget\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"top_level_error\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"unresolved\":false},\"stage\":\"compile_or_propagate\"},{\"algorithm\":2,\"diagnostic\":{\"code\":10,\"message\":\"validated propagated algebraic residual exceeds budget\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"top_level_error\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"unresolved\":false},\"stage\":\"compile_or_propagate\"}]",
+      "source": {
+        "column": 1,
+        "file": "",
+        "line": 0,
+        "path": ""
+      },
+      "subcode": "ALL_EVENT_ALGORITHMS_FAILED",
+      "top_level_error": "NUMERICAL_ERROR",
+      "unresolved": true
+    },
+    "reason": null,
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": 0.03303409699999982,
+    "hard_timeout": false,
+    "last_valid_time": 1.000000101694618e-07,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-c019-d-phase-shift-full-bridge"
+  },
+  {
+    "case": "rohm-c019-dot-phase-shift-full-bridge",
+    "status": "NOT_CONVERTED",
+    "PLECS": {
+      "status": "COMPLETED",
+      "wall_seconds": 88.34192119998625,
+      "MAT": {
+        "bytes": 12000328,
+        "sha256": "6f51ba5d5d46ae1a7d535ebbe8752d15d6b7902738ec2e94b06965a44316f1d0"
+      },
+      "samples": 150001,
+      "channels": 9,
+      "fresh": true
+    },
+    "diagnostic": null,
+    "reason": "No PULSE netlist in original case library",
+    "exit_diagnostic": null,
+    "harness_error": null,
+    "accuracy_status": null,
+    "exit_wall_seconds": null,
+    "hard_timeout": null,
+    "last_valid_time": null,
+    "native_evidence": "/root/rohm-d1-20261104/rohm-c019-dot-phase-shift-full-bridge"
+  }
+]

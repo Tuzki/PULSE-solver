@@ -1,0 +1,19 @@
+{
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "suite": "compatibility",
+  "checks": [
+    {
+      "name": "ctest",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/root/pulse-stage-d1-20261104/build-linux",
+        "--output-on-failure"
+      ],
+      "returncode": 0,
+      "wall_seconds": 4.489616024999999
+    }
+  ],
+  "cases": []
+}
