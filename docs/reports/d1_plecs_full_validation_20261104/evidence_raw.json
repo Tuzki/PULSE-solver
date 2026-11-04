@@ -1,0 +1,1227 @@
+{
+  "solver_branch": "fix/stage-d1-runtime-repair-20261104",
+  "solver_commit": "9f49f733863b90d8356aee22595e71e72fcc2c2b",
+  "solver_binary_sha256": "16e1ed5272626643d46f63e92530fc6d59777e3da41665a018c93822931a8cef",
+  "replay_binary_sha256": "1cf4cc81fe793f4853b2b06b08556de4b5f52bfdff9a569fa77a7d7e9139c5ea",
+  "case_set_commit": "13660577132de41c37c1c47576c02941d21c532a",
+  "comparison_note": "Current cloud PULSE timing versus case-set historical PLECS RPC timing; different hardware/session, not a controlled same-machine speed benchmark. PULSE wall time includes CLI startup, parsing, solving and complete archive writing; excludes C compilation and replay.",
+  "accuracy_note": "20 approximately equally spaced existing PLECS grid points including endpoints. Denominator = arithmetic mean(abs(PLECS)) across full 1us grid including endpoints; zero denominators yield null. Full-grid mean/RMS/min/max compared separately. Replay at 1us, no solver output/physics overrides except full original T_END.",
+  "archive_note": "D1 trajectory bytes cover out.pevt and simulation_report.json; out.pevt bytes are separately reported. PLECS comparison uses original uncompressed waveform CSV chunks.",
+  "resource_note": "Serial runs; 8 GiB address-space cap; generation wall timeout exactly 5*historical PLECS RPC seconds. Timeout labelled TIMEOUT_5X_PLECS, excluded from completion/accuracy ratios. Replay separate, 600s budget.",
+  "cases": [
+    {
+      "case": "C-002-D",
+      "folder": "rohm-c002-d-boost",
+      "target_seconds": 0.3,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 10.237441700010095,
+      "plecs_csv_bytes": 35788293,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28",
+        "pulse/netlist.md": "83e90dbfd3b3d8b11532f7b2c4122b8dfa5cbb19eccdd28e56a3639318567894"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c002-d-boost/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.11569918500026688,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c002-d-boost/pulse/netlist.md",
+          "--t-end",
+          "0.3",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c002-d-boost/trajectory"
+        ],
+        "wall_seconds": 2.723832545998448,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 51.187208500050474
+      },
+      "simulated_seconds": 0.3,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 17481059,
+        "simulation_report.json": 9736
+      },
+      "trajectory_generation_seconds": 2.723832545998448,
+      "trajectory_archive_bytes": 17490795,
+      "segments_bytes": 17481059,
+      "historical_plecs_over_pulse_time_ratio": 3.758469556085526,
+      "plecs_csv_over_trajectory_size_ratio": 2.0461215742337613,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-c002-d-boost/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c002-d-boost/replay"
+        ],
+        "wall_seconds": 1.8701581570057897,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 7,
+      "missing_channels": [],
+      "points20_max_error_pct": 6.290975881510915e-05,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-006-D",
+      "folder": "rohm-c006-d-buck",
+      "target_seconds": 0.3,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 11.946454300021287,
+      "plecs_csv_bytes": 31154910,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28",
+        "pulse/netlist.md": "2bc655605967043a5d106b7073f2b586b5bc682663ac37a73359199f449b99d6"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c006-d-buck/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.13600968300306704,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c006-d-buck/pulse/netlist.md",
+          "--t-end",
+          "0.3",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c006-d-buck/trajectory"
+        ],
+        "wall_seconds": 2.5833026120017166,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 59.732271500106435
+      },
+      "simulated_seconds": 0.3,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 16854103,
+        "simulation_report.json": 10652
+      },
+      "trajectory_generation_seconds": 2.5833026120017166,
+      "trajectory_archive_bytes": 16864755,
+      "segments_bytes": 16854103,
+      "historical_plecs_over_pulse_time_ratio": 4.624488917604729,
+      "plecs_csv_over_trajectory_size_ratio": 1.8473384285748593,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-c006-d-buck/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c006-d-buck/replay"
+        ],
+        "wall_seconds": 1.7877313330027391,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 7,
+      "missing_channels": [],
+      "points20_max_error_pct": 5.317654235446866e-05,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "A-002-D",
+      "folder": "rohm-a002-d-boost-pfc",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 48.06540329998825,
+      "plecs_csv_bytes": 68365252,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "fc0bf6020dc8982c4d249fa7de2e6494ca483b13f613bae7a96b1a180a1a4cad",
+        "pulse/netlist.md": "e3f1a2d5e6be1530cf043cad31757bfddf5031fa44d3bb292f24bfb13d34da61"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-a002-d-boost-pfc/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18214457300200593,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-a002-d-boost-pfc/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a002-d-boost-pfc/trajectory"
+        ],
+        "wall_seconds": 11.955136548996961,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 240.32701649994124
+      },
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 59382901,
+        "simulation_report.json": 13094
+      },
+      "trajectory_generation_seconds": 11.955136548996961,
+      "trajectory_archive_bytes": 59395995,
+      "segments_bytes": 59382901,
+      "historical_plecs_over_pulse_time_ratio": 4.020481330597679,
+      "plecs_csv_over_trajectory_size_ratio": 1.1510077741773668,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-a002-d-boost-pfc/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a002-d-boost-pfc/replay"
+        ],
+        "wall_seconds": 5.441834275996371,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 7,
+      "missing_channels": [],
+      "points20_max_error_pct": 0.31710464359164536,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "A-010-DOT",
+      "folder": "rohm-a010-dot-totem-pole-pfc-sync",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "初步验证通过；0.5 s 结果留有门极边界差异",
+      "plecs_rpc_seconds": 13.755468199960887,
+      "plecs_csv_bytes": 68367013,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/transition.h": "344a4dc6c43ef2f071ae274f4b35fcb66d4e133c24920e3f18046df8d80b7472",
+        "pulse/controller.c": "b05d623c3756c287ee8084ece08b5dcd72c8fd4528c1ffb052ce9e1c18d4af53",
+        "pulse/netlist.md": "fd7033363c8fcb24240a3c76dc518a813383abbf4de02b637dfe8679d59b7d6a"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-a010-dot-totem-pole-pfc-sync/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18651017200318165,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-a010-dot-totem-pole-pfc-sync/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a010-dot-totem-pole-pfc-sync/trajectory"
+        ],
+        "wall_seconds": 47.071376662002876,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 68.77734099980444
+      },
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 162836867,
+        "simulation_report.json": 17592
+      },
+      "trajectory_generation_seconds": 47.071376662002876,
+      "trajectory_archive_bytes": 162854459,
+      "segments_bytes": 162836867,
+      "historical_plecs_over_pulse_time_ratio": 0.29222574684255254,
+      "plecs_csv_over_trajectory_size_ratio": 0.41980436654792486,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-a010-dot-totem-pole-pfc-sync/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a010-dot-totem-pole-pfc-sync/replay"
+        ],
+        "wall_seconds": 17.723300200996164,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 7,
+      "missing_channels": [],
+      "points20_max_error_pct": 4.464307357065967e-05,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "A-011-D",
+      "folder": "rohm-a011-d-totem-pole-pfc-diode",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 47.17101539997384,
+      "plecs_csv_bytes": 67889506,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "ab487261b115b35e26dcc57c984f1e0cc82e8f94699cbd0d1dc90b0e41d13f93",
+        "pulse/netlist.md": "20b010a9a1910b682ddbe75ab026b0bb6c2cec0a3afbf5335ddf2cbbc0cae239"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-a011-d-totem-pole-pfc-diode/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.25432791899947915,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-a011-d-totem-pole-pfc-diode/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a011-d-totem-pole-pfc-diode/trajectory"
+        ],
+        "wall_seconds": 28.332356154998706,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 235.8550769998692
+      },
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 147203494,
+        "simulation_report.json": 14393
+      },
+      "trajectory_generation_seconds": 28.332356154998706,
+      "trajectory_archive_bytes": 147217887,
+      "segments_bytes": 147203494,
+      "historical_plecs_over_pulse_time_ratio": 1.6649167877854525,
+      "plecs_csv_over_trajectory_size_ratio": 0.46114984655363245,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-a011-d-totem-pole-pfc-diode/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a011-d-totem-pole-pfc-diode/replay"
+        ],
+        "wall_seconds": 10.662317062000511,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 7,
+      "missing_channels": [],
+      "points20_max_error_pct": 101.2334782748092,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "A-021-D",
+      "folder": "rohm-a021-d-vienna-pfc",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 331.6879284000024,
+      "plecs_csv_bytes": 169514232,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "7e7f905bf7e00acc2d9f6f5d7264fc694ab949e4bdb2cf3cc8ee0c9a8a47f4fc",
+        "pulse/netlist.md": "a59a0f1eddb70d60964e7941856625a169568ebc677cffbe898eb21e6e92d96b"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-a021-d-vienna-pfc/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18305259799672058,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-a021-d-vienna-pfc/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a021-d-vienna-pfc/trajectory"
+        ],
+        "wall_seconds": 198.83104260700202,
+        "exit_code": 1,
+        "external_timeout": false,
+        "budget_seconds": 1658.439642000012
+      },
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": false,
+      "archive_components": {
+        "simulation_report.json": 81905
+      },
+      "inputs_unchanged": true
+    },
+    {
+      "case": "A-021-DOT",
+      "folder": "rohm-a021-dot-vienna-pfc",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 30.56445810000878,
+      "plecs_csv_bytes": 131719775,
+      "status": "STOPPED_UNRESOLVED",
+      "input_hashes": {
+        "pulse/controller.c": "0e5c247e6b5fc50a4c21cbf2577d25fdb2371550a2a5422aa7884e580cd6150c",
+        "pulse/netlist.md": "5edfc8cb407a5720e32a305e2b2bb977f3f8ce7a6b39a421dacd6af11d275656"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-a021-dot-vienna-pfc/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18176958199910587,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-a021-dot-vienna-pfc/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-a021-dot-vienna-pfc/trajectory"
+        ],
+        "wall_seconds": 66.4783434399942,
+        "exit_code": 2,
+        "external_timeout": false,
+        "budget_seconds": 152.8222905000439
+      },
+      "simulated_seconds": 0.152583,
+      "diagnostic": {
+        "code": 7,
+        "message": "all registered methods failed from the same event checkpoint: [{\"algorithm\":0,\"diagnostic\":{\"code\":7,\"message\":\"candidate point reconstruction exceeds its rounding budget; backward=5.1797021080692142e-12, equation=79, residual=2.176533036108598e-17, scale=4.2020428794889184e-06\",\"source\":{\"column\":0,\"file\":\"/workspace/PULSE-case-set/rohm-a021-dot-vienna-pfc/pulse/netlist.md\",\"line\":0,\"path\":\"@descriptor\"},\"subcode\":\"CANDIDATE_LINEAR_RESIDUAL\",\"top_level_error\":\"NUMERICAL_ERROR\",\"unresolved\":true},\"stage\":\"event_closure\"},{\"algorithm\":1,\"diagnostic\":{\"code\":8,\"message\":\"a noncandidate threshold is already beyond its legal side; explicit transition dynamics are required\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"UNPREDICTED_GUARD_JUMP\",\"top_level_error\":\"EVENT_ROOT_FAILURE\",\"unresolved\":true},\"stage\":\"compile_or_propagate\"},{\"algorithm\":2,\"diagnostic\":{\"code\":7,\"message\":\"candidate point reconstruction exceeds its rounding budget; backward=7.5872971513459652e-12, equation=79, residual=3.1882155006208792e-17, scale=4.2020438069376244e-06\",\"source\":{\"column\":0,\"file\":\"/workspace/PULSE-case-set/rohm-a021-dot-vienna-pfc/pulse/netlist.md\",\"line\":0,\"path\":\"@descriptor\"},\"subcode\":\"CANDIDATE_LINEAR_RESIDUAL\",\"top_level_error\":\"NUMERICAL_ERROR\",\"unresolved\":true},\"stage\":\"event_closure\"}]",
+        "source": {
+          "column": 1,
+          "file": "",
+          "line": 0,
+          "path": ""
+        },
+        "subcode": "ALL_EVENT_ALGORITHMS_FAILED",
+        "top_level_error": "NUMERICAL_ERROR",
+        "unresolved": true
+      },
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": false,
+      "archive_components": {
+        "out.pevt": 235806514,
+        "simulation_report.json": 42343
+      },
+      "inputs_unchanged": true
+    },
+    {
+      "case": "B-004-D",
+      "folder": "rohm-b004-d-single-phase-inverter",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 10.396010599972215,
+      "plecs_csv_bytes": 81124260,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "167336d60887a37493f163c5df68e8b5e3d8b10d63d7604a71eea5db63b0c2b7",
+        "pulse/netlist.md": "3b01874fe7c229898a5ee07bf5fd156cf7a1525eaccf538a5b8114a1e9636e99"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-b004-d-single-phase-inverter/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18159092399582732,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-b004-d-single-phase-inverter/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b004-d-single-phase-inverter/trajectory"
+        ],
+        "wall_seconds": 7.1954027870015125,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 51.98005299986107
+      },
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 42304916,
+        "simulation_report.json": 14301
+      },
+      "trajectory_generation_seconds": 7.1954027870015125,
+      "trajectory_archive_bytes": 42319217,
+      "segments_bytes": 42304916,
+      "historical_plecs_over_pulse_time_ratio": 1.4448128767374353,
+      "plecs_csv_over_trajectory_size_ratio": 1.9169603256128298,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-b004-d-single-phase-inverter/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b004-d-single-phase-inverter/replay"
+        ],
+        "wall_seconds": 4.391213476003031,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 10,
+      "missing_channels": [],
+      "points20_max_error_pct": 1.7875100189168865e-05,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "B-004-DOT",
+      "folder": "rohm-b004-dot-single-phase-inverter",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 10.60799859999679,
+      "plecs_csv_bytes": 81449235,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "167336d60887a37493f163c5df68e8b5e3d8b10d63d7604a71eea5db63b0c2b7",
+        "pulse/netlist.md": "8c84d1747affe1bf2d1ef171815c7a64ebcff3b0f8374635f19cf332fe1b83f9"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-b004-dot-single-phase-inverter/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.13408829000400146,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-b004-dot-single-phase-inverter/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b004-dot-single-phase-inverter/trajectory"
+        ],
+        "wall_seconds": 7.698498682002537,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 53.03999299998395
+      },
+      "simulated_seconds": 0.5,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 42406796,
+        "simulation_report.json": 14289
+      },
+      "trajectory_generation_seconds": 7.698498682002537,
+      "trajectory_archive_bytes": 42421085,
+      "segments_bytes": 42406796,
+      "historical_plecs_over_pulse_time_ratio": 1.3779308197838689,
+      "plecs_csv_over_trajectory_size_ratio": 1.9200177223189836,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-b004-dot-single-phase-inverter/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b004-dot-single-phase-inverter/replay"
+        ],
+        "wall_seconds": 4.342798320001748,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 10,
+      "missing_channels": [],
+      "points20_max_error_pct": 1.8854661700946877e-05,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "B-009-D",
+      "folder": "rohm-b009-d-motor-driver",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "用户接受 20 ms 验证；未验收 0.5 s",
+      "plecs_rpc_seconds": 14.32938579999609,
+      "plecs_csv_bytes": 54104508,
+      "status": "TIMEOUT_5X_PLECS",
+      "input_hashes": {
+        "pulse/netlist.md": "88cc068f2971df6b38da907f6a593748386df9c8a670c90414d2c0350bf863ad"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-b009-d-motor-driver/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.08836487799999304,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-b009-d-motor-driver/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b009-d-motor-driver/trajectory"
+        ],
+        "wall_seconds": 71.6729517279964,
+        "exit_code": -9,
+        "external_timeout": true,
+        "budget_seconds": 71.64692899998045
+      },
+      "stderr": "",
+      "timeout_label": "超时（>5×PLECS）",
+      "timeout_limit_seconds": 71.64692899998045,
+      "full_trajectory_completed": false,
+      "archive_components": {},
+      "inputs_unchanged": true
+    },
+    {
+      "case": "B-011-DOT",
+      "folder": "rohm-b011-dot-npc-t-inverter",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "候选；INITIAL_MODE_CYCLE，未跑通整机",
+      "plecs_rpc_seconds": 23.289778399979696,
+      "plecs_csv_bytes": 71039156,
+      "status": "STOPPED_UNRESOLVED",
+      "input_hashes": {
+        "pulse/controller.c": "13282dbd60774076ce13d6e0ab21bbf3e40eae6ad5edafa0579b83095fd2a749",
+        "pulse/netlist.md": "5e37bce1bc987dcd4a3929f6abfc1e91db6ad067f3eab2edcba5753d6e31e294"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-b011-dot-npc-t-inverter/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18590921699797036,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-b011-dot-npc-t-inverter/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b011-dot-npc-t-inverter/trajectory"
+        ],
+        "wall_seconds": 0.0833059879951179,
+        "exit_code": 2,
+        "external_timeout": false,
+        "budget_seconds": 116.44889199989848
+      },
+      "simulated_seconds": 0.0,
+      "diagnostic": {
+        "code": 9,
+        "message": "initial mode classification cycles; provide a physically regular initial model",
+        "source": {
+          "column": 1,
+          "file": "",
+          "line": 0,
+          "path": ""
+        },
+        "subcode": "INITIAL_MODE_CYCLE",
+        "top_level_error": "MODE_STABILIZATION_FAILURE",
+        "unresolved": true
+      },
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": false,
+      "archive_components": {
+        "out.pewave.npz": 2344,
+        "simulation_report.json": 27071,
+        "simulation_report.md": 621,
+        "event_log.jsonl": 0
+      },
+      "inputs_unchanged": true
+    },
+    {
+      "case": "B-012-DOT",
+      "folder": "rohm-b012-dot-npc-i-inverter",
+      "target_seconds": 0.5,
+      "historical_pulse_status": "原 C 候选；门极边界语义待查；不采用 DSH 提前关断版本",
+      "plecs_rpc_seconds": 33.635950699972454,
+      "plecs_csv_bytes": 98883521,
+      "status": "TIMEOUT_5X_PLECS",
+      "input_hashes": {
+        "pulse/controller.c": "7e6c3f57d0bd89a32a309e28bbb3dcf56722d991d7781d4ec6642b4c997b41c6",
+        "pulse/netlist.md": "66d6676c11e689b6be32f0ef8c4056190085fdca694560805362f22966fe7cd5"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-b012-dot-npc-i-inverter/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.17901216199970804,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-b012-dot-npc-i-inverter/pulse/netlist.md",
+          "--t-end",
+          "0.5",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-b012-dot-npc-i-inverter/trajectory"
+        ],
+        "wall_seconds": 168.21491822499956,
+        "exit_code": -9,
+        "external_timeout": true,
+        "budget_seconds": 168.17975349986227
+      },
+      "stderr": "",
+      "timeout_label": "超时（>5×PLECS）",
+      "timeout_limit_seconds": 168.17975349986227,
+      "full_trajectory_completed": false,
+      "archive_components": {},
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-010-D",
+      "folder": "rohm-c010-d-flyback",
+      "target_seconds": 0.3,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 11.328234200016595,
+      "plecs_csv_bytes": 31263739,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28",
+        "pulse/netlist.md": "a4181753455c66cdfc23e7fb57ea0dbf8561a7af7410c36b6ea5c6725ec04623"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c010-d-flyback/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.13276217300153803,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c010-d-flyback/pulse/netlist.md",
+          "--t-end",
+          "0.3",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c010-d-flyback/trajectory"
+        ],
+        "wall_seconds": 5.489645235000353,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 56.64117100008298
+      },
+      "simulated_seconds": 0.3,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 33436130,
+        "simulation_report.json": 10689
+      },
+      "trajectory_generation_seconds": 5.489645235000353,
+      "trajectory_archive_bytes": 33446819,
+      "segments_bytes": 33436130,
+      "historical_plecs_over_pulse_time_ratio": 2.063563985481453,
+      "plecs_csv_over_trajectory_size_ratio": 0.9347298169072521,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-c010-d-flyback/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c010-d-flyback/replay"
+        ],
+        "wall_seconds": 2.9887531519998447,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "compared_channels": 7,
+      "missing_channels": [],
+      "points20_max_error_pct": 0.0003291376741588188,
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-011-D",
+      "folder": "rohm-c011-d-forward",
+      "target_seconds": 0.4,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 42.25754100002814,
+      "plecs_csv_bytes": 56848340,
+      "status": "COMPLETED",
+      "input_hashes": {
+        "pulse/controller.c": "778a443cbff27d997fb7fcaf91cd9776e5ccef0ab1f458142bfe914fa8b7da28",
+        "pulse/netlist.md": "819f927c3121f24ef199795e4e6979fce6285a739bc7164d9ba4c367bb7c37dc"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c011-d-forward/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.1340971419995185,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c011-d-forward/pulse/netlist.md",
+          "--t-end",
+          "0.4",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c011-d-forward/trajectory"
+        ],
+        "wall_seconds": 30.225175972002035,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 211.2877050001407
+      },
+      "simulated_seconds": 0.4,
+      "diagnostic": {},
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": true,
+      "archive_components": {
+        "out.pevt": 205393856,
+        "simulation_report.json": 12918
+      },
+      "trajectory_generation_seconds": 30.225175972002035,
+      "trajectory_archive_bytes": 205406774,
+      "segments_bytes": 205393856,
+      "historical_plecs_over_pulse_time_ratio": 1.3980908180376466,
+      "plecs_csv_over_trajectory_size_ratio": 0.2767598112416682,
+      "replay": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-replay",
+          "/workspace/pulse-d1-validation/rohm-c011-d-forward/trajectory",
+          "--save-dt",
+          "1u",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c011-d-forward/replay"
+        ],
+        "wall_seconds": 12.01231354400079,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 600
+      },
+      "accuracy_status": "COMPARED",
+      "inputs_unchanged": true,
+      "accuracy_initial_error": "RuntimeError('replay/reference grids do not align')",
+      "accuracy_repair": "Keep final committed endpoint where replay provides a duplicate endpoint less than 1 ps apart",
+      "compared_channels": 9,
+      "missing_channels": [],
+      "points20_max_error_pct": 215.1054094110417
+    },
+    {
+      "case": "C-012-D",
+      "folder": "rohm-c012-d-llc-half-bridge",
+      "target_seconds": 0.3,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 43.92645379999885,
+      "plecs_csv_bytes": 42509282,
+      "status": "TIMEOUT_5X_PLECS",
+      "input_hashes": {
+        "pulse/sr_gate.c": "296ac45c1c0b02b3dde701046f843e4539943e07be3f668c469ac0e431d90c64",
+        "pulse/controller.c": "145535e255e9219151c5d807f19e38160308a019083bb8306184634f0d9723ad",
+        "pulse/netlist.md": "13bd8c70f6b674d58091fc044f683be9040cd9a8c0bb3b73ec0f2665dda8835f"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c012-d-llc-half-bridge/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.23458875600044848,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c012-d-llc-half-bridge/pulse/netlist.md",
+          "--t-end",
+          "0.3",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c012-d-llc-half-bridge/trajectory"
+        ],
+        "wall_seconds": 219.75686738299555,
+        "exit_code": -9,
+        "external_timeout": true,
+        "budget_seconds": 219.63226899999427
+      },
+      "stderr": "",
+      "timeout_label": "超时（>5×PLECS）",
+      "timeout_limit_seconds": 219.63226899999427,
+      "full_trajectory_completed": false,
+      "archive_components": {},
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-012-DOT",
+      "folder": "rohm-c012-dot-llc-half-bridge",
+      "target_seconds": 0.3,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 113.34134879999328,
+      "plecs_csv_bytes": 42576172,
+      "status": "TIMEOUT_5X_PLECS",
+      "input_hashes": {
+        "pulse/sr_gate.c": "296ac45c1c0b02b3dde701046f843e4539943e07be3f668c469ac0e431d90c64",
+        "pulse/controller.c": "145535e255e9219151c5d807f19e38160308a019083bb8306184634f0d9723ad",
+        "pulse/netlist.md": "4d583667b49a9c0b1e21070be11595b8ef23404117b746f46804438100ebd95e"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c012-dot-llc-half-bridge/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.22917374600365292,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c012-dot-llc-half-bridge/pulse/netlist.md",
+          "--t-end",
+          "0.3",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c012-dot-llc-half-bridge/trajectory"
+        ],
+        "wall_seconds": 566.9533582440054,
+        "exit_code": -9,
+        "external_timeout": true,
+        "budget_seconds": 566.7067439999664
+      },
+      "stderr": "",
+      "timeout_label": "超时（>5×PLECS）",
+      "timeout_limit_seconds": 566.7067439999664,
+      "full_trajectory_completed": false,
+      "archive_components": {},
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-014-D",
+      "folder": "rohm-c014-d-llc-full-bridge",
+      "target_seconds": 0.2,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 51.071121800050605,
+      "plecs_csv_bytes": 31023651,
+      "status": "TIMEOUT_5X_PLECS",
+      "input_hashes": {
+        "pulse/sr_gate.c": "296ac45c1c0b02b3dde701046f843e4539943e07be3f668c469ac0e431d90c64",
+        "pulse/controller.c": "7018eeb12d427dedbad9617be7d597e932232f3f97b464eae92a9186af7c264f",
+        "pulse/netlist.md": "aa7b3eb223fcb426a75895f4a877df015ccf78f7e9e917c335cb45c601443c1d"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c014-d-llc-full-bridge/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.2314090159998159,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c014-d-llc-full-bridge/pulse/netlist.md",
+          "--t-end",
+          "0.2",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c014-d-llc-full-bridge/trajectory"
+        ],
+        "wall_seconds": 255.434843052004,
+        "exit_code": -9,
+        "external_timeout": true,
+        "budget_seconds": 255.35560900025303
+      },
+      "stderr": "",
+      "timeout_label": "超时（>5×PLECS）",
+      "timeout_limit_seconds": 255.35560900025303,
+      "full_trajectory_completed": false,
+      "archive_components": {},
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-014-DOT",
+      "folder": "rohm-c014-dot-llc-full-bridge",
+      "target_seconds": 0.2,
+      "historical_pulse_status": "历史已转换输入；验收范围见 provenance.json",
+      "plecs_rpc_seconds": 54.403981799958274,
+      "plecs_csv_bytes": 31049292,
+      "status": "TIMEOUT_5X_PLECS",
+      "input_hashes": {
+        "pulse/sr_gate.c": "296ac45c1c0b02b3dde701046f843e4539943e07be3f668c469ac0e431d90c64",
+        "pulse/controller.c": "7018eeb12d427dedbad9617be7d597e932232f3f97b464eae92a9186af7c264f",
+        "pulse/netlist.md": "f2c716b812a1b38cd6301eb624649bed2c145cfc95ca85c814b46287ff8fa63e"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c014-dot-llc-full-bridge/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.23345228000107454,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c014-dot-llc-full-bridge/pulse/netlist.md",
+          "--t-end",
+          "0.2",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c014-dot-llc-full-bridge/trajectory"
+        ],
+        "wall_seconds": 272.10036244699586,
+        "exit_code": -9,
+        "external_timeout": true,
+        "budget_seconds": 272.01990899979137
+      },
+      "stderr": "",
+      "timeout_label": "超时（>5×PLECS）",
+      "timeout_limit_seconds": 272.01990899979137,
+      "full_trajectory_completed": false,
+      "archive_components": {},
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-019-D",
+      "folder": "rohm-c019-d-phase-shift-full-bridge",
+      "target_seconds": 0.2,
+      "historical_pulse_status": "最新等价表达候选；约 100 ns 首次整流换流后失败，未通过",
+      "plecs_rpc_seconds": 127.20475279999664,
+      "plecs_csv_bytes": 46910418,
+      "status": "STOPPED_UNRESOLVED",
+      "input_hashes": {
+        "pulse/controller.c": "a8805ff999aa8677d412372e50b57464186010bcb84223f41eda3e62fe7dbb78",
+        "pulse/netlist.md": "cf350c2ac906dc0bcb0e1133b8034efa8e62aea78135ad02e2aa7dd858bef946"
+      },
+      "module_build": {
+        "command": [
+          "/workspace/pulse-tools/bin/python",
+          "/workspace/PULSE-solver/scripts/build_software.py",
+          "/workspace/PULSE-case-set/rohm-c019-d-phase-shift-full-bridge/pulse/netlist.md",
+          "--cc",
+          "gcc"
+        ],
+        "wall_seconds": 0.18078109100315487,
+        "exit_code": 0,
+        "external_timeout": false,
+        "budget_seconds": 60
+      },
+      "generation": {
+        "command": [
+          "/workspace/pulse-d1-build/pulse-solver",
+          "/workspace/PULSE-case-set/rohm-c019-d-phase-shift-full-bridge/pulse/netlist.md",
+          "--t-end",
+          "0.2",
+          "--output-format",
+          "trajectory",
+          "--out",
+          "/workspace/pulse-d1-validation/rohm-c019-d-phase-shift-full-bridge/trajectory"
+        ],
+        "wall_seconds": 0.04421061900211498,
+        "exit_code": 2,
+        "external_timeout": false,
+        "budget_seconds": 636.0237639999832
+      },
+      "simulated_seconds": 1.000000101694618e-07,
+      "diagnostic": {
+        "code": 7,
+        "message": "all registered methods failed from the same event checkpoint: [{\"algorithm\":0,\"diagnostic\":{\"code\":10,\"message\":\"validated propagated algebraic residual exceeds budget\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"top_level_error\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"unresolved\":false},\"stage\":\"compile_or_propagate\"},{\"algorithm\":1,\"diagnostic\":{\"code\":10,\"message\":\"validated propagated algebraic residual exceeds budget\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"top_level_error\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"unresolved\":false},\"stage\":\"compile_or_propagate\"},{\"algorithm\":2,\"diagnostic\":{\"code\":10,\"message\":\"validated propagated algebraic residual exceeds budget\",\"source\":{\"column\":1,\"file\":\"\",\"line\":0,\"path\":\"\"},\"subcode\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"top_level_error\":\"PHYSICAL_CONSTRAINT_VIOLATION\",\"unresolved\":false},\"stage\":\"compile_or_propagate\"}]",
+        "source": {
+          "column": 1,
+          "file": "",
+          "line": 0,
+          "path": ""
+        },
+        "subcode": "ALL_EVENT_ALGORITHMS_FAILED",
+        "top_level_error": "NUMERICAL_ERROR",
+        "unresolved": true
+      },
+      "source_sha256": "ff7029501f36ba6bd5d2e7a95c186099ee89193594220d36417b2bb56c87a8ed",
+      "full_trajectory_completed": false,
+      "archive_components": {
+        "out.pevt": 104436,
+        "simulation_report.json": 23404
+      },
+      "inputs_unchanged": true
+    },
+    {
+      "case": "C-019-DOT",
+      "folder": "rohm-c019-dot-phase-shift-full-bridge",
+      "target_seconds": 0.15,
+      "historical_pulse_status": "尚无已转换网表；未拿 D 版冒充 DOT 版",
+      "plecs_rpc_seconds": 92.90766299999086,
+      "plecs_csv_bytes": 20862568,
+      "status": "NO_NETLIST",
+      "input_hashes": {
+        "pulse/README.md": "cd3df8c02ea957778e1bb3f3163e5ace96998f392095cf7c6e7915a81dfce7a6"
+      },
+      "inputs_unchanged": true
+    }
+  ]
+}

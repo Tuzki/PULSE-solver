@@ -1,0 +1,16 @@
+{
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "available_cpus": 5,
+  "cpu": {
+    "Architecture": "x86_64",
+    "CPU(s)": "5",
+    "Model name": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "Thread(s) per core": "1",
+    "Core(s) per socket": "5"
+  },
+  "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+  "cmake": "cmake version 3.31.6",
+  "python": "3.12.14",
+  "numpy": "2.2.6",
+  "matplotlib": "3.10.7"
+}

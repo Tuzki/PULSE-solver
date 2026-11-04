@@ -1,0 +1,78 @@
+Internal ctest changing into directory: /workspace/pulse-d1-build
+Test project /workspace/pulse-d1-build
+      Start  1: trajectory_output
+ 1/36 Test  #1: trajectory_output ................   Passed    0.55 sec
+      Start  2: platform_probe
+ 2/36 Test  #2: platform_probe ...................   Passed    0.07 sec
+      Start  3: parser
+ 3/36 Test  #3: parser ...........................   Passed    0.01 sec
+      Start  4: compiler_diagnostics
+ 4/36 Test  #4: compiler_diagnostics .............   Passed    0.01 sec
+      Start  5: time_origin
+ 5/36 Test  #5: time_origin ......................   Passed    0.00 sec
+      Start  6: electrical_references
+ 6/36 Test  #6: electrical_references ............   Passed    0.02 sec
+      Start  7: C_ABI_compatibility
+ 7/36 Test  #7: C_ABI_compatibility ..............   Passed    0.01 sec
+      Start  8: NPZ_compatibility
+ 8/36 Test  #8: NPZ_compatibility ................   Passed    0.01 sec
+      Start  9: engineering_events
+ 9/36 Test  #9: engineering_events ...............   Passed    0.02 sec
+      Start 10: engineering_additional
+10/36 Test #10: engineering_additional ...........   Passed    0.03 sec
+      Start 11: mode_cache
+11/36 Test #11: mode_cache .......................   Passed    0.02 sec
+      Start 12: observer_dependencies
+12/36 Test #12: observer_dependencies ............   Passed    0.02 sec
+      Start 13: pre_kernel
+13/36 Test #13: pre_kernel .......................   Passed    0.01 sec
+      Start 14: pevt_protocol
+14/36 Test #14: pevt_protocol ....................   Passed    0.06 sec
+      Start 15: software_domain
+15/36 Test #15: software_domain ..................   Passed    0.44 sec
+      Start 16: transaction_budget
+16/36 Test #16: transaction_budget ...............   Passed    2.20 sec
+      Start 17: a011_boundary
+17/36 Test #17: a011_boundary ....................   Passed    0.00 sec
+      Start 18: a011_closure
+18/36 Test #18: a011_closure .....................   Passed    0.01 sec
+      Start 19: event_retry_merge
+19/36 Test #19: event_retry_merge ................   Passed    0.01 sec
+      Start 20: a021_control_d
+20/36 Test #20: a021_control_d ...................   Passed    0.00 sec
+      Start 21: a021_control_dot
+21/36 Test #21: a021_control_dot .................   Passed    0.00 sec
+      Start 22: general_strategies
+22/36 Test #22: general_strategies ...............   Passed    0.02 sec
+      Start 23: a021_sampling
+23/36 Test #23: a021_sampling ....................   Passed    0.00 sec
+      Start 24: trajectory
+24/36 Test #24: trajectory .......................   Passed    0.01 sec
+      Start 25: strategy_transaction
+25/36 Test #25: strategy_transaction .............   Passed    0.01 sec
+      Start 26: phi_affine
+26/36 Test #26: phi_affine .......................   Passed    0.00 sec
+      Start 27: group_latest
+27/36 Test #27: group_latest .....................   Passed    0.01 sec
+      Start 28: stage_a_exact_time
+28/36 Test #28: stage_a_exact_time ...............   Passed    0.07 sec
+      Start 29: stage_a_batch
+29/36 Test #29: stage_a_batch ....................   Passed    0.01 sec
+      Start 30: stage_b_shared_flow
+30/36 Test #30: stage_b_shared_flow ..............   Passed    0.00 sec
+      Start 31: stage_b_cow_transaction
+31/36 Test #31: stage_b_cow_transaction ..........   Passed    0.00 sec
+      Start 32: cow_value
+32/36 Test #32: cow_value ........................   Passed    0.00 sec
+      Start 33: stage_c_event_kernel
+33/36 Test #33: stage_c_event_kernel .............   Passed    0.01 sec
+      Start 34: stage_d1_regression
+34/36 Test #34: stage_d1_regression ..............   Passed    0.00 sec
+      Start 35: stage_d_runtime
+35/36 Test #35: stage_d_runtime ..................   Passed    0.00 sec
+      Start 36: stage_d_integration
+36/36 Test #36: stage_d_integration ..............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 36
+
+Total Test time (real) =   3.67 sec

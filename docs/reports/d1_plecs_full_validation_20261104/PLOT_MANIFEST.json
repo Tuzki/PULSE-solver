@@ -1,0 +1,1138 @@
+[
+  {
+    "case": "C-002-D",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH001_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH002_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH003_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH004_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH005_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH006_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH007_full.png"
+  },
+  {
+    "case": "C-002-D",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c002-d-boost/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "VINBUS",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/VINBUS_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "VINBUS",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/VINBUS_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "IIN",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/IIN_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "IIN",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/IIN_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "VOUT",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/VOUT_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "VOUT",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/VOUT_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "IOUT",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/IOUT_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "IOUT",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/IOUT_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "VDS",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/VDS_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "VDS",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/VDS_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "ID",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/ID_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "ID",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/ID_last_1ms.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "IDIODE",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/IDIODE_full.png"
+  },
+  {
+    "case": "C-006-D",
+    "channel": "IDIODE",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c006-d-buck/plots/IDIODE_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH001_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH002_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH003_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH004_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH005_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH006_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH007_full.png"
+  },
+  {
+    "case": "A-002-D",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a002-d-boost-pfc/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH001_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH002_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH003_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH004_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH005_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH006_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH007_full.png"
+  },
+  {
+    "case": "A-010-DOT",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a010-dot-totem-pole-pfc-sync/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH001_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH002_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH003_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH004_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH005_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH006_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH007_full.png"
+  },
+  {
+    "case": "A-011-D",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-a011-d-totem-pole-pfc-diode/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH001_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH002_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH003_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH004_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH005_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH006_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH007_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH008",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH008_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH008",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH008_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH009",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH009_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH009",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH009_last_1ms.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH010",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH010_full.png"
+  },
+  {
+    "case": "B-004-D",
+    "channel": "CH010",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-d-single-phase-inverter/plots/CH010_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH001_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH002_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH003_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH004_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH005_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH006_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH007_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH008",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH008_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH008",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH008_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH009",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH009_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH009",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH009_last_1ms.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH010",
+    "window": "full",
+    "plecs_samples": 500001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH010_full.png"
+  },
+  {
+    "case": "B-004-DOT",
+    "channel": "CH010",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-b004-dot-single-phase-inverter/plots/CH010_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH001_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH002_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH003_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH004_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH005_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH006_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 300001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH007_full.png"
+  },
+  {
+    "case": "C-010-D",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c010-d-flyback/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH001",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH001_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH001",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH001_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH002",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH002_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH002",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH002_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH003",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH003_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH003",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH003_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH004",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH004_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH004",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH004_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH005",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH005_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH005",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH005_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH006",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH006_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH006",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH006_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH007",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH007_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH007",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH007_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH008",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH008_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH008",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH008_last_1ms.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH009",
+    "window": "full",
+    "plecs_samples": 400001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH009_full.png"
+  },
+  {
+    "case": "C-011-D",
+    "channel": "CH009",
+    "window": "last_1ms",
+    "plecs_samples": 1001,
+    "pulse_present": true,
+    "file": "rohm-c011-d-forward/plots/CH009_last_1ms.png"
+  }
+]

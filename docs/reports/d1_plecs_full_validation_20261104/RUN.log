@@ -1,0 +1,42 @@
+START C-002-D
+Fontconfig error: No writable cache directories
+DONE C-002-D COMPLETED {} 2.723832545998448 COMPARED
+START C-006-D
+DONE C-006-D COMPLETED {} 2.5833026120017166 COMPARED
+START A-002-D
+DONE A-002-D COMPLETED {} 11.955136548996961 COMPARED
+START A-010-DOT
+DONE A-010-DOT COMPLETED {} 47.071376662002876 COMPARED
+START A-011-D
+DONE A-011-D COMPLETED {} 28.332356154998706 COMPARED
+START A-021-D
+DONE A-021-D COMPLETED {} None None
+START A-021-DOT
+DONE A-021-DOT STOPPED_UNRESOLVED {'code': 7, 'message': 'all registered methods failed from the same event checkpoint: [{"algorithm":0,"diagnostic":{"code":7,"message":"candidate point reconstruction exceeds its rounding budget; backward=5.1797021080692142e-12, equation=79, residual=2.176533036108598e-17, scale=4.2020428794889184e-06","source":{"column":0,"file":"/workspace/PULSE-case-set/rohm-a021-dot-vienna-pfc/pulse/netlist.md","line":0,"path":"@descriptor"},"subcode":"CANDIDATE_LINEAR_RESIDUAL","top_level_error":"NUMERICAL_ERROR","unresolved":true},"stage":"event_closure"},{"algorithm":1,"diagnostic":{"code":8,"message":"a noncandidate threshold is already beyond its legal side; explicit transition dynamics are required","source":{"column":1,"file":"","line":0,"path":""},"subcode":"UNPREDICTED_GUARD_JUMP","top_level_error":"EVENT_ROOT_FAILURE","unresolved":true},"stage":"compile_or_propagate"},{"algorithm":2,"diagnostic":{"code":7,"message":"candidate point reconstruction exceeds its rounding budget; backward=7.5872971513459652e-12, equation=79, residual=3.1882155006208792e-17, scale=4.2020438069376244e-06","source":{"column":0,"file":"/workspace/PULSE-case-set/rohm-a021-dot-vienna-pfc/pulse/netlist.md","line":0,"path":"@descriptor"},"subcode":"CANDIDATE_LINEAR_RESIDUAL","top_level_error":"NUMERICAL_ERROR","unresolved":true},"stage":"event_closure"}]', 'source': {'column': 1, 'file': '', 'line': 0, 'path': ''}, 'subcode': 'ALL_EVENT_ALGORITHMS_FAILED', 'top_level_error': 'NUMERICAL_ERROR', 'unresolved': True} None None
+START B-004-D
+DONE B-004-D COMPLETED {} 7.1954027870015125 COMPARED
+START B-004-DOT
+DONE B-004-DOT COMPLETED {} 7.698498682002537 COMPARED
+START B-009-D
+DONE B-009-D TIMEOUT_5X_PLECS None None None
+START B-011-DOT
+DONE B-011-DOT STOPPED_UNRESOLVED {'code': 9, 'message': 'initial mode classification cycles; provide a physically regular initial model', 'source': {'column': 1, 'file': '', 'line': 0, 'path': ''}, 'subcode': 'INITIAL_MODE_CYCLE', 'top_level_error': 'MODE_STABILIZATION_FAILURE', 'unresolved': True} None None
+START B-012-DOT
+DONE B-012-DOT TIMEOUT_5X_PLECS None None None
+START C-010-D
+DONE C-010-D COMPLETED {} 5.489645235000353 COMPARED
+START C-011-D
+DONE C-011-D COMPLETED {} 30.225175972002035 FAILED
+START C-012-D
+DONE C-012-D TIMEOUT_5X_PLECS None None None
+START C-012-DOT
+DONE C-012-DOT TIMEOUT_5X_PLECS None None None
+START C-014-D
+DONE C-014-D TIMEOUT_5X_PLECS None None None
+START C-014-DOT
+DONE C-014-DOT TIMEOUT_5X_PLECS None None None
+START C-019-D
+DONE C-019-D STOPPED_UNRESOLVED {'code': 7, 'message': 'all registered methods failed from the same event checkpoint: [{"algorithm":0,"diagnostic":{"code":10,"message":"validated propagated algebraic residual exceeds budget","source":{"column":1,"file":"","line":0,"path":""},"subcode":"PHYSICAL_CONSTRAINT_VIOLATION","top_level_error":"PHYSICAL_CONSTRAINT_VIOLATION","unresolved":false},"stage":"compile_or_propagate"},{"algorithm":1,"diagnostic":{"code":10,"message":"validated propagated algebraic residual exceeds budget","source":{"column":1,"file":"","line":0,"path":""},"subcode":"PHYSICAL_CONSTRAINT_VIOLATION","top_level_error":"PHYSICAL_CONSTRAINT_VIOLATION","unresolved":false},"stage":"compile_or_propagate"},{"algorithm":2,"diagnostic":{"code":10,"message":"validated propagated algebraic residual exceeds budget","source":{"column":1,"file":"","line":0,"path":""},"subcode":"PHYSICAL_CONSTRAINT_VIOLATION","top_level_error":"PHYSICAL_CONSTRAINT_VIOLATION","unresolved":false},"stage":"compile_or_propagate"}]', 'source': {'column': 1, 'file': '', 'line': 0, 'path': ''}, 'subcode': 'ALL_EVENT_ALGORITHMS_FAILED', 'top_level_error': 'NUMERICAL_ERROR', 'unresolved': True} None None
+START C-019-DOT
+DONE C-019-DOT NO_NETLIST None None None
+ALL_FINISHED
